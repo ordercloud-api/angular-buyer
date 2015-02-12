@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html ng-app="orderCloud" ng-controller="AppCtrl">
+	<head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title ng-bind="pageTitle"></title>
+		<!-- compiled CSS --><% styles.forEach( function ( file ) { %>
+		<link rel="stylesheet" type="text/css" href="<%= file %>" /><% }); %>
+    </head>
+
+    <body>
+        <div ui-view></div>
+        <!-- compiled JavaScript --><% scripts.forEach( function ( file ) { %>
+        <script type="text/javascript" src="<%= file %>"></script><% }); %>
+    </body>
+</html>
