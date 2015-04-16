@@ -9,6 +9,7 @@ module.exports = {
    */
   build_dir: 'build',
   compile_dir: 'compile',
+  temp_dir: 'temp',
 
   /**
    * This is a collection of file patterns that refer to our app code (the
@@ -24,16 +25,14 @@ module.exports = {
     jsunit: [ 'src/**/*.spec.js' ],
 
     atpl: [ 'src/app/**/*.tpl.html' ],
-    ctpl: [ 'src/common/**/*.tpl.html' ],
 
     html: [ 'src/index.html' ],
-  	less: 'src/less/main.less',
-  	import_less: [
-	    'vendor/bootstrap/less/bootstrap.less',
-	    'vendor/ambient/less/ambient.less',
-	    'vendor/angularjs-toaster/toaster.css',
-	    'src/app/**/*.less'
-  	]
+    import_less: [
+      'vendor/normalize-css/normalize.css', //ambient dependency
+      'vendor/ambient/less/ambient.less',
+      'vendor/font-awesome/less/font-awesome.less',
+      'src/app/**/*.less'
+    ]
   },
 
   /**
@@ -65,14 +64,14 @@ module.exports = {
    */
   vendor_files: {
     js: [
-	    'vendor/angular/angular.js',
-	    'vendor/angular-animate/angular-animate.min.js',
-	    'vendor/angular-resource/angular-resource.js',
-	    'vendor/angular-cookies/angular-cookies.js',
-	    'vendor/angular-bootstrap/ui-bootstrap-tpls.js',
-	    'vendor/angular-ui-router/release/angular-ui-router.js',
-	    'vendor/angularjs-toaster/toaster.js',
-	    'vendor/jquery/dist/jquery.min.js'
+      'vendor/angular/angular.js',
+      'vendor/angular-sanitize/angular-sanitize.js',
+      'vendor/angular-ui-router/release/angular-ui-router.js',
+      'vendor/angular-messages/angular-messages.js',
+      'vendor/angular-animate/angular-animate.js',
+      'vendor/angular-touch/angular-touch.js',
+      'vendor/jquery/dist/jquery.js',
+      'vendor/ordercloud-sdk/dist/OrderCloudSDK.js'
     ],
     css: [
     ],

@@ -6,17 +6,21 @@
 src/
   |- app/
   |  |- home/
+  |  |  |- less/
+  |  |  |  |- home.less
+  |  |  |  |- variables.less
+  |  |  |- templates/
+  |  |  |  |- home.tpl.html
   |  |  |- home.js
-  |  |  |- home.less
   |  |  |- home.spec.js
-  |  |  |- home.tpl.html
 ```
 
 - `home.js` - defines the module.
-- `home.less` - module-specific styles; this file is imported into
-  `src/less/main.less` manually by the developer.
+- `home/less` - module-specific styles; these files are rolled into a
+  `[root]/temp/imports.less` by the build process and immediately compiled to
+  `build/assets/OrderCloud-X.X.X.css`.
 - `home.spec.js` - module unit tests.
-- `home.tpl.html` - the route template.
+- `home/templates/` - contains all the templates for the module.
 
 ## `home.js`
 
@@ -32,10 +36,8 @@ The dependencies block is also where component dependencies should be
 specified, as shown below.
 
 ```js
-angular.module( 'ngBoilerplate.home', [
+angular.module( 'orderCloud.home', [
   'ui.router',
-  'titleService',
-  'plusOne'
 ])
 ```
 

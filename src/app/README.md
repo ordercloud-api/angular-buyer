@@ -22,33 +22,32 @@ route `/products`, though this is in no way enforced. Products may then have
 subdirectories for "create", "view", "search", etc. The "view" submodule may
 then define a route of `/products/:id`, ad infinitum.
 
-As `ngBoilerplate` is quite minimal, take a look at the two provided submodules
-to gain a better understanding of how these are used as well as to get a
-glimpse of how powerful this simple construct can be.
-
 ## `app.js`
 
 This is our main app configuration file. It kickstarts the whole process by
-requiring all the modules from `src/app` that we need. We must load these now to
-ensure the routes are loaded. If as in our "products" example there are
-subroutes, we only require the top-level module, and allow the submodules to
-require their own submodules.
+requiring all the modules that we need.
 
-As a matter of course, we also require the template modules that are generated
+By default, the OrderCloud AngularJS Seed includes a few useful modules written
+by the AngularJS team. Along with one by the Angular-UI team called `ui.router`.
+Lastly, we include the `orderCloud.sdk` module for connecting to the API.
+
+We must load any modules from `src/app` now to ensure the routes are loaded. If
+as in our "products" example there are subroutes, we only require the top-level
+module, and allow the submodules to require their own submodules.
+
+As a matter of course, we also require the template module that is generated
 during the build.
 
-However, the modules from `src/common` should be required by the app
-submodules that need them to ensure proper dependency handling. These are
-app-wide dependencies that are required to assemble your app.
-
 ```js
-angular.module( 'ngBoilerplate', [
-  'templates-app',
-  'templates-common',
-  'ngBoilerplate.home',
-  'ngBoilerplate.about'
-  'ui.router',
-  'ui.route'
+angular.module( 'orderCloud', [
+    'templates-app',
+	'ngSanitize',
+	'ngAnimate',
+	'ui.router',
+	'ngMessages',
+	'ngTouch',
+	'orderCloud.sdk',
+    'orderCloud.home'
 ])
 ```
 
@@ -80,7 +79,7 @@ not specific to the template or route, such as menu logic or page title wiring.
 .controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     if ( angular.isDefined( toState.data.pageTitle ) ) {
-      $scope.pageTitle = toState.data.pageTitle + ' | ngBoilerplate' ;
+      $scope.pageTitle = 'OrderCloud | ' + toState.data.pageTitle;
     }
   });
 })
@@ -88,7 +87,19 @@ not specific to the template or route, such as menu logic or page title wiring.
 
 ### Testing
 
-One of the design philosophies of `ngBoilerplate` is that tests should exist
+One of the design philosophies of `OrderCloud-AngularJS-seed` is that tests should exist
 alongside the code they test and that the build system should be smart enough to
 know the difference and react accordingly. As such, the unit test for `app.js`
 is `app.spec.js`, though it is quite minimal.
+
+### Global application styles
+
+Within the `src/app/` directory we included a `global.less` and `variables.less` file.
+These should be utilized for application wide LESS variables and mixins.  Each component
+within `src/app` will have a corresponding `less/` directory with a similar structure.
+The build is smart enough to recognize any new `*.less` file types and roll them in
+automatically.
+
+Also, because any LESS brought in from the `/vendor` (through the build.config) directory
+gets rolled into the same intermediate `imports.less` file, you will be able to use
+and alter those 3rd party variables/mixins.
