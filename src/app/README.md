@@ -94,6 +94,8 @@ is `app.spec.js`, though it is quite minimal.
 
 ### Global application styles
 
+By default, we include [Ambient](http://ionlyseespots.github.io/ambient-design/index.html) which is an internally developed design framework that makes use of HTML5 elements & CSS3 attributes to layout the document outline.
+
 Within the `src/app/` directory we included a `global.less` and `variables.less` file.
 These should be utilized for application wide LESS variables and mixins.  Each component
 within `src/app` will have a corresponding `less/` directory with a similar structure.
