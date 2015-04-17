@@ -1,6 +1,6 @@
 {
   "name": "orderCloud",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "devDependencies": {
     "angular": "~1.3.14",
     "angular-mocks": "~1.3.14",
