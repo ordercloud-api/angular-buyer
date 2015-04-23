@@ -71,7 +71,7 @@ module.exports = {
       'vendor/angular-animate/angular-animate.js',
       'vendor/angular-touch/angular-touch.js',
       'vendor/jquery/dist/jquery.js',
-      'vendor/ordercloud-sdk/dist/OrderCloudSDK.js'
+      'vendor/ordercloud-angular-sdk/dist/ordercloud-angular-sdk.js'
     ],
     css: [
     ],
