@@ -10,8 +10,12 @@ function HomeConfig( $stateProvider ) {
 		url: '/home',
 		templateUrl:'home/templates/home.tpl.html',
 		controller:'HomeCtrl',
+		controllerAs: 'home',
 		data:{ pageTitle: 'Home' }
 	});
 }
 
-function HomeController( $scope ) { }
+function HomeController( ) {
+	var vm = this;
+	vm.example = 'Example Data';
+}
