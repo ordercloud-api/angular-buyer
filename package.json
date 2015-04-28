@@ -1,16 +1,16 @@
 {
   "author": "Four51, Inc.",
   "name": "OrderCloud",
-  "version": "0.0.2",
-  "homepage": "https://github.com/Four51/OrderCloud",
+  "version": "0.0.3",
+  "homepage": "https://github.com/Four51/OrderCloud-Seed-AngularJS",
   "licenses": {
     "type": "MIT",
-    "url": "https://raw.github.com/Four51/OrderCloud/master/LICENSE"
+    "url": "https://raw.github.com/Four51/OrderCloud-Seed-AngularJS/master/LICENSE"
   },
-  "bugs": "https://github.com/Four51/OrderCloud/issues",
+  "bugs": "https://github.com/Four51/OrderCloud-Seed-AngularJS/issues",
   "repository": {
     "type": "git",
-    "url": "git@github.com:Four51/OrderCloud.git"
+    "url": "git@github.com:Four51/OrderCloud-Seed-AngularJS.git"
   },
   "dependencies": {},
   "devDependencies": {
