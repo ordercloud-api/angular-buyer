@@ -66,10 +66,10 @@ module.exports = {
     js: [
       'vendor/angular/angular.js',
       'vendor/angular-sanitize/angular-sanitize.js',
-      'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/angular-messages/angular-messages.js',
       'vendor/angular-animate/angular-animate.js',
       'vendor/angular-touch/angular-touch.js',
+      'vendor/angular-ui-router/release/angular-ui-router.js',
       'vendor/jquery/dist/jquery.js',
       'vendor/ordercloud-angular-sdk/dist/ordercloud-angular-sdk.js'
     ],

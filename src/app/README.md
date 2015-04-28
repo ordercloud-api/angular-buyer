@@ -46,9 +46,8 @@ angular.module( 'orderCloud', [
 	'ui.router',
 	'ngMessages',
 	'ngTouch',
-	'orderCloud.sdk',
-    'orderCloud.home'
-])
+	'orderCloud.sdk'
+	])
 ```
 
 With app modules broken down in this way, all routing is performed by the
@@ -87,7 +86,7 @@ not specific to the template or route, such as menu logic or page title wiring.
 
 ### Testing
 
-One of the design philosophies of `OrderCloud-AngularJS-seed` is that tests should exist
+One of the design philosophies of `OrderCloud-Seed-AngularJS` is that tests should exist
 alongside the code they test and that the build system should be smart enough to
 know the difference and react accordingly. As such, the unit test for `app.js`
 is `app.spec.js`, though it is quite minimal.
