@@ -11,7 +11,19 @@ angular.module( 'orderCloud', [
 	.config( Routing )
 	.config( ErrorHandling )
 	.controller( 'AppCtrl', AppCtrl )
+	.constant('appname', 'oc')
 
+	/*
+	 Test
+	 .constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
+	 .constant('apiurl', 'https://testapi.ordercloud.io/api')
+	 .constant('clientid', '8ec8ecdb-ccef-4294-802e-2c863cf061df')
+	 */
+
+	//Local
+	.constant('authurl', 'http://core.four51.com:11629/OAuth/token')
+	.constant('apiurl', 'http://core.four51.com:9002/api')
+	.constant('clientid', '5e841037-b21c-4784-8cbb-746c4f1468ed')
 ;
 
 function AppCtrl( $scope ) {
