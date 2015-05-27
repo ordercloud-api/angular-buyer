@@ -16,7 +16,6 @@
   "devDependencies": {
     "autoprefixer-core": "^5.2.0",
     "grunt": "~0.4.1",
-    "grunt-autoprefixer": "^2.2.0",
     "grunt-bump": "0.0.6",
     "grunt-contrib-clean": "^0.4.1",
     "grunt-contrib-concat": "^0.3.0",
