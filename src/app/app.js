@@ -11,7 +11,8 @@ angular.module( 'orderCloud', [
 	.config( Routing )
 	.config( ErrorHandling )
 	.controller( 'AppCtrl', AppCtrl )
-	.constant('appname', 'oc')
+	.constant('ocscope', 'FullAccess')
+	.constant('appname', 'OrderCloud')
 
 	/*
 	 Test
