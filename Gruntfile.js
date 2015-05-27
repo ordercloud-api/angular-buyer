@@ -15,7 +15,7 @@ module.exports = function ( grunt ) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-ng-annotate');
   grunt.loadNpmTasks('grunt-html2js');
-  grunt.loadNpmTasks('grunt-autoprefixer');
+  grunt.loadNpmTasks('grunt-postcss');
 
 
   /**
@@ -234,29 +234,22 @@ module.exports = function ( grunt ) {
         }
       }
     },
-
     /**
-     * https://github.com/nDmitry/grunt-autoprefixer
-     * `autoprefixer` looks at the compiled CSS and adds any necessary
-     * browser-specific prefixes needed for newer CSS rules. The autoprefixer default
-     * options are set below and it is used in the build, compile, and watch tasks.
+     * Postcss is a plugin for using postcss processors, like autoprefixer. We only need to
+     * run autoprefixer during the build process because the compile task simply copies the
+     * already prefixed CSS into the compile directory and minifies it.
      */
-    //TODO:make sure this works in the compile task
-    autoprefixer: {
+    postcss: {
       options: {
-        browsers: ['> 1%', 'last 2 versions', 'Safari 7'],
-        cascade: true,
-        remove: true,
-        diff: false,
-        map: false,
-        silent: false
+        processors: [
+          require('autoprefixer-core')({browsers: ['> 1%', 'last 2 versions', 'Safari 7']})
+        ]
       },
-      single_file: {
+      build: {
         src: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css',
         dest: '<%= build_dir %>/assets/<%= pkg.name %>-<%= pkg.version %>.css'
       }
     },
-
     /**
      * HTML2JS is a Grunt plugin that takes all of your template files and
      * places them into JavaScript files as strings that are added to
@@ -423,7 +416,7 @@ module.exports = function ( grunt ) {
        */
       less: {
         files: [ 'src/**/*.less' ],
-        tasks: [ 'less_imports:build', 'less:build', 'autoprefixer' ]
+        tasks: [ 'less_imports:build', 'less:build', 'postcss' ]
       },
 
       /**
@@ -464,7 +457,7 @@ module.exports = function ( grunt ) {
    */
   grunt.registerTask( 'build', [
     'clean', 'html2js', 'less_imports:build', 'less:build',
-    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets', 'autoprefixer',
+    'concat:build_css', 'copy:build_app_assets', 'copy:build_vendor_assets', 'postcss',
     'copy:build_appjs', 'copy:build_vendorjs', 'index:build', 'karmaconfig',
     'karma:continuous'
   ]);
@@ -474,7 +467,7 @@ module.exports = function ( grunt ) {
    * minifying your code.
    */
   grunt.registerTask( 'compile', [
-    'less:compile', 'copy:compile_assets', 'autoprefixer', 'ngAnnotate', 'concat:compile_js', 'uglify', 'index:compile'
+    'less:compile', 'postcss', 'copy:compile_assets', 'ngAnnotate', 'concat:compile_js', 'uglify', 'index:compile'
   ]);
 
   /**
