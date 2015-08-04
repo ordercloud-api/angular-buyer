@@ -5,35 +5,35 @@ angular.module( 'orderCloud', [
 	'ngMessages',
 	'ngTouch',
 	'ui.router',
+	'ui.bootstrap',
 	'orderCloud.sdk'
 ])
 
+	.run( Security )
 	.config( Routing )
 	.config( ErrorHandling )
 	.controller( 'AppCtrl', AppCtrl )
 	.constant('ocscope', 'FullAccess')
-	.constant('appname', 'OrderCloud')
+	.constant('appname', 'OrderCloud AngularJS Seed')
+	.constant('clientid', '0e0450e6-27a0-4093-a6b3-d7cd9ebc2b8f') //DISTRIBUTOR
+	//.constant('clientid', 'f0976e5c-ed16-443a-98ad-d084c7010e05') //BUYER
 
-	/*
-	 Test
+
+	//Test
 	 .constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
 	 .constant('apiurl', 'https://testapi.ordercloud.io/v1')
-	 .constant('clientid', '8ec8ecdb-ccef-4294-802e-2c863cf061df')
-	 */
-
-	//Local
-	.constant('authurl', 'http://core.four51.com:11629/OAuth/token')
-	.constant('apiurl', 'http://core.four51.com:9002/v1')
-	.constant('clientid', '5e841037-b21c-4784-8cbb-746c4f1468ed')
 ;
 
-function AppCtrl( $scope ) {
-	var vm = this;
-	$scope.$on('$stateChangeSuccess', function( event, toState, toParams, fromState, fromParams ){
-		if ( angular.isDefined( toState.data.pageTitle ) ) {
-			vm.pageTitle = 'OrderCloud | ' + toState.data.pageTitle;
+function Security( $rootScope, $state, Auth ) {
+	$rootScope.$on('$stateChangeStart', function(e, to) {
+		if (!to.data.limitAccess) return;
+		Auth.IsAuthenticated()
+			.catch(sendToLogin);
+
+		function sendToLogin() {
+			$state.go('login');
 		}
-	});
+	})
 }
 
 function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
@@ -62,5 +62,13 @@ function ErrorHandling( $provide ) {
 				})();
 			$injector.get( '$rootScope' ).$broadcast( 'exception', ex, cause );
 		}
+	}
+}
+
+function AppCtrl( $state, Credentials ) {
+	var vm = this;
+	vm.logout = function() {
+		Credentials.Delete();
+		$state.go('login');
 	}
 }
