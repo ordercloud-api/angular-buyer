@@ -1,5 +1,5 @@
-<div class="container">
-	<nav class="navbar navbar-inverse" ng-init="mainCollapsed = true">
+<nav class="navbar navbar-default navbar-fixed-top" ng-init="mainCollapsed = true">
+	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" ng-click="mainCollapsed = !mainCollapsed" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -8,30 +8,20 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" ui-sref="base.home">OrderCloud</a>
+			<a class="navbar-brand" ui-sref="base.home">OrderCloud 3.0</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="navbar-collapse" collapse="mainCollapsed" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li ui-sref-active="active"><a ui-sref="base.home">Home</a></li>
-				<li class="dropdown" dropdown>
-					<a href="" class="dropdown-toggle" dropdown-toggle role="button" aria-haspopup="true">Components <span class="caret"></span></a>
-					<ul class="dropdown-menu" dropdown-menu>
-						<li><a href="">Users</a></li>
-						<li><a href="">Categories</a></li>
-						<li><a href="">Products</a></li>
-						<li><a href="">Price Schedules</a></li>
-						<li><a href="">Addresses</a></li>
-						<li><a href="">Checkout</a></li>
-						<li><a href="">Orders</a></li>
-					</ul>
-				</li>
+				<li ui-sref-active="active"><a ui-sref="base.home"><i class="fa fa-home"></i> Home</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<li><a href="" ng-click="application.logout()">Logout</a></li>
+				<li><a href="" ng-click="application.logout()"><i class="fa fa-power-off"></i> Logout</a></li>
 			</ul>
 		</div>
-	</nav>
+	</div>
+</nav>
+<div class="container">
 	<main ui-view></main>
 </div>

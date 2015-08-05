@@ -12,7 +12,7 @@ function LoginConfig( $stateProvider ) {
 		controller:'LoginCtrl',
 		controllerAs: 'login',
 		data:{
-			limitAccess: false
+			limitAccess: false //Whether or not to require authentication on this state
 		}
 	});
 }

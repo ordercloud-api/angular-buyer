@@ -13,19 +13,22 @@ angular.module( 'orderCloud', [
 	.config( Routing )
 	.config( ErrorHandling )
 	.controller( 'AppCtrl', AppCtrl )
+
+	//Constants needed for the OrderCloud AngularJS SDK
 	.constant('ocscope', 'FullAccess')
 	.constant('appname', 'OrderCloud AngularJS Seed')
-	.constant('clientid', '0e0450e6-27a0-4093-a6b3-d7cd9ebc2b8f') //DISTRIBUTOR
-	//.constant('clientid', 'f0976e5c-ed16-443a-98ad-d084c7010e05') //BUYER
 
+	//Client ID for a Registered Distributor or Buyer Company
+	.constant('clientid', 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
 
-	//Test
-	 .constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
-	 .constant('apiurl', 'https://testapi.ordercloud.io/v1')
+	//Test Environment
+	.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
+	.constant('apiurl', 'https://testapi.ordercloud.io/v1')
 ;
 
 function Security( $rootScope, $state, Auth ) {
 	$rootScope.$on('$stateChangeStart', function(e, to) {
+		/*TODO: make the '$stateChangeStart event' accept a function so users can control the redirect from each state's declaration.*/
 		if (!to.data.limitAccess) return;
 		Auth.IsAuthenticated()
 			.catch(sendToLogin);
