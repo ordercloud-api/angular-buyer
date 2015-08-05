@@ -7,10 +7,11 @@ A seed project for custom Four51 Solutions built on AngularJS
 Node.js is required for the following node package manager (npm) tasks. If you don't have node.js installed, you can download it [here](http://nodejs.org/).
 
 ```sh
-$ npm -g install grunt-cli karma bower
+$ npm -g install karma bower
+$ npm -g install "gulpjs/gulp-cli#4.0"
 $ npm install
 $ bower install
-$ grunt build
+$ gulp build
 ```
 
 You should now have a few more directories in your project.
@@ -43,6 +44,12 @@ At a high level, the structure looks roughly like this:
 
 ```
 OrderCloud/
+  |- Gulp/
+  |- |- assetTasks.js
+  |- |- generalTasks.js
+  |- |- scriptTasks.js
+  |- |- testTasks.js
+  |- |- watchTasks.js
   |- karma/
   |- node_modules/
   |- src/
@@ -55,14 +62,16 @@ OrderCloud/
   |  |- <bower components>
   |- .bowerrc
   |- bower.json
-  |- build.config.js
-  |- Gruntfile.js
+  |- gulpConfig.js
+  |- Gulpfile.js
+  |- karma.conf.js
   |- module.prefix
   |- module.suffix
   |- package.json
 ```
 
 ### Detailed Installation
+##Out dated - No longer using Grunt
 
 This section provides a little more detailed understanding of what goes into
 getting `OrderCloud` up and running. Though `OrderCloud` is really simple

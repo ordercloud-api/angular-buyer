@@ -6,16 +6,16 @@ angular.module( 'orderCloud' )
 ;
 
 function HomeConfig( $stateProvider ) {
-	$stateProvider.state( 'home', {
-		url: '/home',
-		templateUrl:'home/templates/home.tpl.html',
-		controller:'HomeCtrl',
-		controllerAs: 'home',
-		data:{ pageTitle: 'Home' }
-	});
+	$stateProvider
+		.state( 'base.home', {
+			url: '/home',
+			templateUrl:'home/templates/home.tpl.html',
+			controller:'HomeCtrl',
+			controllerAs: 'home'
+		})
 }
 
-function HomeController( ) {
+function HomeController( appname ) {
 	var vm = this;
-	vm.example = 'Example Data';
+	vm.appName = appname;
 }
