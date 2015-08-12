@@ -40,7 +40,7 @@ gulp.task('b_m:sass', function() {
 
 gulp.task('b_m:css', function() {
     return gulp
-        .src(mainBowerFiles({filter: '**/*.css'}))
+        .src(mainBowerFiles({filter: '**/*.css'}).concat('!**/font-awesome.css'))
         .pipe(plumber())
         .pipe(autoprefixer({browsers: ['last 2 versions']}))
         .pipe(concat('bowerStyles.css'))
@@ -59,6 +59,7 @@ gulp.task('b_m:appCss', function() {
 gulp.task('b_m:styles', function() {
     return gulp
         .src([config.temp + 'bowerStyles.css', config.temp + 'lessStyles.css', config.temp + 'sassStyles.css', config.temp + 'appCss.css'])
+        .pipe(replace('../fonts/', 'fonts/'))
         .pipe(concat(currVersion + '.css'))
         .pipe(gulp.dest(config.build + 'assets'))
         .pipe(browserSync.stream())
@@ -77,6 +78,12 @@ gulp.task('b_m:assets', function() {
         '!' + config.source + '**/*.scss',
         '!' + config.source + '**/*.sass'])
         .pipe(gulp.dest(config.build + 'assets'))
+});
+
+gulp.task('b_m:fonts', function() {
+    return gulp.src('vendor/**/fonts/*', '!vendor/**/dist')
+        .pipe(flatten())
+        .pipe(gulp.dest(config.build + 'assets/fonts'))
 });
 
 gulp.task('b_c:assets', function() {
@@ -121,5 +128,5 @@ gulp.task('c_c:assets', function() {
 //Master Asset Tasks
 gulp.task('build:styles', gulp.series('b_c:styles', 'b_m:less', 'b_m:sass', 'b_m:css', 'b_m:appCss', 'b_m:styles'));
 gulp.task('compile:css', gulp.series('c_c:css', 'build:styles', 'c_m:css'));
-gulp.task('build:assets', gulp.series('b_c:assets', 'b_m:assets'));
+gulp.task('build:assets', gulp.series('b_c:assets', 'b_m:assets', 'b_m:fonts'));
 gulp.task('compile:assets', gulp.series('c_c:assets', 'build:assets', 'c_m:assets'));
