@@ -10,6 +10,8 @@ var concat = require('gulp-concat');
 var clean = require('gulp-clean');
 var plumber = require('gulp-plumber');
 var lessImport = require('gulp-less-import');
+var replace = require('gulp-replace');
+var flatten = require('gulp-flatten');
 
 var pkg = require('../package.json');
 var currVersion = pkg.name + "-" + pkg.version;
