@@ -19,8 +19,8 @@ var appJS = config.app_files.js;
 
 gulp.task('b_m:js_bower', function() {
     return gulp
-        .src(mainBowerFiles())
-        .pipe(filter(['**/*.js', '!**/bootstrap.js']))
+        .src(mainBowerFiles({filter: ['**/*.js', '!**/bootstrap.js']}))
+        .pipe(filter('**/*.js'))
         .pipe(gulp.dest(config.build + 'vendor'));
 });
 
