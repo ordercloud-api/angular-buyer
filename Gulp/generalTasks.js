@@ -18,6 +18,12 @@ gulp.task('build:inject', function() {
         .src(config.source + 'index.html')
         .pipe(inject(gulp.src([config.build + 'vendor/**/angular.js', config.build + 'vendor/**/*.js'], {read:false}), {name: 'bower', ignorePath: config.build.replace('.', ''), addRootSlash: false}))
         .pipe(inject(gulp.src([
+            config.build + 'src/templates-app.js',
+            config.build + 'src/app/app.js',
+            config.build + '**/*.module.js',
+            config.build + '**/*.config.js',
+            config.build + '**/*.svc.js',
+            config.build + '**/*.ctrl.js',
             config.build + '**/*.js',
             config.build + 'assets/**/*.css',
             "!" + config.build + 'src/**/*.spec.js',
