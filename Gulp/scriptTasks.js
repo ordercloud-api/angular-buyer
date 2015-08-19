@@ -65,7 +65,13 @@ gulp.task('b_c:templateCache', function() {
 
 gulp.task('c_m:js', function() {
     return gulp
-        .src([config.build + 'vendor/angular.js', config.build + 'vendor/**/*.js', config.build + 'src/templates-app.js', config.build + 'src/app/app.js', config.build + 'src/**/*.js', '!' + config.build + 'src/**/*.spec.js'])
+        .src([config.build + 'vendor/angular.js',
+            config.build + 'vendor/**/*.js',
+            config.build + 'src/templates-app.js',
+            config.build + 'src/app/app.js',
+            config.build + 'src/app/**/*.module.js',
+            config.build + 'src/**/*.js',
+            '!' + config.build + 'src/**/*.spec.js'])
         .pipe(concat('app.js'))
         .pipe(uglify({}))
         //TODO: gulp-header doesn't work with gulp-4.0
