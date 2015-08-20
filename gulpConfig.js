@@ -50,10 +50,6 @@ module.exports = {
 	],
 	temp: temp,
 	root: root,
-	import_less: [
-		'vendor/font-awesome/less/font-awesome.less',
-		source + 'app/**/*.less'
-	],
 	app_files: {
 		js: [ source + '**/*.js', '!' + source + '**/*.spec.js', '!' + source + 'assets/**/*.js' ],
 		assets: [source + 'assets/**'],
@@ -62,10 +58,9 @@ module.exports = {
 		atpl: [ source + 'app/**/*.tpl.html' ],
 
 		html: [ source + 'index.html' ],
-		import_less: [
-			'vendor/font-awesome/less/font-awesome.less',
-			source + 'app/**/*.less'
-		]
+		import_less: [ source + 'app/**/*.less' ]
+	},
+	vendor_files: {
+		import_less: ['vendor/font-awesome/less/font-awesome.less']
 	}
-
 };

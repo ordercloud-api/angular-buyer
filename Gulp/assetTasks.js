@@ -24,7 +24,7 @@ var cssFilter = filter('**!/!*.css');*/
 
 gulp.task('b_m:less', function() {
     return gulp.src(mainBowerFiles({filter: '**/*.less'})
-        .concat(config.import_less))
+        .concat(config.vendor_files.import_less).concat(config.app_files.import_less))
         .pipe(plumber())
         .pipe(lessImport('lessStyles.less'))
         .pipe(less())
