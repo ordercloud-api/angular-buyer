@@ -1,7 +1,5 @@
 gulp = require('gulp');
-jshint = require('gulp-jshint');
 mainBowerFiles = require('main-bower-files');
-var watch = require('gulp-watch');
 var karma = require('gulp-karma');
 
 var server = 'server.js';
@@ -43,7 +41,7 @@ gulp.task('karma:unit', function() {
 
 gulp.task('watch:js', function() {
     console.log("running 'watch:js' task");
-    gulp.watch(config.app_files.js, gulp.series('build:js', 'build:inject', function() {browserSync.reload()}));
+    gulp.watch(config.app_files.js, gulp.series('build:js', 'build:styles', 'build:inject', function() {browserSync.reload()}));
     gulp.watch(vendorJS, gulp.series('build:js_bower', 'build:inject', function() {browserSync.reload()}));
 });
 

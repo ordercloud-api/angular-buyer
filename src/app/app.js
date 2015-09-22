@@ -20,10 +20,11 @@ angular.module( 'orderCloud', [
 
 	//Client ID for a Registered Distributor or Buyer Company
 	.constant('clientid', 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+    .constant('buyerid', 'xxxx')
 
 	//Test Environment
 	.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
-	.constant('apiurl', 'https://testapi.ordercloud.io/v1')
+	.constant('apiurl', 'https://testapi.ordercloud.io')
 ;
 
 function Security( $rootScope, $state, Auth ) {

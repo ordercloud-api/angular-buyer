@@ -3,10 +3,7 @@
   "name": "OrderCloud",
   "version": "0.0.3",
   "homepage": "https://github.com/Four51/OrderCloud-Seed-AngularJS",
-  "licenses": {
-    "type": "MIT",
-    "url": "https://raw.github.com/Four51/OrderCloud-Seed-AngularJS/master/LICENSE"
-  },
+  "license": "MIT",
   "bugs": "https://github.com/Four51/OrderCloud-Seed-AngularJS/issues",
   "repository": {
     "type": "git",
@@ -15,20 +12,15 @@
   "dependencies": {},
   "devDependencies": {
     "browser-sync": "^2.8.0",
-    "browserify": "^11.0.0",
-    "fs": "0.0.2",
+    "del": "^2.0.2",
     "gulp": "git://github.com/gulpjs/gulp.git#4.0",
     "gulp-angular-templatecache": "^1.7.0",
     "gulp-autoprefixer": "^2.3.1",
-    "gulp-clean": "^0.3.1",
     "gulp-concat": "^2.6.0",
-    "gulp-copy": "0.0.2",
     "gulp-filter": "^2.0.2",
     "gulp-flatten": "^0.1.1",
-    "gulp-header": "^1.2.2",
-    "gulp-html2js": "^0.2.0",
+    "gulp-header": "^1.7.1",
     "gulp-inject": "^1.5.0",
-    "gulp-jshint": "^1.11.2",
     "gulp-karma": "0.0.4",
     "gulp-less": "^3.0.3",
     "gulp-less-import": "^1.0.0",
@@ -37,21 +29,13 @@
     "gulp-plumber": "^1.0.1",
     "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.0.4",
-    "gulp-sourcemaps": "^1.5.2",
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
-    "gulp-watch": "^4.3.4",
     "gulp-wrapper": "^1.0.0",
-    "json-file-plus": "^3.0.0",
-    "karma": "^0.12.31",
-    "karma-chrome-launcher": "^0.2.0",
+    "karma": "^0.13.10",
     "karma-firefox-launcher": "^0.1.6",
     "karma-jasmine": "^0.1.5",
     "main-bower-files": "^2.9.0",
-    "npm": "^2.13.0",
-    "path": "^0.11.14",
-    "synchro-prompt": "^1.1.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.3.0"
+    "vinyl-paths": "^2.0.0"
   }
 }
