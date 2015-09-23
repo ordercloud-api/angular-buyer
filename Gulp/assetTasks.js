@@ -7,7 +7,8 @@ var autoprefixer = require('gulp-autoprefixer');
 var minify = require('gulp-minify-css');
 var mainBowerFiles = require('main-bower-files');
 var concat = require('gulp-concat');
-var clean = require('gulp-clean');
+var del = require('del');
+var vinylPaths = require('vinyl-paths');
 var plumber = require('gulp-plumber');
 var lessImport = require('gulp-less-import');
 var replace = require('gulp-replace');
@@ -69,7 +70,7 @@ gulp.task('b_m:styles', function() {
 
 gulp.task('b_c:styles', function() {
     return gulp.src([config.build + 'assets/**/*.css', config.temp + '**/*' ], {read:false})
-        .pipe(clean());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('b_m:assets', function() {
@@ -96,7 +97,7 @@ gulp.task('b_c:assets', function() {
         '!' + config.build + '**/*.scss',
         '!' + config.build + '**/*.sass',
         '!' + config.build + 'assets/fonts/**/*'], {read:false})
-        .pipe(clean())
+        .pipe(vinylPaths(del))
 });
 
 /*COMPILE*/
@@ -109,7 +110,7 @@ gulp.task('c_m:css', function() {
 gulp.task('c_c:css', function() {
     return gulp
         .src(config.compile + '**/*.css', {read:false})
-        .pipe(clean());
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('c_m:assets', function() {
@@ -125,7 +126,7 @@ gulp.task('c_m:assets', function() {
 gulp.task('c_c:assets', function() {
     return gulp
         .src([config.compile + 'assets/**/*', '!' + config.compile + 'assets/**/*.css'], {read:false})
-        .pipe(clean());
+        .pipe(vinylPaths(del));
 });
 
 //Master Asset Tasks

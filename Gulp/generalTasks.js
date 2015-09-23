@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var inject = require('gulp-inject');
-var clean = require('gulp-clean');
+var del = require('del');
+var vinylPaths = require('vinyl-paths');
 var pkg = require('../package.json');
 var currVersion = pkg.name + "-" + pkg.version;
 
@@ -35,7 +36,7 @@ gulp.task('build:inject', function() {
 gulp.task('masterClean', function() {
     return gulp
         .src([config.build, config.compile, config.temp])
-        .pipe(clean({read:false}));
+        .pipe(vinylPaths(del));
 });
 
 //Major Project Build Tasks

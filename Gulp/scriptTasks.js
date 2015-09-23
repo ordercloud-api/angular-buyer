@@ -1,12 +1,13 @@
 var gulp = require('gulp');
-var header = require('gulp-header');
+//var header = require('gulp-header');
 var concat = require('gulp-concat');
 var mainBowerFiles = require('main-bower-files');
 var uglify = require('gulp-uglify');
 var filter = require('gulp-filter');
 var wrap = require('gulp-wrapper');
 var templatecache = require('gulp-angular-templatecache');
-var clean = require('gulp-clean');
+var del = require('del');
+var vinylPaths = require('vinyl-paths');
 var ngAnnotate = require('gulp-ng-annotate');
 
 
@@ -27,7 +28,7 @@ gulp.task('b_m:js_bower', function() {
 gulp.task('b_c:js_bower', function() {
     return gulp
         .src(config.build + 'vendor', {read:false})
-        .pipe(clean());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('b_m:js', function() {
@@ -44,7 +45,7 @@ gulp.task('b_m:js', function() {
 gulp.task('b_c:js', function() {
     return gulp
         .src([config.build + 'src/**/*.js', '!' + config.build + 'src/**/templates-app.js'], {read:false})
-        .pipe(clean());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('b_m:templateCache', function() {
@@ -60,7 +61,7 @@ gulp.task('b_m:templateCache', function() {
 gulp.task('b_c:templateCache', function() {
     return gulp
         .src(config.build + 'src/templates-app.js', {read:false})
-        .pipe(clean());
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('c_m:js', function() {
@@ -81,7 +82,7 @@ gulp.task('c_m:js', function() {
 
 gulp.task('c_c:js', function(){
     return gulp.src(config.compile + '**/*.js', {read:false})
-        .pipe(clean());
+        .pipe(gulp.dest('dist'));
 });
 
 
