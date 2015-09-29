@@ -34,9 +34,11 @@ gulp.task('build:inject', function() {
 
 
 gulp.task('masterClean', function() {
-    return gulp
-        .src([config.build, config.compile, config.temp])
-        .pipe(vinylPaths(del));
+    return del([
+        config.build,
+        config.compile,
+        config.temp
+    ]);
 });
 
 //Major Project Build Tasks

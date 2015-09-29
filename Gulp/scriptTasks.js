@@ -26,9 +26,9 @@ gulp.task('b_m:js_bower', function() {
 });
 
 gulp.task('b_c:js_bower', function() {
-    return gulp
-        .src(config.build + 'vendor', {read:false})
-        .pipe(gulp.dest('dist'));
+    return del([
+        config.build + 'vendor'
+    ]);
 });
 
 gulp.task('b_m:js', function() {
@@ -43,9 +43,10 @@ gulp.task('b_m:js', function() {
 });
 
 gulp.task('b_c:js', function() {
-    return gulp
-        .src([config.build + 'src/**/*.js', '!' + config.build + 'src/**/templates-app.js'], {read:false})
-        .pipe(gulp.dest('dist'));
+    return del([
+        config.build + 'src/**/*.js',
+        '!' + config.build + 'src/**/templates-app.js'
+    ]);
 });
 
 gulp.task('b_m:templateCache', function() {
@@ -59,9 +60,9 @@ gulp.task('b_m:templateCache', function() {
 });
 
 gulp.task('b_c:templateCache', function() {
-    return gulp
-        .src(config.build + 'src/templates-app.js', {read:false})
-        .pipe(gulp.dest('dist'));
+    return del([
+        config.build + 'src/templates-app.js'
+    ]);
 });
 
 gulp.task('c_m:js', function() {
@@ -81,8 +82,9 @@ gulp.task('c_m:js', function() {
 });
 
 gulp.task('c_c:js', function(){
-    return gulp.src(config.compile + '**/*.js', {read:false})
-        .pipe(gulp.dest('dist'));
+    return del([
+        config.compile + '**/*.js'
+    ]);
 });
 
 
