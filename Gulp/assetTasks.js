@@ -61,7 +61,7 @@ gulp.task('b_m:appCss', function() {
 
 gulp.task('b_m:styles', function() {
     return gulp
-        .src([config.temp + 'bowerStyles.css', config.temp + 'lessStyles.css', config.temp + 'sassStyles.css', config.temp + 'appCss.css'])
+        .src(config.temp + '*.css')
         .pipe(replace('../fonts/', 'fonts/'))
         .pipe(concat(currVersion + '.css'))
         .pipe(gulp.dest(config.build + 'assets'))
@@ -69,8 +69,10 @@ gulp.task('b_m:styles', function() {
 });
 
 gulp.task('b_c:styles', function() {
-    return gulp.src([config.build + 'assets/**/*.css', config.temp + '**/*' ], {read:false})
-        .pipe(vinylPaths(del));
+    return del([
+        config.build + 'assets/**/*.css',
+        config.temp + '**/*'
+    ]);
 });
 
 gulp.task('b_m:assets', function() {
@@ -90,14 +92,14 @@ gulp.task('b_m:fonts', function() {
 });
 
 gulp.task('b_c:assets', function() {
-    return gulp.src([
+    return del([
         config.build + 'assets/**/*',
         '!' + config.build + '**/*.css',
         '!' + config.build + '**/*.less',
         '!' + config.build + '**/*.scss',
         '!' + config.build + '**/*.sass',
-        '!' + config.build + 'assets/fonts/**/*'], {read:false})
-        .pipe(vinylPaths(del))
+        '!' + config.build + 'assets/fonts/**/*'
+    ]);
 });
 
 /*COMPILE*/
