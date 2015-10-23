@@ -32,7 +32,7 @@ software and libraries from the command line.
 
 While `OrderCloud` makes heavy use of Node.js behind the scenes, you as the
 application developer don't need to really think about it much. Most of the
-interaction with Node.js will occur through Grunt (see next section), so you
+interaction with Node.js will occur through Gulp (see next section), so you
 really only need to know how get the initial setup working.
 
 `package.json` is an NPM package description file written in JSON. It contains
@@ -40,122 +40,21 @@ basic metadata about your application, like its name, version, and dependencies.
 By default, several packages are required for the build process to work; so when
 you first start with `OrderCloud` you have to tell NPM to install the
 packages; this is covered in detail in the [main README](README.md). Some of
-the required packages are Grunt build tasks (see below), while others are
-command-line tools either we (or the build system) need, like Karma, Grunt, and
+the required packages are Gulp build tasks, while others are
+command-line tools either we (or the build system) need, like Karma, Gulp, and
 Bower.
 
-Don't worry about knowing Node.js in order to use `OrderCloud`; Grunt is
+Don't worry about knowing Node.js in order to use `OrderCloud`; Gulp is
 where the magic happens.
 
-## Grunt.js
+## Gulp.js
 
-[Grunt](http://gruntjs.com) is a JavaScript task runner that runs on top of
-Node.js. Most importantly, Grunt brings us automation. There are lots of steps
+[Gulp](http://gulpjs.com/) is a JavaScript task runner that runs on top of
+Node.js. Most importantly, Gulp brings us automation. There are lots of steps
 that go into taking our manageable codebase and making it into a
 production-ready website; we must gather, lint, test, annotate, and copy files
-about. Instead of doing all of that manually, we write (and use others') Grunt
+about. Instead of doing all of that manually, we write (and use others') Gulp
 tasks to do things for us.
-
-When we want to build our site, we can just type:
-
-```sh
-$ grunt
-```
-
-This will do everything needed and place our built code inside a folder called
-`release/`. We can tell Grunt to watch for file changes we make
-so it can re-build our site on-the-fly:
-
-```sh
-$ grunt watch
-```
-
-The built files will be in `release/`. See the main [README](README.md) for more
-info.
-
-The next time we change a source file, Grunt will re-build the changed parts of
-the site. If you have a Live Reload plugin installed in your browser, it will
-even auto-refresh your browser for you.
-
-Grunt is controlled through `Gruntfile.js`. This file is heavily documented in
-the source, so I will only provide a high-altitude overview here. Also note that
-unless you need to modify the build process, you don't need to know anything
-else from this section. The two commands above really are all you need to know
-to get started with `OrderCloud`. But for those curious or looking to go a
-little more advanced, here's what you'll find.
-
-First, we tell Grunt which tasks we might want to use:
-
-```js
-// ...
-grunt.loadNpmTasks('grunt-recess');
-grunt.loadNpmTasks('grunt-contrib-clean');
-grunt.loadNpmTasks('grunt-contrib-copy');
-grunt.loadNpmTasks('grunt-contrib-jshint');
-// ...
-```
-
-Each of these tasks must already be installed. Remember the dependencies from
-`package.json` that NPM installed for us?
-
-Then we get the opportunity to tell the tasks to behave like we want by
-defining a configuration object. While we can (and do) define all sorts of
-custom configuration values that we reference later on, tasks look for
-configuration properties of their own name. For example, the `clean` task just
-takes an array of files to delete when the task runs:
-
-```js
-clean: [ '<%= build_dir %>', '<%= compile_dir %>' ],
-```
-
-In Grunt, the `<%= varName %>` is a way of re-using configuration variables.
-In the `build.config.js`, we defined what `build_dir` meant:
-
-```js
-build_dir: 'build',
-```
-
-When the clean task runs, it will delete the `build/` folder entirely so that
-when our new build runs, we don't encounter any problems with stale or old
-files. Most tasks, however, have considerably more complicated configuration
-requirements, but I've tried to document what each one is doing and what the
-configuration properties mean. 
-
-After our configuration is complete, we can define some of our own tasks. For
-example, we could do the build by running all of the separate tasks that we
-installed from NPM and configured as above:
-
-```sh
-$ grunt clean
-$ grunt html2js
-$ grunt jshint
-$ grunt karma:continuous
-$ grunt concat
-$ grunt ngmin:dist
-$ grunt uglify
-$ grunt recess
-$ grunt index
-$ grunt copy
-```
-
-But how automated is that? So instead we define a composite task that executes
-all that for us. The commands above make up the `default` tasks, which can be
-run by typing *either* of these commands:
-
-```js
-$ grunt
-$ grunt default
-```
-
-We also define the `watch` task discussed earlier. This is covered in more
-detail in the main (README)[README.md].
-
-Grunt is the engine behind `OrderCloud`. It's the magic that makes it move.
-Just getting started, you won't need to alter `Gruntfile.js` at all, but
-as you get into more advanced application development, you will probably need to
-add more tasks and change some steps around to make this build your own.
-Hopefully, this readme and the documentation within `Gruntfile.js` (as well as
-of course the documentation at gruntjs.com) will set you on the right path.
 
 ## Bower
 
