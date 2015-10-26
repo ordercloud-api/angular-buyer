@@ -16,7 +16,7 @@
     "bootstrap": "~3.3.5",
     "font-awesome": "~4.3.0",
     "jquery": "~2.1.3",
-    "ordercloud-angular-sdk": "~0.8.4",
+    "ordercloud-angular-sdk": "~0.8.5",
     "angular-toastr": "~1.5.0"
   }
 }
