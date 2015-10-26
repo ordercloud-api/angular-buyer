@@ -6,12 +6,16 @@ angular.module( 'orderCloud', [
 	'ngTouch',
 	'ui.router',
 	'ui.bootstrap',
-	'orderCloud.sdk'
+	'orderCloud.sdk',
+	'toastr'
 ])
 
+	.run( SetBuyerID )
 	.run( Security )
 	.config( Routing )
-	.config( ErrorHandling )
+	//.config( ErrorHandling )
+	.factory('$exceptionHandler', ExceptionHandler)
+	.factory('toast', toast)
 	.controller( 'AppCtrl', AppCtrl )
 
 	//Constants needed for the OrderCloud AngularJS SDK
@@ -19,13 +23,20 @@ angular.module( 'orderCloud', [
 	.constant('appname', 'OrderCloud AngularJS Seed')
 
 	//Client ID for a Registered Distributor or Buyer Company
-	.constant('clientid', 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
-    .constant('buyerid', 'xxxx')
+	.constant('clientid', '6d60154e-8a55-4bd2-93aa-494444e69996')
 
 	//Test Environment
-	.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
-	.constant('apiurl', 'https://testapi.ordercloud.io')
+	//.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
+	//.constant('apiurl', 'https://testapi.ordercloud.io')
+
+	.constant('authurl', 'http://core.four51.com:11629/OAuth/Token')
+	.constant('apiurl', 'http://core.four51.com:9002')
+	.constant('devcenterClientID', '6d60154e-8a55-4bd2-93aa-494444e69996') //Local
 ;
+
+function SetBuyerID( BuyerID ) {
+	BuyerID.Set('xxxx');
+}
 
 function Security( $rootScope, $state, Auth ) {
 	$rootScope.$on('$stateChangeStart', function(e, to) {
@@ -47,32 +58,34 @@ function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
 	//TODO: For HTML5 mode to work we need to always return index.html as the entry point on the serverside
 }
 
-function ErrorHandling( $provide ) {
-	$provide.decorator('$exceptionHandler', handler );
+ExceptionHandler.$inject = ['$injector'];
 
-	function handler( $delegate, $injector ) {
-		return function $broadcastingExceptionHandler( ex, cause ) {
-			ex.status != 500 ?
-				$delegate( ex, cause ) :
-				( function() {
-					try {
-						//TODO: implement track js
-						console.log(JSON.stringify( ex ));
-						//trackJs.error("API: " + JSON.stringify(ex));
-					}
-					catch ( ex ) {
-						console.log(JSON.stringify( ex ));
-					}
-				})();
-			$injector.get( '$rootScope' ).$broadcast( 'exception', ex, cause );
+function ExceptionHandler($injector) {
+	return function $broadcastingExceptionHandler( ex, cause ) {
+		if (ex.data) {
+			var toast = $injector.get('toast');
+			var msg = ex.data.Errors[0].Message;
+			toast.error(msg);
 		}
 	}
 }
 
-function AppCtrl( $state, Credentials ) {
+function toast(toastr) {
+	var service = {
+		error: _error
+	};
+
+	function _error(msg) {
+		toastr.error(msg, 'Error');
+	}
+
+	return service;
+}
+
+function AppCtrl( $state, Credentials, Users ) {
 	var vm = this;
 	vm.logout = function() {
 		Credentials.Delete();
 		$state.go('login');
-	}
+	};
 }
