@@ -1,15 +1,49 @@
-<main id="Login" class="panel panel-default">
-	<form class="panel-body" name="LoginForm" ng-submit="login.submit()">
+<main id="Login" class="panel panel-default" ng-switch="login.form">
+	<form class="panel-body" name="LoginForm" ng-submit="login.submit()" ng-switch-when="login">
 		<h1 class="text-center">Login</h1>
 		<div class="form-group">
 			<label for="Username">Username</label>
-			<input type="text" class="form-control" id="Username" ng-model="login.credentials.Username"/>
+			<input type="text" class="form-control" id="Username" ng-model="login.credentials.Username" ng-required="true" />
 		</div>
 		<div class="form-group">
 			<label for="Password">Password</label>
-			<input type="password" class="form-control" id="Password" ng-model="login.credentials.Password"/>
+			<input type="password" class="form-control" id="Password" ng-model="login.credentials.Password" ng-required="true" />
 		</div>
 		<button type="submit" class="btn btn-primary" ng-disabled="LoginForm.$invalid">Submit</button>
-		<a class="btn btn-link">Forgot Password?</a> <!--TODO: should this be functional in the Seed Project?-->
+		<a class="btn btn-link" ng-click="login.setForm('forgot')">Forgot Password?</a> <!--TODO: should this be functional in the Seed Project?-->
+	</form>
+	<form class="panel-body" name="ForgotPasswordForm" ng-submit="login.forgotPassword()" ng-switch-when="forgot">
+		<h1 class="text-center">Forgot Password</h1>
+		<div class="form-group">
+			<label for="Email">Email</label>
+			<input type="text" class="form-control" id="Email" ng-model="login.credentials.Email" ng-required="true" />
+		</div>
+		<button type="submit" class="btn btn-primary" ng-disabled="ForgotPasswordForm.$invalid">Submit</button>
+		<a class="btn btn-link" ng-click="login.setForm('login')">Back to Login</a>
+	</form>
+	<form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPassword()" ng-switch-when="reset">
+		<h1 class="text-center">Reset Password</h1>
+		<div class="form-group">
+			<label for="ResetUsername">Username</label>
+			<input type="text" class="form-control" id="ResetUsername" ng-model="login.credentials.ResetUsername" ng-required="true" />
+		</div>
+		<div class="form-group">
+			<label for="NewPassword">New Password</label>
+			<input type="password" class="form-control" id="NewPassword" ng-model="login.credentials.NewPassword" ng-required="true" />
+		</div>
+		<div class="form-group">
+			<label for="ConfirmPassword">Confirm Password</label>
+			<input type="password" class="form-control" id="ConfirmPassword" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
+		</div>
+		<button type="submit" class="btn btn-primary" ng-disabled="ResetPasswordForm.$invalid || login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+	</form>
+	<form class="panel-body" name="VerificationCodeSuccessForm" ng-switch-when="verificationCodeSuccess">
+		<h1 class="text-center">Forgot Password</h1>
+		<div class="alert alert-info">Forgot Password email has been sent. Please check your email in order to reset your password.</div>
+	</form>
+	<form class="panel-body" name="ResetSuccessForm" ng-switch-when="resetSuccess">
+		<h1 class="text-center">Reset Password</h1>
+		<div class="alert alert-info">Your password has been reset.</div>
+		<a class="btn btn-link" ng-click="login.setForm('login')">Back to Login</a>
 	</form>
 </main>
