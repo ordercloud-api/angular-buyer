@@ -58,28 +58,16 @@ function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
 	//TODO: For HTML5 mode to work we need to always return index.html as the entry point on the serverside
 }
 
-ExceptionHandler.$inject = ['$injector'];
-
 function ExceptionHandler($injector) {
-	return function $broadcastingExceptionHandler( ex, cause ) {
+	return function( ex, cause ) {
+		var toastr = $injector.get('toastr');
 		if (ex.data) {
-			var toast = $injector.get('toast');
-			var msg = ex.data.Errors[0].Message;
-			toast.error(msg);
+			var msg = ex.data.error || ex.data.Errors[0].Message;
+			toastr.error(msg, 'Error');
+		} else if (ex.message) {
+			toastr.error(ex.message, 'Error');
 		}
 	}
-}
-
-function toast(toastr) {
-	var service = {
-		error: _error
-	};
-
-	function _error(msg) {
-		toastr.error(msg, 'Error');
-	}
-
-	return service;
 }
 
 function AppCtrl( $state, Credentials, Users ) {
