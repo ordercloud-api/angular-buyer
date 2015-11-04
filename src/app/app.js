@@ -7,15 +7,17 @@ angular.module( 'orderCloud', [
 	'ui.router',
 	'ui.bootstrap',
 	'orderCloud.sdk',
-	'toastr'
+	'toastr',
+	'ordercloud-infinite-scroll',
+	'ordercloud-buyer-select',
+	'ordercloud-search',
+	'ordercloud-assignment-helpers'
 ])
 
 	.run( SetBuyerID )
 	.run( Security )
 	.config( Routing )
-	//.config( ErrorHandling )
-	.factory('$exceptionHandler', ExceptionHandler)
-	.factory('toast', toast)
+	.config( ErrorHandling )
 	.controller( 'AppCtrl', AppCtrl )
 
 	//Constants needed for the OrderCloud AngularJS SDK
@@ -23,19 +25,19 @@ angular.module( 'orderCloud', [
 	.constant('appname', 'OrderCloud AngularJS Seed')
 
 	//Client ID for a Registered Distributor or Buyer Company
-	.constant('clientid', '6d60154e-8a55-4bd2-93aa-494444e69996')
+	.constant('clientid', '0e0450e6-27a0-4093-a6b3-d7cd9ebc2b8f')
 
 	//Test Environment
-	//.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
-	//.constant('apiurl', 'https://testapi.ordercloud.io')
+	.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
+	.constant('apiurl', 'https://testapi.ordercloud.io')
 
-	.constant('authurl', 'http://core.four51.com:11629/OAuth/Token')
-	.constant('apiurl', 'http://core.four51.com:9002')
-	.constant('devcenterClientID', '6d60154e-8a55-4bd2-93aa-494444e69996') //Local
+	//Local Environment
+	//.constant('authurl', 'http://core.four51.com:11629/OAuth/Token')
+	//.constant('apiurl', 'http://core.four51.com:9002')
 ;
 
 function SetBuyerID( BuyerID ) {
-	BuyerID.Set('xxxx');
+	BuyerID.Set('451ORDERCLOUD');
 }
 
 function Security( $rootScope, $state, Auth ) {
@@ -58,20 +60,24 @@ function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
 	//TODO: For HTML5 mode to work we need to always return index.html as the entry point on the serverside
 }
 
-function ExceptionHandler($injector) {
-	return function( ex, cause ) {
-		var toastr = $injector.get('toastr');
-		if (ex.data) {
-			var msg = ex.data.error || ex.data.Errors[0].Message;
-			toastr.error(msg, 'Error');
-		} else if (ex.message) {
-			toastr.error(ex.message, 'Error');
-		}
-	}
+function ErrorHandling( $provide ) {
+	$provide.decorator('$exceptionHandler', handler);
+
+	function handler( $delegate, $injector ) {
+		return function( ex, cause ) {
+			$delegate(ex, cause);
+			$injector.get('toastr').error(ex.data ? (ex.data.error || ex.data.Errors[0].Message) : ex.message, 'Error');
+		};
+	};
 }
 
-function AppCtrl( $state, Credentials, Users ) {
+function AppCtrl( $state, appname, Credentials ) {
 	var vm = this;
+	vm.name = appname;
+	vm.showLeftNav = true;
+	vm.toggleLeftNav = function() {
+		vm.showLeftNav = !vm.showLeftNav;
+	};
 	vm.logout = function() {
 		Credentials.Delete();
 		$state.go('login');

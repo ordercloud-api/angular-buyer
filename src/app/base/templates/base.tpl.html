@@ -1,27 +1,7 @@
-<nav class="navbar navbar-default navbar-fixed-top" ng-init="mainCollapsed = true">
-	<div class="container">
-		<!-- Brand and toggle get grouped for better mobile display -->
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" ng-click="mainCollapsed = !mainCollapsed" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" ui-sref="base.home">OrderCloud 3.0</a>
-		</div>
-
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="navbar-collapse" collapse="mainCollapsed" id="bs-example-navbar-collapse-1">
-			<ul class="nav navbar-nav">
-				<li ui-sref-active="active"><a ui-sref="base.home"><i class="fa fa-home"></i> Home</a></li>
-			</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="" ng-click="application.logout()"><i class="fa fa-power-off"></i> Logout</a></li>
-			</ul>
-		</div>
+<div id="DashboardWrapper" ng-class="{'toggled':!application.showLeftNav}">
+	<div id="DashboardLeftNav" ui-view="left"></div>
+	<div id="DashboardContent">
+		<nav class="navbar-flex" ui-view="top"></nav>
+		<ui-view></ui-view>
 	</div>
-</nav>
-<div class="container">
-	<main ui-view></main>
 </div>

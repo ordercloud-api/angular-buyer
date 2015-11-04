@@ -1,0 +1,110 @@
+#DashboardWrapper {
+  padding-left: 0;
+  transition: all 0.5s ease;
+  &.toggled {
+	padding-left: @dashboard-leftnav-width;
+	#DashboardLeftNav {
+	  width: @dashboard-leftnav-width;
+	}
+	#DashboardContent {
+	  position: absolute;
+	  margin-right: -@dashboard-leftnav-width;
+	}
+  }
+}
+
+#DashboardLeftNav {
+  z-index: 1000;
+  position: fixed;
+  left: @dashboard-leftnav-width;
+  width: 0;
+  height: 100%;
+  margin-left: -@dashboard-leftnav-width;
+  overflow-y: auto;
+  overflow-x:hidden;
+  background-color:@dashboard-leftnav-bg;
+  border-right:1px solid @dashboard-leftnav-border;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+
+#DashboardContent {
+  width: 100%;
+  position: absolute;
+}
+
+@media(min-width:768px) {
+  #DashboardWrapper {
+	padding-left: @dashboard-leftnav-width;
+	&.toggled {
+	  padding-left: 0;
+	  #DashboardLeftNav {
+		width: 0;
+	  }
+	  #DashboardContent {
+		position: relative;
+		margin-right: 0;
+	  }
+	}
+  }
+
+  #DashboardLeftNav {
+	width: @dashboard-leftnav-width;
+  }
+
+  #DashboardContent {
+	position: relative;
+  }
+}
+
+#BaseLeft {
+  padding: @padding-base-horizontal;
+  width: @dashboard-leftnav-width;
+  white-space: nowrap;
+  h4 {
+	margin-left:-@padding-base-horizontal;
+	margin-right:-@padding-base-horizontal;
+	background-color:@navbar-default-bg;
+	padding:@padding-base-horizontal;
+  }
+}
+
+.navbar-flex {
+  #BaseTop {
+	background-color:@navbar-default-bg;
+	border-bottom:1px solid @navbar-default-border;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items:center;
+	margin-bottom:@navbar-margin-bottom;
+	> div {
+	  max-height:@navbar-height;
+	  &.link {
+		flex:0 1 auto;
+		> a {
+		  display:block;
+		  line-height:@navbar-height - 20px;
+		  padding:@nav-link-padding;
+		  color:@navbar-default-link-color;
+		  &:hover {
+			background-color:@navbar-default-link-hover-bg;
+			color:@navbar-default-link-hover-color;
+		  }
+		  &.active,
+		  &:active,
+		  &:focus {
+			background-color:@navbar-default-link-active-bg;
+			color:@navbar-default-link-active-color;
+		  }
+		}
+	  }
+	  &.logo {
+		flex:1 0 auto;
+	  }
+	}
+  }
+}

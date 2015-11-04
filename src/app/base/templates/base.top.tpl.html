@@ -1,0 +1,23 @@
+<div id="BaseTop">
+    <div class="link">
+        <a ng-click="application.toggleLeftNav()"><i class="fa fa-bars"></i></a>
+    </div>
+    <div class="logo">
+        <a href="" ui-sref="base.home"><ordercloud-logo data-width="60px" data-height="50px" data-color="#333" data-icon="true"></ordercloud-logo></a>
+    </div>
+    <div class="link" uib-dropdown>
+        <a href uib-dropdown-toggle>
+            <i class="fa fa-user"></i>
+        </a>
+        <ul class="dropdown-menu-right" uib-dropdown-menu>
+            <li class="dropdown-header">{{base.currentUser.FirstName + ' ' + base.currentUser.LastName}}</li>
+            <li>
+                <a href="" ui-sref="base.account">Account</a>
+            </li>
+            <li class="divider"></li>
+            <li>
+                <a ng-click="application.logout()">Logout</a>
+            </li>
+        </ul>
+    </div>
+</div>

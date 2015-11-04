@@ -10,7 +10,7 @@
 			<input type="password" class="form-control" id="Password" ng-model="login.credentials.Password" ng-required="true" />
 		</div>
 		<button type="submit" class="btn btn-primary" ng-disabled="LoginForm.$invalid">Submit</button>
-		<a class="btn btn-link" ng-click="login.setForm('forgot')">Forgot Password?</a> <!--TODO: should this be functional in the Seed Project?-->
+		<a class="btn btn-link" ng-click="login.setForm('forgot')">Forgot Password?</a>
 	</form>
 	<form class="panel-body" name="ForgotPasswordForm" ng-submit="login.forgotPassword()" ng-switch-when="forgot">
 		<h1 class="text-center">Forgot Password</h1>

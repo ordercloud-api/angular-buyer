@@ -15,7 +15,6 @@ function HomeConfig( $stateProvider ) {
 		})
 }
 
-function HomeController( appname ) {
+function HomeController( ) {
 	var vm = this;
-	vm.appName = appname;
 }

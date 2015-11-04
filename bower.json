@@ -8,7 +8,7 @@
     "angular": "~1.4.0",
     "angular-animate": "~1.4.0",
     "angular-auto-validate": "~1.18.17",
-    "angular-bootstrap": "~0.13.2",
+    "angular-bootstrap": "~0.14.3",
     "angular-messages": "~1.4.0",
     "angular-sanitize": "~1.4.0",
     "angular-touch": "~1.4.0",
