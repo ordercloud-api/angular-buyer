@@ -66,7 +66,7 @@ function ErrorHandling( $provide ) {
 	function handler( $delegate, $injector ) {
 		return function( ex, cause ) {
 			$delegate(ex, cause);
-			$injector.get('toastr').error(ex.data ? (ex.data.error || ex.data.Errors[0].Message) : ex.message, 'Error');
+			$injector.get('toastr').error(ex.data ? (ex.data.error || (ex.data.Errors ? ex.data.Errors[0].Message : ex.data)) : ex.message, 'Error');
 		};
 	};
 }
