@@ -25,15 +25,9 @@ angular.module( 'orderCloud', [
 	.constant('appname', 'OrderCloud AngularJS Seed')
 
 	//Client ID for a Registered Distributor or Buyer Company
-	.constant('clientid', '0e0450e6-27a0-4093-a6b3-d7cd9ebc2b8f')
-
-	//Test Environment
-	.constant('authurl', 'https://testauth.ordercloud.io/oauth/token')
-	.constant('apiurl', 'https://testapi.ordercloud.io')
-
-	//Local Environment
-	//.constant('authurl', 'http://core.four51.com:11629/OAuth/Token')
-	//.constant('apiurl', 'http://core.four51.com:9002')
+	.constant('clientid', '')
+	.constant('authurl', 'https://auth.ordercloud.io/oauth/token')
+	.constant('apiurl', 'https://api.ordercloud.io')
 ;
 
 function SetBuyerID( BuyerID ) {
