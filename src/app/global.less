@@ -1,0 +1,94 @@
+body {
+  overflow-x:hidden;
+}
+
+[ui-sref],
+[ng-click]{
+  cursor: pointer;
+}
+
+//TABLES WITH FIXED HEADERS
+.table-fixed-header {
+  position:relative;
+  padding-top:@table-header-height;
+  margin-bottom:@line-height-computed;
+  overflow:hidden;
+  .table-header-bg {
+    position:absolute;
+    left:0; right:0; top:0;
+    height:@table-header-height;
+    background:@table-header-bg;
+    border:1px solid @table-header-border-color;
+    border-bottom-width:2px;
+    .border-top-radius(@table-border-radius);
+  }
+  .table-container {
+    background-color:@table-bg;
+    overflow-y:auto;
+    overflow-x:hidden;
+    max-height:@infinite-scroll-size;
+    border: 1px solid @table-border-color;
+    border-top-width:0;
+    .border-bottom-radius(@table-border-radius);
+    table {
+      border-spacing:0;
+      margin-bottom:0;
+    }
+    td {
+      border:1px solid @table-border-color;
+      vertical-align:middle;
+      &:first-child {
+        border-left:none;
+      }
+      &:last-child {
+        border-left:none;
+      }
+    }
+    th {
+      height: 0;
+      line-height: 0;
+      padding: 0 25px;
+      color: transparent;
+      border: none;
+      white-space: nowrap;
+      span {
+        max-height:0;
+        height:0;
+        line-height:0;
+        margin:0;
+        padding:0;
+      }
+      div{
+        position: absolute;
+        background: transparent;
+        padding:@table-cell-padding;
+        color:@table-header-color;
+        top: 0;
+        margin-left: -25px;
+        line-height: @line-height-base;
+        vertical-align: bottom;
+        border-left:1px solid @table-header-border-color;
+      }
+      &:first-child div{
+        border: none;
+      }
+    }
+    tbody tr {
+      &:first-child {
+        td {
+          border-top:none;
+        }
+      }
+      &:last-child {
+        td {
+          border-bottom:none;
+        }
+      }
+    }
+  }
+}
+colgroup {
+  > col.action-column {
+    width:70px;
+  }
+}

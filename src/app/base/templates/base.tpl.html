@@ -1,0 +1,7 @@
+<div id="DashboardWrapper" ng-class="{'toggled':!application.showLeftNav}">
+	<div id="DashboardLeftNav" ui-view="left"></div>
+	<div id="DashboardContent">
+		<nav class="navbar-flex" ui-view="top"></nav>
+		<ui-view></ui-view>
+	</div>
+</div>
