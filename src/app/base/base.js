@@ -13,9 +13,6 @@ function BaseConfig( $stateProvider ) {
 			url: '',
 			abstract: true,
 			templateUrl:'base/templates/base.tpl.html',
-			data:{
-				limitAccess: true
-			},
 			views: {
 				'': {
 					templateUrl: 'base/templates/base.tpl.html',
@@ -34,8 +31,28 @@ function BaseConfig( $stateProvider ) {
 				}
 			},
 			resolve: {
-				CurrentUser: function(Me) {
-					return Me.Get();
+				CurrentUser: function($q, $state, Auth, BuyerID, Me) {
+					var dfd = $q.defer();
+					Auth.IsAuthenticated()
+							.then(function() {
+								Me.Get()
+										.then(function(data) {
+											dfd.resolve(data);
+										})
+										.catch(function(){
+											Auth.RemoveToken();
+											BuyerID.Set(null);
+											$state.go('login');
+											dfd.resolve();
+										})
+							})
+							.catch(function() {
+								BuyerID.Set(null);
+								$state.go('login');
+								dfd.resolve();
+							})
+					;
+					return dfd.promise;
 				},
 				ComponentList: function($state, $q) {
 					var deferred = $q.defer();

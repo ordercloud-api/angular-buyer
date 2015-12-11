@@ -14,23 +14,13 @@ function AccountConfig( $stateProvider ) {
 			url: '/account',
 			templateUrl:'account/templates/account.tpl.html',
 			controller:'AccountCtrl',
-			controllerAs: 'account',
-			resolve: {
-				Profile: function(Me) {
-					return Me.Get();
-				}
-			}
+			controllerAs: 'account'
 		})
 		.state( 'base.changePassword', {
 			url: '/account/changepassword',
 			templateUrl: 'account/templates/changePassword.tpl.html',
 			controller: 'ChangePasswordCtrl',
-			controllerAs: 'changePassword',
-			resolve: {
-				CurrentUser: function(Me) {
-					return Me.Get();
-				}
-			}
+			controllerAs: 'changePassword'
 		})
 }
 
@@ -108,10 +98,10 @@ function AccountService( $q, $uibModal, Credentials, AdminUsers ) {
 	return service;
 }
 
-function AccountController( $exceptionHandler, toastr, Profile, AccountService ) {
+function AccountController( $exceptionHandler, toastr, CurrentUser, AccountService ) {
 	var vm = this;
-	vm.profile = angular.copy(Profile);
-	var currentProfile = Profile;
+	vm.profile = angular.copy(CurrentUser);
+	var currentProfile = CurrentUser;
 
 	vm.update = function() {
 		AccountService.Update(currentProfile, vm.profile)
