@@ -15,7 +15,6 @@ angular.module( 'orderCloud', [
 ])
 
 	.run( SetBuyerID )
-	.run( Security )
 	.config( Routing )
 	.config( ErrorHandling )
 	.controller( 'AppCtrl', AppCtrl )
@@ -32,19 +31,6 @@ angular.module( 'orderCloud', [
 
 function SetBuyerID( BuyerID ) {
 	BuyerID.Set('451ORDERCLOUD');
-}
-
-function Security( $rootScope, $state, Auth ) {
-	$rootScope.$on('$stateChangeStart', function(e, to) {
-		/*TODO: make the '$stateChangeStart event' accept a function so users can control the redirect from each state's declaration.*/
-		if (!to.data.limitAccess) return;
-		Auth.IsAuthenticated()
-			.catch(sendToLogin);
-
-		function sendToLogin() {
-			$state.go('login');
-		}
-	})
 }
 
 function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
