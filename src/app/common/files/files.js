@@ -4,7 +4,7 @@ angular.module( 'orderCloud' )
     .factory( 'FilesService', FilesService )
     .directive( 'ordercloudFileUpload', ordercloudFileUpload)
 ;
-
+//TODO: update the New SDK to have a file Upload method similar to how this works.  Minus attaching the file info to any XP
 function fileReader( $q ) {
     var service = {
         readAsDataUrl: readAsDataURL
