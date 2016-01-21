@@ -31,27 +31,19 @@ function BaseConfig( $stateProvider ) {
                 }
             },
             resolve: {
-                CurrentUser: function($q, $state, Auth, BuyerID, Me) {
+                CurrentUser: function($q, $state, OrderCloud) {
                     var dfd = $q.defer();
-                    Auth.IsAuthenticated()
-                        .then(function() {
-                            Me.Get()
-                                .then(function(data) {
-                                    dfd.resolve(data);
-                                })
-                                .catch(function(){
-                                    Auth.RemoveToken();
-                                    BuyerID.Set(null);
-                                    $state.go('login');
-                                    dfd.resolve();
-                                })
+                    OrderCloud.Me.Get()
+                        .then(function(data) {
+                            dfd.resolve(data);
                         })
-                        .catch(function() {
-                            BuyerID.Set(null);
+                        .catch(function(){
+                            OrderCloud.Auth.RemoveToken();
+                            OrderCloud.Auth.RemoveImpersonationToken();
+                            OrderCloud.BuyerID.Set(null);
                             $state.go('login');
                             dfd.resolve();
-                        })
-                    ;
+                        });
                     return dfd.promise;
                 },
                 ComponentList: function($state, $q, Underscore) {
@@ -86,7 +78,7 @@ function BaseConfig( $stateProvider ) {
 		});
 }
 
-function BaseController( CurrentUser ) {
+function BaseController(CurrentUser) {
 	var vm = this;
     vm.currentUser = CurrentUser;
 }
