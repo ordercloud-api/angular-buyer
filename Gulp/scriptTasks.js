@@ -72,7 +72,7 @@ gulp.task('c_m:js', function() {
             config.build + 'vendor/**/*.js',
             config.build + 'src/templates-app.js',
             config.build + 'src/app/app.js',
-            config.build + 'src/app/app.config.js',
+            //config.build + 'src/app/app.config.js',
             config.build + 'src/**/*.js'
         ])
         .pipe(concat('app.js'))
