@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var ngConstant = require('gulp-ng-constant');
 //var header = require('gulp-header');
 var concat = require('gulp-concat');
 var mainBowerFiles = require('main-bower-files');
@@ -7,7 +8,6 @@ var filter = require('gulp-filter');
 var wrap = require('gulp-wrapper');
 var templatecache = require('gulp-angular-templatecache');
 var del = require('del');
-var vinylPaths = require('vinyl-paths');
 var ngAnnotate = require('gulp-ng-annotate');
 
 
@@ -33,7 +33,7 @@ gulp.task('b_c:js_bower', function() {
 
 gulp.task('b_m:js', function() {
     return gulp
-        .src(['./src/**/*.js', '!./src/**/*spec.js'])
+        .src(['./src/**/*.js', '!**/*spec.js', '!**/*.test.js'])
         .pipe(ngAnnotate())
         .pipe(wrap({
             header: "(function ( window, angular, undefined ) {\n 'use strict';\n",
@@ -67,17 +67,16 @@ gulp.task('b_c:templateCache', function() {
 
 gulp.task('c_m:js', function() {
     return gulp
-        .src([config.build + 'vendor/angular.js',
+        .src([
+            config.build + 'vendor/angular.js',
             config.build + 'vendor/**/*.js',
             config.build + 'src/templates-app.js',
             config.build + 'src/app/app.js',
-            config.build + 'src/app/**/*.module.js',
-            config.build + 'src/**/*.js',
-            '!' + config.build + 'src/**/*.spec.js'])
+            config.build + 'src/app/app.config.js',
+            config.build + 'src/**/*.js'
+        ])
         .pipe(concat('app.js'))
-        .pipe(uglify({}))
-        //TODO: gulp-header doesn't work with gulp-4.0
-        //.pipe(header(banner, {pkg: pkg}))
+        .pipe(uglify({mangle: false}))
         .pipe(gulp.dest(config.compile + 'assets'));
 });
 
@@ -95,4 +94,4 @@ gulp.task('build:js_bower', gulp.series('b_c:js_bower', 'b_m:js_bower'));
 gulp.task('build:templateCache', gulp.series('b_c:templateCache', 'b_m:templateCache'));
 
 //Master Script Compile Tasks
-gulp.task('compile:js', gulp.series(gulp.parallel('c_c:js', 'build:js_bower', 'build:js', 'build:templateCache'), 'c_m:js'));
+gulp.task('compile:js', gulp.series('c_c:js', 'c_m:js'));

@@ -3,7 +3,7 @@
         <a ng-click="application.toggleLeftNav()"><i class="fa fa-bars"></i></a>
     </div>
     <div class="logo">
-        <a href="" ui-sref="base.home"><ordercloud-logo data-width="60px" data-height="50px" data-color="#333" data-icon="true"></ordercloud-logo></a>
+        <a href="" ui-sref="home"><ordercloud-logo data-width="60px" data-height="50px" data-color="#333" data-icon="true"></ordercloud-logo></a>
     </div>
     <div class="link" uib-dropdown>
         <a href uib-dropdown-toggle>
@@ -12,11 +12,14 @@
         <ul class="dropdown-menu-right" uib-dropdown-menu>
             <li class="dropdown-header">{{base.currentUser.FirstName + ' ' + base.currentUser.LastName}}</li>
             <li>
-                <a href="" ui-sref="base.account">Account</a>
+                <a href="" ui-sref="account">Account</a>
             </li>
             <li class="divider"></li>
             <li>
                 <a ng-click="application.logout()">Logout</a>
+            </li>
+            <li ng-if="application.isImpersonating">
+                <a ng-click="application.EndImpersonation()">Stop Impersonation</a>
             </li>
         </ul>
     </div>

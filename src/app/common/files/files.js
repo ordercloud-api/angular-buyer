@@ -83,12 +83,14 @@ function FilesService( $q, $http, apiurl ) {
     return service;
 }
 
-function ordercloudFileUpload( $parse, FileReader, FilesService ) {
+function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
     var directive = {
         scope: {
             model: '=',
             keyname: '@',
-            label: '@'
+            label: '@',
+            extensions: '@',
+            invalidExtension: '='
         },
         restrict: 'E',
         templateUrl: 'common/files/templates/files.tpl.html',
@@ -99,14 +101,38 @@ function ordercloudFileUpload( $parse, FileReader, FilesService ) {
     function link(scope, element, attrs) {
         var file_input = $parse("file");
         var file_control = angular.element(element.find('input'))[0];
+        var el = element;
+        scope.invalidExtension = false;
 
-        function afterSelection(fileName) {
-            FilesService.Upload(file_control.files[0], fileName)
+        function afterSelection(file, fileName) {
+            FilesService.Upload(file, fileName)
                 .then(function(fileData) {
                     if (!scope.model.xp) scope.model.xp = {};
                     scope.model.xp[scope.keyname] = fileData;
+                    scope.model.xp[scope.keyname].Type = file.type;
                     scope.model.FileUpdated = true;
                 });
+        }
+
+        var allowed = {
+            Extensions: [],
+            Types: []
+        };
+        if (scope.extensions) {
+            var items = Underscore.map(scope.extensions.split(','), function(ext) { return ext.replace(/ /g,'').replace(/\./g,'').toLowerCase() });
+            angular.forEach(items, function(item) {
+                if (item.indexOf('/') > -1) {
+                    if (item.indexOf('*') > -1) {
+                        allowed.Types.push(item.split('/')[0]);
+                    }
+                    else {
+                        allowed.Extensions.push(item.split('/')[1]);
+                    }
+                }
+                else {
+                    allowed.Extensions.push(item);
+                }
+            });
         }
 
         function updateModel(event) {
@@ -114,13 +140,32 @@ function ordercloudFileUpload( $parse, FileReader, FilesService ) {
                 case 'upload':
                     if (event.target.files[0] == null) return;
                     var fileName = event.target.files[0].name;
-                    scope.$apply(function() {
-                        FileReader.readAsDataUrl(event.target.files[0], scope)
-                            .then(function(f) {
-                                afterSelection(fileName);
-                            });
-                        file_input.assign(scope, event.target.files[0]);
-                    });
+                    var valid = true;
+                    if ((allowed.Extensions.length || allowed.Types.length) && fileName) {
+                        var ext = fileName.split('.').pop().toLowerCase();
+                        valid = (allowed.Extensions.indexOf(ext) != -1 || allowed.Types.indexOf(event.target.files[0].type.split('/')[0]) > -1);
+                    }
+                    if (valid) {
+                        scope.invalidExtension = false;
+                        scope.$apply(function() {
+                            FileReader.readAsDataUrl(event.target.files[0], scope)
+                                .then(function(f) {
+                                    afterSelection(event.target.files[0], fileName);
+                                });
+                            file_input.assign(scope, event.target.files[0]);
+                        });
+                    }
+                    else {
+                        scope.$apply(function() {
+                            scope.invalidExtension = true;
+                            var input;
+                            event.target.files[0] = null;
+                            el.find('input').replaceWith(input = el.find('input').clone(true));
+                            if (!scope.model.xp) scope.model.xp = {};
+                            scope.model.xp[scope.keyname] = null;
+                            scope.model.FileUpdated = true;
+                        });
+                    }
                     break;
             }
         }

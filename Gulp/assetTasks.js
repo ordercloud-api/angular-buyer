@@ -8,7 +8,6 @@ var minify = require('gulp-minify-css');
 var mainBowerFiles = require('main-bower-files');
 var concat = require('gulp-concat');
 var del = require('del');
-var vinylPaths = require('vinyl-paths');
 var plumber = require('gulp-plumber');
 var lessImport = require('gulp-less-import');
 var replace = require('gulp-replace');
@@ -110,9 +109,7 @@ gulp.task('c_m:css', function() {
 });
 
 gulp.task('c_c:css', function() {
-    return gulp
-        .src(config.compile + '**/*.css', {read:false})
-        .pipe(vinylPaths(del));
+    return del([config.compile + '**/*.css']);
 });
 
 gulp.task('c_m:assets', function() {
@@ -126,13 +123,11 @@ gulp.task('c_m:assets', function() {
 });
 
 gulp.task('c_c:assets', function() {
-    return gulp
-        .src([config.compile + 'assets/**/*', '!' + config.compile + 'assets/**/*.css'], {read:false})
-        .pipe(vinylPaths(del));
+    return del([config.compile + 'assets/**/*', '!' + config.compile + 'assets/**/*.css']);
 });
 
 //Master Asset Tasks
 gulp.task('build:styles', gulp.series('b_c:styles', 'b_m:less', 'b_m:sass', 'b_m:css', 'b_m:appCss', 'b_m:styles'));
-gulp.task('compile:css', gulp.series('c_c:css', 'build:styles', 'c_m:css'));
+gulp.task('compile:css', gulp.series('c_c:css', 'c_m:css'));
 gulp.task('build:assets', gulp.series('b_c:assets', 'b_m:assets', 'b_m:fonts'));
-gulp.task('compile:assets', gulp.series('c_c:assets', 'build:assets', 'c_m:assets'));
+gulp.task('compile:assets', gulp.series('c_c:assets', 'c_m:assets'));

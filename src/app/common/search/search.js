@@ -9,6 +9,7 @@ angular.module('ordercloud-search')
 function ordercloudSearch () {
     return {
         scope: {
+            placeholder: '@',
             servicename: "@",
             controlleras: "="
         },
@@ -22,8 +23,11 @@ function ordercloudSearch () {
 
 function ordercloudSearchCtrl($timeout, $scope, $injector, TrackSearch) {
     $scope.searchTerm = null;
-    $scope.placeholder = "Search " + $scope.servicename + '...';
-    var Service = $injector.get($scope.servicename);
+    if ($scope.servicename) {
+        var var_name = $scope.servicename.replace(/([a-z])([A-Z])/g, '$1 $2');
+        $scope.placeholder = "Search " + var_name + '...';
+        var Service = $injector.get($scope.servicename);
+    }
     var searching;
     $scope.$watch('searchTerm', function(n,o) {
         if (n == o) {
@@ -33,10 +37,35 @@ function ordercloudSearchCtrl($timeout, $scope, $injector, TrackSearch) {
             searching = $timeout(function() {
                 n == '' ? n = null : angular.noop();
                 TrackSearch.SetTerm(n);
-                Service.List(n)
-                    .then(function (data){
-                        $scope.controlleras.list = data;
-                    });
+                if($scope.servicename === 'Orders') {
+                    if (!$scope.controlleras.searchfunction) {
+                        Service.List('incoming',null, null, n)
+                            .then(function (data){
+                                $scope.controlleras.list = data;
+                            });
+                    }
+                    else {
+                        $scope.controlleras.searchfunction($scope.searchTerm)
+                            .then(function (data){
+                                $scope.controlleras.list = data;
+                            });
+                    }
+                }
+                else {
+                    if (!$scope.controlleras.searchfunction) {
+                        Service.List(n)
+                            .then(function (data){
+                                $scope.controlleras.list = data;
+                            });
+                    }
+                    else {
+                        $scope.controlleras.searchfunction($scope.searchTerm)
+                            .then(function (data){
+                                $scope.controlleras.list = data;
+                            });
+                    }
+                }
+
             }, 300);
         }
     });
