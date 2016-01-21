@@ -22,7 +22,7 @@ describe('Component: Search', function() {
     });
     describe('Controller: ordercloudSearchCtrl', function() {
         var searchCtrl;
-        beforeEach(inject(function($controller, $injector, Products) {
+        beforeEach(inject(function($controller) {
             scope.servicename = 'Products';
             spyOn(scope, '$watch').and.callThrough();
             searchCtrl = $controller('ordercloudSearchCtrl', {
