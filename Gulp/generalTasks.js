@@ -1,7 +1,6 @@
 var gulp = require('gulp');
 var inject = require('gulp-inject');
 var del = require('del');
-var vinylPaths = require('vinyl-paths');
 var pkg = require('../package.json');
 var currVersion = pkg.name + "-" + pkg.version;
 
@@ -28,6 +27,7 @@ gulp.task('build:inject', function() {
             config.build + '**/*.js',
             config.build + 'assets/**/*.css',
             "!" + config.build + 'src/**/*.spec.js',
+            "!" + config.build + 'src/**/*.test.js',
             '!' + config.build + 'vendor/**/*'], {read:false}), {ignorePath: config.build.replace('.', ''), addRootSlash: false}))
         .pipe(gulp.dest(config.build));
 });

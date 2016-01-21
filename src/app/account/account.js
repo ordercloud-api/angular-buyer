@@ -10,13 +10,14 @@ angular.module( 'orderCloud' )
 
 function AccountConfig( $stateProvider ) {
 	$stateProvider
-		.state( 'base.account', {
+		.state( 'account', {
+			parent: 'base',
 			url: '/account',
 			templateUrl:'account/templates/account.tpl.html',
 			controller:'AccountCtrl',
 			controllerAs: 'account'
 		})
-		.state( 'base.changePassword', {
+		.state( 'account.changePassword', {
 			url: '/account/changepassword',
 			templateUrl: 'account/templates/changePassword.tpl.html',
 			controller: 'ChangePasswordCtrl',
@@ -142,7 +143,10 @@ function ChangePasswordController( $state, $exceptionHandler, toastr, AccountSer
 		AccountService.ChangePassword(vm.currentUser)
 			.then(function() {
 				toastr.success('Password successfully changed', 'Success!');
-				$state.go('base.account');
+				vm.currentUser.CurrentPassword = null;
+				vm.currentUser.NewPassword = null;
+				vm.currentUser.ConfirmPassword = null;
+				$state.go('account');
 			})
 			.catch(function(ex) {
 				$exceptionHandler(ex)

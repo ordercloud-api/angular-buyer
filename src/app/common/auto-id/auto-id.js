@@ -28,7 +28,7 @@ function ordercloudAutoIdDirective($compile) {
             if (autoID_element.prop('checked')) {
                 element.attr('disabled', true);
             }
-            autoID_element.bind('click', function() {
+            autoID_element.find('input').bind('click', function() {
                 autoID_element.attr('checked', !autoID_element.prop('checked'));
                 if (autoID_element.prop('checked')) {
                     element.attr('disabled', true);

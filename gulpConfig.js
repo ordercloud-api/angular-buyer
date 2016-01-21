@@ -51,7 +51,12 @@ module.exports = {
 	temp: temp,
 	root: root,
 	app_files: {
-		js: [ source + '**/*.js', '!' + source + '**/*.spec.js', '!' + source + 'assets/**/*.js' ],
+		js: [
+            source + '**/*.js',
+            '!' + source + '**/*.spec.js',
+            '!' + source + '**/*.test.js',
+            '!' + source + 'assets/**/*.js'
+        ],
 		assets: [source + 'assets/**'],
 		jsunit: [ source + '**/*.spec.js' ],
 

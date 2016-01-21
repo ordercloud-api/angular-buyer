@@ -7,10 +7,11 @@ angular.module( 'orderCloud' )
 
 function HomeConfig( $stateProvider ) {
 	$stateProvider
-		.state( 'base.home', {
+		.state( 'home', {
+			parent: 'base',
 			url: '/home',
-			templateUrl:'home/templates/home.tpl.html',
-			controller:'HomeCtrl',
+			templateUrl: 'home/templates/home.tpl.html',
+			controller: 'HomeCtrl',
 			controllerAs: 'home'
 		})
 }

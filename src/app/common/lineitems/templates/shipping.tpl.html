@@ -1,0 +1,11 @@
+<div class="modal-content">
+    <div class="modal-body">
+        <form ng-submit="liModal.submit();" name="li_modal_form">
+            <ordercloud-address-form address="liModal.address"></ordercloud-address-form>
+            <div class="modal_buttons">
+                <button ng-disabled="li_modal_form.$invalid" type="submit" class="btn btn-success pull-left">Submit</button>
+                <button ng-click="liModal.cancel();" type="button" class="btn btn-danger pull-right">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
