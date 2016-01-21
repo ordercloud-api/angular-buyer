@@ -30,12 +30,12 @@
             'ui.grid.infiniteScroll'
         ])
 
-        .constant("appname", "DevCenter")
+        .constant("appname", "OrderCloud AngularJS Seed")
         .constant("ocscope", "FullAccess")
-        .constant("clientid", "0e0450e6-27a0-4093-a6b3-d7cd9ebc2b8f")
-        .constant("buyerid", "451ORDERCLOUD")
-        .constant("authurl", "https://testauth.ordercloud.io/oauth/token")
-        .constant("apiurl", "https://testapi.ordercloud.io")
+        .constant("clientid", "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")
+        .constant("buyerid", "XXXXXXXXXXXXX")
+        .constant("authurl", "https://auth.ordercloud.io/oauth/token")
+        .constant("apiurl", "https://api.ordercloud.io")
 
         .run( SetBuyerID )
         .config( Routing )
