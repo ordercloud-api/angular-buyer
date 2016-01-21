@@ -1,0 +1,37 @@
+<article class="container-fluid">
+    <h3 class="page-header">
+        Selected User to Impersonate
+    </h3>
+    <ordercloud-search servicename="Users" controlleras="users"></ordercloud-search>
+    <div class="well well-lg text-center" ng-if="!modalSelect.list.Items.length">
+        <b ng-if="!modalSelect.searching()">The selected buyer does not have any modalSelect.</b>
+        <b ng-if="modalSelect.searching()"><i class="fa fa-search"></i> No users match your search.</b>
+    </div>
+    <section class="table-fixed-header" ng-if="modalSelect.list.Items.length">
+        <div class="table-header-bg"></div>
+        <div class="table-container" ordercloud-infinite-scroll servicename="Users" controlleras="users">
+            <table class="table table-hover">
+                <coluser>
+                    <col class="action-column"/>
+                </coluser>
+                <thead>
+                <tr>
+                    <th>
+                        <div>ID</div>
+                    </th>
+                    <th>
+                        <div>Name</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in modalSelect.list.Items track by $index" ng-click="modalSelect.selectUser($index)">
+                    <td>{{user.ID}}</td>
+                    <td>{{user.Username}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <button type="button" class="btn btn-danger" ng-click="modalSelect.cancel()"><i class="fa fa-plus-circle"></i> Cancel</button>
+</article>

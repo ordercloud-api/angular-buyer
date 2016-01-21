@@ -1,7 +1,6 @@
 // Karma configuration
 // Generated on Mon Jul 27 2015 17:53:54 GMT-0500 (Central Daylight Time)
 module.exports = function(config) {
-	var mainBowerFiles = require('main-bower-files');
 	config.set({
 
 		// base path that will be used to resolve all patterns (eg. files, exclude)
@@ -15,14 +14,18 @@ module.exports = function(config) {
 
 		// list of files / patterns to load in the browser
 		files: [].concat(
-			mainBowerFiles({filter: '**/*.js'}),
-			'./src/**/app.js',
-			'./src/**/*.js'
+            './build/vendor/angular.js',
+            './build/vendor/**/*.js',
+            './vendor/angular-mocks/angular-mocks.js',
+			'./build/src/app/app.js',
+			'./build/src/**/*.js',
+            './src/**/*.spec.js'
 		),
 
 
 		// list of files to exclude
 		exclude: [
+            './src/**/*.test.js'
 		],
 
 
@@ -57,11 +60,11 @@ module.exports = function(config) {
 
 		// start these browsers
 		// available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-		browsers: ['Firefox'],
+		browsers: ['PhantomJS'],
 
 
 		// Continuous Integration mode
 		// if true, Karma captures browsers, runs the tests and exits
 		singleRun: false
 	})
-}
+};

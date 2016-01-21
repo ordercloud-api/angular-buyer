@@ -1,0 +1,14 @@
+<main id="DevLogin" class="panel panel-default">
+    <form class="panel-body" name="LoginForm" ng-submit="devLogin.submit()">
+        <h1 class="text-center">Login</h1>
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" id="Username" ng-model="devLogin.credentials.Username" ng-required="true" />
+        </div>
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="Password" ng-model="devLogin.credentials.Password" ng-required="true" />
+        </div>
+        <button id="submit_login" type="submit" class="btn btn-primary" ng-disabled="LoginForm.$invalid">Submit</button>
+    </form>
+</main>

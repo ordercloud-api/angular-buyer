@@ -9,15 +9,14 @@ function SelectBuyerDirective() {
     return {
         scope: {},
         restrict: 'E',
-        templateUrl: 'common/buyer-select/buyer-select.tpl.html',
+        templateUrl: 'common/buyer-select/templates/buyer-select.tpl.html',
         controller: 'SelectBuyerCtrl',
         controllerAs: 'selectBuyer'
     }
 }
 
 function SelectBuyerController($state, Buyers, BuyerID) {
-    var vm = this,
-        page = 1;
+    var vm = this;
 
     Buyers.List().then(function(data) {
         vm.BuyerList = data;
@@ -31,15 +30,13 @@ function SelectBuyerController($state, Buyers, BuyerID) {
         Buyers.Get(buyer.ID).then(function(data) {
             vm.selectedBuyer = data;
             BuyerID.Set(data.ID);
-            //console.dir($state.current);
             $state.reload($state.current);
         });
     };
 
-    vm.PagingFunction = function() {
-        page += 1;
-        if (page <= vm.BuyerList.Meta.TotalPages) {
-            Buyers.List(null, page, vm.BuyerList.Meta.PageSize)
+    vm.pagingfunction = function() {
+        if (vm.BuyerList.Meta.Page <= vm.BuyerList.Meta.TotalPages) {
+            Buyers.List(null, vm.BuyerList.Meta.Page + 1, vm.BuyerList.Meta.PageSize)
                 .then(function(data) {
                     vm.BuyerList.Meta = data.Meta;
                     vm.BuyerList.Items = [].concat(vm.BuyerList.Items, data.Items);
