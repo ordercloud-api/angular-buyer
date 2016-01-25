@@ -43,7 +43,8 @@ angular.module( 'orderCloud', [
 ;
 
 function SetBuyerID( OrderCloud, buyerid ) {
-    OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
+    var cookie = OrderCloud.BuyerID.Get();
+    (cookie && cookie.length && cookie != null) ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
 }
 
 function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
