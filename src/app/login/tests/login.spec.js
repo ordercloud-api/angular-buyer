@@ -2,23 +2,23 @@ describe('Component: Login', function() {
     var scope,
         q,
         loginFactory,
+        oc,
         credentials = {
             Username: 'notarealusername',
             Password: 'notarealpassword'
         };
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, LoginService) {
+    beforeEach(module('orderCloud.newsdk'));
+    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
         q = $q;
         scope = $rootScope.$new();
-        loginFactory = LoginService
+        loginFactory = LoginService;
+        oc = OrderCloud;
     }));
 
     describe('Factory: LoginService', function() {
-        var PasswordResetsFactory,
-            client_id;
-        beforeEach(inject(function(PasswordResets, clientid) {
-            PasswordResetsFactory = PasswordResets;
+        var client_id;
+        beforeEach(inject(function(clientid) {
             client_id = clientid;
         }));
         describe('SendVerificationCode', function() {
@@ -32,11 +32,11 @@ describe('Component: Login', function() {
                 };
                 var deferred = q.defer();
                 deferred.resolve(true);
-                spyOn(PasswordResetsFactory, 'SendVerificationCode').and.returnValue(deferred.promise);
+                spyOn(oc.PasswordResets, 'SendVerificationCode').and.returnValue(deferred.promise);
                 loginFactory.SendVerificationCode(email);
             }));
             it ('should call the SendVerificationCode method of PasswordResets with the reset request object', function(){
-                expect(PasswordResetsFactory.SendVerificationCode).toHaveBeenCalledWith(passwordResetRequest);
+                expect(oc.PasswordResets.SendVerificationCode).toHaveBeenCalledWith(passwordResetRequest);
             });
         });
 
@@ -49,26 +49,28 @@ describe('Component: Login', function() {
             beforeEach(inject(function() {
                 var deferred = q.defer();
                 deferred.resolve(true);
-                spyOn(PasswordResetsFactory, 'ResetPassword').and.returnValue(deferred.promise);
+                spyOn(oc.PasswordResets, 'ResetPassword').and.returnValue(deferred.promise);
                 loginFactory.ResetPassword(creds, 'code');
             }));
             it ('should call the ResetPassword method of the PasswordResets Service with a code and credentials', function() {
-                expect(PasswordResetsFactory.ResetPassword).toHaveBeenCalledWith('code', {ClientID: client_id, Username: creds.ResetUsername, Password: creds.NewPassword});
+                expect(oc.PasswordResets.ResetPassword).toHaveBeenCalledWith('code', {ClientID: client_id, Username: creds.ResetUsername, Password: creds.NewPassword});
             });
         });
     });
 
     describe('Controller: LoginCtrl', function() {
-        var loginCtrl;
-        beforeEach(inject(function($controller, $state, Credentials, LoginService) {
-            spyOn($state, 'go').and.callThrough();
+        var loginCtrl,
+            fakeToken = 'XXXX-XXXX-XXXX';
+        beforeEach(inject(function($controller, $state) {
+            spyOn($state, 'go').and.returnValue(true);
             var dfd = q.defer();
-            dfd.resolve(true);
-            spyOn(Credentials, 'Get').and.returnValue(dfd.promise);
+            dfd.resolve({access_token: fakeToken});
+            spyOn(oc.Auth, 'GetToken').and.returnValue(dfd.promise);
+            spyOn(oc.Auth, 'SetToken').and.returnValue(dfd.promise);
             loginCtrl = $controller('LoginCtrl', {
                 $scope: scope,
-                LoginService: LoginService,
-                Credentials: Credentials
+                LoginService: loginFactory,
+                oc: oc
             });
         }));
 
@@ -89,12 +91,15 @@ describe('Component: Login', function() {
             beforeEach(function() {
                 loginCtrl.credentials = credentials;
                 loginCtrl.submit();
-            });
-            it ('should call the Credentials Get method with credentials', inject(function(Credentials) {
-                expect(Credentials.Get).toHaveBeenCalledWith(credentials);
-            }));
-            it ('should enter the home state', inject(function($state) {
                 scope.$digest();
+            });
+            it ('should call the GetToken method from the Auth Service with credentials', function() {
+                expect(oc.Auth.GetToken).toHaveBeenCalledWith(credentials);
+            });
+            it ('should call the SetToken method from the Auth Service', function() {
+                expect(oc.Auth.SetToken).toHaveBeenCalledWith(fakeToken);
+            });
+            it ('should enter the home state', inject(function($state) {
                 expect($state.go).toHaveBeenCalledWith('home');
             }));
         });

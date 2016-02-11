@@ -1,32 +1,32 @@
 describe('Buyer-Select:', function() {
     var q,
         scope,
-        buyers;
+        oc;
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, Buyers){
+    beforeEach(module('orderCloud.newsdk'));
+    beforeEach(inject(function($q, $rootScope, OrderCloud){
         q = $q;
         scope = $rootScope.$new();
-        buyers = Buyers;
+        oc = OrderCloud;
     }));
 
     describe('Directive: ordercloudSelectBuyer', function() {
         var element;
-        beforeEach(inject(function($compile, Buyers) {
+        beforeEach(inject(function($compile) {
             var deferred1 = q.defer();
             var deferred2 = q.defer();
             deferred1.resolve('Buyer');
             deferred2.resolve('Buyers');
-            spyOn(Buyers, 'Get').and.returnValue(deferred1.promise);
-            spyOn(Buyers, 'List').and.returnValue(deferred2.promise);
+            spyOn(oc.Buyers, 'Get').and.returnValue(deferred1.promise);
+            spyOn(oc.Buyers, 'List').and.returnValue(deferred2.promise);
             element = $compile('<ordercloud-select-buyer></ordercloud-select-buyer>')(scope);
             scope.$digest();
         }));
-        it('should initialize the controller', inject(function(BuyerID) {
-            expect(buyers.List).toHaveBeenCalled();
-            expect(buyers.Get).toHaveBeenCalledWith(BuyerID.Get());
+        it('should initialize the controller', function() {
+            expect(oc.Buyers.List).toHaveBeenCalled();
+            expect(oc.Buyers.Get).toHaveBeenCalledWith(oc.BuyerID.Get());
             expect(element.isolateScope().selectBuyer).not.toBe(undefined);
-        }));
+        });
         it('should initialize a list of buyers', function() {
             expect(element.isolateScope().selectBuyer.BuyerList).toBe('Buyers');
         });
@@ -55,15 +55,15 @@ describe('Buyer-Select:', function() {
                     'buyer2'
                 ]
             };
-        beforeEach(inject(function($controller, $state, Buyers, BuyerID) {
+        beforeEach(inject(function($controller, $state) {
             var deferred1 = q.defer();
             var deferred2 = q.defer();
             deferred1.resolve(mock_buyer);
             deferred2.resolve(mock_list);
-            spyOn(Buyers, 'Get').and.returnValue(deferred1.promise);
-            spyOn(Buyers, 'List').and.returnValue(deferred2.promise);
+            spyOn(oc.Buyers, 'Get').and.returnValue(deferred1.promise);
+            spyOn(oc.Buyers, 'List').and.returnValue(deferred2.promise);
             spyOn($state, 'reload').and.returnValue(true);
-            spyOn(BuyerID, 'Set').and.returnValue(true);
+            spyOn(oc.BuyerID, 'Set').and.returnValue(true);
             buyerSelectCtrl = $controller('SelectBuyerCtrl', {
                 $scope: scope
             });
@@ -74,13 +74,13 @@ describe('Buyer-Select:', function() {
                 scope.$digest();
             });
             it('should called the Get method of the Buyers service', function() {
-                expect(buyers.Get).toHaveBeenCalledWith(mock_buyer.ID);
+                expect(oc.Buyers.Get).toHaveBeenCalledWith(mock_buyer.ID);
             });
             it('should change the selected buyer to the one passed in', function() {
                 expect(buyerSelectCtrl.selectedBuyer).toBe(mock_buyer);
             });
             it('should call the Set method of BuyerID to change the saved buyer ID value stored in the cookies', inject(function(BuyerID) {
-                expect(BuyerID.Set).toHaveBeenCalledWith(mock_buyer.ID);
+                expect(oc.BuyerID.Set).toHaveBeenCalledWith(mock_buyer.ID);
             }));
             it('should reload the state', inject(function($state) {
                 expect($state.reload).toHaveBeenCalledWith($state.current);
@@ -93,13 +93,13 @@ describe('Buyer-Select:', function() {
             });
             it('should call the List method of Buyers when there are more pages to get', function() {
                 scope.$digest();
-                expect(buyers.List).toHaveBeenCalledWith(null, mock_list.Meta.Page + 1, mock_list.Meta.PageSize);
+                expect(oc.Buyers.List).toHaveBeenCalledWith(null, mock_list.Meta.Page + 1, mock_list.Meta.PageSize);
                 expect(buyerSelectCtrl.BuyerList.Items.length).toBe(4);
             });
             it('should not call the List method when there are no more pages to get', function() {
                 buyerSelectCtrl.BuyerList.Meta.Page = 2;
                 scope.$digest();
-                expect(buyers.List).not.toHaveBeenCalledWith(null, mock_list.Meta.Page + 1, mock_list.Meta.PageSize);
+                expect(oc.Buyers.List).not.toHaveBeenCalledWith(null, mock_list.Meta.Page + 1, mock_list.Meta.PageSize);
             });
         });
     });

@@ -4,7 +4,7 @@ angular.module('ordercloud-paging-helpers', ['ordercloud-assignment-helpers'])
 
 ;
 
-function PagingHelpers($q, $injector, Assignments) {
+function PagingHelpers($q, OrderCloud, Assignments) {
     return {
         setSelected: setSelected,
         paging: pagingFunction
@@ -21,7 +21,7 @@ function PagingHelpers($q, $injector, Assignments) {
     }
 
     function pagingFunction(ListObject, ServiceName, AssignmentObjects, AssignmentFunc) {
-        var Service = $injector.get(ServiceName);
+        var Service = OrderCloud[ServiceName];
         if (Service && ListObject.Meta.Page < ListObject.Meta.TotalPages) {
             var queue = [];
             var dfd = $q.defer();

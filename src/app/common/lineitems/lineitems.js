@@ -5,7 +5,7 @@ angular.module('ordercloud-lineitems', [])
 
 ;
 
-function LineItemFactory($q, $state, CurrentOrder, Orders, LineItems, $uibModal, $rootScope, Products, Underscore) {
+function LineItemFactory($q, $state, CurrentOrder, OrderCloud, $uibModal, $rootScope, Underscore) {
     return {
         SpecConvert: SpecConverter,
         RemoveItem: DeleteLineItem,
@@ -16,13 +16,13 @@ function LineItemFactory($q, $state, CurrentOrder, Orders, LineItems, $uibModal,
     };
 
     function DeleteLineItem(Order, LineItem) {
-        LineItems.Delete(Order.ID, LineItem.ID)
+        OrderCloud.LineItems.Delete(Order.ID, LineItem.ID)
             .then(function() {
                 // If all line items are removed delete the order.
-                LineItems.List(Order.ID)
+                OrderCloud.List(Order.ID)
                     .then(function(data) {
                         if (!data.Items.length) {
-                            Orders.Delete(Order.ID);
+                            OrderCloud.Orders.Delete(Order.ID);
                             CurrentOrder.Remove();
                         }
                         $state.reload();
@@ -32,7 +32,7 @@ function LineItemFactory($q, $state, CurrentOrder, Orders, LineItems, $uibModal,
 
     function UpdateQuantity(Order, LineItem) {
         if (LineItem.Quantity > 0) {
-            LineItems.Patch(Order.ID, LineItem.ID, {Quantity: LineItem.Quantity})
+            OrderCloud.LineItems.Patch(Order.ID, LineItem.ID, {Quantity: LineItem.Quantity})
                 .then(function() {
                     $rootScope.$broadcast('LineItemQuantityUpdated', LineItem.ID);
                 });
@@ -49,7 +49,7 @@ function LineItemFactory($q, $state, CurrentOrder, Orders, LineItems, $uibModal,
         var dfd = $q.defer();
         var queue = [];
         angular.forEach(productIDs, function(productid) {
-            queue.push(Products.Get(productid));
+            queue.push(OrderCloud.Products.Get(productid));
         });
         $q.all(queue)
             .then(function(results) {
@@ -72,7 +72,7 @@ function LineItemFactory($q, $state, CurrentOrder, Orders, LineItems, $uibModal,
 
         modalInstance.result
             .then(function(address) {
-                LineItems.SetShippingAddress(Order.ID, LineItem.ID, address)
+                OrderCloud.LineItems.SetShippingAddress(Order.ID, LineItem.ID, address)
                     .then(function() {
                         $rootScope.$broadcast('LineItemShippingUpdated', LineItem.ID);
                     });

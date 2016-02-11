@@ -19,6 +19,7 @@
     "angular-bootstrap": "~0.14.3",
     "angular-ui-tree": "~2.10.0",
     "ordercloud-angular-sdk": "~1.0.3",
-    "angular-ui-grid": "~3.0.7"
+    "angular-ui-grid": "~3.0.7",
+    "ordercloud-ng-sdk": "~1.0.0"
   }
 }

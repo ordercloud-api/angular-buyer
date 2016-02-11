@@ -2,15 +2,17 @@ describe('Factory: Paging', function() {
     var scope,
         paging,
         listArray,
-        assignmentsArray;
+        assignmentsArray,
+        oc;
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
+    beforeEach(module('orderCloud.newsdk'));
     beforeEach(module('ordercloud-paging-helpers'));
-    beforeEach(inject(function($rootScope, Paging) {
+    beforeEach(inject(function($rootScope, Paging, OrderCloud) {
         listArray = [{ID: 1}, {ID: 2}, {ID: 3}];
         assignmentsArray = [{ID: 2}, {ID: 3}];
         scope = $rootScope.$new();
         paging= Paging;
+        oc = OrderCloud;
     }));
     it('setSelected should create or update a selected property on the first array if it also exists in the second assignments array', function() {
         paging.setSelected(listArray, assignmentsArray, 'ID');
@@ -21,7 +23,7 @@ describe('Factory: Paging', function() {
             objectList,
             objectAssignmentsList,
             assignFunc;
-        beforeEach(inject(function($injector) {
+        beforeEach(function() {
             serviceName = 'Products';
             objectList = {
                 Meta: {
@@ -42,16 +44,10 @@ describe('Factory: Paging', function() {
             assignFunc = function() {
                 return service.ListAssignments();
             };
-            service = $injector.get(serviceName);
+            service = oc[serviceName];
             spyOn(service, 'List').and.returnValue(objectList);
             spyOn(service, 'ListAssignments').and.returnValue(objectAssignmentsList);
-            spyOn($injector, 'get').and.callThrough();
-        }));
-        it('should be the list service for the service name passed in', inject(function($injector) {
-            paging.paging(objectList, serviceName);
-            scope.$digest();
-            expect($injector.get).toHaveBeenCalledWith(serviceName)
-        }));
+        });
         it('should call the List method of the service passed in if page is less than total pages', function() {
             paging.paging(objectList, serviceName);
             scope.$digest();

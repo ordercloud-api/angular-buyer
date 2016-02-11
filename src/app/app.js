@@ -8,6 +8,7 @@ angular.module( 'orderCloud', [
         'ui.router',
         'ui.bootstrap',
         'orderCloud.sdk',
+        'orderCloud.newsdk',
         'toastr',
         'jcs-autoValidate',
         'ordercloud-infinite-scroll',
@@ -32,17 +33,18 @@ angular.module( 'orderCloud', [
 
     //App Constants used by the OrderCloud SDK
     .constant("ocscope", "FullAccess")
-    .constant("clientid", "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX")
-    .constant("buyerid", "XXXXXXXXXX")
+    .constant("clientid", "0854871D-1492-42CD-AC95-C31139ACC916")
+    .constant("buyerid", "Buyer001")
 
     //OrderCloud Base URLs
-    .constant("authurl", "https://auth.ordercloud.io/oauth/token")
-    .constant("apiurl", "https://api.ordercloud.io")
+    .constant("authurl", "http://core.four51.com:11629/oauth/token")
+    .constant("apiurl", "http://core.four51.com:9002")
 
 ;
 
-function SetBuyerID( BuyerID, buyerid ) {
-    BuyerID.Get() ? angular.noop() : BuyerID.Set(buyerid);
+function SetBuyerID( OrderCloud, buyerid ) {
+    var cookie = OrderCloud.BuyerID.Get();
+    (cookie && cookie.length && cookie != null) ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
 }
 
 function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
@@ -62,28 +64,23 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, Auth, BuyerID, ImpersonationService ) {
+function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
     vm.showLeftNav = true;
+
     vm.toggleLeftNav = function() {
         vm.showLeftNav = !vm.showLeftNav;
     };
+
     vm.logout = function() {
-        Auth.RemoveToken();
-        BuyerID.Set(null);
-        ImpersonationService.StopImpersonating();
+        OrderCloud.Auth.RemoveToken();
+        OrderCloud.Auth.RemoveImpersonationToken();
+        OrderCloud.BuyerID.Set(null);
         $state.go('login');
     };
-    vm.EndImpersonation = ImpersonationService.StopImpersonating;
-    vm.isImpersonating = !!Auth.GetImpersonating();
-    $rootScope.$on('ImpersonationStarted', function() {
-        vm.isImpersonating = true;
-    });
-    $rootScope.$on('ImpersonationStopped', function() {
-        vm.isImpersonating = false;
-    });
+
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
         if (toState.data && toState.data.componentName) {
             vm.title = appname + ' - ' + toState.data.componentName

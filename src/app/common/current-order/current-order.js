@@ -3,7 +3,7 @@ angular.module('ordercloud-current-order', [])
     .factory('CurrentOrder', CurrentOrderService)
 
 ;
-
+//TODO: CurrentOrderService needs to be updated to NEW SDK / remove the need for ImpersonationService
 function CurrentOrderService($q, appname, ImpersonationService, $localForage, Auth, Orders, Me) {
     var StorageName = appname + '.CurrentOrderID';
     return {

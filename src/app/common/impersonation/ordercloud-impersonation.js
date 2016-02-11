@@ -4,7 +4,7 @@ angular.module('ordercloud-impersonation', [])
     .controller('BuyerUserSelectModalCtrl', ModalController)
 
 ;
-
+//TODO: Consider removing
 function ImpersonationService(ApiClients, $q, $rootScope, $uibModal, $state, Users, Auth, toastr) {
     return {
         DecryptToken: DecryptToken,
