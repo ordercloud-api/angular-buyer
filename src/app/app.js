@@ -8,7 +8,7 @@ angular.module( 'orderCloud', [
         'ui.router',
         'ui.bootstrap',
         'orderCloud.sdk',
-		'LocalForageModule',
+	'LocalForageModule',
         'toastr',
         'jcs-autoValidate',
         'ordercloud-infinite-scroll',
@@ -33,8 +33,8 @@ angular.module( 'orderCloud', [
 
     //App Constants used by the OrderCloud SDK
     .constant("ocscope", "FullAccess")
-    .constant("clientid", "f567ce46-3c24-46be-a9c9-327fabadebb3")
-    .constant("buyerid", "component_1")
+    .constant("clientid", "XXXXXXXX-XXXX-XXXX-XXXXXXXXXX")
+    .constant("buyerid", "XXXXX")
 
     //OrderCloud Base URLs
     .constant("authurl", "https://auth.ordercloud.io/oauth/token")
