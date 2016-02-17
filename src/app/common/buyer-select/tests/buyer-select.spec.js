@@ -79,9 +79,9 @@ describe('Buyer-Select:', function() {
             it('should change the selected buyer to the one passed in', function() {
                 expect(buyerSelectCtrl.selectedBuyer).toBe(mock_buyer);
             });
-            it('should call the Set method of BuyerID to change the saved buyer ID value stored in the cookies', inject(function(BuyerID) {
+            it('should call the Set method of BuyerID to change the saved buyer ID value stored in the cookies', function() {
                 expect(oc.BuyerID.Set).toHaveBeenCalledWith(mock_buyer.ID);
-            }));
+            });
             it('should reload the state', inject(function($state) {
                 expect($state.reload).toHaveBeenCalledWith($state.current);
             }));

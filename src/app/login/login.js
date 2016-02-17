@@ -78,6 +78,7 @@ function LoginController( $state, $stateParams, $exceptionHandler, OrderCloud, L
     vm.submit = function() {
         OrderCloud.Auth.GetToken(vm.credentials)
             .then(function(data) {
+                OrderCloud.BuyerID.Set(buyerid);
                 OrderCloud.Auth.SetToken(data['access_token']);
                 $state.go('home');
             })
