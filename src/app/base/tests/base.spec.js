@@ -3,7 +3,7 @@ describe('Component: Base', function() {
         scope,
         oc;
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.newsdk'));
+    beforeEach(module('orderCloud.sdk'));
     beforeEach(module('ui.router'));
     beforeEach(inject(function($q, $rootScope, OrderCloud) {
         q = $q;

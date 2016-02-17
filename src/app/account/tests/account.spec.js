@@ -4,7 +4,7 @@ describe('Component: Account', function() {
         account,
         accountFactory;
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.newsdk'));
+    beforeEach(module('orderCloud.sdk'));
     beforeEach(inject(function($q, $rootScope, AccountService) {
         q = $q;
         scope = $rootScope.$new();
