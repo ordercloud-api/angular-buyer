@@ -5,7 +5,7 @@ describe('Factory: Paging', function() {
         assignmentsArray,
         oc;
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.newsdk'));
+    beforeEach(module('orderCloud.sdk'));
     beforeEach(module('ordercloud-paging-helpers'));
     beforeEach(inject(function($rootScope, Paging, OrderCloud) {
         listArray = [{ID: 1}, {ID: 2}, {ID: 3}];

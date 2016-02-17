@@ -67,7 +67,8 @@ gulp.task('b_c:templateCache', function() {
 
 gulp.task('c_m:js', function() {
     return gulp
-        .src([
+        .src([config.build + 'vendor/jquery.js',
+            config.build + 'vendor/localforage.js',
             config.build + 'vendor/angular.js',
             config.build + 'vendor/**/*.js',
             config.build + 'src/templates-app.js',

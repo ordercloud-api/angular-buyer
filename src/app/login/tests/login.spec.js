@@ -8,7 +8,7 @@ describe('Component: Login', function() {
             Password: 'notarealpassword'
         };
     beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.newsdk'));
+    beforeEach(module('orderCloud.sdk'));
     beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
         q = $q;
         scope = $rootScope.$new();

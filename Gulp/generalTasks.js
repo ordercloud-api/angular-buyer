@@ -16,7 +16,7 @@ gulp.task('build:inject', function() {
     //task injects dep into index.html
     return gulp
         .src(config.source + 'index.html')
-        .pipe(inject(gulp.src([config.build + 'vendor/**/angular.js', config.build + 'vendor/**/*.js'], {read:false}), {name: 'bower', ignorePath: config.build.replace('.', ''), addRootSlash: false}))
+        .pipe(inject(gulp.src([config.build + 'vendor/jquery.js', config.build + 'vendor/localforage.js', config.build + 'vendor/**/angular.js', config.build + 'vendor/**/*.js'], {read:false}), {name: 'bower', ignorePath: config.build.replace('.', ''), addRootSlash: false}))
         .pipe(inject(gulp.src([
             config.build + 'src/templates-app.js',
             config.build + 'src/app/app.js',
