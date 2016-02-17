@@ -34,17 +34,17 @@
         </div>
         <div class="col-md-4">
             <label for="address_state">State</label>
-            <input required="true" id="address_state" type="text" ng-model="address.State" class="form-control">
+            <input required="true" id="address_state" type="text" ng-model="address.State" class="form-control" maxlength="2" minlength="2">
         </div>
         <div class="col-md-4">
             <label for="address_zip">Zip</label>
-            <input required="true" id="address_zip" type="text" ng-model="address.Zip" class="form-control">
+            <input required="true" id="address_zip" type="number" ng-model="address.Zip" class="form-control" maxlength="5" minlength="5">
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <label for="address_country">Country</label>
-            <input required="true" id="address_country" type="text" ng-model="address.Country" class="form-control">
+            <input required="true" id="address_country" type="text" ng-model="address.Country" class="form-control" maxlength="2" minlength="2">
         </div>
         <div class="col-md-6">
             <label for="address_phone">Phone</label>

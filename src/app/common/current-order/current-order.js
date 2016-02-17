@@ -4,69 +4,43 @@ angular.module('ordercloud-current-order', [])
 
 ;
 //TODO: CurrentOrderService needs to be updated to NEW SDK / remove the need for ImpersonationService
-function CurrentOrderService($q, appname, ImpersonationService, $localForage, Auth, Orders, Me) {
+function CurrentOrderService($q, appname, $localForage, OrderCloud) {
     var StorageName = appname + '.CurrentOrderID';
     return {
-        Get: getOrder,
-        GetID: getOrderID,
-        Set: setOrderID,
-        Remove: removeOrder
+        Get: Get,
+        GetID: GetID,
+        Set: Set,
+        Remove: Remove,
+        GetLineItems: GetLineItems
     };
 
-    function getOrder() {
+    function Get() {
         var dfd = $q.defer();
-        getOrderID()
+        GetID()
             .then(function(OrderID) {
-                Orders.Get(OrderID)
+                OrderCloud.Orders.Get(OrderID)
                     .then(function(order) {
-                        if (order.Status === 'Unsubmitted' && Auth.GetImpersonating()) {
-                            dfd.resolve(order);
-                        }
-                        else {
-                            /* remove order if it has been submitted */
-                            removeOrder();
-                            dfd.reject();
-                        }
+                        dfd.resolve(order);
                     })
                     .catch(function() {
-                        // If method fails clear out saved order
-                        removeOrder();
+                        Remove();
                         dfd.reject();
                     });
             })
             .catch(function() {
-                // Double check for an open order
-                ImpersonationService.Impersonation(Me.Get)
-                    .then(function(me) {
-                        ImpersonationService.Impersonation(function() {
-                            return Orders.List('outgoing', null, null, null, null, null, null, null, {'FromUserID': me.ID, 'Status': 'Unsubmitted'})
-                                .then(function(orders) {
-                                    if (orders.Items.length >= 1) {
-                                        $localForage.setItem(StorageName, orders.Items[0].ID);
-                                        dfd.resolve(orders.Items[0]);
-                                    }
-                                    else dfd.reject();
-                                })
-                                .catch(function() {
-                                    dfd.reject();
-                                });
-                        });
-                    })
-                    .catch(function(error) {
-                        dfd.reject(error);
-                    });
+                dfd.reject();
             });
         return dfd.promise;
     }
 
-    function getOrderID() {
+    function GetID() {
         var dfd = $q.defer();
         $localForage.getItem(StorageName)
             .then(function(orderID) {
-                if (orderID && Auth.GetImpersonating())
+                if (orderID)
                     dfd.resolve(orderID);
                 else {
-                    removeOrder();
+                    Remove();
                     dfd.reject();
                 }
             })
@@ -76,7 +50,7 @@ function CurrentOrderService($q, appname, ImpersonationService, $localForage, Au
         return dfd.promise;
     }
 
-    function setOrderID(OrderID) {
+    function Set(OrderID) {
         $localForage.setItem(StorageName, OrderID)
             .then(function(data) {
                 return data;
@@ -86,7 +60,32 @@ function CurrentOrderService($q, appname, ImpersonationService, $localForage, Au
             });
     }
 
-    function removeOrder() {
+    function Remove() {
         return $localForage.removeItem(StorageName);
+    }
+
+    function GetLineItems(orderID) {
+        var deferred = $q.defer();
+        var lineItems = [];
+        var queue = [];
+
+        GetID()
+            .then(function(OrderID) {
+                OrderCloud.LineItems.List(OrderID, 1, 100)
+                    .then(function(data) {
+                        lineItems = lineItems.concat(data.Items);
+                        for (var i = 2; i <= data.Meta.TotalPages; i++) {
+                            queue.push(OrderCloud.LineItems.List(OrderID, i, 100));
+                        }
+                        $q.all(queue).then(function(results) {
+                            angular.forEach(results, function(result) {
+                                lineItems = lineItems.concat(result.Items);
+                            });
+                            deferred.resolve(lineItems);
+                        });
+                    });
+            });
+
+        return deferred.promise;
     }
 }
