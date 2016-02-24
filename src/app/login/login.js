@@ -16,7 +16,7 @@ function LoginConfig( $stateProvider ) {
         })
 }
 
-function LoginService( $q, $window, PasswordResets, clientid ) {
+function LoginService( $q, $window, OrderCloud, clientid ) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword
@@ -31,7 +31,7 @@ function LoginService( $q, $window, PasswordResets, clientid ) {
             URL: encodeURIComponent($window.location.href) + '{0}'
         };
 
-        PasswordResets.SendVerificationCode(passwordResetRequest)
+        OrderCloud.PasswordResets.SendVerificationCode(passwordResetRequest)
             .then(function() {
                 deferred.resolve();
             })
@@ -51,7 +51,7 @@ function LoginService( $q, $window, PasswordResets, clientid ) {
             Password: resetPasswordCredentials.NewPassword
         };
 
-        PasswordResets.ResetPassword(verificationCode, passwordReset).
+        OrderCloud.PasswordResets.ResetPassword(verificationCode, passwordReset).
             then(function() {
                 deferred.resolve();
             })
@@ -63,8 +63,12 @@ function LoginService( $q, $window, PasswordResets, clientid ) {
     }
 }
 
-function LoginController( $state, $stateParams, $exceptionHandler, LoginService, Credentials, BuyerID, buyerid, ImpersonationService ) {
+function LoginController( $state, $stateParams, $exceptionHandler, OrderCloud, LoginService, buyerid ) {
     var vm = this;
+    vm.credentials = {
+        Username: null,
+        Password: null
+    };
     vm.token = $stateParams.token;
     vm.form = vm.token ? 'reset' : 'login';
     vm.setForm = function(form) {
@@ -72,10 +76,10 @@ function LoginController( $state, $stateParams, $exceptionHandler, LoginService,
     };
 
     vm.submit = function() {
-        Credentials.Get( vm.credentials )
-            .then(function() {
-                BuyerID.Get() ? angular.noop() : BuyerID.Set(buyerid);
-                ImpersonationService.StopImpersonating();
+        OrderCloud.Auth.GetToken(vm.credentials)
+            .then(function(data) {
+                OrderCloud.BuyerID.Set(buyerid);
+                OrderCloud.Auth.SetToken(data['access_token']);
                 $state.go('home');
             })
             .catch(function(ex) {

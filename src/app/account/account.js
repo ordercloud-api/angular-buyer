@@ -25,7 +25,7 @@ function AccountConfig( $stateProvider ) {
 		})
 }
 
-function AccountService( $q, $uibModal, Credentials, AdminUsers ) {
+function AccountService( $q, $uibModal, OrderCloud ) {
 	var service = {
 		Update: _update,
 		ChangePassword: _changePassword
@@ -35,7 +35,7 @@ function AccountService( $q, $uibModal, Credentials, AdminUsers ) {
 		var deferred = $q.defer();
 
 		function updateUser() {
-			AdminUsers.Update(currentProfile.ID, newProfile)
+			OrderCloud.AdminUsers.Update(currentProfile.ID, newProfile)
 				.then(function(data) {
 					deferred.resolve(data);
 				})
@@ -44,20 +44,18 @@ function AccountService( $q, $uibModal, Credentials, AdminUsers ) {
 				})
 		}
 
-		var modalInstance = $uibModal.open({
+		$uibModal.open({
 			animation: true,
 			templateUrl: 'account/templates/confirmPassword.modal.tpl.html',
 			controller: 'ConfirmPasswordCtrl',
 			controllerAs: 'confirmPassword',
 			size: 'sm'
-		});
-
-		modalInstance.result.then(function(password) {
+		}).result.then(function(password) {
 			var checkPasswordCredentials = {
 				Username: currentProfile.Username,
 				Password: password
 			};
-			Credentials.Get(checkPasswordCredentials).then(
+			OrderCloud.Auth.GetToken(checkPasswordCredentials).then(
 				function() {
 					updateUser();
 				}).catch(function( ex ) {
@@ -80,13 +78,13 @@ function AccountService( $q, $uibModal, Credentials, AdminUsers ) {
 
 		function changePassword() {
 			currentUser.Password = currentUser.NewPassword;
-			AdminUsers.Update(currentUser.ID, currentUser)
+			OrderCloud.AdminUsers.Update(currentUser.ID, currentUser)
 				.then(function() {
 					deferred.resolve();
 				});
 		}
 
-		Credentials.Get(checkPasswordCredentials).then(
+		OrderCloud.Auth.GetToken(checkPasswordCredentials).then(
 			function() {
 				changePassword();
 			}).catch(function( ex ) {

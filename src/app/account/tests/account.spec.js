@@ -1,10 +1,11 @@
 describe('Component: Account', function() {
     var scope,
         q,
-        account;
+        account,
+        accountFactory;
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope) {
+    beforeEach(inject(function($q, $rootScope, AccountService) {
         q = $q;
         scope = $rootScope.$new();
         account = {
@@ -17,7 +18,59 @@ describe('Component: Account', function() {
             TermsAccepted: true,
             Active: true
         };
+        accountFactory = AccountService;
     }));
+
+    describe('Factory: AccountService', function() {
+        var oc;
+        beforeEach(inject(function(OrderCloud) {
+            oc = OrderCloud;
+            var defer = q.defer();
+            defer.resolve();
+            spyOn(oc.Auth, 'GetToken').and.returnValue(defer.promise);
+            spyOn(oc.AdminUsers, 'Update').and.returnValue(defer.promise);
+        }));
+
+        describe('Update', function() {
+            var uibModal,
+                currentProfile = {
+                    ID: 'FAKEID',
+                    Username: 'FAKEUSERNAME'
+                },
+                newProfile = {
+                    Username: 'FAKENEWPROFILE'
+                };
+            beforeEach(inject(function($uibModal) {
+                uibModal = $uibModal;
+            }));
+            it ('should open a uibModal, confirm their password, and update the user', function() {
+                var defer = q.defer();
+                defer.resolve('FAKEPASSWORD');
+                spyOn(uibModal, 'open').and.returnValue({result: defer.promise});
+                accountFactory.Update(currentProfile, newProfile);
+                expect(uibModal.open).toHaveBeenCalled();
+                scope.$digest();
+                expect(oc.Auth.GetToken).toHaveBeenCalledWith({Username: 'FAKEUSERNAME', Password: 'FAKEPASSWORD'});
+                expect(oc.AdminUsers.Update).toHaveBeenCalledWith(currentProfile.ID, newProfile);
+            })
+        });
+
+        describe('ChangePassword', function() {
+            var currentUser = {
+                ID: 'FAKEID',
+                Username: 'FAKEUSERNAME',
+                CurrentPassword: 'FAKECURRENTPASSWORD',
+                NewPassword: 'FAKENEWPASSWORD'
+            };
+            it ('should check their password and update the user', function() {
+                accountFactory.ChangePassword(currentUser);
+                expect(oc.Auth.GetToken).toHaveBeenCalledWith({Username:currentUser.Username, Password:currentUser.CurrentPassword});
+                scope.$digest();
+                currentUser.Password = currentUser.NewPassword;
+                expect(oc.AdminUsers.Update).toHaveBeenCalledWith(currentUser.ID, currentUser);
+            })
+        });
+    });
 
     describe('Controller: AccountCtrl', function() {
         var accountCtrl, currentProfile;
@@ -30,16 +83,16 @@ describe('Component: Account', function() {
         }));
 
         describe('update', function() {
-            beforeEach(inject(function(AccountService) {
+            beforeEach(inject(function() {
                 accountCtrl.profile = account;
                 currentProfile = {};
                 var defer = q.defer();
                 defer.resolve(account);
-                spyOn(AccountService, 'Update').and.returnValue(defer.promise);
+                spyOn(accountFactory, 'Update').and.returnValue(defer.promise);
                 accountCtrl.update();
             }));
             it ('should call the Accounts Update method', inject(function(AccountService) {
-                expect(AccountService.Update).toHaveBeenCalledWith(currentProfile, account);
+                expect(accountFactory.Update).toHaveBeenCalledWith(currentProfile, account);
             }));
         });
 
@@ -106,15 +159,15 @@ describe('Component: Account', function() {
             spyOn($state, 'go').and.returnValue(true);
         }));
         describe('changePassword', function() {
-            beforeEach(inject(function(AccountService) {
+            beforeEach(inject(function() {
                 changePasswordCtrl.currentUser = account;
                 var defer = q.defer();
                 defer.resolve(account);
-                spyOn(AccountService, 'ChangePassword').and.returnValue(defer.promise);
+                spyOn(accountFactory, 'ChangePassword').and.returnValue(defer.promise);
                 changePasswordCtrl.changePassword();
             }));
             it ('should call the Accounts ChangePassword method', inject(function(AccountService) {
-                expect(AccountService.ChangePassword).toHaveBeenCalledWith(changePasswordCtrl.currentUser);
+                expect(accountFactory.ChangePassword).toHaveBeenCalledWith(changePasswordCtrl.currentUser);
             }));
         });
 
