@@ -8,7 +8,7 @@ angular.module( 'orderCloud', [
         'ui.router',
         'ui.bootstrap',
         'orderCloud.sdk',
-	'LocalForageModule',
+	    'LocalForageModule',
         'toastr',
         'jcs-autoValidate',
         'ordercloud-infinite-scroll',
@@ -17,17 +17,15 @@ angular.module( 'orderCloud', [
         'ordercloud-assignment-helpers',
         'ordercloud-paging-helpers',
         'ordercloud-auto-id',
-        'ordercloud-impersonation',
         'ordercloud-current-order',
         'ordercloud-address',
-        'ordercloud-lineitems',
-        'ui.grid',
-        'ui.grid.infiniteScroll'
+        'ordercloud-lineitems'
     ])
 
     .run( SetBuyerID )
     .config( Routing )
     .config( ErrorHandling )
+    .config( Interceptor )
     .controller( 'AppCtrl', AppCtrl )
     .constant("appname", "OrderCloud AngularJS Seed")
 
@@ -43,8 +41,7 @@ angular.module( 'orderCloud', [
 ;
 
 function SetBuyerID( OrderCloud, buyerid ) {
-    var cookie = OrderCloud.BuyerID.Get();
-    (cookie && cookie.length && cookie != null) ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
+    OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
 }
 
 function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
@@ -87,5 +84,22 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
         } else {
             vm.title = appname;
         }
+    });
+
+    $rootScope.$on('OC:AccessInvalidOrExpired', function() {
+        vm.logout();
+    });
+}
+
+function Interceptor( $httpProvider ) {
+    $httpProvider.interceptors.push(function($q, $rootScope) {
+        return {
+            'responseError': function(rejection) {
+                if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 401) {
+                    $rootScope.$broadcast('OC:AccessInvalidOrExpired');
+                }
+                return $q.reject(rejection);
+            }
+        };
     });
 }

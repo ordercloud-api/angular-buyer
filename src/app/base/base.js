@@ -1,18 +1,17 @@
 angular.module( 'orderCloud' )
 
-	.config( BaseConfig )
-	.controller( 'BaseCtrl', BaseController )
+    .config( BaseConfig )
+    .controller( 'BaseCtrl', BaseController )
     .controller( 'BaseLeftCtrl', BaseLeftController )
     .controller( 'BaseTopCtrl', BaseTopController )
-
 ;
 
 function BaseConfig( $stateProvider ) {
-	$stateProvider
-		.state( 'base', {
-			url: '',
-			abstract: true,
-			templateUrl:'base/templates/base.tpl.html',
+    $stateProvider
+        .state( 'base', {
+            url: '',
+            abstract: true,
+            templateUrl:'base/templates/base.tpl.html',
             views: {
                 '': {
                     templateUrl: 'base/templates/base.tpl.html',
@@ -46,7 +45,7 @@ function BaseConfig( $stateProvider ) {
                         });
                     return dfd.promise;
                 },
-                ComponentList: function($state, $q, Underscore) {
+                ComponentList: function($state, $q, Underscore, CurrentUser) {
                     var deferred = $q.defer();
                     var nonSpecific = ['Products', 'Specs', 'Price Schedules', 'Admin Users'];
                     var components = {
@@ -73,18 +72,33 @@ function BaseConfig( $stateProvider ) {
                     });
                     deferred.resolve(components);
                     return deferred.promise;
+                },
+                Tree: function(CatalogTreeService, OrderCloud, CurrentUser) {
+                    if (OrderCloud.Auth.ReadToken) {
+                        var tokenInfo = atob(OrderCloud.Auth.ReadToken().split('.')[1]);
+                        if (tokenInfo.usrtype === "buyer") {
+                            return CatalogTreeService.GetCatalogTree();
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    else {
+                        return null;
+                    }
                 }
             }
-		});
+        });
 }
 
 function BaseController(CurrentUser) {
-	var vm = this;
+    var vm = this;
     vm.currentUser = CurrentUser;
 }
 
-function BaseLeftController(ComponentList) {
+function BaseLeftController(ComponentList, Tree) {
     var vm = this;
+    vm.tree = Tree;
     vm.catalogItems = ComponentList.nonSpecific;
     vm.organizationItems = ComponentList.buyerSpecific;
     vm.isCollapsed = true;

@@ -5,6 +5,7 @@
     <div class="logo">
         <a href="" ui-sref="home"><ordercloud-logo data-width="60px" data-height="50px" data-color="#333" data-icon="true"></ordercloud-logo></a>
     </div>
+    <ordercloud-minicart order="catalog.currentOrder" class="pull-right"></ordercloud-minicart>
     <div class="link" uib-dropdown>
         <a href uib-dropdown-toggle>
             <i class="fa fa-user"></i>
@@ -17,9 +18,6 @@
             <li class="divider"></li>
             <li>
                 <a ng-click="application.logout()">Logout</a>
-            </li>
-            <li ng-if="application.isImpersonating">
-                <a ng-click="application.EndImpersonation()">Stop Impersonation</a>
             </li>
         </ul>
     </div>
