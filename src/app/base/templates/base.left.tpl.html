@@ -6,6 +6,8 @@
             </li>
         </ul>
     </nav>
+
+
     <nav ng-if="baseLeft.catalogItems.length">
         <h4>Catalog</h4>
         <ul class="nav nav-pills nav-stacked">
@@ -19,8 +21,15 @@
         <ordercloud-select-buyer></ordercloud-select-buyer>
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation" ng-repeat="item in baseLeft.organizationItems" ui-sref-active="active">
-                <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>
+                <a href="" ui-sref="{{item.StateRef}}" ng-if="item.Display != 'Catalog'">{{item.Display}}</a>
+                <a href="" ui-sref="catalog" ng-if="item.Display == 'Catalog'">Catalog</a>
+                <div uib-collapse="!application.title.includes('Catalog')" ng-if="item.Display == 'Catalog'">
+                    <catalog-tree tree="baseLeft.tree"></catalog-tree>
+                </div>
             </li>
         </ul>
     </nav>
 </aside>
+
+
+
