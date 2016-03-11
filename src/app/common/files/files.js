@@ -90,7 +90,7 @@ function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
             keyname: '@',
             label: '@',
             extensions: '@',
-            invalidExtension: '='
+            invalidExtension: '@'
         },
         restrict: 'E',
         templateUrl: 'common/files/templates/files.tpl.html',
