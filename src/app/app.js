@@ -66,6 +66,7 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
     vm.name = appname;
     vm.title = appname;
     vm.showLeftNav = true;
+    vm.$state = $state;
 
     vm.toggleLeftNav = function() {
         vm.showLeftNav = !vm.showLeftNav;
