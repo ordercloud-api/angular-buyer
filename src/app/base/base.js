@@ -72,20 +72,6 @@ function BaseConfig( $stateProvider ) {
                     });
                     deferred.resolve(components);
                     return deferred.promise;
-                },
-                Tree: function(CatalogTreeService, OrderCloud, CurrentUser) {
-                    if (OrderCloud.Auth.ReadToken) {
-                        var tokenInfo = atob(OrderCloud.Auth.ReadToken().split('.')[1]);
-                        if (tokenInfo.usrtype === "buyer") {
-                            return CatalogTreeService.GetCatalogTree();
-                        }
-                        else {
-                            return null;
-                        }
-                    }
-                    else {
-                        return null;
-                    }
                 }
             }
         });
@@ -96,12 +82,10 @@ function BaseController(CurrentUser) {
     vm.currentUser = CurrentUser;
 }
 
-function BaseLeftController(ComponentList, Tree) {
+function BaseLeftController(ComponentList) {
     var vm = this;
-    vm.tree = Tree;
     vm.catalogItems = ComponentList.nonSpecific;
     vm.organizationItems = ComponentList.buyerSpecific;
-    vm.isCollapsed = true;
 }
 
 function BaseTopController() {
