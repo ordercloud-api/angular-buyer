@@ -10,11 +10,7 @@ var gulp = require('gulp'),
     plato = require('../test/plato');
 
 gulp.task('serve-build', ['inject'], function() {
-    gulp.watch(config.src + '**/*.html')
-        .on('change', browserSync.reload);
-    gulp.watch(config.scripts, ['rebuild-scripts', 'report'])
-        .on('change', browserSync.reload);
-    gulp.watch(config.styles, ['styles']);
+    serve(true /*isDev*/);
     if (argv.debug) {
         unit.RunUnitTests();
         unit.ServeTests();
@@ -22,5 +18,4 @@ gulp.task('serve-build', ['inject'], function() {
             plato.OpenReport();
         });
     }
-    serve(true /*isDev*/);
 });

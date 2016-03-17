@@ -11,7 +11,7 @@ switch(env) {
         console.log('*** PROD ***');
         app.use(express.static(config.root + config.compile.replace('.', '')));
         app.get('/*', function(req, res) {
-            res.sendFile(config.root + config.compile.replace('.', '') + config.index);
+            res.sendFile(config.root + config.compile.replace('.', '') + 'index.html');
         });
         break;
     default:
@@ -20,7 +20,7 @@ switch(env) {
         app.use(express.static(config.root + config.src.replace('.', '') + 'app/'));
         app.use(express.static(config.root));
         app.get('/*', function(req, res) {
-            res.sendFile(config.root + config.build.replace('.', '') + config.index);
+            res.sendFile(config.root + config.build.replace('.', '') + 'index.html');
         });
         break;
 }

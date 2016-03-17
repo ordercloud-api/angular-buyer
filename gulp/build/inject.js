@@ -8,7 +8,7 @@ gulp.task('clean:inject', function() {
     return del(config.build + '*.html');
 });
 
-gulp.task('inject', ['clean:inject', 'scripts', 'styles'], function() {
+gulp.task('inject', ['clean:inject', 'scripts', 'app-config', 'bower-fonts', 'styles'], function() {
     var target = gulp.src(config.index),
         bowerFiles = gulp.src(mainBowerFiles({filter: ['**/*.js', '**/*.css']}), {read: false}),
         appFiles = gulp.src(config.appFiles, {read: false});

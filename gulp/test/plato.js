@@ -7,7 +7,7 @@ gulp.task('report', function(done) {
 });
 
 gulp.task('plato', ['report'], function() {
-    openReport();
+    return openReport();
 });
 
 function generateReport(done) {
@@ -19,7 +19,7 @@ function generateReport(done) {
 
     var outputDir = './plato/dir';
     var options = {
-        title: 'Components Code Analysis'
+        title: 'OrderCloud Code Analysis'
     };
 
     var callback = function(report) {
@@ -54,4 +54,4 @@ function openReport() {
 module.exports = {
     GenerateReport: generateReport,
     OpenReport: openReport
-}
+};

@@ -3,8 +3,19 @@
   "version": "1.0.0",
   "description": "repo for managing ordercloud components that serve as a starting point for creating B2B applications on the Four51 OrderCloud platform",
   "main": "app.js",
+  "engines": {
+    "node": "4.1.0",
+    "npm": "2.14.3"
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "bower_components"
+  ],
   "scripts": {
-    "test": "test"
+    "postinstall": "bower install && gulp inject index",
+    "start": "node server.js",
+    "test": "gulp test:unit",
+    "test-e2e": "gulp test:e2e"
   },
   "repository": {
     "type": "git",
@@ -26,6 +37,7 @@
   "dependencies": {
     "browser-sync": "^2.11.1",
     "del": "^2.2.0",
+    "fs": "0.0.2",
     "gulp": "^3.9.0",
     "gulp-angular-templatecache": "^1.8.0",
     "gulp-autoprefixer": "^3.1.0",
@@ -41,6 +53,7 @@
     "gulp-less": "^3.0.5",
     "gulp-less-import": "^1.0.0",
     "gulp-ng-annotate": "^1.1.0",
+    "gulp-ng-constant": "^1.1.0",
     "gulp-nodemon": "^2.0.6",
     "gulp-open": "^1.0.0",
     "gulp-rev": "^6.0.1",

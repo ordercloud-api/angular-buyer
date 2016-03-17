@@ -2,6 +2,7 @@
     'use strict';
 
     var nodemon = require('gulp-nodemon'),
+        gulp = require('gulp'),
         config = require('../gulp.config'),
         cache = require('gulp-cached'),
         browserSync = require('browser-sync').create(),
@@ -27,6 +28,13 @@
     }
 
     module.exports = function (isDev) {
+        if (isDev) {
+            gulp.watch(config.src + '**/*.html')
+                .on('change', browserSync.reload);
+            gulp.watch(config.scripts, ['rebuild-scripts'])
+                .on('change', browserSync.reload);
+            gulp.watch(config.styles, ['styles']);
+        }
         return nodemon ({
             script: './server.js',
             delayTime: 1,

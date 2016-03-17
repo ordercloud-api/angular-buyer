@@ -5,7 +5,8 @@ var source = './src/',
     npmFiles = './node_modules',
     compile = './compile/',
     index = 'index.html',
-    gulp_dir = './gulp/';
+    gulp_dir = './gulp/',
+    fs = require('fs');
 
 module.exports = {
     bowerFiles: bowerFiles,
@@ -34,6 +35,7 @@ module.exports = {
         '!' + source + '**/*.test.js'
     ],
     appFiles: [
+        build + '**/app.js',
         build + '**/*.js',
         build + '**/*.css',
         source + '**/*.css'
@@ -47,6 +49,11 @@ module.exports = {
         moduleSystem: 'IIFE',
         module: 'orderCloud'
     },
+    ngConstantSettings: {
+        name: 'orderCloud',
+        deps: false,
+        constants: getConstants()
+    },
     autoprefixerSettings: {
         browsers: ['last 2 versions'],
         cascade: true
@@ -54,3 +61,36 @@ module.exports = {
     jsCache: 'jsscripts',
     indentSize: 4
 };
+
+function getConstants() {
+    var result = {};
+    var constants = JSON.parse(fs.readFileSync(source + 'app/app.config.json'));
+    var environment = process.env.environment || constants.environment;
+    switch (environment) {
+        case 'local':
+            result.authurl = 'http://core.four51.com:11629/oauth/token';
+            result.apiurl = 'http://core.four51.com:9002';
+            break;
+        case 'test':
+            result.authurl = 'https://testauth.ordercloud.io/oauth/token';
+            result.apiurl = 'https://testapi.ordercloud.io';
+            break;
+        case 'qa':
+            result.authurl = 'https://qaauth.ordercloud.io/oauth/token';
+            result.apiurl = 'https://qaapi.ordercloud.io';
+            break;
+        default:
+            result.authurl = 'https://auth.ordercloud.io/oauth/token';
+            result.apiurl = 'https://api.ordercloud.io';
+            break;
+    }
+    if (!environment && (process.env.apiurl && process.env.authurl)) {
+        result.authurl = process.env.authurl;
+        result.apiurl = process.env.apiurl;
+    }
+    else if (!environment && !process.env.apiurl && !process.env.authurl) {
+        result.authurl = 'https://auth.ordercloud.io/oauth/token';
+        result.apiurl = 'https://api.ordercloud.io';
+    }
+    return result;
+}
