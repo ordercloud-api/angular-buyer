@@ -5,8 +5,7 @@
   "main": "app.js",
   "engines": {
     "node": "4.1.0",
-    "npm": "2.14.3",
-    "bower": "1.7.7"
+    "npm": "2.14.3"
   },
   "cacheDirectories": [
     "node_modules",
@@ -36,6 +35,8 @@
   },
   "homepage": "https://github.com/Four51/OrderCloud-Components#readme",
   "dependencies": {
+    "bower": "1.7.7",
+    "express": "^4.13.4",
     "browser-sync": "^2.11.1",
     "del": "^2.2.0",
     "fs": "0.0.2",
@@ -66,7 +67,6 @@
     "yargs": "^3.32.0"
   },
   "devDependencies": {
-    "express": "^4.13.4",
     "gulp-protractor": "^2.1.0",
     "jasmine": "^2.4.1",
     "plato": "^1.5.0",
