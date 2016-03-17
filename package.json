@@ -12,7 +12,7 @@
     "bower_components"
   ],
   "scripts": {
-    "postinstall": "bower install && gulp inject index",
+    "postinstall": "bower install",
     "start": "node server.js",
     "test": "gulp test:unit",
     "test-e2e": "gulp test:e2e"
