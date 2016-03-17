@@ -7,7 +7,7 @@ angular.module( 'orderCloud', [
         'ui.router',
         'ui.bootstrap',
         'orderCloud.sdk',
-	    'LocalForageModule',
+	'LocalForageModule',
         'toastr',
         'jcs-autoValidate',
         'ordercloud-infinite-scroll',
