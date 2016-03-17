@@ -40,7 +40,7 @@
             delayTime: 1,
             env: {
                 'PORT': port,
-                'NODE_ENV': isDev ? 'dev' : 'prod'
+                'NODE_ENV': isDev ? 'dev' : 'production'
             },
             watch: ['./server.js']
         })
