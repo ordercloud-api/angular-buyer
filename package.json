@@ -4,8 +4,8 @@
   "description": "repo for managing ordercloud components that serve as a starting point for creating B2B applications on the Four51 OrderCloud platform",
   "main": "app.js",
   "engines": {
-    "node": "4.1.0",
-    "npm": "2.14.3"
+    "node": "5.6.0",
+    "npm": "3.7.1"
   },
   "cacheDirectories": [
     "node_modules",
