@@ -2,12 +2,12 @@
 var config = require('./gulp.config');
 
 var express = require('express'),
-    env = process.env.NODE_ENV = process.env.NODE_ENV || config.build,
+    env = process.env.NODE_ENV = process.env.NODE_ENV || 'dev',
     app = express(),
     port = process.env.PORT || 451;
 
 switch(env) {
-    case 'prod':
+    case 'production':
         console.log('*** PROD ***');
         app.use(express.static(config.root + config.compile.replace('.', '')));
         app.get('/*', function(req, res) {
