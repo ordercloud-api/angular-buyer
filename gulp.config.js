@@ -92,5 +92,9 @@ function getConstants() {
         result.authurl = 'https://auth.ordercloud.io/oauth/token';
         result.apiurl = 'https://api.ordercloud.io';
     }
+    if (process.env.clientid) result.clientid = process.env.clientid;
+    if (process.env.appname) result.appname = process.env.appname;
+    if (process.env.ocscope) result.ocscope = process.env.ocscope;
+    if (process.env.buyerid) result.buyerid = process.env.buyerid;
     return result;
 }
