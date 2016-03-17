@@ -26,8 +26,6 @@ angular.module( 'orderCloud', [
     .config( ErrorHandling )
     .config( Interceptor )
     .controller( 'AppCtrl', AppCtrl )
-//TEST
-
 ;
 
 function SetBuyerID( OrderCloud, buyerid ) {
