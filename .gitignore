@@ -3,6 +3,7 @@
 build/
 compile/
 node_modules/
-vendor/
-temp/
+bower_components/
+errorShots/
 .idea
+plato/

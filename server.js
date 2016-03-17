@@ -1,25 +1,29 @@
-var express = require('express');
-var app = express();
+'use strict';
+var config = require('./gulp.config');
 
-if (process.env.authurl) {
-    app.use(express.static(__dirname + '/compile'));
-} else {
-    app.use(express.static(__dirname + '/build'));
+var express = require('express'),
+    env = process.env.NODE_ENV = process.env.NODE_ENV || config.build,
+    app = express(),
+    port = process.env.PORT || 451;
+
+switch(env) {
+    case 'prod':
+        console.log('*** PROD ***');
+        app.use(express.static(config.root + config.compile.replace('.', '')));
+        app.get('/*', function(req, res) {
+            res.sendFile(config.root + config.compile.replace('.', '') + config.index);
+        });
+        break;
+    default:
+        console.log('*** DEV ***');
+        app.use(express.static(config.root + config.build.replace('.', '')));
+        app.use(express.static(config.root + config.src.replace('.', '') + 'app/'));
+        app.use(express.static(config.root));
+        app.get('/*', function(req, res) {
+            res.sendFile(config.root + config.build.replace('.', '') + config.index);
+        });
+        break;
 }
 
-app.get('*', function(req, res) {
-    res.sendFile('index.html');
-});
-
-if (!process.env.PORT) {
-    var server = app.listen(4451, function () {
-        var port = server.address().port;
-        console.log('Example app listening on port: ',  port);
-
-    });
-} else {
-    var server = app.listen(process.env.PORT, function () {
-        var port = server.address().port;
-        console.log('Example app listening on port: ',  port);
-    });
-}
+app.listen(port);
+console.log('Listening on port ' + port + '...');
