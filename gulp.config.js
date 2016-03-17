@@ -84,7 +84,7 @@ function getConstants() {
             result.apiurl = 'https://api.ordercloud.io';
             break;
     }
-    if (!environment && (process.env.apiurl && process.env.authurl)) {
+    if (process.env.apiurl && process.env.authurl) {
         result.authurl = process.env.authurl;
         result.apiurl = process.env.apiurl;
     }
