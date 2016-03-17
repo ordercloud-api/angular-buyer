@@ -65,14 +65,13 @@
     "gulp-wrapper": "^1.0.0",
     "main-bower-files": "^2.11.1",
     "require-dir": "^0.3.0",
-    "yargs": "^3.32.0"
-  },
-  "devDependencies": {
+    "yargs": "^3.32.0",
     "gulp-protractor": "^2.1.0",
     "jasmine": "^2.4.1",
     "plato": "^1.5.0",
     "protractor": "^3.1.1",
     "selenium-standalone": "^4.9.1",
     "selenium-webdriver": "^2.52.0"
-  }
+  },
+  "devDependencies": {}
 }
