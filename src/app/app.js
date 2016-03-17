@@ -1,5 +1,4 @@
 angular.module( 'orderCloud', [
-        'templates-app',
         'ngSanitize',
         'ngAnimate',
         'ngMessages',
@@ -8,7 +7,7 @@ angular.module( 'orderCloud', [
         'ui.router',
         'ui.bootstrap',
         'orderCloud.sdk',
-	    'LocalForageModule',
+	'LocalForageModule',
         'toastr',
         'jcs-autoValidate',
         'ordercloud-infinite-scroll',
@@ -27,27 +26,16 @@ angular.module( 'orderCloud', [
     .config( ErrorHandling )
     .config( Interceptor )
     .controller( 'AppCtrl', AppCtrl )
-    .constant("appname", "OrderCloud AngularJS Seed")
-
-    //App Constants used by the OrderCloud SDK
-    .constant("ocscope", "FullAccess")
-    .constant("clientid", "XXXXXXXX-XXXX-XXXX-XXXXXXXXXX")
-    .constant("buyerid", "XXXXX")
-
-    //OrderCloud Base URLs
-    .constant("authurl", "https://auth.ordercloud.io/oauth/token")
-    .constant("apiurl", "https://api.ordercloud.io")
-
 ;
 
 function SetBuyerID( OrderCloud, buyerid ) {
     OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
 }
 
-function Routing( $urlRouterProvider, $urlMatcherFactoryProvider ) {
+function Routing( $urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider ) {
     $urlMatcherFactoryProvider.strictMode(false);
     $urlRouterProvider.otherwise( '/home' );
-    //$locationProvider.html5Mode(true);
+    $locationProvider.html5Mode(true);
 }
 
 function ErrorHandling( $provide ) {
