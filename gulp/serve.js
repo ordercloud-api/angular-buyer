@@ -29,11 +29,19 @@
 
     module.exports = function (isDev) {
         if (isDev) {
-            gulp.watch(config.src + '**/*.html')
+            gulp.watch([].concat(
+                config.src + '**/*.html',
+                config.components.templates
+            ))
                 .on('change', browserSync.reload);
-            gulp.watch(config.scripts, ['rebuild-scripts'])
+            gulp.watch([].concat(
+                config.scripts,
+                config.components.scripts
+            ), ['rebuild-scripts'])
                 .on('change', browserSync.reload);
             gulp.watch(config.styles, ['styles']);
+            gulp.watch(config.src + '**/app.config.json', ['app-config'])
+                .on('change', browserSync.reload);
         }
         return nodemon ({
             script: './server.js',
