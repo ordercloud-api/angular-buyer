@@ -21,6 +21,8 @@ gulp.task('app-css', ['clean:app-css'], function() {
     return gulp
         .src([].concat(
             mainBowerFiles({filter: ['**/*.css', '**/*.less']}),
+            config.components.styles.less,
+            config.components.styles.css,
             config.styles
         ))
         .pipe(lessFilter)

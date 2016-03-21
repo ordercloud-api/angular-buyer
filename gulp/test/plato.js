@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     browserSync = require('browser-sync').create(),
+    config = require('../../gulp.config'),
     plato = require('plato');
 
 gulp.task('report', function(done) {
@@ -12,9 +13,9 @@ gulp.task('plato', ['report'], function() {
 
 function generateReport(done) {
     var files = [
-        './dev/**/*.js',
-        '!./dev/**/*.test.js',
-        '!./dev/**/*.spec.js'
+        config.build + '**/*.js',
+        '!' + config.build + '**/*.test.js',
+        '!' + config.build + '**/*.spec.js'
     ];
 
     var outputDir = './plato/dir';
