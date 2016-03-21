@@ -24,7 +24,7 @@ describe('Directive: ordercloudAutoId', function() {
         expect(angular.element(result).attr('checked')).toBe('checked');
     });
     it('should have attribute disabled set to disabled', function() {
-        var result = element[0].querySelectorAll('.element_for_testing');
+        var result = element[0].querySelectorAll('.form-control');
         expect(angular.element(result).attr('disabled')).toBe('disabled');
     });
     it('should init boxtext if no value is passed in', inject(function($compile) {
