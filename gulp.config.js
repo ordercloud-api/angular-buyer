@@ -1,6 +1,6 @@
 var source = './src/',
     assets = 'assets/',
-    components = './../ordercloud-components/',
+    components = './../components-development-submodule/',
     build = './build/',
     bowerFiles = './bower_components/',
     npmFiles = './node_modules',
@@ -36,6 +36,7 @@ module.exports = {
         '!' + source + '**/*.test.js'
     ],
     components: {
+        dir: components,
         scripts: [
             components + '**/*.js',
             '!' + components + '**/*.spec.js',
