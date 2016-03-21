@@ -9,7 +9,10 @@ var gulp = require('gulp'),
     ngAnnotate = require('gulp-ng-annotate');
 
 gulp.task('clean:scripts', function() {
-    return del(config.build + '**/*.js');
+    return del([
+        config.build + '**/*.js',
+        '!' + config.build + '**/app.config.js'
+    ]);
 });
 
 gulp.task('scripts', ['clean:scripts'], function() {

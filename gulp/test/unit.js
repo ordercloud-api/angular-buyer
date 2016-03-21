@@ -1,9 +1,10 @@
 var gulp = require('gulp'),
     inject = require('gulp-inject'),
     browserSync = require('browser-sync').create(),
+    config = require('../../gulp.config'),
     mainBowerFiles = require('main-bower-files');
 
-gulp.task('test:unit', ['scripts'], function() {
+gulp.task('test:unit', ['scripts', 'app-config'], function() {
     runUnitTests();
     serveTests();
 });
@@ -11,8 +12,8 @@ gulp.task('test:unit', ['scripts'], function() {
 function runUnitTests() {
     var target = gulp.src('./gulp/test/SpecRunner.html'),
         bowerFiles = gulp.src(mainBowerFiles({includeDev: true, filter: '**/*.js'}), {read: false}),
-        appFiles = gulp.src(['./dev/**/*.js'], {read: false}),
-        specFiles = gulp.src('./src/**/*.spec.js', {read: false}),
+        appFiles = gulp.src([config.build + '**/app.js', config.build + '**/*.js'], {read: false}),
+        specFiles = gulp.src(config.src + '**/*.spec.js', {read: false}),
         jasmineFiles = gulp.src([
             './node_modules/jasmine-core/lib/jasmine-core/jasmine.css',
             './node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
@@ -35,7 +36,7 @@ function serveTests() {
         open: true,
         port: 452,
         files: [
-            './dev/**/*.js'
+            config.build + '**/*.js'
         ],
         server: {
             index: 'SpecRunner.html',
