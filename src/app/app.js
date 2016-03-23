@@ -49,7 +49,7 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
+function AppCtrl( $rootScope, $state, appname, LoginService ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
@@ -61,10 +61,7 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
     };
 
     vm.logout = function() {
-        OrderCloud.Auth.RemoveToken();
-        OrderCloud.Auth.RemoveImpersonationToken();
-        OrderCloud.BuyerID.Set(null);
-        $state.go('login');
+        LoginService.Logout();
     };
 
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
@@ -76,7 +73,7 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
     });
 
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
-        vm.logout();
+        LoginService.RememberMe();
     });
 }
 
