@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
     argv = require('yargs').argv,
     selenium = require('selenium-standalone'),
+    config = require('../../gulp.config'),
     browserSync = require('browser-sync'),
     protractor = require("gulp-protractor").protractor;
 
@@ -34,7 +35,11 @@ gulp.task('http', ['inject'], function(done) {
         open: false,
         port: 9000,
         server: {
-            baseDir: ['./src/app/', './dev', './']
+            baseDir: [
+                config.src + 'app/',
+                config.build,
+                config.root
+            ]
         },
         ui: false
     }, done);

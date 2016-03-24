@@ -12,8 +12,14 @@ gulp.task('test:unit', ['scripts', 'app-config'], function() {
 function runUnitTests() {
     var target = gulp.src('./gulp/test/SpecRunner.html'),
         bowerFiles = gulp.src(mainBowerFiles({includeDev: true, filter: '**/*.js'}), {read: false}),
-        appFiles = gulp.src([config.build + '**/app.js', config.build + '**/*.js'], {read: false}),
-        specFiles = gulp.src(config.src + '**/*.spec.js', {read: false}),
+        appFiles = gulp.src([].concat(
+            config.build + '**/app.js',
+            config.build + '**/*.js'
+        ), {read: false}),
+        specFiles = gulp.src([].concat(
+            config.src + '**/*.spec.js',
+            config.components.dir + '**/*.spec.js'
+        ), {read: false}),
         jasmineFiles = gulp.src([
             './node_modules/jasmine-core/lib/jasmine-core/jasmine.css',
             './node_modules/jasmine-core/lib/jasmine-core/jasmine.js',
@@ -22,27 +28,30 @@ function runUnitTests() {
         ], {read:false});
 
     return target
-        .pipe(inject(jasmineFiles, {name: 'jasmine', relative: true}))
-        .pipe(inject(bowerFiles, {name: 'bower', relative: true}))
-        .pipe(inject(appFiles, {relative: true}))
-        .pipe(inject(specFiles, {name: 'spec', relative: true}))
+        .pipe(inject(jasmineFiles, {name: 'jasmine'}))
+        .pipe(inject(bowerFiles, {name: 'bower'}))
+        .pipe(inject(appFiles))
+        .pipe(inject(specFiles, {name: 'spec'}))
         .pipe(gulp.dest('./gulp/test/'));
 }
 
 function serveTests() {
+    console.log(config.root + config.src.replace('.', '') + 'app/');
     browserSync.init({
         logLevel: 'silent',
         notify: false,
         open: true,
-        port: 452,
+        port: 4520,
         files: [
             config.build + '**/*.js'
         ],
         server: {
             index: 'SpecRunner.html',
             baseDir: [
+                config.root,
+                config.components.dir + '/../',
                 __dirname,
-                __dirname + '/../../'
+                config.root + config.src.replace('.', '') + 'app/'
             ]
         },
         ui: false

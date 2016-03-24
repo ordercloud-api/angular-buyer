@@ -39,7 +39,11 @@
                 config.components.scripts
             ), ['rebuild-scripts'])
                 .on('change', browserSync.reload);
-            gulp.watch(config.styles, ['styles']);
+            gulp.watch([].concat(
+                config.styles,
+                config.components.styles.less,
+                config.components.styles.css
+            ), ['styles']);
             gulp.watch(config.src + '**/app.config.json', ['app-config'])
                 .on('change', browserSync.reload);
         }
