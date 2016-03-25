@@ -86,11 +86,7 @@ function LoginService( $q, $window, toastr, $state,OrderCloud, clientid, buyerid
                             toastr.error("Your token has expired, please log in again.")
                         });
                 }else{
-                    OrderCloud.Auth.RemoveToken();
-                    OrderCloud.Auth.RemoveImpersonationToken();
-                    OrderCloud.BuyerID.Set(null);
-                    TokenRefresh.RemoveToken();
-                    $state.go('login');
+                    _logout();
                 }
             })
     }
