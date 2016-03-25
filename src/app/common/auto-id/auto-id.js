@@ -25,12 +25,12 @@ function ordercloudAutoIdDirective($compile) {
                 element.wrap("<div class='input-group'></div>");
             }
             autoID_element.attr('checked', true);
-            if (autoID_element.prop('checked')) {
+            if (autoID_element.find('input').prop('checked')) {
                 element.attr('disabled', true);
             }
             autoID_element.find('input').bind('click', function() {
                 autoID_element.attr('checked', !autoID_element.prop('checked'));
-                if (autoID_element.prop('checked')) {
+                if (autoID_element.find('input').prop('checked')) {
                     element.attr('disabled', true);
                     element.attr('required', false);
                     element.attr('ng-required', false);
