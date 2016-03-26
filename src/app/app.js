@@ -49,7 +49,7 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
+function AppCtrl( $rootScope, $state, appname, OrderCloud, toastr ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
@@ -78,6 +78,9 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud ) {
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
         vm.logout();
     });
+    $rootScope.$on('OC:AccessForbidden', function(){
+        toastr.warning("I'm sorry, it doesn't look like you have permission to access this page.", 'Warning:');
+    })
 }
 
 function Interceptor( $httpProvider ) {
@@ -86,6 +89,9 @@ function Interceptor( $httpProvider ) {
             'responseError': function(rejection) {
                 if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 401) {
                     $rootScope.$broadcast('OC:AccessInvalidOrExpired');
+                }
+                if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 403){
+                    $rootScope.$broadcast('OC:AccessForbidden');
                 }
                 return $q.reject(rejection);
             }
