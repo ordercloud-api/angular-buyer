@@ -77,9 +77,16 @@ function BaseConfig( $stateProvider ) {
         });
 }
 
-function BaseController(CurrentUser) {
+function BaseController(CurrentUser, defaultErrorMessageResolver) {
     var vm = this;
     vm.currentUser = CurrentUser;
+
+    defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
+        errorMessages['customPassword'] = 'Password must be at least eight characters long and include at least one letter and one number';
+        //regex for customPassword = ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$
+        errorMessages['positiveInteger'] = 'Please enter a positive integer';
+        //regex positiveInteger = ^[0-9]*[1-9][0-9]*$
+    });
 }
 
 function BaseLeftController(ComponentList) {
