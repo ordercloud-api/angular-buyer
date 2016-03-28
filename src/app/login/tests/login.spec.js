@@ -2,6 +2,7 @@ describe('Component: Login', function() {
     var scope,
         q,
         loginFactory,
+        Token_Refresh,
         oc,
         credentials = {
             Username: 'notarealusername',
@@ -9,16 +10,17 @@ describe('Component: Login', function() {
         };
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService, TokenRefresh) {
         q = $q;
         scope = $rootScope.$new();
         loginFactory = LoginService;
         oc = OrderCloud;
+        Token_Refresh = TokenRefresh;
     }));
 
     describe('Factory: LoginService', function() {
         var client_id;
-        beforeEach(inject(function(clientid) {
+        beforeEach(inject(function(clientid, TokenRefresh) {
             client_id = clientid;
         }));
         describe('SendVerificationCode', function() {
@@ -55,6 +57,21 @@ describe('Component: Login', function() {
             it ('should call the ResetPassword method of the PasswordResets Service with a code and credentials', function() {
                 expect(oc.PasswordResets.ResetPassword).toHaveBeenCalledWith('code', {ClientID: client_id, Username: creds.ResetUsername, Password: creds.NewPassword});
             });
+        });
+
+        describe('RememberMe', function(){
+            beforeEach(inject(function(){
+                var deferred = q.defer();
+                deferred.resolve(true);
+                spyOn(Token_Refresh, 'GetToken').and.returnValue(deferred.promise);
+                loginFactory.RememberMe();
+
+            }));
+
+            it('should call the TokenRefresh.GetToken method', function(){
+                expect(Token_Refresh.GetToken).toHaveBeenCalled();
+            })
+
         });
     });
 
