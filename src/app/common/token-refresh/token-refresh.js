@@ -2,13 +2,14 @@ angular.module('orderCloud')
 	.factory('TokenRefresh', TokenRefresh)
 ;
 
-function TokenRefresh($resource, $cookieStore, ocscope, clientid) {
+function TokenRefresh($resource, $localForage, ocscope, clientid, appname, authurl) {
 	var service = {
 		Set: _set,
 		Get: _get,
 		SetToken: _setToken,
 		GetToken: _getToken,
-		Refresh: _refresh
+		Refresh: _refresh,
+		RemoveToken: _removeToken
 	};
 	var remember;
 
@@ -24,11 +25,15 @@ function TokenRefresh($resource, $cookieStore, ocscope, clientid) {
 	}
 
 	function _setToken(token) {
-		$cookieStore.put(appname + '.refresh_token', token);
+		return $localForage.setItem(appname + '.refresh_token', token);
 	}
 
 	function _getToken() {
-		$cookieStore.get(appname + '.refresh_token');
+		return $localForage.getItem(appname + '.refresh_token');
+	}
+
+	function _removeToken(){
+		$localForage.removeItem(appname + '.refresh_token');
 	}
 
 	function _refresh(token) {

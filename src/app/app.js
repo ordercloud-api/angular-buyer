@@ -49,7 +49,7 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, OrderCloud, toastr ) {
+function AppCtrl( $rootScope, $state, appname, LoginService, toastr ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
@@ -61,10 +61,7 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud, toastr ) {
     };
 
     vm.logout = function() {
-        OrderCloud.Auth.RemoveToken();
-        OrderCloud.Auth.RemoveImpersonationToken();
-        OrderCloud.BuyerID.Set(null);
-        $state.go('login');
+        LoginService.Logout();
     };
 
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
@@ -76,7 +73,7 @@ function AppCtrl( $rootScope, $state, appname, OrderCloud, toastr ) {
     });
 
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
-        vm.logout();
+        LoginService.RememberMe();
     });
     $rootScope.$on('OC:AccessForbidden', function(){
         toastr.warning("I'm sorry, it doesn't look like you have permission to access this page.", 'Warning:');
