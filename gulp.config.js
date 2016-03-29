@@ -6,6 +6,7 @@ var source = './src/',
     npmFiles = './node_modules',
     compile = './compile/',
     index = 'index.html',
+    root = __dirname,
     gulp_dir = './gulp/',
     fs = require('fs');
 
@@ -19,7 +20,7 @@ module.exports = {
     appCss: assets + 'styles/',
     appFonts: assets + 'fonts/',
     appImages: assets + 'images',
-    root: __dirname,
+    root: root,
     gulp: gulp_dir,
     index: source + index,
     styles: [
