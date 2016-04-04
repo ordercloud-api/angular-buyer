@@ -25,11 +25,14 @@ function PagingHelpers($q, OrderCloud, Assignments) {
         if (Service && ListObject.Meta.Page < ListObject.Meta.TotalPages) {
             var queue = [];
             var dfd = $q.defer();
-            if (ServiceName !== 'Orders') {
+            if (ServiceName !== 'Orders' && ServiceName !== 'Categories') {
                 queue.push(Service.List(null, ListObject.Meta.Page + 1, ListObject.Meta.PageSize));
             }
-            else {
+            if (ServiceName === 'Orders') {
                 queue.push(Service.List('incoming', null, null, null, ListObject.Meta.Page + 1, ListObject.Meta.PageSize));
+            }
+            if (ServiceName === 'Categories') {
+                queue.push(Service.List(null, 'all', ListObject.Meta.Page + 1, ListObject.Meta.PageSize));
             }
             if (AssignmentFunc !== undefined && (AssignmentObjects.Meta.Page < AssignmentObjects.Meta.TotalPages)) {
                 queue.push(AssignmentFunc());
