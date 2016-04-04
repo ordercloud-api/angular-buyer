@@ -86,6 +86,8 @@ function BaseController(CurrentUser, defaultErrorMessageResolver) {
         //regex for customPassword = ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$
         errorMessages['positiveInteger'] = 'Please enter a positive integer';
         //regex positiveInteger = ^[0-9]*[1-9][0-9]*$
+        errorMessages['ID_Name'] = 'Only Alphanumeric characters, hyphens and underscores are allowed';
+        //regex ID_Name = ([A-Za-z0-9\-\_]+)
     });
 }
 
