@@ -56,7 +56,7 @@ function fileReader( $q ) {
     return service;
 }
 
-function FilesService( $q, $http, apiurl ) {
+function FilesService( $q, $http, apiurl, OrderCloud ) {
     var service = {
         Upload: _upload
     };
@@ -69,7 +69,7 @@ function FilesService( $q, $http, apiurl ) {
         var fd = new FormData();
         fd.append('file', file);
 
-        $http.post(fileURL + '?filename=' + fileName, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined}})
+        $http.post(fileURL + '?filename=' + fileName, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined, 'Authorization': 'Bearer ' + OrderCloud.Auth.ReadToken()} })
             .success(function(data){
                 deferred.resolve(data);
             })
