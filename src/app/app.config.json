@@ -1,6 +1,7 @@
 {
-  "appname": "XXXXX",
-  "ocscope": "BuyerReader",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX",
-  "buyerid": "XXXXX"
+  "appname": "Angular-Snap Prototype",
+  "ocscope": "FullAccess",
+  "clientid": "FA2E05CB-40DE-4210-AF48-AB7BF02B8F0B",
+  "buyerid": "component_1",
+  "environment": "prod"
 }

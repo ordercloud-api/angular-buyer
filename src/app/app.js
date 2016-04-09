@@ -1,30 +1,32 @@
 angular.module( 'orderCloud', [
-        'ngSanitize',
-        'ngAnimate',
-        'ngMessages',
-        'ngTouch',
-        'ui.tree',
-        'ui.router',
-        'ui.bootstrap',
-        'orderCloud.sdk',
-	'LocalForageModule',
-        'toastr',
-        'jcs-autoValidate',
-        'ordercloud-infinite-scroll',
-        'ordercloud-buyer-select',
-        'ordercloud-search',
-        'ordercloud-assignment-helpers',
-        'ordercloud-paging-helpers',
-        'ordercloud-auto-id',
-        'ordercloud-current-order',
-        'ordercloud-address',
-        'ordercloud-lineitems'
-    ])
+    'ngSanitize',
+    'ngAnimate',
+    'ngMessages',
+    'ngTouch',
+    'ui.tree',
+    'ui.router',
+    'ui.bootstrap',
+    'orderCloud.sdk',
+    'LocalForageModule',
+    'snap',
+    'toastr',
+    'jcs-autoValidate',
+    'ordercloud-infinite-scroll',
+    'ordercloud-buyer-select',
+    'ordercloud-search',
+    'ordercloud-assignment-helpers',
+    'ordercloud-paging-helpers',
+    'ordercloud-auto-id',
+    'ordercloud-current-order',
+    'ordercloud-address',
+    'ordercloud-lineitems'
+])
 
     .run( SetBuyerID )
     .config( Routing )
     .config( ErrorHandling )
     .config( Interceptor )
+    .config( Drawers )
     .controller( 'AppCtrl', AppCtrl )
 ;
 
@@ -49,20 +51,37 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, LoginService, toastr ) {
+function AppCtrl( $rootScope, $ocMedia, $state, snapRemote, appname, LoginService, toastr ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
-    vm.showLeftNav = true;
     vm.$state = $state;
+    vm.$ocMedia = $ocMedia;
 
-    vm.toggleLeftNav = function() {
-        vm.showLeftNav = !vm.showLeftNav;
-    };
+    function _isMobile() {
+        return $ocMedia('max-width:767px');
+    }
+
+    function initDrawers(isMobile) {
+        if (isMobile) {
+            snapRemote.close('MAIN');
+            vm.showMenuToggle = true;
+        } else {
+            snapRemote.open('left', 'MAIN');
+            vm.showMenuToggle = false;
+        }
+    }
+
+    initDrawers(_isMobile());
 
     vm.logout = function() {
         LoginService.Logout();
     };
+
+    $rootScope.$watch(_isMobile, function(n, o) {
+        if (n === o) return;
+        initDrawers(n);
+    });
 
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
         if (toState.data && toState.data.componentName) {
@@ -94,4 +113,8 @@ function Interceptor( $httpProvider ) {
             }
         };
     });
+}
+
+function Drawers(snapRemoteProvider) {
+    snapRemoteProvider.globalOptions.disable = 'right';
 }

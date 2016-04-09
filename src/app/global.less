@@ -1,5 +1,12 @@
 body {
   overflow-x:hidden;
+  @media(min-width:@screen-sm-min) {
+    &.snapjs-left {
+      snap-content {
+        margin-right:265px;
+      }
+    }
+  }
 }
 
 [ui-sref],
@@ -9,6 +16,10 @@ body {
 
 .container {
   max-width:100%;
+}
+
+snap-content {
+  background-color:white;
 }
 
 //TABLES WITH FIXED HEADERS
