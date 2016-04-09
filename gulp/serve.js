@@ -5,7 +5,7 @@
         gulp = require('gulp'),
         config = require('../gulp.config'),
         cache = require('gulp-cached'),
-        browserSync = require('browser-sync').create(),
+        browserSync = require('browser-sync').create('oc-server'),
         port = process.env.PORT || 7203;
 
     function startBrowerSync () {
