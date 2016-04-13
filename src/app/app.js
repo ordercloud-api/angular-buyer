@@ -64,14 +64,15 @@ function AppCtrl( $rootScope, $ocMedia, $state, snapRemote, appname, LoginServic
 
     function initDrawers(isMobile) {
         if (isMobile) {
+            snapRemote.enable('MAIN');
             snapRemote.close('MAIN');
             vm.showMenuToggle = true;
         } else {
             snapRemote.open('left', 'MAIN');
+            snapRemote.disable('MAIN');
             vm.showMenuToggle = false;
         }
-    }
-
+    };
     initDrawers(_isMobile());
 
     vm.logout = function() {
