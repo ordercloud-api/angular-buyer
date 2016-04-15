@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
     config = require('../../gulp.config'),
-    browserSync = require('browser-sync'),
+    browserSync = require('browser-sync').get('oc-server'),
     del = require('del'),
     less = require('gulp-less'),
     autoprefixer = require('gulp-autoprefixer'),
