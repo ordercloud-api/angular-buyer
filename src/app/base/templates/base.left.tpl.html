@@ -24,6 +24,7 @@
                 <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>
                 <div ng-if="item.Display == 'Catalog' && application.$state.includes('catalog')">
                     <catalog-tree></catalog-tree>
+                    <ordercloud-catalog-facets></ordercloud-catalog-facets>
                 </div>
             </li>
         </ul>
