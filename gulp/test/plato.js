@@ -38,7 +38,7 @@ function openReport() {
         logLevel: 'silent',
         notify: false,
         open: true,
-        port: 453,
+        port: 4530,
         files: [
             './plato/dir/files/**/*'
         ],

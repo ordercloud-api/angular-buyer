@@ -5,7 +5,7 @@
         gulp = require('gulp'),
         config = require('../gulp.config'),
         cache = require('gulp-cached'),
-        browserSync = require('browser-sync').create(),
+        browserSync = require('browser-sync').create('oc-server'),
         port = process.env.PORT || 7203;
 
     function startBrowerSync () {
@@ -39,7 +39,11 @@
                 config.components.scripts
             ), ['rebuild-scripts'])
                 .on('change', browserSync.reload);
-            gulp.watch(config.styles, ['styles']);
+            gulp.watch([].concat(
+                config.styles,
+                config.components.styles.less,
+                config.components.styles.css
+            ), ['styles']);
             gulp.watch(config.src + '**/app.config.json', ['app-config'])
                 .on('change', browserSync.reload);
         }
