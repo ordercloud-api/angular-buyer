@@ -49,7 +49,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
                             CurrentOrder.Remove();
                             OrderCloud.Orders.Delete(Order.ID).then(function () {
                                 $state.reload();
-                                $rootScope.$broadcast('OC:OrderDeleted');
+                                $rootScope.$broadcast('OC:RemoveOrder');
                             });
                         }
                         else {
