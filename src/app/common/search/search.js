@@ -51,6 +51,20 @@ function ordercloudSearchCtrl($timeout, $scope, OrderCloud, TrackSearch) {
                             });
                     }
                 }
+                if ($scope.servicename === 'SpendingAccounts') {
+                    if (!$scope.controlleras.searchfunction) {
+                        Service.List(n, null, null, null, null, {'RedemptionCode': '!*'})
+                            .then(function (data){
+                                $scope.controlleras.list = data;
+                            });
+                    }
+                    else {
+                        $scope.controlleras.searchfunction($scope.searchTerm)
+                            .then(function (data){
+                                $scope.controlleras.list = data;
+                            });
+                    }
+                }
                 else {
                     if (!$scope.controlleras.searchfunction) {
                         Service.List(n)
