@@ -117,14 +117,14 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         var li;
         var dfd = $q.defer();
         var queue = [];
-        OrderCloud.LineItems.List(orderID, 1, 100)
+        OrderCloud.LineItems.List(orderID, null, 1, 100)
             .then(function (data) {
                 li = data;
                 if (data.Meta.TotalPages > data.Meta.Page) {
                     var page = data.Meta.Page;
                     while (page < data.Meta.TotalPages) {
                         page += 1;
-                        queue.push(OrderCloud.LineItems.List(orderID, page, 100));
+                        queue.push(OrderCloud.LineItems.List(orderID, null, page, 100));
                     }
                 }
                 $q.all(queue)
