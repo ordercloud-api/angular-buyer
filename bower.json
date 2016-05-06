@@ -32,8 +32,7 @@
     "angular-animate": "^1.5.0",
     "angular-messages": "^1.5.0",
     "angular-bootstrap": "^1.1.2",
-    "ordercloud-ng-sdk": "^1.0.1",
-    "OrderCloud-Angular-SDK": "ordercloud-angular-sdk#^1.0.11",
+    "ordercloud-ng-sdk": "^1.0.11",
     "angular-auto-validate": "^1.19.3",
     "font-awesome": "^4.5.0"
   },
