@@ -104,13 +104,20 @@ function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
         var el = element;
         scope.invalidExtension = false;
 
+        scope.upload = function() {
+            $("#orderCloudUpload").click();
+        };
+
+        scope.remove = function() {
+            delete scope.model.xp[scope.keyname];
+        };
+
         function afterSelection(file, fileName) {
             FilesService.Upload(file, fileName)
                 .then(function(fileData) {
                     if (!scope.model.xp) scope.model.xp = {};
                     scope.model.xp[scope.keyname] = fileData;
                     scope.model.xp[scope.keyname].Type = file.type;
-                    scope.model.FileUpdated = true;
                 });
         }
 
@@ -163,7 +170,6 @@ function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
                             el.find('input').replaceWith(input = el.find('input').clone(true));
                             if (!scope.model.xp) scope.model.xp = {};
                             scope.model.xp[scope.keyname] = null;
-                            scope.model.FileUpdated = true;
                         });
                     }
                     break;
