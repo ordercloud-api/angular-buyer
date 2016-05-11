@@ -18,7 +18,8 @@ angular.module( 'orderCloud', [
         'ordercloud-auto-id',
         'ordercloud-current-order',
         'ordercloud-address',
-        'ordercloud-lineitems'
+        'ordercloud-lineitems',
+        'ordercloud-geography'
     ])
 
     .run( SetBuyerID )

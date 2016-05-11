@@ -6,14 +6,18 @@ angular.module('ordercloud-address', [])
 
 ;
 
-function AddressFormDirective() {
+function AddressFormDirective(OCGeography) {
     return {
         restrict: 'E',
         scope: {
             address: '=',
             isbilling: '='
         },
-        templateUrl: 'common/address/templates/address.form.tpl.html'
+        templateUrl: 'common/address/templates/address.form.tpl.html',
+        link: function(scope) {
+            scope.countries = OCGeography.countries;
+            scope.states = OCGeography.states;
+        }
     };
 }
 
