@@ -35,7 +35,7 @@ function AccountService( $q, $uibModal, OrderCloud ) {
 		var deferred = $q.defer();
 
 		function updateUser() {
-			OrderCloud.AdminUsers.Update(currentProfile.ID, newProfile)
+			OrderCloud.Me.Update(newProfile)
 				.then(function(data) {
 					deferred.resolve(data);
 				})
@@ -78,7 +78,7 @@ function AccountService( $q, $uibModal, OrderCloud ) {
 
 		function changePassword() {
 			currentUser.Password = currentUser.NewPassword;
-			OrderCloud.AdminUsers.Update(currentUser.ID, currentUser)
+			OrderCloud.Me.Update(currentUser)
 				.then(function() {
 					deferred.resolve();
 				});
