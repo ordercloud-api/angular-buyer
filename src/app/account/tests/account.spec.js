@@ -28,7 +28,7 @@ describe('Component: Account', function() {
             var defer = q.defer();
             defer.resolve();
             spyOn(oc.Auth, 'GetToken').and.returnValue(defer.promise);
-            spyOn(oc.AdminUsers, 'Update').and.returnValue(defer.promise);
+            spyOn(oc.Me, 'Update').and.returnValue(defer.promise);
         }));
 
         describe('Update', function() {
@@ -51,7 +51,7 @@ describe('Component: Account', function() {
                 expect(uibModal.open).toHaveBeenCalled();
                 scope.$digest();
                 expect(oc.Auth.GetToken).toHaveBeenCalledWith({Username: 'FAKEUSERNAME', Password: 'FAKEPASSWORD'});
-                expect(oc.AdminUsers.Update).toHaveBeenCalledWith(currentProfile.ID, newProfile);
+                expect(oc.Me.Update).toHaveBeenCalledWith(newProfile);
             })
         });
 
@@ -67,7 +67,7 @@ describe('Component: Account', function() {
                 expect(oc.Auth.GetToken).toHaveBeenCalledWith({Username:currentUser.Username, Password:currentUser.CurrentPassword});
                 scope.$digest();
                 currentUser.Password = currentUser.NewPassword;
-                expect(oc.AdminUsers.Update).toHaveBeenCalledWith(currentUser.ID, currentUser);
+                expect(oc.Me.Update).toHaveBeenCalledWith(currentUser);
             })
         });
     });
