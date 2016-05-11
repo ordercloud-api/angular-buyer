@@ -27,7 +27,13 @@ angular.module( 'orderCloud', [
     .config( ErrorHandling )
     .config( Interceptor )
     .controller( 'AppCtrl', AppCtrl )
+    .config(DatePickerConfig)
 ;
+
+function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
+    uibDatepickerConfig.showWeeks = false;
+    uibDatepickerPopupConfig.showButtonBar = false;
+}
 
 function SetBuyerID( OrderCloud, buyerid ) {
     OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
@@ -50,12 +56,18 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, LoginService, toastr ) {
+function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
     vm.showLeftNav = true;
     vm.$state = $state;
+    vm.$ocMedia = $ocMedia;
+
+    vm.datepickerOptions = {
+        showWeeks: false,
+        showButtonBar: false
+    }
 
     vm.toggleLeftNav = function() {
         vm.showLeftNav = !vm.showLeftNav;
