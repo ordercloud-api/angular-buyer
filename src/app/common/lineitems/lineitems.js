@@ -64,6 +64,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
             OrderCloud.LineItems.Patch(Order.ID, LineItem.ID, {Quantity: LineItem.Quantity})
                 .then(function () {
                     $rootScope.$broadcast('OC:UpdateOrder', Order.ID);
+                    $rootScope.$broadcast('OC:UpdateLineItem',Order);
                 });
         }
     }
