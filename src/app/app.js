@@ -58,7 +58,7 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
+function AppCtrl( $rootScope, $state, appname, snapRemote, LoginService, toastr, $ocMedia ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
