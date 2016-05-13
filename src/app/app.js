@@ -3,12 +3,12 @@ angular.module( 'orderCloud', [
     'ngAnimate',
     'ngMessages',
     'ngTouch',
+    'snap',
     'ui.tree',
     'ui.router',
     'ui.bootstrap',
     'orderCloud.sdk',
     'LocalForageModule',
-    'snap',
     'toastr',
     'jcs-autoValidate',
     'ordercloud-infinite-scroll',
@@ -19,7 +19,8 @@ angular.module( 'orderCloud', [
     'ordercloud-auto-id',
     'ordercloud-current-order',
     'ordercloud-address',
-    'ordercloud-lineitems'
+    'ordercloud-lineitems',
+    'ordercloud-geography'
 ])
 
     .run( SetBuyerID )
@@ -28,7 +29,13 @@ angular.module( 'orderCloud', [
     .config( Interceptor )
     .config( Drawers )
     .controller( 'AppCtrl', AppCtrl )
+    .config(DatePickerConfig)
 ;
+
+function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
+    uibDatepickerConfig.showWeeks = false;
+    uibDatepickerPopupConfig.showButtonBar = false;
+}
 
 function SetBuyerID( OrderCloud, buyerid ) {
     OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
@@ -51,16 +58,22 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $ocMedia, $state, snapRemote, appname, LoginService, toastr ) {
+function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
+    vm.showLeftNav = true;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
 
     function _isMobile() {
         return $ocMedia('max-width:767px');
     }
+
+    vm.datepickerOptions = {
+        showWeeks: false,
+        showButtonBar: false
+    };
 
     function initDrawers(isMobile) {
         if (isMobile) {
@@ -73,6 +86,7 @@ function AppCtrl( $rootScope, $ocMedia, $state, snapRemote, appname, LoginServic
             vm.showMenuToggle = false;
         }
     };
+
     initDrawers(_isMobile());
 
     vm.logout = function() {
@@ -90,6 +104,10 @@ function AppCtrl( $rootScope, $ocMedia, $state, snapRemote, appname, LoginServic
         } else {
             vm.title = appname;
         }
+    });
+
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        console.log(error);
     });
 
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
