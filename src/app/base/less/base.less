@@ -3,79 +3,11 @@
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
-#MAIN_LEFT {
-  background-color:@dashboard-leftnav-bg;
-}
 
-#BaseLeft {
-  padding: @padding-base-horizontal;
-  white-space: nowrap;
-  h4 {
-    margin-left:-@padding-base-horizontal;
-    margin-right:-@padding-base-horizontal;
-    background-color:@navbar-default-bg;
-    padding:@padding-base-horizontal;
-  }
-  ul li ul {
-    background-color: #ffffff;
-    border-radius: 0 0 4px 4px;
-    border-left:2px solid #ebebeb;
-    padding-top: 5px;
-    li {
-      margin-left:10px !important;
-      margin-right: 5px !important;
-      &:last-child {
-        margin-bottom: 5px;
-      }
-      a {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      &.active {
-        > a {
-          background-color:@brand-primary;
-        }
-      }
-    }
-  }
-
-
-}
-
-.navbar-flex {
-  #BaseTop {
-    background-color:@navbar-default-bg;
-    border-bottom:1px solid @navbar-default-border;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items:center;
-    //margin-bottom:@navbar-margin-bottom;
-    > div {
-      max-height:@navbar-height;
-      &.link {
-        flex:0 1 auto;
-        > a {
-          display:block;
-          line-height:@navbar-height - 20px;
-          padding:@nav-link-padding;
-          color:@navbar-default-link-color;
-          &:hover {
-            background-color:@navbar-default-link-hover-bg;
-            color:@navbar-default-link-hover-color;
-          }
-          &.active,
-          &:active,
-          &:focus {
-            background-color:@navbar-default-link-active-bg;
-            color:@navbar-default-link-active-color;
-          }
-        }
-      }
-      &.logo {
-        flex:1 0 auto;
-      }
-    }
+@media(min-width:@screen-sm-min) {
+  snap-content#BASE{
+    right:265px;
+    left:265px;
   }
 }
+

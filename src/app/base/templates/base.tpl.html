@@ -1,8 +1,10 @@
-<aside id="MAIN_LEFT" snap-drawer class="hidden-print">
-    <div ui-view="left"></div>
-</aside>
-<snap-content id="MAIN" snap-id="'MAIN'">
-    <nav class="navbar-flex hidden-print" ui-view="top"></nav>
-    <main ui-view></main>
+<div ui-view="left"></div>
+<div ui-view="right"></div>
+<snap-content id="BASE" snap-id="'MAIN'">
+    <article>
+        <header id="BASE_TOP" ui-view="top"></header>
+        <main ui-view></main>
+        <footer id="BASE_BOTTOM" ui-view="bottom"></footer>
+    </article>
 </snap-content>
 

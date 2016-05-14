@@ -17,17 +17,20 @@ function BaseConfig( $stateProvider ) {
                     templateUrl: 'base/templates/base.tpl.html',
                     controller: 'BaseCtrl',
                     controllerAs: 'base'
+
                 },
                 'top@base': {
-                    templateUrl: 'base/templates/base.top.tpl.html',
-                    controller: 'BaseTopCtrl',
-                    controllerAs: 'baseTop'
+                    templateUrl: 'base/templates/base.top.tpl.html'
                 },
                 'left@base': {
-                    templateUrl: 'base/templates/base.left.tpl.html',
-                    controller: 'BaseLeftCtrl',
-                    controllerAs: 'baseLeft'
+                    templateUrl: 'base/templates/base.left.tpl.html'
+                },
+                'right@base': {
+                    templateUrl: 'base/templates/base.right.tpl.html'
                 }
+                //'bottom@base': {
+                //    templateUrl: 'base/templates/base.bottom.tpl.html'
+                //}
             },
             resolve: {
                 CurrentUser: function($q, $state, OrderCloud) {
@@ -77,9 +80,11 @@ function BaseConfig( $stateProvider ) {
         });
 }
 
-function BaseController(CurrentUser, defaultErrorMessageResolver) {
+function BaseController(CurrentUser, ComponentList, defaultErrorMessageResolver) {
     var vm = this;
     vm.currentUser = CurrentUser;
+    vm.catalogItems = ComponentList.nonSpecific;
+    vm.organizationItems = ComponentList.buyerSpecific;
 
     defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
         errorMessages['customPassword'] = 'Password must be at least eight characters long and include at least one letter and one number';
@@ -91,14 +96,4 @@ function BaseController(CurrentUser, defaultErrorMessageResolver) {
         errorMessages['confirmpassword'] = 'Your passwords do not match';
         errorMessages['noSpecialChars'] = 'Only Alphanumeric characters are allowed';
     });
-}
-
-function BaseLeftController(ComponentList) {
-    var vm = this;
-    vm.catalogItems = ComponentList.nonSpecific;
-    vm.organizationItems = ComponentList.buyerSpecific;
-}
-
-function BaseTopController() {
-    var vm = this;
 }

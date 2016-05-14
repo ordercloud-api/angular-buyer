@@ -1,10 +1,100 @@
+html {
+  height:100vh;
+  width:100vw;
+  overflow:hidden;
+}
+
 body {
-  overflow-x:hidden;
-  @media(min-width:@screen-sm-min) {
-    &.snapjs-left {
-      snap-content {
-        margin-right:265px;
-      }
+  height:100%;
+  width:100%;
+  overflow:hidden;
+}
+
+/*@media(min-width:@screen-sm-min) {
+  div[ui-view="right"] + snap-content#BASE {
+    right:265px;
+  }
+  div[ui-view="left"] + snap-content#BASE {
+    left:265px;
+  }
+}*/
+
+#BASE {
+  main {
+    flex:1 1 auto;
+    overflow-y:auto;
+    overflow-x:hidden;
+    position:relative;
+  }
+  > article {
+    overflow:hidden;
+    height:100%;
+    display:flex;
+    flex-flow:column nowrap;
+  }
+}
+
+#BASE_TOP,
+#BASE_BOTTOM {
+  flex:0 1 auto;
+  .navbar {
+    margin:0;
+    border-radius:0;
+    border-left-width:0;
+    border-right-width:0;
+  }
+}
+
+#BASE_TOP {
+  .navbar {
+    border-top-width:0;
+  }
+}
+
+#BASE_BOTTOM {
+  .navbar {
+    border-bottom-width:0;
+  }
+}
+
+@left-right-color-offset:5;
+
+#BASE_LEFT,
+#BASE_RIGHT {
+  padding:@grid-gutter-width/2;
+  background-color:darken(@navbar-default-bg, @left-right-color-offset);
+  border-style:solid;
+  border-color:darken(@navbar-default-border, @left-right-color-offset);
+  border-width:0;
+}
+
+#BASE_LEFT {
+  border-right-width:1px;
+}
+
+#BASE_RIGHT {
+  border-left-width:1px;
+  .shopping-cart {
+    display:flex;
+    flex-flow:column nowrap;
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    header,
+    footer {
+      flex: 0 1 auto;
+    }
+    header {
+      border-bottom:1px solid darken(@navbar-default-border, @left-right-color-offset);
+    }
+    footer {
+      border-top:1px solid darken(@navbar-default-border, @left-right-color-offset);
+    }
+    div {
+      padding:@grid-gutter-width/2;
+      flex: 1 1 auto;
     }
   }
 }
@@ -18,8 +108,12 @@ body {
   max-width:100%;
 }
 
+.container-fluid {
+  height:100%;
+}
+
 snap-content {
-  background-color:white;
+  background-color:@body-bg;
 }
 
 //TABLES WITH FIXED HEADERS
@@ -32,10 +126,9 @@ snap-content {
     position:absolute;
     left:0; right:0; top:0;
     height:@table-header-height;
-    background:@table-header-bg;
-    border:1px solid @table-header-border-color;
+    background:@table-bg;
+    border:1px solid @table-border-color;
     border-bottom-width:2px;
-    .border-top-radius(@table-border-radius);
   }
   .table-container {
     background-color:@table-bg;
@@ -44,7 +137,6 @@ snap-content {
     max-height:@infinite-scroll-size;
     border: 1px solid @table-border-color;
     border-top-width:0;
-    .border-bottom-radius(@table-border-radius);
     table {
       border-spacing:0;
       margin-bottom:0;
@@ -77,12 +169,12 @@ snap-content {
         position: absolute;
         background: transparent;
         padding:@table-cell-padding;
-        color:@table-header-color;
+        color: @text-color;
         top: 0;
         margin-left: -25px;
         line-height: @line-height-base;
         vertical-align: bottom;
-        border-left:1px solid @table-header-border-color;
+        border-left:1px solid @table-border-color;
       }
       &:first-child div{
         border: none;

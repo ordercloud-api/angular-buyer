@@ -1,17 +1,38 @@
 //These are the variables used throughout the application. This is where
 //overwrites that are not specific to components should be maintained.
 //Interconnected table color styles
-@table-bg:white;
-@table-bg-accent:darken(@table-bg, 5);
-@table-bg-hover:darken(@table-bg-accent, 5);
-
-@table-border-color:darken(@table-bg, 15);
-@table-border-radius:@border-radius-base;
-
-@table-header-bg:white;
-@table-header-border-color:darken(@table-header-bg, 15);
-@table-header-color:@text-color;
+@table-bg:@body-bg;
 @table-header-height:@table-cell-padding*2 + @line-height-computed;
 
 //Infinite Scroll
-@infinite-scroll-size: ~'calc(100vh - 320px)';
+@infinite-scroll-size: ~'calc(100vh - 420px)';
+
+/*
+
+@body-bg: #bfe3ff;
+//@text-color:darken(black, 15);
+
+@gray-base:              darken(@body-bg, 15);
+
+@gray-darker:            darken(@gray-base, 93.5%); // #222
+@gray-dark:              darken(@gray-base, 46.7%);   // #333
+@gray:                   darken(@gray-base, 33.5%); // #555
+@gray-light:             darken(@gray-base, 20%); // #777
+@gray-lighter:           darken(@gray-base, 13.5%); // #eee
+
+@navbar-default-bg: darken(@gray-base, 10);
+@nav-link-hover-bg: darken(@navbar-default-bg, 10);
+@nav-disabled-link-color: darken(@navbar-default-bg, 5);
+@nav-disabled-link-hover-color: darken(@navbar-default-bg, 5);
+
+@table-border-color:@gray-lighter;
+@table-bg-accent:lighten(@gray-lighter, 15);
+@table-bg-hover:lighten(@gray-lighter, 10);
+
+@btn-default-color:@text-color;
+@btn-default-bg:lighten(@gray-lighter, 15);
+@btn-default-border:@gray-lighter;
+
+@input-bg:lighten(@body-bg, 25);
+@input-border:@gray-light;
+*/

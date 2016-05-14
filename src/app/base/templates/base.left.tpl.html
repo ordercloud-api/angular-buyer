@@ -1,4 +1,4 @@
-<aside id="BaseLeft">
+<aside id="BASE_LEFT" snap-drawer class="hidden-print">
     <nav>
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation" ui-sref-active="active">
@@ -6,19 +6,19 @@
             </li>
         </ul>
     </nav>
-    <nav ng-if="baseLeft.catalogItems.length">
-        <h4>Catalog</h4>
+    <nav ng-if="base.catalogItems.length">
+        <h4>Organization</h4>
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" ng-repeat="item in baseLeft.catalogItems" ui-sref-active="active">
+            <li role="presentation" ng-repeat="item in base.catalogItems" ui-sref-active="active">
                 <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>
             </li>
         </ul>
     </nav>
-    <nav ng-if="baseLeft.organizationItems.length">
-        <h4>Organization</h4>
+    <nav ng-if="base.organizationItems.length">
+        <h4>Buyer Company</h4>
         <ordercloud-select-buyer></ordercloud-select-buyer>
         <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" ng-repeat="item in baseLeft.organizationItems" ui-sref-active="active">
+            <li role="presentation" ng-repeat="item in base.organizationItems" ui-sref-active="active">
                 <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>
                 <div ng-if="item.Display == 'Catalog' && application.$state.includes('catalog')">
                     <catalog-tree></catalog-tree>

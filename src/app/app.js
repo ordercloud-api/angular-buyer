@@ -81,7 +81,8 @@ function AppCtrl( $rootScope, $state, appname, snapRemote, LoginService, toastr,
             snapRemote.close('MAIN');
             vm.showMenuToggle = true;
         } else {
-            snapRemote.open('left', 'MAIN');
+            snapRemote.close('left', 'MAIN');
+            snapRemote.close('right', 'MAIN');
             snapRemote.disable('MAIN');
             vm.showMenuToggle = false;
         }
@@ -135,5 +136,5 @@ function Interceptor( $httpProvider ) {
 }
 
 function Drawers(snapRemoteProvider) {
-    snapRemoteProvider.globalOptions.disable = 'right';
+    //snapRemoteProvider.globalOptions.disable = 'right';
 }
