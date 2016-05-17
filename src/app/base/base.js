@@ -10,7 +10,6 @@ function BaseConfig( $stateProvider, $injector ) {
             templateUrl: 'base/templates/base.tpl.html',
             controller: 'BaseCtrl',
             controllerAs: 'base'
-
         }
     };
 
