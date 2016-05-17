@@ -35,6 +35,7 @@
     "ordercloud-ng-sdk": "^1.0.12",
     "angular-auto-validate": "^1.19.3",
     "font-awesome": "^4.5.0",
+    "angular-snap": "^1.8.5",
     "angular-localforage": "^1.2.5",
     "underscore": "^1.8.3"
   },

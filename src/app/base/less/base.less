@@ -1,140 +1,108 @@
-/*!
- * Start Bootstrap - Simple Sidebar HTML Template (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
-#DashboardWrapper {
-  padding-left: 0;
-  transition: all 0.5s ease;
-  &.toggled {
-    padding-left: @dashboard-leftnav-width;
-    #DashboardLeftNav {
-      width: @dashboard-leftnav-width;
+#BASE {
+  background-color:@body-bg;
+  main {
+    flex:1 1 auto;
+    overflow-y:auto;
+    overflow-x:hidden;
+    position:relative;
+  }
+  > article {
+    overflow:hidden;
+    height:100%;
+    display:flex;
+    flex-flow:column nowrap;
+  }
+}
+
+#BASE {
+  &.desktop-left,
+  &.desktop-right {
+    transition:right 200ms ease-in-out, left 200ms ease-in-out;
+  }
+}
+
+@media(min-width:@screen-sm-min) {
+  #BASE {
+    &.desktop-left {
+      left:@base-left-width;
     }
-    #DashboardContent {
-      position: absolute;
-      margin-right: -@dashboard-leftnav-width;
-    }
-  }
-}
-
-#DashboardLeftNav {
-  z-index: 1000;
-  position: fixed;
-  left: @dashboard-leftnav-width;
-  width: 0;
-  height: 100%;
-  margin-left: -@dashboard-leftnav-width;
-  overflow:hidden;
-  background-color:@dashboard-leftnav-bg;
-  border-right:1px solid @dashboard-leftnav-border;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-}
-
-#DashboardContent {
-  width: 100%;
-  position: absolute;
-}
-
-@media(min-width:768px) {
-  #DashboardWrapper {
-    padding-left: @dashboard-leftnav-width;
-    &.toggled {
-      padding-left: 0;
-      #DashboardLeftNav {
-        width: 0;
-      }
-      #DashboardContent {
-        position: relative;
-        margin-right: 0;
-      }
-    }
-  }
-
-  #DashboardLeftNav {
-    width: @dashboard-leftnav-width;
-  }
-
-  #DashboardContent {
-    position: relative;
-  }
-}
-
-#BaseLeft {
-  height:100%;
-  overflow-y:auto;
-  padding: @padding-base-horizontal;
-  width: @dashboard-leftnav-width;
-  white-space: nowrap;
-  h4 {
-    margin-left:-@padding-base-horizontal;
-    margin-right:-@padding-base-horizontal;
-    background-color:@navbar-default-bg;
-    padding:@padding-base-horizontal;
-  }
-  ul li ul {
-    background-color: #ffffff;
-    border-radius: 0 0 4px 4px;
-    border-left:2px solid #ebebeb;
-    padding-top: 5px;
-    li {
-      margin-left:10px !important;
-      margin-right: 5px !important;
-      &:last-child {
-        margin-bottom: 5px;
-      }
-      a {
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      &.active {
-        > a {
-          background-color:@brand-primary;
-        }
-      }
-    }
-  }
-
-
-}
-
-.navbar-flex {
-  #BaseTop {
-    background-color:@navbar-default-bg;
-    border-bottom:1px solid @navbar-default-border;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: flex-start;
-    align-items:center;
-    margin-bottom:@navbar-margin-bottom;
-    > div {
-      max-height:@navbar-height;
-      &.link {
-        flex:0 1 auto;
-        > a {
-          display:block;
-          line-height:@navbar-height - 20px;
-          padding:@nav-link-padding;
-          color:@navbar-default-link-color;
-          &:hover {
-            background-color:@navbar-default-link-hover-bg;
-            color:@navbar-default-link-hover-color;
-          }
-          &.active,
-          &:active,
-          &:focus {
-            background-color:@navbar-default-link-active-bg;
-            color:@navbar-default-link-active-color;
-          }
-        }
-      }
-      &.logo {
-        flex:1 0 auto;
-      }
+    &.desktop-right {
+      right:@base-right-width;
     }
   }
 }
+
+#BASE_TOP,
+#BASE_BOTTOM {
+  flex:0 1 auto;
+  .navbar {
+    margin:0;
+    border-radius:0;
+    border-left-width:0;
+    border-right-width:0;
+  }
+}
+
+#BASE_TOP {
+  .navbar {
+    border-top-width:0;
+  }
+}
+
+#BASE_BOTTOM {
+  .navbar {
+    border-bottom-width:0;
+  }
+}
+
+#BASE_LEFT,
+#BASE_RIGHT {
+  padding:@grid-gutter-width/2;
+  background-color:@side-nav-bg;;
+  border-style:solid;
+  border-color:@side-nav-border;
+  border-width:0;
+}
+
+#BASE_LEFT {
+  border-right-width:1px;
+  &.snap-drawer {
+    width:@base-left-width;
+  }
+}
+
+#BASE_RIGHT {
+  border-left-width:1px;
+  &.snap-drawer {
+    width:@base-right-width;
+  }
+}
+
+//===== Minicart in Base top/bottom
+#BASE_BOTTOM {
+  .dropdown .dropdown-menu {
+    top: auto;
+    bottom: 100%;
+    margin-bottom:2px;
+  }
+  :not(#minicart).dropdown .dropdown-menu {
+    margin-bottom: 0;
+    .border-top-radius(@border-radius-base);
+    .border-bottom-radius(0);
+  }
+  .caret {
+    border-top: 0;
+    border-bottom: 4px dashed;
+    content: "";
+  }
+}
+
+#BASE_BOTTOM,
+#BASE_TOP {
+  #minicart {
+    &:extend(.navbar-right);
+    &:extend(.navbar-form);
+    margin-right:0;
+  }
+}
+

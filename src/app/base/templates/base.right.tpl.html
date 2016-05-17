@@ -1,4 +1,4 @@
-<aside id="BASE_LEFT" snap-drawer class="hidden-print">
+<aside id="BASE_RIGHT" snap-drawer="right" class="hidden-print">
     <nav>
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation" ui-sref-active="active">
@@ -16,7 +16,7 @@
     </nav>
     <nav ng-if="base.organizationItems.length">
         <h4 class="text-primary">Buyer Company</h4>
-        <ordercloud-select-buyer></ordercloud-select-buyer>
+        <ordercloud-select-buyer align="right"></ordercloud-select-buyer>
         <ul class="nav nav-pills nav-stacked">
             <li role="presentation" ng-repeat="item in base.organizationItems | orderBy:'Display'" ui-sref-active="active">
                 <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>

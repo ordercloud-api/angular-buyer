@@ -1,7 +1,10 @@
-<div id="DashboardWrapper" ng-class="{'toggled':!application.showLeftNav}">
-    <div id="DashboardLeftNav" ui-view="left" class="hidden-print"></div>
-    <div id="DashboardContent">
-        <nav class="navbar-flex hidden-print" ui-view="top"></nav>
+<div ui-view="left"></div>
+<div ui-view="right"></div>
+<snap-content id="BASE" snap-id="'MAIN'" snap-options="base.snapOptions" ng-class="{'desktop-left':base.left, 'desktop-right':base.right}">
+    <article>
+        <header id="BASE_TOP" ui-view="top"></header>
         <main ui-view></main>
-    </div>
-</div>
+        <footer id="BASE_BOTTOM" ui-view="bottom"></footer>
+    </article>
+</snap-content>
+
