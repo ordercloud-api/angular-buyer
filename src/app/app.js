@@ -27,7 +27,6 @@ angular.module( 'orderCloud', [
     .config( Routing )
     .config( ErrorHandling )
     .config( Interceptor )
-    .config( Drawers )
     .controller( 'AppCtrl', AppCtrl )
     .config(DatePickerConfig)
 ;
@@ -58,46 +57,16 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, snapRemote, LoginService, toastr, $ocMedia ) {
+function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
-    vm.showLeftNav = true;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
-
-    function _isMobile() {
-        return $ocMedia('max-width:767px');
-    }
-
-    vm.datepickerOptions = {
-        showWeeks: false,
-        showButtonBar: false
-    };
-
-    function initDrawers(isMobile) {
-        if (isMobile) {
-            snapRemote.enable('MAIN');
-            snapRemote.close('MAIN');
-            vm.showMenuToggle = true;
-        } else {
-            snapRemote.close('left', 'MAIN');
-            snapRemote.close('right', 'MAIN');
-            snapRemote.disable('MAIN');
-            vm.showMenuToggle = false;
-        }
-    };
-
-    initDrawers(_isMobile());
 
     vm.logout = function() {
         LoginService.Logout();
     };
-
-    $rootScope.$watch(_isMobile, function(n, o) {
-        if (n === o) return;
-        initDrawers(n);
-    });
 
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
         if (toState.data && toState.data.componentName) {
@@ -133,8 +102,4 @@ function Interceptor( $httpProvider ) {
             }
         };
     });
-}
-
-function Drawers(snapRemoteProvider) {
-    //snapRemoteProvider.globalOptions.disable = 'right';
 }

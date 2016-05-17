@@ -1,6 +1,6 @@
 <div ui-view="left"></div>
 <div ui-view="right"></div>
-<snap-content id="BASE" snap-id="'MAIN'">
+<snap-content id="BASE" snap-id="'MAIN'" snap-options="base.snapOptions" ng-class="{'desktop-left':base.left, 'desktop-right':base.right}">
     <article>
         <header id="BASE_TOP" ui-view="top"></header>
         <main ui-view></main>

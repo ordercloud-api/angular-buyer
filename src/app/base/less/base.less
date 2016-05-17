@@ -4,10 +4,79 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-@media(min-width:@screen-sm-min) {
-  snap-content#BASE{
-    right:265px;
-    left:265px;
+#BASE {
+  main {
+    flex:1 1 auto;
+    overflow-y:auto;
+    overflow-x:hidden;
+    position:relative;
+  }
+  > article {
+    overflow:hidden;
+    height:100%;
+    display:flex;
+    flex-flow:column nowrap;
   }
 }
+
+#BASE {
+  &.desktop-left,
+  &.desktop-right {
+    transition:right 200ms ease-in-out, left 200ms ease-in-out;
+  }
+}
+
+@media(min-width:@screen-sm-min) {
+  #BASE {
+    &.desktop-left {
+      left:265px;
+    }
+    &.desktop-right {
+      right:265px;
+    }
+  }
+}
+
+#BASE_TOP,
+#BASE_BOTTOM {
+  flex:0 1 auto;
+  .navbar {
+    margin:0;
+    border-radius:0;
+    border-left-width:0;
+    border-right-width:0;
+  }
+}
+
+#BASE_TOP {
+  .navbar {
+    border-top-width:0;
+  }
+}
+
+#BASE_BOTTOM {
+  .navbar {
+    border-bottom-width:0;
+  }
+}
+
+@left-right-shade:40;
+
+#BASE_LEFT,
+#BASE_RIGHT {
+  padding:@grid-gutter-width/2;
+  background-color:shade(@navbar-default-bg, @left-right-shade);
+  border-style:solid;
+  border-color:shade(@navbar-default-bg, (@left-right-shade + 5));
+  border-width:0;
+}
+
+#BASE_LEFT {
+  border-right-width:1px;
+}
+
+#BASE_RIGHT {
+  border-left-width:1px;
+}
+
 
