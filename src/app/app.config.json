@@ -1,13 +1,13 @@
 {
-  "appname": "OrderCloud Angular Seed",
-  "ocscope": "FullAccess DevCenterImpersonate",
-  "clientid": "FA2E05CB-40DE-4210-AF48-AB7BF02B8F0B",
-  "buyerid": "component_1",
-  "environment": "qa",
+  "appname": "XXXXX",
+  "ocscope": "BuyerReader",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX",
+  "buyerid": "XXXXX",
+  "environment": "prod",
   "base": {
-    "left":false,
-    "right":true,
+    "left":true,
+    "right":false,
     "top":true,
-    "bottom":true
+    "bottom":false
   }
 }
