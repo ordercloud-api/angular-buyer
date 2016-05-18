@@ -1,13 +1,32 @@
 html {
   height:100vh;
   width:100vw;
+  max-width:@app-container-size;
+  margin:0 auto;
   overflow:hidden;
+  background-color:@html-bg;
 }
 
 body {
   height:100%;
   width:100%;
   overflow:hidden;
+  position:relative;
+}
+
+main {
+  flex:1 1 auto;
+  overflow:hidden;
+  position:relative;
+  > [id^="COMPONENT_"] { //Make the component container element fill the entire <main> for background styles
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
 }
 
 [ui-sref],
