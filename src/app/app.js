@@ -18,7 +18,8 @@ angular.module( 'orderCloud', [
         'ordercloud-auto-id',
         'ordercloud-current-order',
         'ordercloud-address',
-        'ordercloud-lineitems'
+        'ordercloud-lineitems',
+        'ordercloud-geography'
     ])
 
     .run( SetBuyerID )
@@ -26,7 +27,13 @@ angular.module( 'orderCloud', [
     .config( ErrorHandling )
     .config( Interceptor )
     .controller( 'AppCtrl', AppCtrl )
+    .config(DatePickerConfig)
 ;
+
+function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
+    uibDatepickerConfig.showWeeks = false;
+    uibDatepickerPopupConfig.showButtonBar = false;
+}
 
 function SetBuyerID( OrderCloud, buyerid ) {
     OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
@@ -49,12 +56,18 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, LoginService, toastr ) {
+function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
     vm.showLeftNav = true;
     vm.$state = $state;
+    vm.$ocMedia = $ocMedia;
+
+    vm.datepickerOptions = {
+        showWeeks: false,
+        showButtonBar: false
+    }
 
     vm.toggleLeftNav = function() {
         vm.showLeftNav = !vm.showLeftNav;
@@ -70,6 +83,10 @@ function AppCtrl( $rootScope, $state, appname, LoginService, toastr ) {
         } else {
             vm.title = appname;
         }
+    });
+
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        console.log(error);
     });
 
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {

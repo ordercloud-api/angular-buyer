@@ -17,7 +17,7 @@ describe('Component: Files', function() {
             fileService = FileService;
         }));
     });
-    xdescribe('Directive: ordercloudFileUpload', function() {
+    describe('Directive: ordercloudFileUpload', function() {
         var element;
         beforeEach(inject(function($compile) {
             scope.model = {};

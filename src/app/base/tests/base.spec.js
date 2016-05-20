@@ -1,14 +1,16 @@
-xdescribe('Component: Base', function() {
+describe('Component: Base', function() {
     var q,
         scope,
-        oc;
+        oc,
+        underscore;
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
     beforeEach(module('ui.router'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, Underscore) {
         q = $q;
         scope = $rootScope.$new();
         oc = OrderCloud;
+        underscore = Underscore;
     }));
     describe('State: Base', function() {
         var state;
@@ -40,8 +42,9 @@ xdescribe('Component: Base', function() {
             expect(oc.BuyerID.Set).toHaveBeenCalledWith(null);
             expect($state.go).toHaveBeenCalledWith('login');
         }));
-        it ('should resolve ComponentsList', inject(function($injector) {
-            var components = $injector.invoke(state.resolve.ComponentList);
+        it ('should resolve ComponentsList', inject(function($injector, $state) {
+            var currentUser = $injector.invoke(state.resolve.CurrentUser);
+            var components = $injector.invoke(state.resolve.ComponentList, scope, {$state: $state, $q: q, Underscore: underscore, CurrentUser: currentUser});
             expect(components.nonSpecific).not.toBe(null);
             expect(components.buyerSpecific).not.toBe(null);
         }));
@@ -78,9 +81,6 @@ xdescribe('Component: Base', function() {
         it ('should initialize the components lists', function() {
             expect(baseLeftCtrl.catalogItems).toBe(fake_components.nonSpecific);
             expect(baseLeftCtrl.organizationItems).toBe(fake_components.buyerSpecific);
-        });
-        it ('should initialize isCollapsed to true', function() {
-            expect(baseLeftCtrl.isCollapsed).toBe(true);
         });
     });
 
