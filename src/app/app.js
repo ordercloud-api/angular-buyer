@@ -64,6 +64,14 @@ function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) 
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
 
+    //Detect if the app was loaded on a touch device with relatively good certainty
+    //http://stackoverflow.com/a/6262682
+    vm.isTouchDevice = (function() {
+        var el = document.createElement('div');
+        el.setAttribute('ongesturestart', 'return;'); // or try "ontouchstart"
+        return typeof el.ongesturestart === "function";
+    })();
+
     vm.logout = function() {
         LoginService.Logout();
     };
