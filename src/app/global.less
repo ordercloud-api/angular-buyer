@@ -38,6 +38,10 @@ main {
   max-width:100%;
 }
 
+.pagination {
+  margin:0;
+}
+
 //TABLES WITH FIXED HEADERS
 .table-fixed-header {
   position:relative;
@@ -119,5 +123,110 @@ main {
 colgroup {
   > col.action-column {
     width:70px;
+  }
+}
+
+// OC Responsive Tables
+// commandeered from http://codepen.io/pixelchar/pen/rfuqK
+.oc-table-responsive {
+  &.table-bordered {
+    border:none;
+    & > tbody > tr{
+      & > th {
+        border:none;
+      }
+      & > td {
+        border-width:1px 0 0 0;
+      }
+    }
+  }
+  thead {
+    // Accessibly hide <thead> on narrow viewports
+    position: absolute;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
+
+  // Set these items to display: block for narrow viewports
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+    white-space: normal;
+  }
+
+  tr {
+    &:extend(.panel); //Mobile table row looks like a bootstrap panel
+    border-color: @panel-default-border;
+    overflow:hidden;
+  }
+
+  tbody {
+    & > tr > th {
+      border-top: none;
+      background-color: @panel-default-heading-bg;
+    }
+    td {
+      text-align:right;
+      &[data-title]:before {
+        content: attr(data-title);
+        float: left;
+        color: @gray-light;
+      }
+    }
+  }
+
+  @media(min-width:@screen-sm-min) {
+    &.table-bordered {
+      border:1px solid @table-border-color;
+      & > tbody > tr{
+        & > th {
+          border:1px solid @table-border-color;
+        }
+        & > td {
+          border-width:1px;
+        }
+      }
+    }
+    thead {
+      position: relative;
+      clip: auto;
+      height: auto;
+      width: auto;
+      overflow: auto;
+    }
+    tr {
+      display: table-row;
+      margin-bottom: 0;
+      border: none;
+    }
+    th,
+    td {
+      // Undo display: block
+      display: table-cell;
+    }
+    tbody {
+      display:table-row-group;
+      tr {
+        display:table-row;
+      }
+      & > tr > th {
+        border-top: 1px solid @table-border-color;
+        background-color: transparent;
+      }
+      td {
+        text-align:initial;
+        &[data-title]:before {
+          content: none;
+        }
+      }
+    }
+
   }
 }
