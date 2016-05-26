@@ -1,0 +1,174 @@
+//Theming
+@gray-base: #000;
+@gray-darker: lighten(@gray-base, 93.5%); // #222
+@gray-dark: lighten(@gray-base, 46.7%); // #333
+@gray: lighten(@gray-base, 33.5%); // #555
+@gray-light: lighten(@gray-base, 20%); // #777
+@gray-lighter: lighten(@gray-base, 13.5%); // #eee
+
+@brand-primary: #2692D5;
+@brand-success: #5cb85c;
+@brand-info: #5bc0de;
+@brand-warning: #f0ad4e;
+@brand-danger: #d9534f;
+
+//== Scaffolding
+//** Background color for `<body>`.
+@body-bg: @gray-lighter;
+//** Global text color on `<body>`.
+@text-color: @gray-darker;
+//** Global textual link color.
+@link-color: @brand-primary;
+//** Link hover color set via `darken()` function.
+@link-hover-color: lighten(@link-color, 15%);
+
+//== Navbar
+@navbar-default-color:             @gray-darker;
+@navbar-default-bg:                @gray-lighter;
+@navbar-default-border:            @gray-light;
+
+// Navbar links
+@navbar-default-link-color:                @gray-dark;
+@navbar-default-link-hover-color:          @gray-darker;
+@navbar-default-link-hover-bg:             transparent;
+@navbar-default-link-active-color:         @gray-darker;
+@navbar-default-link-active-bg:            darken(@navbar-default-bg, 6.5%);
+@navbar-default-link-disabled-color:       #ccc;
+@navbar-default-link-disabled-bg:          transparent;
+
+// Navbar brand label
+@navbar-default-brand-color:               @navbar-default-link-color;
+@navbar-default-brand-hover-color:         @navbar-default-link-hover-color;
+@navbar-default-brand-hover-bg:            transparent;
+
+// Navbar toggle
+@navbar-default-toggle-hover-bg:           #ddd;
+@navbar-default-toggle-icon-bar-bg:        #888;
+@navbar-default-toggle-border-color:       #ddd;
+
+//** Global color for active items (e.g., navs or dropdowns).
+@component-active-color:    #fff;
+//** Global background color for active items (e.g., navs or dropdowns).
+@component-active-bg:       @brand-primary;
+
+//== Dropdowns
+//
+//## Dropdown menu container and contents.
+
+//** Background for the dropdown menu.
+@dropdown-bg:                    darken(@navbar-default-bg, 6.5%);
+//** Dropdown menu `border-color`.
+@dropdown-border:                rgba(0,0,0,.15);
+//** Dropdown menu `border-color` **for IE8**.
+@dropdown-fallback-border:       @gray-light;
+//** Divider color for between dropdown items.
+@dropdown-divider-bg:            @gray-light;
+
+//** Dropdown link text color.
+@dropdown-link-color:            @gray-darker;
+//** Hover color for dropdown links.
+@dropdown-link-hover-color:      darken(@gray-dark, 5%);
+//** Hover background for dropdown links.
+@dropdown-link-hover-bg:         #f5f5f5;
+
+//** Active dropdown menu item text color.
+@dropdown-link-active-color:     @component-active-color;
+//** Active dropdown menu item background color.
+@dropdown-link-active-bg:        @component-active-bg;
+
+//** Disabled dropdown menu item background color.
+@dropdown-link-disabled-color:   @gray-light;
+
+//** Text color for headers within dropdown menus.
+@dropdown-header-color:          @gray-dark;
+
+//** Deprecated `@dropdown-caret-color` as of v3.1.0
+@dropdown-caret-color:           #000;
+
+//== Tables
+//** Background color used for `.table-striped`.
+@table-bg-accent:               @gray-light;
+//** Background color used for `.table-hover`.
+@table-bg-hover:                @gray-light;
+//** Border color for table and cell borders.
+@table-border-color:            @gray-light;
+
+//== List group
+//
+//##
+
+//** Background color on `.list-group-item`
+@list-group-bg:                 @gray-light;
+//** `.list-group-item` border color
+@list-group-border:             @gray-lighter;
+//** List group border radius
+@list-group-border-radius:      @border-radius-base;
+
+//** Background color of single list items on hover
+@list-group-hover-bg:           #f5f5f5;
+//** Text color of active list items
+@list-group-active-color:       @component-active-color;
+//** Background color of active list items
+@list-group-active-bg:          @component-active-bg;
+//** Border color of active list elements
+@list-group-active-border:      @list-group-active-bg;
+//** Text color for content within active list items
+@list-group-active-text-color:  lighten(@list-group-active-bg, 40%);
+
+//** Text color of disabled list items
+@list-group-disabled-color:      @gray-light;
+//** Background color of disabled list items
+@list-group-disabled-bg:         @gray-lighter;
+//** Text color for content within disabled list items
+@list-group-disabled-text-color: @list-group-disabled-color;
+
+@list-group-link-color:         #555;
+@list-group-link-hover-color:   @list-group-link-color;
+@list-group-link-heading-color: #333;
+
+//== Panels
+@panel-bg:                    @gray-light;
+//** Border color for elements within panels
+@panel-inner-border:          @gray-lighter;
+@panel-footer-bg:             @gray-lighter;
+@panel-default-text:          @gray-darker;
+@panel-default-border:        @gray-light;
+@panel-default-heading-bg:    @gray-light;
+
+//== Pagination
+@pagination-color:                     @link-color;
+@pagination-bg:                        @gray-light;
+@pagination-border:                    @gray-lighter;
+@pagination-hover-color:               @link-hover-color;
+@pagination-hover-bg:                  @gray-lighter;
+@pagination-hover-border:              @gray-lighter;
+@pagination-active-color:              #fff;
+@pagination-active-bg:                 @brand-primary;
+@pagination-active-border:             @gray-lighter;
+@pagination-disabled-color:            @gray-lighter;
+@pagination-disabled-bg:               @gray-light;
+@pagination-disabled-border:           @gray-lighter;
+
+//== Wells
+@well-bg:                     @gray-light;
+@well-border:                 @gray-lighter;
+
+//== Modals
+//** Background color of modal content area
+@modal-content-bg:                             @gray-lighter;
+//** Modal content border color
+@modal-content-border-color:                   @gray-lighter;
+//** Modal content border color **for IE8**
+@modal-content-fallback-border-color:          #999;
+
+//** Modal backdrop background color
+@modal-backdrop-bg:           #000;
+//** Modal backdrop opacity
+@modal-backdrop-opacity:      .5;
+//** Modal header border color
+@modal-header-border-color:   @gray-light;
+//** Modal footer border color
+@modal-footer-border-color:   @modal-header-border-color;
+
+//== Jumbotron
+@jumbotron-bg:                   @gray-light;

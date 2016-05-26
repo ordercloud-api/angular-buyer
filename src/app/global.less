@@ -170,14 +170,14 @@ colgroup {
   tbody {
     & > tr > th {
       border-top: none;
-      background-color: @panel-default-heading-bg;
+      //background-color: @panel-default-heading-bg;
     }
     td {
       text-align:right;
       &[data-title]:before {
         content: attr(data-title);
         float: left;
-        color: @gray-light;
+        color: darken(@panel-default-text,33.5%);
       }
     }
   }
@@ -203,8 +203,12 @@ colgroup {
     }
     tr {
       display: table-row;
+      //Remove panel styles
       margin-bottom: 0;
+      background-color: transparent;
       border: none;
+      border-radius: 0;
+      box-shadow: none;
     }
     th,
     td {
@@ -227,6 +231,5 @@ colgroup {
         }
       }
     }
-
   }
 }
