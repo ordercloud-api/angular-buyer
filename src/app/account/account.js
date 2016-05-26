@@ -18,7 +18,7 @@ function AccountConfig( $stateProvider ) {
 			controllerAs: 'account'
 		})
 		.state( 'account.changePassword', {
-			url: '/account/changepassword',
+			url: '/changepassword',
 			templateUrl: 'account/templates/changePassword.tpl.html',
 			controller: 'ChangePasswordCtrl',
 			controllerAs: 'changePassword'

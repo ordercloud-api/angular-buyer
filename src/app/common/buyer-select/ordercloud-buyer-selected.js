@@ -7,7 +7,9 @@ angular.module('ordercloud-buyer-select', [])
 
 function SelectBuyerDirective() {
     return {
-        scope: {},
+        scope: {
+            align:'@'
+        },
         restrict: 'E',
         templateUrl: 'common/buyer-select/templates/buyer-select.tpl.html',
         controller: 'SelectBuyerCtrl',
@@ -15,8 +17,10 @@ function SelectBuyerDirective() {
     }
 }
 
-function SelectBuyerController($state, OrderCloud) {
+function SelectBuyerController($scope, $state, OrderCloud) {
     var vm = this;
+
+    vm.align = $scope.align;
 
     OrderCloud.Buyers.List().then(function(data) {
         vm.BuyerList = data;

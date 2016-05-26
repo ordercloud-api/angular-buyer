@@ -1,5 +1,33 @@
+html {
+  height:100vh;
+  width:100vw;
+  max-width:@app-container-size;
+  margin:0 auto;
+  overflow:hidden;
+  background-color:@html-bg;
+}
+
 body {
-  overflow-x:hidden;
+  height:100%;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+
+main {
+  flex:1 1 auto;
+  overflow:hidden;
+  position:relative;
+  > [id^="COMPONENT_"] { //Make the component container element fill the entire <main> for background styles
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:25px;
+  }
 }
 
 [ui-sref],
@@ -9,6 +37,10 @@ body {
 
 .container {
   max-width:100%;
+}
+
+.pagination {
+  margin:0;
 }
 
 //TABLES WITH FIXED HEADERS
@@ -21,10 +53,9 @@ body {
     position:absolute;
     left:0; right:0; top:0;
     height:@table-header-height;
-    background:@table-header-bg;
-    border:1px solid @table-header-border-color;
+    background:@table-bg;
+    border:1px solid @table-border-color;
     border-bottom-width:2px;
-    .border-top-radius(@table-border-radius);
   }
   .table-container {
     background-color:@table-bg;
@@ -33,7 +64,6 @@ body {
     max-height:@infinite-scroll-size;
     border: 1px solid @table-border-color;
     border-top-width:0;
-    .border-bottom-radius(@table-border-radius);
     table {
       border-spacing:0;
       margin-bottom:0;
@@ -66,12 +96,12 @@ body {
         position: absolute;
         background: transparent;
         padding:@table-cell-padding;
-        color:@table-header-color;
+        color: @text-color;
         top: 0;
         margin-left: -25px;
         line-height: @line-height-base;
         vertical-align: bottom;
-        border-left:1px solid @table-header-border-color;
+        border-left:1px solid @table-border-color;
       }
       &:first-child div{
         border: none;
@@ -94,5 +124,110 @@ body {
 colgroup {
   > col.action-column {
     width:70px;
+  }
+}
+
+// OC Responsive Tables
+// commandeered from http://codepen.io/pixelchar/pen/rfuqK
+.oc-table-responsive {
+  &.table-bordered {
+    border:none;
+    & > tbody > tr{
+      & > th {
+        border:none;
+      }
+      & > td {
+        border-width:1px 0 0 0;
+      }
+    }
+  }
+  thead {
+    // Accessibly hide <thead> on narrow viewports
+    position: absolute;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
+
+  // Set these items to display: block for narrow viewports
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+    white-space: normal;
+  }
+
+  tr {
+    &:extend(.panel); //Mobile table row looks like a bootstrap panel
+    border-color: @panel-default-border;
+    overflow:hidden;
+  }
+
+  tbody {
+    & > tr > th {
+      border-top: none;
+      background-color: @panel-default-heading-bg;
+    }
+    td {
+      text-align:right;
+      &[data-title]:before {
+        content: attr(data-title);
+        float: left;
+        color: @gray-light;
+      }
+    }
+  }
+
+  @media(min-width:@screen-sm-min) {
+    &.table-bordered {
+      border:1px solid @table-border-color;
+      & > tbody > tr{
+        & > th {
+          border:1px solid @table-border-color;
+        }
+        & > td {
+          border-width:1px;
+        }
+      }
+    }
+    thead {
+      position: relative;
+      clip: auto;
+      height: auto;
+      width: auto;
+      overflow: auto;
+    }
+    tr {
+      display: table-row;
+      margin-bottom: 0;
+      border: none;
+    }
+    th,
+    td {
+      // Undo display: block
+      display: table-cell;
+    }
+    tbody {
+      display:table-row-group;
+      tr {
+        display:table-row;
+      }
+      & > tr > th {
+        border-top: 1px solid @table-border-color;
+        background-color: transparent;
+      }
+      td {
+        text-align:initial;
+        &[data-title]:before {
+          content: none;
+        }
+      }
+    }
+
   }
 }

@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     templateCache = require('gulp-angular-templatecache'),
     htmlmin = require('gulp-htmlmin'),
     uglify = require('gulp-uglify'),
+    fileSort = require('gulp-angular-filesort'),
     wrapper = require('gulp-wrapper');
 
 gulp.task('clean:app-js', function() {
@@ -32,14 +33,15 @@ gulp.task('app-js', ['clean:app-js'], function() {
         .pipe(ngConstant(config.ngConstantSettings))
         .pipe(jsonFilter.restore)
         .pipe(htmlFilter)
-        .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
+        //.pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(templateCache(config.templateCacheSettings))
         .pipe(htmlFilter.restore)
         .pipe(jsFilter)
+        .pipe(fileSort())
         .pipe(wrapper(config.wrapper))
         .pipe(ngAnnotate())
         .pipe(concat('app.js'))
         .pipe(rev())
-        .pipe(uglify())
+        .pipe(uglify({mangle:false})) //turning off mangle to fix the compile error
         .pipe(gulp.dest(config.compile + 'js/'))
 });

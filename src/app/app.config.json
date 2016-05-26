@@ -3,5 +3,11 @@
   "ocscope": "BuyerReader",
   "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX",
   "buyerid": "XXXXX",
-  "environment": "prod"
+  "environment": "prod",
+  "base": {
+    "left":true,
+    "right":false,
+    "top":true,
+    "bottom":false
+  }
 }

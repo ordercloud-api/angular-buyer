@@ -1,17 +1,14 @@
 //These are the variables used throughout the application. This is where
 //overwrites that are not specific to components should be maintained.
 //Interconnected table color styles
-@table-bg:white;
-@table-bg-accent:darken(@table-bg, 5);
-@table-bg-hover:darken(@table-bg-accent, 5);
 
-@table-border-color:darken(@table-bg, 15);
-@table-border-radius:@border-radius-base;
+//Global Application Styles
+@app-container-size: 100%;
+@html-bg:darken(@body-bg, 25);
 
-@table-header-bg:white;
-@table-header-border-color:darken(@table-header-bg, 15);
-@table-header-color:@text-color;
+//Table Infinite Scroll
 @table-header-height:@table-cell-padding*2 + @line-height-computed;
+@infinite-scroll-size: ~'calc(100vh - 420px)';
 
-//Infinite Scroll
-@infinite-scroll-size: 600px;
+//Global Component Styles
+@global-component-bg:@body-bg;

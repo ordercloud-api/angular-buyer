@@ -1,26 +1,27 @@
 angular.module( 'orderCloud', [
-        'ngSanitize',
-        'ngAnimate',
-        'ngMessages',
-        'ngTouch',
-        'ui.tree',
-        'ui.router',
-        'ui.bootstrap',
-        'orderCloud.sdk',
-	'LocalForageModule',
-        'toastr',
-        'jcs-autoValidate',
-        'ordercloud-infinite-scroll',
-        'ordercloud-buyer-select',
-        'ordercloud-search',
-        'ordercloud-assignment-helpers',
-        'ordercloud-paging-helpers',
-        'ordercloud-auto-id',
-        'ordercloud-current-order',
-        'ordercloud-address',
-        'ordercloud-lineitems',
-        'ordercloud-geography'
-    ])
+    'ngSanitize',
+    'ngAnimate',
+    'ngMessages',
+    'ngTouch',
+    'snap',
+    'ui.tree',
+    'ui.router',
+    'ui.bootstrap',
+    'orderCloud.sdk',
+    'LocalForageModule',
+    'toastr',
+    'jcs-autoValidate',
+    'ordercloud-infinite-scroll',
+    'ordercloud-buyer-select',
+    'ordercloud-search',
+    'ordercloud-assignment-helpers',
+    'ordercloud-paging-helpers',
+    'ordercloud-auto-id',
+    'ordercloud-current-order',
+    'ordercloud-address',
+    'ordercloud-lineitems',
+    'ordercloud-geography'
+])
 
     .run( SetBuyerID )
     .config( Routing )
@@ -60,18 +61,16 @@ function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) 
     var vm = this;
     vm.name = appname;
     vm.title = appname;
-    vm.showLeftNav = true;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
 
-    vm.datepickerOptions = {
-        showWeeks: false,
-        showButtonBar: false
-    }
-
-    vm.toggleLeftNav = function() {
-        vm.showLeftNav = !vm.showLeftNav;
-    };
+    //Detect if the app was loaded on a touch device with relatively good certainty
+    //http://stackoverflow.com/a/6262682
+    vm.isTouchDevice = (function() {
+        var el = document.createElement('div');
+        el.setAttribute('ongesturestart', 'return;'); // or try "ontouchstart"
+        return typeof el.ongesturestart === "function";
+    })();
 
     vm.logout = function() {
         LoginService.Logout();
