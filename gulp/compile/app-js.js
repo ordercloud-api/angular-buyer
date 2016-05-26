@@ -33,7 +33,7 @@ gulp.task('app-js', ['clean:app-js'], function() {
         .pipe(ngConstant(config.ngConstantSettings))
         .pipe(jsonFilter.restore)
         .pipe(htmlFilter)
-        .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
+        //.pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(templateCache(config.templateCacheSettings))
         .pipe(htmlFilter.restore)
         .pipe(jsFilter)
