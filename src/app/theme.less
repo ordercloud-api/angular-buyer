@@ -1,239 +1,272 @@
-//== Badges
-@badge-color:                 #fff;
-//** Linked badge text color on hover
-@badge-link-hover-color:      #fff;
-@badge-bg:                    @brand-primary;
+////
+//// OrderCloud Dark UI
+//// --------------------------------------------------
+//
+////== OrderCloud Side Nav
+//@side-nav-bg: @gray-darker;
+//@side-nav-border: @gray-darker;
+//
+////== Colors
+//@gray-base: desaturate(shade(@brand-secondary,86%),65%);
+//@gray-darker: tint(@gray-base, 10%);
+//@gray-dark: tint(@gray-base, 15%);
+//@gray: tint(@gray-base, 50%);
+//@gray-light: tint(@gray-base, 85%);
+//@gray-lighter: tint(@gray-base, 90%);
+//
+//@brand-primary: #2692D5; //OrderCloud Blue
+//@brand-secondary: @brand-primary;
+//
+////== Scaffolding
+//@body-bg: @gray-base;
+//@text-color: @gray-lighter;
+//@link-hover-color: tint(@link-color, 15%);
+//
+////== Tables
+//@table-bg-accent:               @gray-dark;
+//@table-bg-hover:                @gray-dark;
+//@table-border-color:            @gray-dark;
+//
+////== Buttons
+//@btn-default-color:              @gray-lighter;
+//@btn-default-bg:                 @gray-dark;
+//@btn-default-border:             @gray-darker;
+//
+////== Forms
+//@legend-color:                   @gray-light;
+//@legend-border-color:            @gray-light;
+//
+////== Dropdowns
+//@dropdown-bg:                    darken(@navbar-default-bg, 6.5%);
+//@dropdown-fallback-border:       @gray-dark;
+//@dropdown-divider-bg:            @gray-dark;
+//@dropdown-link-color:            @gray-lighter;
+//@dropdown-link-hover-color:      darken(@gray-light, 5%);
+//@dropdown-link-hover-bg:         @gray-dark;
+//@dropdown-link-disabled-color:   @gray;
+//@dropdown-header-color:          @gray-light;
+//
+////== Navbar
+//@navbar-default-color:                     @gray-lighter;
+//@navbar-default-bg:                        @gray-base;
+//@navbar-default-border:                    @gray-dark;
+//@navbar-default-link-color:                @gray-light;
+//@navbar-default-link-hover-color:          @gray-lighter;
+//@navbar-default-link-active-color:         @gray-lighter;
+//@navbar-default-brand-hover-color:         @navbar-default-link-hover-color;
+//
+////=== Inverted navbar
+//@navbar-inverse-color:                      @gray-darker;
+//@navbar-inverse-bg:                         @gray-lighter;
+//@navbar-inverse-border:                     @gray-dark;
+//@navbar-inverse-link-color:                 @gray-darker;
+//@navbar-inverse-link-hover-color:           @gray-dark;
+//@navbar-inverse-link-active-bg:             @gray-light;
+//@navbar-inverse-brand-color:                @navbar-inverse-link-color;
+//@navbar-inverse-brand-hover-color:          @gray-dark;
+//
+////== Navs
+//@nav-tabs-border-color:                     @gray-dark;
+//@nav-tabs-link-hover-border-color:          @gray-dark;
+//@nav-tabs-active-link-hover-bg:             @gray-darker;
+//@nav-tabs-active-link-hover-border-color:   @gray-dark;
+//
+////== Pagination
+//@pagination-bg:                        @gray-dark;
+//@pagination-border:                    @gray-darker;
+//@pagination-hover-bg:                  @gray-darker;
+//@pagination-hover-border:              @gray-darker;
+//@pagination-active-border:             @gray-darker;
+//@pagination-disabled-color:            @gray-darker;
+//@pagination-disabled-bg:               @gray-dark;
+//@pagination-disabled-border:           @gray-darker;
+//
+////== Jumbotron
+//@jumbotron-bg:                   @gray-darker;
+//
+////== Form states and alerts
+//@state-success-text:             lighten(@brand-success,60);
+//@state-success-bg:               darken(@brand-success,5);
+//@state-success-border:           darken(@state-success-bg, 5%);
+//@state-info-text:                lighten(@brand-info,60);
+//@state-info-bg:                  darken(@brand-info,15);
+//@state-info-border:              darken(@state-info-bg, 7%);
+//@state-warning-text:             lighten(@brand-warning,60);
+//@state-warning-bg:               darken(@brand-warning,5);
+//@state-warning-border:           darken(@state-warning-bg, 5%);
+//@state-danger-text:              lighten(@brand-danger,60);
+//@state-danger-bg:                darken(@brand-danger,5);
+//@state-danger-border:            darken(@state-danger-bg, 5%);
+//
+////== Modals
+//@modal-content-bg:            @gray-darker;
+//@modal-content-border-color:  @gray-darker;
+//@modal-header-border-color:   @gray-dark;
+//
+////== List group
+//@list-group-bg:                 @gray-dark;
+//@list-group-border:             @gray-darker;
+//@list-group-hover-bg:           @gray;
+//@list-group-disabled-color:     @gray-dark;
+//@list-group-disabled-bg:        @gray-darker;
+//@list-group-link-color:         @gray-light;
+//
+////== Panels
+//@panel-bg:                    @gray-darker;
+//@panel-inner-border:          @gray-darker;
+//@panel-footer-bg:             @gray-darker;
+//@panel-default-text:          @gray-lighter;
+//@panel-default-border:        @gray-dark;
+//@panel-default-heading-bg:    @gray-dark;
+//
+////== Thumbnails
+//@thumbnail-border:            @gray-dark;
+//
+////== Wells
+//@well-bg:                     @gray-dark;
+//@well-border:                 @gray-darker;
+//
+////== Badges
+//@badge-bg:                    @brand-primary;
+//
+////== Type
+//@text-muted:                  @gray;
+//@headings-small-color:        @gray;
+//@blockquote-small-color:      @gray;
 
-//** Badge text color in active nav link
-@badge-active-color:          @link-color;
-//** Badge background color in active nav link
-@badge-active-bg:             #fff;
 
-@badge-font-weight:           bold;
-@badge-line-height:           1;
-@badge-border-radius:         10px;
+//
+// OrderCloud Light UI
+// --------------------------------------------------
 
+//== OrderCloud Side Nav
+@side-nav-bg: @gray-lighter;
+@side-nav-border: shade(@side-nav-bg, 5);
 
-//Theming
-@gray-base: #000;
-@gray-darker: lighten(@gray-base, 93.5%); // #222
-@gray-dark: lighten(@gray-base, 46.7%); // #333
-@gray: lighten(@gray-base, 33.5%); // #555
-@gray-light: lighten(@gray-base, 20%); // #777
-@gray-lighter: lighten(@gray-base, 13.5%); // #eee
+//== Colors
+@gray-base: desaturate(shade(@brand-secondary,86%),65%);
+@gray-darker: tint(@gray-base, 10%);
+@gray-dark: tint(@gray-base, 15%);
+@gray: tint(@gray-base, 50%);
+@gray-light: tint(@gray-base, 90%);
+@gray-lighter: tint(@gray-base, 95%);
 
-@brand-primary: #2692D5;
-@brand-success: #5cb85c;
-@brand-info: #5bc0de;
-@brand-warning: #f0ad4e;
-@brand-danger: #d9534f;
+@brand-primary: #2692D5; //OrderCloud Blue
+@brand-secondary: @brand-primary;
 
 //== Scaffolding
-//** Background color for `<body>`.
-@body-bg: @gray-lighter;
-//** Global text color on `<body>`.
-@text-color: @gray-darker;
-//** Global textual link color.
-@link-color: @brand-primary;
-//** Link hover color set via `darken()` function.
-@link-hover-color: lighten(@link-color, 15%);
+@body-bg: #fff;
+@text-color: @gray-dark;
+@link-hover-color: darken(@link-color, 15%);
+
+//== Tables
+@table-bg-accent:               @gray-light;
+@table-bg-hover:                @gray-light;
+@table-border-color:            @gray-light;
+
+//== Buttons
+@btn-default-color:              @gray-darker;
+@btn-default-bg:                 #fff;
+@btn-default-border:             @gray-light;
+
+//== Forms
+@legend-color:                   @gray-dark;
+@legend-border-color:            @gray-dark;
+
+//== Dropdowns
+@dropdown-bg:                    darken(@navbar-default-bg, 6.5%);
+@dropdown-fallback-border:       @gray-light;
+@dropdown-divider-bg:            @gray-light;
+@dropdown-link-color:            @gray-darker;
+@dropdown-link-hover-color:      darken(@gray-dark, 5%);
+@dropdown-link-hover-bg:         @gray-light;
+@dropdown-link-disabled-color:   @gray;
+@dropdown-header-color:          @gray;
 
 //== Navbar
 @navbar-default-color:             @gray-darker;
 @navbar-default-bg:                @gray-lighter;
 @navbar-default-border:            @gray-light;
-
-// Navbar links
 @navbar-default-link-color:                @gray-dark;
 @navbar-default-link-hover-color:          @gray-darker;
-@navbar-default-link-hover-bg:             transparent;
 @navbar-default-link-active-color:         @gray-darker;
-@navbar-default-link-active-bg:            darken(@navbar-default-bg, 6.5%);
-@navbar-default-link-disabled-color:       #ccc;
-@navbar-default-link-disabled-bg:          transparent;
-
-// Navbar brand label
-@navbar-default-brand-color:               @navbar-default-link-color;
 @navbar-default-brand-hover-color:         @navbar-default-link-hover-color;
-@navbar-default-brand-hover-bg:            transparent;
 
-// Navbar toggle
-@navbar-default-toggle-hover-bg:           #ddd;
-@navbar-default-toggle-icon-bar-bg:        #888;
-@navbar-default-toggle-border-color:       #ddd;
+//== Navs
+@nav-tabs-border-color:                     @gray-light;
+@nav-tabs-link-hover-border-color:          @gray-light;
+@nav-tabs-active-link-hover-bg:             @gray-lighter;
+@nav-tabs-active-link-hover-border-color:   @gray-light;
 
-//** Global color for active items (e.g., navs or dropdowns).
-@component-active-color:    #fff;
-//** Global background color for active items (e.g., navs or dropdowns).
-@component-active-bg:       @brand-primary;
+//=== Inverted navbar
+@navbar-inverse-color:                      @gray-lighter;
+@navbar-inverse-bg:                         @gray-darker;
+@navbar-inverse-border:                     @gray-light;
+@navbar-inverse-link-color:                 @gray-lighter;
+@navbar-inverse-link-hover-color:           @gray-light;
+@navbar-inverse-link-active-bg:             @gray-dark;
+@navbar-inverse-brand-color:                @navbar-inverse-link-color;
+@navbar-inverse-brand-hover-color:          @gray-light;
 
-//== Dropdowns
-//
-//## Dropdown menu container and contents.
+//== Pagination
+@pagination-bg:                        @gray-light;
+@pagination-border:                    @gray-lighter;
+@pagination-hover-bg:                  @gray-lighter;
+@pagination-hover-border:              @gray-lighter;
+@pagination-active-border:             @gray-lighter;
+@pagination-disabled-color:            @gray-lighter;
+@pagination-disabled-bg:               @gray-light;
+@pagination-disabled-border:           @gray-lighter;
 
-//** Background for the dropdown menu.
-@dropdown-bg:                    darken(@navbar-default-bg, 6.5%);
-//** Dropdown menu `border-color`.
-@dropdown-border:                rgba(0,0,0,.15);
-//** Dropdown menu `border-color` **for IE8**.
-@dropdown-fallback-border:       @gray-light;
-//** Divider color for between dropdown items.
-@dropdown-divider-bg:            @gray-light;
+//== Jumbotron
+@jumbotron-bg:                   @gray-lighter;
 
-//** Dropdown link text color.
-@dropdown-link-color:            @gray-darker;
-//** Hover color for dropdown links.
-@dropdown-link-hover-color:      darken(@gray-dark, 5%);
-//** Hover background for dropdown links.
-@dropdown-link-hover-bg:         #f5f5f5;
+//== Form states and alerts
+@state-success-text:             lighten(@brand-success,60);
+@state-success-bg:               darken(@brand-success,5);
+@state-success-border:           darken(@state-success-bg, 5%);
+@state-info-text:                lighten(@brand-info,60);
+@state-info-bg:                  darken(@brand-info,15);
+@state-info-border:              darken(@state-info-bg, 7%);
+@state-warning-text:             lighten(@brand-warning,60);
+@state-warning-bg:               darken(@brand-warning,5);
+@state-warning-border:           darken(@state-warning-bg, 5%);
+@state-danger-text:              lighten(@brand-danger,60);
+@state-danger-bg:                darken(@brand-danger,5);
+@state-danger-border:            darken(@state-danger-bg, 5%);
 
-//** Active dropdown menu item text color.
-@dropdown-link-active-color:     @component-active-color;
-//** Active dropdown menu item background color.
-@dropdown-link-active-bg:        @component-active-bg;
-
-//** Disabled dropdown menu item background color.
-@dropdown-link-disabled-color:   @gray-light;
-
-//** Text color for headers within dropdown menus.
-@dropdown-header-color:          @gray-dark;
-
-//** Deprecated `@dropdown-caret-color` as of v3.1.0
-@dropdown-caret-color:           #000;
-
-//== Tables
-//** Background color used for `.table-striped`.
-@table-bg-accent:               @gray-light;
-//** Background color used for `.table-hover`.
-@table-bg-hover:                @gray-light;
-//** Border color for table and cell borders.
-@table-border-color:            @gray-light;
+//== Modals
+@modal-content-bg:            @gray-lighter;
+@modal-content-border-color:  @gray-lighter;
+@modal-header-border-color:   @gray-light;
 
 //== List group
-//** Background color on `.list-group-item`
 @list-group-bg:                 @gray-light;
-//** `.list-group-item` border color
 @list-group-border:             @gray-lighter;
-//** List group border radius
-@list-group-border-radius:      @border-radius-base;
-
-//** Background color of single list items on hover
 @list-group-hover-bg:           @gray;
-//** Text color of active list items
-@list-group-active-color:       @component-active-color;
-//** Background color of active list items
-@list-group-active-bg:          @component-active-bg;
-//** Border color of active list elements
-@list-group-active-border:      @list-group-active-bg;
-//** Text color for content within active list items
-@list-group-active-text-color:  lighten(@list-group-active-bg, 40%);
-
-//** Text color of disabled list items
-@list-group-disabled-color:      @gray-light;
-//** Background color of disabled list items
-@list-group-disabled-bg:         @gray-lighter;
-//** Text color for content within disabled list items
-@list-group-disabled-text-color: @list-group-disabled-color;
-
-@list-group-link-color:         @gray-darker;
-@list-group-link-hover-color:   @list-group-link-color;
-@list-group-link-heading-color: #333;
+@list-group-disabled-color:     @gray-light;
+@list-group-disabled-bg:        @gray-lighter;
+@list-group-link-color:         @gray-dark;
 
 //== Panels
-@panel-bg:                    @gray-light;
-//** Border color for elements within panels
+@panel-bg:                    @gray-lighter;
 @panel-inner-border:          @gray-lighter;
 @panel-footer-bg:             @gray-lighter;
 @panel-default-text:          @gray-darker;
 @panel-default-border:        @gray-light;
 @panel-default-heading-bg:    @gray-light;
 
-//== Pagination
-@pagination-color:                     @link-color;
-@pagination-bg:                        @gray-light;
-@pagination-border:                    @gray-lighter;
-@pagination-hover-color:               @link-hover-color;
-@pagination-hover-bg:                  @gray-lighter;
-@pagination-hover-border:              @gray-lighter;
-@pagination-active-color:              #fff;
-@pagination-active-bg:                 @brand-primary;
-@pagination-active-border:             @gray-lighter;
-@pagination-disabled-color:            @gray-lighter;
-@pagination-disabled-bg:               @gray-light;
-@pagination-disabled-border:           @gray-lighter;
+//== Thumbnails
+@thumbnail-border:            @gray-light;
 
 //== Wells
 @well-bg:                     @gray-light;
 @well-border:                 @gray-lighter;
 
-//== Modals
-//** Background color of modal content area
-@modal-content-bg:                             @gray-lighter;
-//** Modal content border color
-@modal-content-border-color:                   @gray-lighter;
-//** Modal content border color **for IE8**
-@modal-content-fallback-border-color:          #999;
-
-//** Modal backdrop background color
-@modal-backdrop-bg:           #000;
-//** Modal backdrop opacity
-@modal-backdrop-opacity:      .5;
-//** Modal header border color
-@modal-header-border-color:   @gray-light;
-//** Modal footer border color
-@modal-footer-border-color:   @modal-header-border-color;
-
-//== Jumbotron
-@jumbotron-bg:                   @gray-light;
+//== Badges
+@badge-bg:                    @brand-primary;
 
 //== Type
-//** Text muted color
 @text-muted:                  @gray;
-//** Headings small color
 @headings-small-color:        @gray;
-//** Blockquote small color
 @blockquote-small-color:      @gray;
-
-//== Tables inside of panels
-.panel {
-  .table {
-    // Cells
-    > thead,
-    > tbody,
-    > tfoot {
-      > tr {
-        > th,
-        > td {
-          border-top: 1px solid @gray;
-        }
-      }
-    }
-    // Bottom align for column headings
-    > thead > tr > th {
-      border-bottom: 2px solid @gray;
-    }
-    // Account for multiple tbody instances
-    > tbody + tbody {
-      border-top: 2px solid @gray;
-    }
-  }
-  .table-bordered {
-    border: 1px solid @gray;
-    > thead,
-    > tbody,
-    > tfoot {
-      > tr {
-        > th,
-        > td {
-          border: 1px solid @gray;
-        }
-      }
-    }
-    > thead > tr {
-      > th,
-      > td {
-        border-bottom-width: 2px;
-      }
-    }
-  }
-}
