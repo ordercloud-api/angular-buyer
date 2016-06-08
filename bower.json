@@ -32,7 +32,7 @@
     "angular-animate": "^1.5.0",
     "angular-messages": "^1.5.0",
     "angular-bootstrap": "^1.1.2",
-    "ordercloud-ng-sdk": "^1.0.12",
+    "ordercloud-ng-sdk": "^1.0.13",
     "angular-auto-validate": "^1.19.3",
     "font-awesome": "^4.5.0",
     "angular-snap": "^1.8.5",
@@ -43,6 +43,6 @@
     "angular-mocks": "^1.5.0"
   },
   "resolutions": {
-    "angular": "1.5.5"
+    "angular": "1.5.6"
   }
 }
