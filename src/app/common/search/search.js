@@ -39,7 +39,8 @@ function ordercloudSearchCtrl($timeout, $scope, OrderCloud, TrackSearch) {
                 TrackSearch.SetTerm(n);
                 if($scope.servicename === 'Orders') {
                     if (!$scope.controlleras.searchfunction) {
-                        Service.List('incoming',null, null, n)
+                        console.log(Service)
+                        Service.ListIncoming(null, null, n)
                             .then(function (data){
                                 $scope.controlleras.list = data;
                             });
