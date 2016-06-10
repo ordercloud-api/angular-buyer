@@ -175,10 +175,13 @@ colgroup {
     }
     td {
       text-align:right;
-      &[data-title]:before {
-        content: attr(data-title);
-        float: left;
-        color: @gray-light;
+      &[data-title] {
+        .clearfix(); //Clearfix solution for empty table cells on mobile
+        &:before {
+          content: attr(data-title);
+          float: left;
+          color: @gray-light;
+        }
       }
     }
   }
