@@ -165,7 +165,7 @@ colgroup {
   tr {
     &:extend(.panel); //Mobile table row looks like a bootstrap panel
     border-color: @panel-default-border;
-    overflow:hidden;
+    overflow: hidden;
   }
 
   tbody {
@@ -174,7 +174,6 @@ colgroup {
       background-color: @panel-default-heading-bg;
     }
     td {
-      text-align:right;
       &[data-title] {
         .clearfix(); //Clearfix solution for empty table cells on mobile
         &:before {
@@ -182,6 +181,9 @@ colgroup {
           float: left;
           color: @gray-light;
         }
+      }
+      @media(max-width:@screen-sm-min) {
+        text-align:right;
       }
     }
   }
@@ -225,12 +227,10 @@ colgroup {
         background-color: transparent;
       }
       td {
-        text-align:initial;
         &[data-title]:before {
           content: none;
         }
       }
     }
-
   }
 }
