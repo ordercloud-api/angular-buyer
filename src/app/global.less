@@ -141,6 +141,18 @@ colgroup {
       }
     }
   }
+
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        vertical-align: middle;
+      }
+    }
+  }
+
   thead {
     // Accessibly hide <thead> on narrow viewports
     position: absolute;
@@ -175,7 +187,6 @@ colgroup {
     }
     td {
       text-align: right;
-      vertical-align: middle;
       &[data-title] {
         .clearfix(); //Clearfix solution for empty table cells on mobile
         &:before {
