@@ -141,6 +141,18 @@ colgroup {
       }
     }
   }
+
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        vertical-align: middle;
+      }
+    }
+  }
+
   thead {
     // Accessibly hide <thead> on narrow viewports
     position: absolute;
@@ -165,7 +177,7 @@ colgroup {
   tr {
     &:extend(.panel); //Mobile table row looks like a bootstrap panel
     border-color: @panel-default-border;
-    overflow: hidden;
+    overflow:hidden;
   }
 
   tbody {
@@ -232,5 +244,6 @@ colgroup {
         }
       }
     }
+
   }
 }
