@@ -122,8 +122,22 @@ main {
   }
 }
 colgroup {
-  > col.action-column {
-    width:70px;
+  > col {
+    .action-column {
+      width:70px;
+    }
+  }
+}
+
+.table > tbody > tr {
+  > td {
+	&.actions-cell {
+	  text-align:right;
+	  white-space: nowrap;
+	  @media(max-width:@screen-xs-max) {
+		text-align:center;
+	  }
+	}
   }
 }
 
