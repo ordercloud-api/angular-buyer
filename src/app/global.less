@@ -215,6 +215,17 @@ colgroup {
   }
 
   @media(min-width:@screen-sm-min) {
+    // Condensed tables on desktop
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th,
+        > td {
+          padding: @table-condensed-cell-padding;
+        }
+      }
+    }
     &.table-bordered {
       border:1px solid @table-border-color;
       & > tbody > tr{
