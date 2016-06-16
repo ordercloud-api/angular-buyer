@@ -132,11 +132,12 @@ colgroup {
 .table > tbody > tr {
   > td {
 	&.actions-cell {
-	  text-align:right;
+	  text-align:center;
 	  white-space: nowrap;
-	  @media(max-width:@screen-xs-max) {
-		text-align:center;
-	  }
+      @media(min-width:@screen-sm-min) {
+        text-align: right;
+        width: 1%;
+      }
 	}
   }
 }
