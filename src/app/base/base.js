@@ -115,7 +115,7 @@ function BaseController($rootScope, $ocMedia, snapRemote, CurrentUser, Component
     };
 
     function _isMobile() {
-        return $ocMedia('max-width:767px');
+        return $ocMedia('max-width:991px');
     }
 
     function _initDrawers(isMobile) {
