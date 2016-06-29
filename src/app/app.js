@@ -10,6 +10,7 @@ angular.module( 'orderCloud', [
     'orderCloud.sdk',
     'LocalForageModule',
     'toastr',
+    'cgBusy',
     'jcs-autoValidate',
     'ordercloud-infinite-scroll',
     'ordercloud-buyer-select',
@@ -37,7 +38,7 @@ function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
 }
 
 function SetBuyerID( OrderCloud, buyerid ) {
-    OrderCloud.BuyerID.Get() ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
+    OrderCloud.BuyerID.Get() == buyerid ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
 }
 
 function Routing( $urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider ) {
@@ -57,12 +58,17 @@ function ErrorHandling( $provide ) {
     }
 }
 
-function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
+function AppCtrl( $q, $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
+    vm.contentLoading = undefined;
+
+    function cleanLoadingIndicators() {
+        if (vm.contentLoading && vm.contentLoading.promise && !vm.contentLoading.promise.$cgBusyFulfilled) vm.contentLoading.resolve(); //resolve leftover loading promises
+    }
 
     //Detect if the app was loaded on a touch device with relatively good certainty
     //http://stackoverflow.com/a/6262682
@@ -76,15 +82,27 @@ function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) 
         LoginService.Logout();
     };
 
+    $rootScope.$on('$stateChangeStart', function(e, toState) {
+        cleanLoadingIndicators();
+        var defer = $q.defer();
+        //defer.delay = 200;
+        defer.wrapperClass = 'indicator-container';
+        (toState.data && toState.data.loadingMessage) ? defer.message = toState.data.loadingMessage : defer.message = null;
+        defer.templateUrl = 'common/loading-indicators/templates/view.loading.tpl.html';
+        vm.contentLoading = defer;
+    });
+
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
+        cleanLoadingIndicators();
         if (toState.data && toState.data.componentName) {
-            vm.title = appname + ' - ' + toState.data.componentName
+            vm.title = toState.data.componentName + ' | ' + appname;
         } else {
             vm.title = appname;
         }
     });
 
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        cleanLoadingIndicators();
         console.log(error);
     });
 
@@ -92,7 +110,7 @@ function AppCtrl( $rootScope, $state, appname, LoginService, toastr, $ocMedia ) 
         LoginService.RememberMe();
     });
     $rootScope.$on('OC:AccessForbidden', function(){
-        toastr.warning("I'm sorry, it doesn't look like you have permission to access this page.", 'Warning:');
+        toastr.warning("You do not have permission to access this page.");
     })
 }
 

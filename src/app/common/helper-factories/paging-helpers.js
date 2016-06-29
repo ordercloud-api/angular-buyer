@@ -29,7 +29,7 @@ function PagingHelpers($q, OrderCloud, Assignments) {
                 queue.push(Service.List(null, ListObject.Meta.Page + 1, ListObject.Meta.PageSize));
             }
             if (ServiceName === 'Orders') {
-                queue.push(Service.List('incoming', null, null, null, ListObject.Meta.Page + 1, ListObject.Meta.PageSize));
+                queue.push(Service.ListIncoming(null, null, null, ListObject.Meta.Page + 1, ListObject.Meta.PageSize));
             }
             if (ServiceName === 'Categories') {
                 queue.push(Service.List(null, 'all', ListObject.Meta.Page + 1, ListObject.Meta.PageSize));

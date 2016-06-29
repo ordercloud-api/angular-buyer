@@ -122,9 +122,33 @@ main {
   }
 }
 colgroup {
-  > col.action-column {
-    width:70px;
+  > col {
+    .action-column {
+      width:70px;
+    }
   }
+}
+
+.table > tbody > tr {
+  > td {
+	&.actions-cell {
+	  text-align:center;
+	  white-space: nowrap;
+      @media(min-width:@screen-sm-min) {
+        text-align: right;
+        width: 1%;
+      }
+	}
+  }
+}
+
+// No matches message
+.no-matches {
+  @media(min-width:@screen-sm-min) {
+    margin-top:15px;
+  }
+  &:extend(.well);
+  text-align:center;
 }
 
 // OC Responsive Tables
@@ -141,6 +165,18 @@ colgroup {
       }
     }
   }
+
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        vertical-align: middle;
+      }
+    }
+  }
+
   thead {
     // Accessibly hide <thead> on narrow viewports
     position: absolute;
@@ -174,16 +210,32 @@ colgroup {
       background-color: @panel-default-heading-bg;
     }
     td {
-      text-align:right;
-      &[data-title]:before {
-        content: attr(data-title);
-        float: left;
-        color: @gray-light;
+      &[data-title] {
+        .clearfix(); //Clearfix solution for empty table cells on mobile
+        &:before {
+          content: attr(data-title);
+          float: left;
+          color: @gray-light;
+        }
+      }
+      @media(max-width:@screen-sm-min) {
+        text-align:right;
       }
     }
   }
 
   @media(min-width:@screen-sm-min) {
+    // Condensed tables on desktop
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th,
+        > td {
+          padding: @table-condensed-cell-padding;
+        }
+      }
+    }
     &.table-bordered {
       border:1px solid @table-border-color;
       & > tbody > tr{
@@ -222,12 +274,16 @@ colgroup {
         background-color: transparent;
       }
       td {
-        text-align:initial;
         &[data-title]:before {
           content: none;
         }
       }
     }
-
+  }
+  .fa-circle {
+    color:@gray-lighter;
+    &.active {
+      color:@brand-success;
+    }
   }
 }
