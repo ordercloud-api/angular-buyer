@@ -1,9 +1,9 @@
 {
-  "name": "OrderCloud-Components",
+  "name": "OrderCloud-Seed",
   "authors": [
     "Four51"
   ],
-  "description": "repo for managing ordercloud components that serve as a starting point for creating B2B applications on the Four51 OrderCloud platform.",
+  "description": "A seed project for custom Four51 Solutions built on AngularJS",
   "main": "index",
   "moduleType": [],
   "keywords": [
