@@ -1,11 +1,9 @@
 angular.module('ordercloud-geography', [])
-
     .factory('OCGeography', OCGeography)
-
 ;
 
 function OCGeography() {
-    var countries = [
+    var _countries = [
         { "label": "United States of America", "value": "US"},
         { "label": "Afghanistan", "value": "AF"},
         { "label": "Åland Islands", "value": "AX"},
@@ -252,7 +250,7 @@ function OCGeography() {
         { "label": "Zambia", "value": "ZM"},
         { "label": "Zimbabwe", "value": "ZW"}
     ];
-    var states = [
+    var _states = [
         { "label": "Alabama", "value": "AL", "country": "US" },
         { "label": "Alaska", "value": "AK", "country": "US" },
         { "label": "Arizona", "value": "AZ", "country": "US" },
@@ -343,7 +341,7 @@ function OCGeography() {
     ];
 
     return {
-        countries:  countries,
-        states: states
+        Countries:  _countries,
+        States: _states
     };
-};
+}

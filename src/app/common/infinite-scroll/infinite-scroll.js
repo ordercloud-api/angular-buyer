@@ -1,8 +1,8 @@
 angular.module('ordercloud-infinite-scroll', ['ordercloud-search', 'ordercloud-paging-helpers']);
-angular.module('ordercloud-infinite-scroll')
 
-    .directive( 'ordercloudInfiniteScroll', InfiniteScrollDirective )
-    .controller( 'InfiniteScrollCtrl', InfiniteScrollController )
+angular.module('ordercloud-infinite-scroll')
+    .directive('ordercloudInfiniteScroll', InfiniteScrollDirective)
+    .controller('InfiniteScrollCtrl', InfiniteScrollController)
 ;
 
 function InfiniteScrollDirective(Paging) {
@@ -25,7 +25,7 @@ function InfiniteScrollDirective(Paging) {
                         scope.controlleras.pagingfunction();
                     }
                     else if (scope.servicename && scope.controlleras && scope.controlleras.list) {
-                        Paging.paging(scope.controlleras.list, scope.servicename);
+                        Paging.Paging(scope.controlleras.list, scope.servicename);
                     }
                     /* Else display a console error */
                     else {
@@ -45,7 +45,7 @@ function InfiniteScrollController($scope, Paging, TrackSearch) {
         }
     }, function() {
         if ($scope.controlleras && $scope.controlleras.assignments && $scope.controlleras.list && $scope.idname) {
-            Paging.setSelected($scope.controlleras.list.Items, $scope.controlleras.assignments.Items, $scope.idname);
+            Paging.SetSelected($scope.controlleras.list.Items, $scope.controlleras.assignments.Items, $scope.idname);
         }
     });
 }

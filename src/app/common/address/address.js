@@ -1,9 +1,7 @@
 angular.module('ordercloud-address', [])
-
     .directive('ordercloudAddressForm', AddressFormDirective)
     .directive('ordercloudAddressInfo', AddressInfoDirective)
     .filter('address', AddressFilter)
-
 ;
 
 function AddressFormDirective(OCGeography) {
@@ -15,8 +13,8 @@ function AddressFormDirective(OCGeography) {
         },
         templateUrl: 'common/address/templates/address.form.tpl.html',
         link: function(scope) {
-            scope.countries = OCGeography.countries;
-            scope.states = OCGeography.states;
+            scope.countries = OCGeography.Countries;
+            scope.states = OCGeography.States;
         }
     };
 }

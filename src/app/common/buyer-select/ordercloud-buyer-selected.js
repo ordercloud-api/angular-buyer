@@ -1,8 +1,6 @@
 angular.module('ordercloud-buyer-select', [])
-
     .directive('ordercloudSelectBuyer', SelectBuyerDirective)
     .controller('SelectBuyerCtrl', SelectBuyerController)
-
 ;
 
 function SelectBuyerDirective() {

@@ -1,13 +1,13 @@
-angular.module( 'orderCloud' )
-
+angular.module('orderCloud')
     .factory('FileReader', fileReader)
-    .factory( 'FilesService', FilesService )
-    .directive( 'ordercloudFileUpload', ordercloudFileUpload)
+    .factory('FilesService', FilesService)
+    .directive('ordercloudFileUpload', ordercloudFileUpload)
 ;
+
 //TODO: update the New SDK to have a file Upload method similar to how this works.  Minus attaching the file info to any XP
-function fileReader( $q ) {
+function fileReader($q) {
     var service = {
-        readAsDataUrl: readAsDataURL
+        ReadAsDataUrl: _readAsDataURL
     };
 
     function onLoad(reader, deferred, scope) {
@@ -28,7 +28,7 @@ function fileReader( $q ) {
 
     function onProgress(reader, scope) {
         return function (event) {
-            scope.$broadcast("fileProgress",
+            scope.$broadcast('fileProgress',
                 {
                     total: event.total,
                     loaded: event.loaded
@@ -44,7 +44,7 @@ function fileReader( $q ) {
         return reader;
     }
 
-    function readAsDataURL(file, scope) {
+    function _readAsDataURL(file, scope) {
         var deferred = $q.defer();
 
         var reader = getReader(deferred, scope);
@@ -56,7 +56,7 @@ function fileReader( $q ) {
     return service;
 }
 
-function FilesService( $q, $http, apiurl, OrderCloud ) {
+function FilesService($q, $http, apiurl, OrderCloud) {
     var service = {
         Upload: _upload
     };
@@ -83,7 +83,7 @@ function FilesService( $q, $http, apiurl, OrderCloud ) {
     return service;
 }
 
-function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
+function ordercloudFileUpload($parse, Underscore, FileReader, FilesService) {
     var directive = {
         scope: {
             model: '=',
@@ -99,13 +99,13 @@ function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
     };
 
     function link(scope, element, attrs) {
-        var file_input = $parse("file");
+        var file_input = $parse('file');
         var file_control = angular.element(element.find('input'))[0];
         var el = element;
         scope.invalidExtension = false;
 
         scope.upload = function() {
-            $("#orderCloudUpload").click();
+            $('#orderCloudUpload').click();
         };
 
         scope.remove = function() {
@@ -126,7 +126,7 @@ function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
             Types: []
         };
         if (scope.extensions) {
-            var items = Underscore.map(scope.extensions.split(','), function(ext) { return ext.replace(/ /g,'').replace(/\./g,'').toLowerCase() });
+            var items = Underscore.map(scope.extensions.split(','), function(ext) { return ext.replace(/ /g ,'').replace(/\./g, '').toLowerCase() });
             angular.forEach(items, function(item) {
                 if (item.indexOf('/') > -1) {
                     if (item.indexOf('*') > -1) {
@@ -155,7 +155,7 @@ function ordercloudFileUpload( $parse, Underscore, FileReader, FilesService ) {
                     if (valid) {
                         scope.invalidExtension = false;
                         scope.$apply(function() {
-                            FileReader.readAsDataUrl(event.target.files[0], scope)
+                            FileReader.ReadAsDataUrl(event.target.files[0], scope)
                                 .then(function(f) {
                                     afterSelection(event.target.files[0], fileName);
                                 });

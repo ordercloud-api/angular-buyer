@@ -1,29 +1,28 @@
 angular.module('ordercloud-current-order', [])
-
     .factory('CurrentOrder', CurrentOrderService)
-
 ;
+
 //TODO: CurrentOrderService needs to be updated to NEW SDK / remove the need for ImpersonationService
-function CurrentOrderService($q, appname, $localForage, OrderCloud) {
+function CurrentOrderService($q, $localForage, OrderCloud, appname) {
     var StorageName = appname + '.CurrentOrderID';
     return {
-        Get: Get,
-        GetID: GetID,
-        Set: Set,
-        Remove: Remove,
-        GetLineItems: GetLineItems
+        Get: _get,
+        GetID: _getID,
+        Set: _set,
+        Remove: _remove,
+        GetLineItems: _getLineItems
     };
 
-    function Get() {
+    function _get() {
         var dfd = $q.defer();
-        GetID()
+        _getID()
             .then(function(OrderID) {
                 OrderCloud.Orders.Get(OrderID)
                     .then(function(order) {
                         dfd.resolve(order);
                     })
                     .catch(function() {
-                        Remove();
+                        _remove();
                         dfd.reject();
                     });
             })
@@ -33,14 +32,14 @@ function CurrentOrderService($q, appname, $localForage, OrderCloud) {
         return dfd.promise;
     }
 
-    function GetID() {
+    function _getID() {
         var dfd = $q.defer();
         $localForage.getItem(StorageName)
             .then(function(orderID) {
                 if (orderID)
                     dfd.resolve(orderID);
                 else {
-                    Remove();
+                    _remove();
                     dfd.reject();
                 }
             })
@@ -50,7 +49,7 @@ function CurrentOrderService($q, appname, $localForage, OrderCloud) {
         return dfd.promise;
     }
 
-    function Set(OrderID) {
+    function _set(OrderID) {
         $localForage.setItem(StorageName, OrderID)
             .then(function(data) {
                 return data;
@@ -60,16 +59,16 @@ function CurrentOrderService($q, appname, $localForage, OrderCloud) {
             });
     }
 
-    function Remove() {
+    function _remove() {
         return $localForage.removeItem(StorageName);
     }
 
-    function GetLineItems(orderID) {
+    function _getLineItems(orderID) {
         var deferred = $q.defer();
         var lineItems = [];
         var queue = [];
 
-        GetID()
+        _getID()
             .then(function(OrderID) {
                 OrderCloud.LineItems.List(OrderID, 1, 100)
                     .then(function(data) {

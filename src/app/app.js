@@ -1,4 +1,4 @@
-angular.module( 'orderCloud', [
+angular.module('orderCloud', [
     'ngSanitize',
     'ngAnimate',
     'ngMessages',
@@ -22,13 +22,12 @@ angular.module( 'orderCloud', [
     'ordercloud-address',
     'ordercloud-lineitems',
     'ordercloud-geography'
-])
-
-    .run( SetBuyerID )
-    .config( Routing )
-    .config( ErrorHandling )
-    .config( Interceptor )
-    .controller( 'AppCtrl', AppCtrl )
+    ])
+    .run(SetBuyerID)
+    .config(Routing)
+    .config(ErrorHandling)
+    .config(Interceptor)
+    .controller('AppCtrl', AppCtrl)
     .config(DatePickerConfig)
 ;
 
@@ -37,28 +36,28 @@ function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
     uibDatepickerPopupConfig.showButtonBar = false;
 }
 
-function SetBuyerID( OrderCloud, buyerid ) {
+function SetBuyerID(OrderCloud, buyerid) {
     OrderCloud.BuyerID.Get() == buyerid ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
 }
 
-function Routing( $urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider ) {
+function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider) {
     $urlMatcherFactoryProvider.strictMode(false);
-    $urlRouterProvider.otherwise( '/home' );
+    $urlRouterProvider.otherwise('/home');
     $locationProvider.html5Mode(true);
 }
 
-function ErrorHandling( $provide ) {
+function ErrorHandling($provide) {
     $provide.decorator('$exceptionHandler', handler);
 
-    function handler( $delegate, $injector ) {
-        return function( ex, cause ) {
+    function handler($delegate, $injector) {
+        return function(ex, cause) {
             $delegate(ex, cause);
             $injector.get('toastr').error(ex.data ? (ex.data.error || (ex.data.Errors ? ex.data.Errors[0].Message : ex.data)) : ex.message, 'Error');
         };
     }
 }
 
-function AppCtrl( $q, $rootScope, $state, appname, LoginService, toastr, $ocMedia ) {
+function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
@@ -111,10 +110,10 @@ function AppCtrl( $q, $rootScope, $state, appname, LoginService, toastr, $ocMedi
     });
     $rootScope.$on('OC:AccessForbidden', function(){
         toastr.warning("You do not have permission to access this page.");
-    })
+    });
 }
 
-function Interceptor( $httpProvider ) {
+function Interceptor($httpProvider) {
     $httpProvider.interceptors.push(function($q, $rootScope) {
         return {
             'responseError': function(rejection) {
