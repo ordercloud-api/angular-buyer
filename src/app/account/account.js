@@ -40,7 +40,7 @@ function AccountService($q, $uibModal, OrderCloud) {
 				})
 				.catch(function(ex) {
 					deferred.reject(ex);
-				})
+				});
 		}
 
 		$uibModal.open({
@@ -54,10 +54,11 @@ function AccountService($q, $uibModal, OrderCloud) {
 				Username: currentProfile.Username,
 				Password: password
 			};
-			OrderCloud.Auth.GetToken(checkPasswordCredentials).then(
-				function() {
+			OrderCloud.Auth.GetToken(checkPasswordCredentials)
+				.then(function() {
 					updateUser();
-				}).catch(function(ex) {
+				})
+				.catch(function(ex) {
 					deferred.reject(ex);
 				});
 		}, function() {
@@ -97,7 +98,7 @@ function AccountService($q, $uibModal, OrderCloud) {
 	return service;
 }
 
-function AccountController($exceptionHandler, toastr, CurrentUser, AccountService) {
+function AccountController($exceptionHandler, toastr, AccountService, CurrentUser) {
 	var vm = this;
 	vm.profile = angular.copy(CurrentUser);
 	var currentProfile = CurrentUser;
@@ -112,7 +113,7 @@ function AccountController($exceptionHandler, toastr, CurrentUser, AccountServic
 			.catch(function(ex) {
 				vm.profile = currentProfile;
 				$exceptionHandler(ex)
-			})
+			});
 	};
 
 	vm.resetForm = function(form) {

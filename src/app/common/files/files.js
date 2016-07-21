@@ -11,23 +11,23 @@ function fileReader($q) {
     };
 
     function onLoad(reader, deferred, scope) {
-        return function () {
-            scope.$apply(function () {
+        return function() {
+            scope.$apply(function() {
                 deferred.resolve(reader);
             });
         };
     }
 
     function onError(reader, deferred, scope) {
-        return function () {
-            scope.$apply(function () {
+        return function() {
+            scope.$apply(function() {
                 deferred.reject(reader);
             });
         };
     }
 
     function onProgress(reader, scope) {
-        return function (event) {
+        return function(event) {
             scope.$broadcast('fileProgress',
                 {
                     total: event.total,
@@ -56,7 +56,7 @@ function fileReader($q) {
     return service;
 }
 
-function FilesService($q, $http, apiurl, OrderCloud) {
+function FilesService($q, $http, OrderCloud, apiurl) {
     var service = {
         Upload: _upload
     };
@@ -69,11 +69,11 @@ function FilesService($q, $http, apiurl, OrderCloud) {
         var fd = new FormData();
         fd.append('file', file);
 
-        $http.post(fileURL + '?filename=' + fileName, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined, 'Authorization': 'Bearer ' + OrderCloud.Auth.ReadToken()} })
-            .success(function(data){
+        $http.post(fileURL + '?filename=' + fileName, fd, {transformRequest: angular.identity, headers: {'Content-Type': undefined, 'Authorization': 'Bearer ' + OrderCloud.Auth.ReadToken()}})
+            .success(function(data) {
                 deferred.resolve(data);
             })
-            .error(function(error){
+            .error(function(error) {
                 deferred.reject(error)
             });
 

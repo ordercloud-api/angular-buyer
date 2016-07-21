@@ -108,6 +108,7 @@ function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
         LoginService.RememberMe();
     });
+
     $rootScope.$on('OC:AccessForbidden', function(){
         toastr.warning("You do not have permission to access this page.");
     });

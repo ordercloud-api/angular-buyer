@@ -76,15 +76,15 @@ function LoginService($q, $window, $state, toastr, OrderCloud, TokenRefresh, cli
             .then(function (refreshToken) {
                 if (refreshToken) {
                     TokenRefresh.Refresh(refreshToken)
-                        .then(function (token) {
+                        .then(function(token) {
                             OrderCloud.BuyerID.Set(buyerid);
                             OrderCloud.Auth.SetToken(token.access_token);
                             $state.go('home');
                         })
                         .catch(function () {
-                            toastr.error("Your token has expired, please log in again.");
+                            toastr.error('Your token has expired, please log in again.');
                         });
-                }else{
+                } else {
                     _logout();
                 }
             });
