@@ -1,22 +1,20 @@
 angular.module('ordercloud-lineitems', [])
-
     .factory('LineItemHelpers', LineItemFactory)
     .controller('LineItemModalCtrl', LineItemModalController)
-
 ;
 
 function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderCloud, CurrentOrder) {
     return {
-        SpecConvert: SpecConvert,
-        RemoveItem: RemoveItem,
-        UpdateQuantity: UpdateQuantity,
-        GetProductInfo: GetProductInfo,
-        CustomShipping: CustomShipping,
-        UpdateShipping: UpdateShipping,
-        ListAll: ListAll
+        SpecConvert: _specConvert,
+        RemoveItem: _removeItem,
+        UpdateQuantity: _updateQuantity,
+        GetProductInfo: _getProductInfo,
+        CustomShipping: _customShipping,
+        UpdateShipping: _updateShipping,
+        ListAll: _listAll
     };
 
-    function SpecConvert(specs) {
+    function _specConvert(specs) {
         var results = [];
         angular.forEach(specs, function (spec) {
             var spec_to_push = {SpecID: spec.ID};
@@ -39,7 +37,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         return results;
     }
 
-    function RemoveItem(Order, LineItem) {
+    function _removeItem(Order, LineItem) {
         OrderCloud.LineItems.Delete(Order.ID, LineItem.ID)
             .then(function () {
                 // If all line items are removed delete the order.
@@ -59,7 +57,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
             });
     }
 
-    function UpdateQuantity(Order, LineItem) {
+    function _updateQuantity(Order, LineItem) {
         if (LineItem.Quantity > 0) {
             OrderCloud.LineItems.Patch(Order.ID, LineItem.ID, {Quantity: LineItem.Quantity})
                 .then(function () {
@@ -69,7 +67,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         }
     }
 
-    function GetProductInfo(LineItems) {
+    function _getProductInfo(LineItems) {
         var li = LineItems.Items || LineItems;
         var productIDs = Underscore.uniq(Underscore.pluck(li, 'ProductID'));
         var dfd = $q.defer();
@@ -87,7 +85,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         return dfd.promise;
     }
 
-    function CustomShipping(Order, LineItem) {
+    function _customShipping(Order, LineItem) {
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: 'common/lineitems/templates/shipping.tpl.html',
@@ -106,7 +104,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
             });
     }
 
-    function UpdateShipping(Order, LineItem, AddressID) {
+    function _updateShipping(Order, LineItem, AddressID) {
         OrderCloud.Addresses.Get(AddressID)
             .then(function (address) {
                 OrderCloud.LineItems.SetShippingAddress(Order.ID, LineItem.ID, address);
@@ -114,7 +112,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
             });
     }
 
-    function ListAll(orderID) {
+    function _listAll(orderID) {
         var li;
         var dfd = $q.defer();
         var queue = [];

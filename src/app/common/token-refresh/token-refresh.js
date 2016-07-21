@@ -43,7 +43,7 @@ function TokenRefresh($resource, $localForage, ocscope, clientid, appname, authu
 			client_id: clientid,
 			refresh_token: token
 		});
-		return $resource(authurl, {}, { refresh: { method: 'POST'}}).refresh(data).$promise;
+		return $resource(authurl, {}, {refresh: {method: 'POST'}}).refresh(data).$promise;
 	}
 
 }

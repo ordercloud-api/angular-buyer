@@ -1,22 +1,21 @@
-angular.module( 'orderCloud' )
-
-    .config( LoginConfig )
-    .factory( 'LoginService', LoginService )
-    .controller( 'LoginCtrl', LoginController )
-
+angular.module('orderCloud')
+    .config(LoginConfig)
+    .factory('LoginService', LoginService)
+    .controller('LoginCtrl', LoginController)
 ;
 
-function LoginConfig( $stateProvider ) {
+function LoginConfig($stateProvider) {
     $stateProvider
-        .state( 'login', {
+        .state('login', {
             url: '/login/:token',
-            templateUrl:'login/templates/login.tpl.html',
-            controller:'LoginCtrl',
+            templateUrl: 'login/templates/login.tpl.html',
+            controller: 'LoginCtrl',
             controllerAs: 'login'
         })
+    ;
 }
 
-function LoginService( $q, $window, toastr, $state,OrderCloud, clientid, buyerid, TokenRefresh ) {
+function LoginService($q, $window, $state, toastr, OrderCloud, TokenRefresh, clientid, buyerid) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -77,22 +76,22 @@ function LoginService( $q, $window, toastr, $state,OrderCloud, clientid, buyerid
             .then(function (refreshToken) {
                 if (refreshToken) {
                     TokenRefresh.Refresh(refreshToken)
-                        .then(function (token) {
+                        .then(function(token) {
                             OrderCloud.BuyerID.Set(buyerid);
                             OrderCloud.Auth.SetToken(token.access_token);
-                            $state.go('home')
+                            $state.go('home');
                         })
                         .catch(function () {
-                            toastr.error("Your token has expired, please log in again.")
+                            toastr.error('Your token has expired, please log in again.');
                         });
-                }else{
+                } else {
                     _logout();
                 }
-            })
+            });
     }
 }
 
-function LoginController( $state, $stateParams, $exceptionHandler, OrderCloud, LoginService, buyerid, TokenRefresh ) {
+function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, LoginService, TokenRefresh, buyerid) {
     var vm = this;
     vm.credentials = {
         Username: null,
@@ -115,7 +114,7 @@ function LoginController( $state, $stateParams, $exceptionHandler, OrderCloud, L
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);
-            })
+            });
     };
 
     vm.forgotPassword = function() {

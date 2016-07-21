@@ -1,9 +1,7 @@
 angular.module('ordercloud-auto-id', []);
 
 angular.module('ordercloud-auto-id')
-
     .directive('ordercloudAutoId', ordercloudAutoIdDirective)
-
 ;
 
 function ordercloudAutoIdDirective($compile) {

@@ -1,10 +1,9 @@
-angular.module( 'orderCloud' )
-
-    .config( BaseConfig )
-    .controller( 'BaseCtrl', BaseController )
+angular.module('orderCloud')
+    .config(BaseConfig)
+    .controller('BaseCtrl', BaseController)
 ;
 
-function BaseConfig( $stateProvider, $injector ) {
+function BaseConfig($stateProvider, $injector) {
     var baseViews = {
         '': {
             templateUrl: 'base/templates/base.tpl.html',
@@ -88,10 +87,10 @@ function BaseConfig( $stateProvider, $injector ) {
         }
     };
 
-    $stateProvider.state( 'base', baseState);
+    $stateProvider.state('base', baseState);
 }
 
-function BaseController($rootScope, $ocMedia, snapRemote, CurrentUser, ComponentList, defaultErrorMessageResolver, base) {
+function BaseController($rootScope, $ocMedia, snapRemote, defaultErrorMessageResolver, CurrentUser, ComponentList, base) {
     var vm = this;
     vm.left = base.left;
     vm.right = base.right;
