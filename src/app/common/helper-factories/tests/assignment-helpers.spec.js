@@ -14,23 +14,23 @@ describe('Factory: Assignments', function() {
         assignments = Assignments;
     }));
     it('getAssigned should return a list of IDs', function() {
-        var result = assignments.getAssigned(sampleList, 'ID');
+        var result = assignments.GetAssigned(sampleList, 'ID');
         expect(result).toEqual([1, 2, 3]);
     });
     it('getSelected should return a list of IDs that also have selected set to true', function() {
-        var result = assignments.getSelected(sampleList, 'ID');
+        var result = assignments.GetSelected(sampleList, 'ID');
         expect(result).toEqual([1]);
     });
     it('getUnselected should return a list of IDs where selected is false or undefined', function() {
-        var result = assignments.getUnselected(sampleList, 'ID');
+        var result = assignments.GetUnselected(sampleList, 'ID');
         expect(result).toEqual([2, 3]);
     });
     it('getToAssign should return a list of IDs that are different between the two lists', function() {
-        var result = assignments.getToAssign(sampleList, [], 'ID');
+        var result = assignments.GetToAssign(sampleList, [], 'ID');
         expect(result).toEqual([1]);
     });
     it('getToDelete should return a list of IDs that are the same between the two lists', function() {
-        var result = assignments.getToDelete(sampleList, [{ID: 2}], 'ID');
+        var result = assignments.GetToDelete(sampleList, [{ID: 2}], 'ID');
         expect(result).toEqual([2]);
     });
     describe('saveAssignments', function() {
@@ -47,7 +47,7 @@ describe('Factory: Assignments', function() {
             deleteFunc = function() {
                 deleteCount++;
             };
-            assignments.saveAssignments(
+            assignments.SaveAssignments(
                 [{ID: 1, selected: true}, {ID: 2, selected: true}, {ID: 3, selected: false}, {ID: 4, selected: false}],
                 [{ID: 3}, {ID: 4}],
                 saveFunc, deleteFunc, 'ID');

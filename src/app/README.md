@@ -39,7 +39,7 @@ As a matter of course, we also require the template module that is generated
 during the build.
 
 ```js
-angular.module( 'orderCloud', [
+angular.module('orderCloud', [
     'templates-app',
 	'ngSanitize',
 	'ngAnimate',
@@ -58,8 +58,8 @@ is where we want to start, which has a defined route for `/home` in
 `src/app/home/home.js`.
 
 ```js
-.config( function myAppConfig ( $stateProvider, $urlRouterProvider ) {
-  $urlRouterProvider.otherwise( '/home' );
+.config(function myAppConfig($stateProvider, $urlRouterProvider) {
+  $urlRouterProvider.otherwise('/home');
 })
 ```
 
@@ -67,7 +67,7 @@ Use the main applications run method to execute any code after services
 have been instantiated.
 
 ```js
-.run( function run () {
+.run(function run () {
 })
 ```
 
@@ -75,9 +75,9 @@ And then we define our main application controller. This is a good place for log
 not specific to the template or route, such as menu logic or page title wiring.
 
 ```js
-.controller( 'AppCtrl', function AppCtrl ( $scope, $location ) {
+.controller('AppCtrl', function AppCtrl($scope, $location) {
   $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
-    if ( angular.isDefined( toState.data.pageTitle ) ) {
+    if (angular.isDefined(toState.data.pageTitle)) {
       $scope.pageTitle = 'OrderCloud | ' + toState.data.pageTitle;
     }
   });

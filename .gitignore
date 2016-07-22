@@ -1,8 +1,7 @@
 *.sw*
 *~
-build/
-compile/
-!gulp/
+/build/
+/compile/
 node_modules/
 bower_components/
 errorShots/

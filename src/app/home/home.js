@@ -1,21 +1,20 @@
-angular.module( 'orderCloud' )
-
-	.config( HomeConfig )
-	.controller( 'HomeCtrl', HomeController )
-
+angular.module('orderCloud')
+	.config(HomeConfig)
+	.controller('HomeCtrl', HomeController)
 ;
 
-function HomeConfig( $stateProvider ) {
+function HomeConfig($stateProvider) {
 	$stateProvider
-		.state( 'home', {
+		.state('home', {
 			parent: 'base',
 			url: '/home',
 			templateUrl: 'home/templates/home.tpl.html',
 			controller: 'HomeCtrl',
 			controllerAs: 'home'
 		})
+	;
 }
 
-function HomeController( ) {
+function HomeController() {
 	var vm = this;
 }

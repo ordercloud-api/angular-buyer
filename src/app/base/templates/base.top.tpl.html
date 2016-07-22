@@ -23,8 +23,10 @@
                         <li><a ng-click="application.logout()">Logout</a></li>
                     </ul>
                 </li>
+                <li>
+                    <ordercloud-minicart order="catalog.currentOrder"></ordercloud-minicart>
+                </li>
             </ul>
-            <ordercloud-minicart order="catalog.currentOrder"></ordercloud-minicart>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>

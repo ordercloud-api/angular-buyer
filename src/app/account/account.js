@@ -1,31 +1,30 @@
-angular.module( 'orderCloud' )
-
-	.config( AccountConfig )
-	.controller( 'AccountCtrl', AccountController )
-	.factory( 'AccountService', AccountService )
-	.controller( 'ConfirmPasswordCtrl', ConfirmPasswordController )
-	.controller( 'ChangePasswordCtrl', ChangePasswordController )
-
+angular.module('orderCloud')
+	.config(AccountConfig)
+	.controller('AccountCtrl', AccountController)
+	.factory('AccountService', AccountService)
+	.controller('ConfirmPasswordCtrl', ConfirmPasswordController)
+	.controller('ChangePasswordCtrl', ChangePasswordController)
 ;
 
-function AccountConfig( $stateProvider ) {
+function AccountConfig($stateProvider) {
 	$stateProvider
-		.state( 'account', {
+		.state('account', {
 			parent: 'base',
 			url: '/account',
-			templateUrl:'account/templates/account.tpl.html',
-			controller:'AccountCtrl',
+			templateUrl: 'account/templates/account.tpl.html',
+			controller: 'AccountCtrl',
 			controllerAs: 'account'
 		})
-		.state( 'account.changePassword', {
+		.state('account.changePassword', {
 			url: '/changepassword',
 			templateUrl: 'account/templates/changePassword.tpl.html',
 			controller: 'ChangePasswordCtrl',
 			controllerAs: 'changePassword'
 		})
+	;
 }
 
-function AccountService( $q, $uibModal, OrderCloud ) {
+function AccountService($q, $uibModal, OrderCloud) {
 	var service = {
 		Update: _update,
 		ChangePassword: _changePassword
@@ -41,7 +40,7 @@ function AccountService( $q, $uibModal, OrderCloud ) {
 				})
 				.catch(function(ex) {
 					deferred.reject(ex);
-				})
+				});
 		}
 
 		$uibModal.open({
@@ -55,10 +54,11 @@ function AccountService( $q, $uibModal, OrderCloud ) {
 				Username: currentProfile.Username,
 				Password: password
 			};
-			OrderCloud.Auth.GetToken(checkPasswordCredentials).then(
-				function() {
+			OrderCloud.Auth.GetToken(checkPasswordCredentials)
+				.then(function() {
 					updateUser();
-				}).catch(function( ex ) {
+				})
+				.catch(function(ex) {
 					deferred.reject(ex);
 				});
 		}, function() {
@@ -84,10 +84,11 @@ function AccountService( $q, $uibModal, OrderCloud ) {
 				});
 		}
 
-		OrderCloud.Auth.GetToken(checkPasswordCredentials).then(
-			function() {
+		OrderCloud.Auth.GetToken(checkPasswordCredentials)
+			.then(function() {
 				changePassword();
-			}).catch(function( ex ) {
+			})
+			.catch(function(ex) {
 				deferred.reject(ex);
 			});
 
@@ -97,7 +98,7 @@ function AccountService( $q, $uibModal, OrderCloud ) {
 	return service;
 }
 
-function AccountController( $exceptionHandler, toastr, CurrentUser, AccountService ) {
+function AccountController($exceptionHandler, toastr, AccountService, CurrentUser) {
 	var vm = this;
 	vm.profile = angular.copy(CurrentUser);
 	var currentProfile = CurrentUser;
@@ -112,7 +113,7 @@ function AccountController( $exceptionHandler, toastr, CurrentUser, AccountServi
 			.catch(function(ex) {
 				vm.profile = currentProfile;
 				$exceptionHandler(ex)
-			})
+			});
 	};
 
 	vm.resetForm = function(form) {
@@ -121,7 +122,7 @@ function AccountController( $exceptionHandler, toastr, CurrentUser, AccountServi
 	};
 }
 
-function ConfirmPasswordController( $uibModalInstance ) {
+function ConfirmPasswordController($uibModalInstance) {
 	var vm = this;
 
 	vm.submit = function() {
@@ -133,7 +134,7 @@ function ConfirmPasswordController( $uibModalInstance ) {
 	};
 }
 
-function ChangePasswordController( $state, $exceptionHandler, toastr, AccountService, CurrentUser ) {
+function ChangePasswordController($state, $exceptionHandler, toastr, AccountService, CurrentUser) {
 	var vm = this;
 	vm.currentUser = CurrentUser;
 
