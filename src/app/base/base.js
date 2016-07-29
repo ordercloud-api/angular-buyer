@@ -54,10 +54,12 @@ function BaseConfig($stateProvider, $injector) {
                                 OrderCloud.Auth.GetToken('')
                                     .then(function(data) {
                                         OrderCloud.Auth.SetToken(data['access_token']);
+                                    })
+                                    .finally(function() {
+                                        OrderCloud.BuyerID.Set(buyerid);
+                                        dfd.resolve({});
                                     });
                             }
-                            OrderCloud.BuyerID.Set(buyerid);
-                            dfd.resolve();
                         } else {
                             OrderCloud.Auth.RemoveToken();
                             OrderCloud.Auth.RemoveImpersonationToken();
