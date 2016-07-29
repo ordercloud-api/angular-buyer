@@ -57,7 +57,7 @@ function ErrorHandling($provide) {
     }
 }
 
-function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname) {
+function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname, anonymous) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
@@ -106,7 +106,7 @@ function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname
     });
 
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
-        LoginService.RememberMe();
+        if (!anonymous) LoginService.RememberMe();
     });
 
     $rootScope.$on('OC:AccessForbidden', function(){

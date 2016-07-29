@@ -1,6 +1,7 @@
 angular.module('orderCloud')
     .config(BaseConfig)
     .controller('BaseCtrl', BaseController)
+    .filter('occomponents', occomponents)
 ;
 
 function BaseConfig($stateProvider, $injector) {
@@ -41,24 +42,38 @@ function BaseConfig($stateProvider, $injector) {
         abstract: true,
         views: baseViews,
         resolve: {
-            CurrentUser: function($q, $state, OrderCloud) {
+            CurrentUser: function($q, $state, OrderCloud, buyerid, anonymous) {
                 var dfd = $q.defer();
                 OrderCloud.Me.Get()
                     .then(function(data) {
                         dfd.resolve(data);
                     })
                     .catch(function(){
-                        OrderCloud.Auth.RemoveToken();
-                        OrderCloud.Auth.RemoveImpersonationToken();
-                        OrderCloud.BuyerID.Set(null);
-                        $state.go('login');
-                        dfd.resolve();
+                        if (anonymous) {
+                            if (!OrderCloud.Auth.ReadToken()) {
+                                OrderCloud.Auth.GetToken('')
+                                    .then(function(data) {
+                                        OrderCloud.Auth.SetToken(data['access_token']);
+                                    });
+                            }
+                            OrderCloud.BuyerID.Set(buyerid);
+                            dfd.resolve();
+                        } else {
+                            OrderCloud.Auth.RemoveToken();
+                            OrderCloud.Auth.RemoveImpersonationToken();
+                            OrderCloud.BuyerID.Set(null);
+                            $state.go('login');
+                            dfd.resolve();
+                        }
                     });
                 return dfd.promise;
             },
+            AnonymousUser: function($q, OrderCloud, CurrentUser) {
+                CurrentUser.Anonymous = angular.isDefined(JSON.parse(atob(OrderCloud.Auth.ReadToken().split('.')[1])).orderid);
+            },
             ComponentList: function($state, $q, Underscore, CurrentUser) {
                 var deferred = $q.defer();
-                var nonSpecific = ['Buyers','Products', 'Specs', 'Price Schedules', 'Admin Users','Product Facets'];
+                var nonSpecific = ['Buyers', 'Products', 'Specs', 'Price Schedules', 'Admin Users', 'Product Facets'];
                 var components = {
                     nonSpecific: [],
                     buyerSpecific: []
@@ -90,13 +105,14 @@ function BaseConfig($stateProvider, $injector) {
     $stateProvider.state('base', baseState);
 }
 
-function BaseController($rootScope, $ocMedia, snapRemote, defaultErrorMessageResolver, CurrentUser, ComponentList, base) {
+function BaseController($rootScope, $ocMedia, Underscore, snapRemote, defaultErrorMessageResolver, CurrentUser, ComponentList, base) {
     var vm = this;
     vm.left = base.left;
     vm.right = base.right;
     vm.currentUser = CurrentUser;
     vm.catalogItems = ComponentList.nonSpecific;
     vm.organizationItems = ComponentList.buyerSpecific;
+    vm.registrationAvailable = Underscore.filter(vm.organizationItems, function(item) { return item.StateRef == 'registration' }).length;
 
     defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
         errorMessages['customPassword'] = 'Password must be at least eight characters long and include at least one letter and one number';
@@ -132,4 +148,17 @@ function BaseController($rootScope, $ocMedia, snapRemote, defaultErrorMessageRes
         if (n === o) return;
         _initDrawers(n);
     });
+}
+
+function occomponents() {
+    return function(components) {
+        var filtered = ['registration'];
+        var result = [];
+
+        angular.forEach(components, function(component) {
+            if (filtered.indexOf(component.StateRef) == -1) result.push(component);
+        });
+
+        return result;
+    }
 }
