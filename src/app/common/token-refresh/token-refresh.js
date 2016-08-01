@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.factory('TokenRefresh', TokenRefresh)
 ;
 
-function TokenRefresh($resource, $localForage, ocscope, clientid, appname, authurl) {
+function TokenRefresh($resource, $localForage, $injector, clientid, appname, authurl) {
 	var service = {
 		Set: _set,
 		Get: _get,
@@ -12,6 +12,8 @@ function TokenRefresh($resource, $localForage, ocscope, clientid, appname, authu
 		RemoveToken: _removeToken
 	};
 	var remember;
+	var scope = $injector.has('scope') ? $injector.get('scope') : null;
+	var ocscope = $injector.has('ocscope') ? $injector.get('ocscope') : null;
 
 	return service;
 	////
@@ -39,7 +41,7 @@ function TokenRefresh($resource, $localForage, ocscope, clientid, appname, authu
 	function _refresh(token) {
 		var data = $.param({
 			grant_type: 'refresh_token',
-			scope: ocscope,
+			scope: scope ? scope : ocscope,
 			client_id: clientid,
 			refresh_token: token
 		});
