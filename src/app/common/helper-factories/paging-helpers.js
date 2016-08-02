@@ -1,18 +1,16 @@
 angular.module('ordercloud-paging-helpers', ['ordercloud-assignment-helpers'])
-
     .factory('Paging', PagingHelpers)
-
 ;
 
 function PagingHelpers($q, OrderCloud, Assignments) {
     return {
-        setSelected: setSelected,
-        paging: pagingFunction
+        SetSelected:_setSelected,
+        Paging: _paging
     };
 
-    function setSelected(ListArray, AssignmentsArray, ID_Name) {
+    function _setSelected(ListArray, AssignmentsArray, ID_Name) {
         if (!ListArray || !AssignmentsArray || !ID_Name) return;
-        var assigned = Assignments.getAssigned(AssignmentsArray, ID_Name);
+        var assigned = Assignments.GetAssigned(AssignmentsArray, ID_Name);
         angular.forEach(ListArray, function(item) {
             if (assigned.indexOf(item.ID) > -1) {
                 item.selected = true;
@@ -20,7 +18,7 @@ function PagingHelpers($q, OrderCloud, Assignments) {
         });
     }
 
-    function pagingFunction(ListObject, ServiceName, AssignmentObjects, AssignmentFunc) {
+    function _paging(ListObject, ServiceName, AssignmentObjects, AssignmentFunc) {
         var Service = OrderCloud[ServiceName];
         if (Service && ListObject.Meta.Page < ListObject.Meta.TotalPages) {
             var queue = [];

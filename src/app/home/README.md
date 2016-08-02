@@ -36,7 +36,7 @@ The dependencies block is also where component dependencies should be
 specified, as shown below.
 
 ```js
-angular.module( 'orderCloud.home', [
+angular.module('orderCloud.home', [
   'ui.router',
 ])
 ```
@@ -52,16 +52,16 @@ Finally we add a custom data property, pageTitle, which will be used to set the 
 title (see the app.js controller).
 
 ```js
-.config(function config( $stateProvider ) {
-  $stateProvider.state( 'home', {
+.config(function config($stateProvider) {
+  $stateProvider.state('home', {
     url: '/home',
     views: {
-      "main": {
+      'main': {
         controller: 'HomeCtrl',
         templateUrl: 'home/home.tpl.html'
       }
     },
-    data:{ pageTitle: 'Home' }
+    data:{pageTitle: 'Home'}
   });
 })
 ```
@@ -70,6 +70,6 @@ And of course we define a controller for our route, though in this case it does
 nothing.
 
 ```js
-.controller( 'HomeCtrl', function HomeController( $scope ) {
+.controller('HomeCtrl', function HomeController($scope) {
 })
 ```

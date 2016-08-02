@@ -1,7 +1,8 @@
 angular.module('orderCloud')
 	.factory('$ocMedia', ocMediaFactory)
 	.constant('MEDIA', MEDIA_CONSTANT)
-	.constant('MEDIA_PRIORITY', MEDIA_PRIORITY_CONSTANT);
+	.constant('MEDIA_PRIORITY', MEDIA_PRIORITY_CONSTANT)
+;
 
 function MEDIA_CONSTANT() {
 	return {
@@ -22,7 +23,7 @@ function MEDIA_PRIORITY_CONSTANT() {
 		'md',
 		'gt-sm',
 		'sm'
-	]
+	];
 }
 
 function ocMediaFactory(MEDIA, MEDIA_PRIORITY, $rootScope, $window) {

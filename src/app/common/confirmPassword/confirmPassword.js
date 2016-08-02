@@ -1,4 +1,4 @@
-angular.module( 'orderCloud' )
+angular.module('orderCloud')
     .directive('confirmpassword', confirmpassword)
 ;
 
@@ -10,12 +10,12 @@ function confirmpassword() {
             if (!ngModel) return;
 
             //watch own value and re-validate on change
-            scope.$watch(attrs.ngModel, function () {
+            scope.$watch(attrs.ngModel, function() {
                 validate();
             });
 
             //watch other value and re-validate on change
-            attrs.$observe('confirmpassword', function (val) {
+            attrs.$observe('confirmpassword', function(val) {
                 validate();
             });
 
@@ -24,8 +24,7 @@ function confirmpassword() {
                 var val2 = attrs.confirmpassword;
 
                 (!val1 || !val2 || val1 === val2) ? ngModel.$setValidity('confirmpassword', true) : ngModel.$setValidity('confirmpassword', false);
-
-            }
+            };
         }
     }
 }

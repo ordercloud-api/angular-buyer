@@ -1,17 +1,17 @@
 angular.module('ordercloud-search', []);
-angular.module('ordercloud-search')
 
-    .directive( 'ordercloudSearch', ordercloudSearch)
-    .controller( 'ordercloudSearchCtrl', ordercloudSearchCtrl)
-    .factory( 'TrackSearch', trackSearchService )
+angular.module('ordercloud-search')
+    .directive('ordercloudSearch', OrdercloudSearch)
+    .controller('ordercloudSearchCtrl', OrdercloudSearchController)
+    .factory('TrackSearch', TrackSearchService )
 ;
 
-function ordercloudSearch () {
+function OrdercloudSearch () {
     return {
         scope: {
             placeholder: '@',
-            servicename: "@",
-            controlleras: "="
+            servicename: '@',
+            controlleras: '='
         },
         restrict: 'E',
         templateUrl: 'common/search/templates/search.tpl.html',
@@ -21,7 +21,7 @@ function ordercloudSearch () {
     }
 }
 
-function ordercloudSearchCtrl($timeout, $scope, OrderCloud, TrackSearch) {
+function OrdercloudSearchController($timeout, $scope, OrderCloud, TrackSearch) {
     $scope.searchTerm = null;
     if ($scope.servicename) {
         var var_name = $scope.servicename.replace(/([a-z])([A-Z])/g, '$1 $2');
@@ -99,7 +99,7 @@ function ordercloudSearchCtrl($timeout, $scope, OrderCloud, TrackSearch) {
     });
 }
 
-function trackSearchService() {
+function TrackSearchService() {
     var service = {
         SetTerm: _setTerm,
         GetTerm: _getTerm

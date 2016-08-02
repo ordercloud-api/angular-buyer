@@ -1,7 +1,7 @@
 {
-  "name": "ordercloud-components",
+  "name": "ordercloud-seed",
   "version": "1.0.0",
-  "description": "repo for managing ordercloud components that serve as a starting point for creating B2B applications on the Four51 OrderCloud platform",
+  "description": "A seed project for custom Four51 Solutions built on AngularJS",
   "main": "app.js",
   "engines": {
     "node": "5.6.0",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Four51/OrderCloud-Components.git"
+    "url": "git+https://github.com/Four51/OrderCloud-Seed-AngularJS.git"
   },
   "keywords": [
     "OrderCloud",
@@ -32,9 +32,9 @@
   "author": "Four51 Inc.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Four51/OrderCloud-Components/issues"
+    "url": "https://github.com/Four51/OrderCloud-Seed-AngularJS/issues"
   },
-  "homepage": "https://github.com/Four51/OrderCloud-Components#readme",
+  "homepage": "https://github.com/Four51/OrderCloud-Seed-AngularJS#readme",
   "dependencies": {
     "bower": "1.7.7",
     "express": "^4.13.4",
