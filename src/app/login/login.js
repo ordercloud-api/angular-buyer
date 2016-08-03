@@ -15,7 +15,7 @@ function LoginConfig($stateProvider) {
     ;
 }
 
-function LoginService($q, $window, $state, toastr, OrderCloud, TokenRefresh, clientid, buyerid) {
+function LoginService($q, $window, $state, toastr, OrderCloud, TokenRefresh, clientid, buyerid, anonymous) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -68,7 +68,7 @@ function LoginService($q, $window, $state, toastr, OrderCloud, TokenRefresh, cli
         OrderCloud.Auth.RemoveImpersonationToken();
         OrderCloud.BuyerID.Set(null);
         TokenRefresh.RemoveToken();
-        $state.go('login');
+        $state.go(anonymous ? 'home' : 'login', {}, {reload: true});
     }
 
     function _rememberMe() {
