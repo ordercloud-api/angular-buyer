@@ -6,7 +6,7 @@ before_script:
   - npm install
 
 script:
+  - gulp build
   - gulp test:unit
   - gulp test:e2e
-  - gulp build
 
