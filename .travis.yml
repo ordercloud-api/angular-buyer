@@ -6,5 +6,7 @@ before_script:
   - npm install
 
 script:
-  - npm run build-all test test-e2e
+  - npm run build-all
+  - npm run test
+  - npm run test-e2e
 
