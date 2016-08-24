@@ -19,7 +19,7 @@ module.exports = {
     assets: assets,
     appCss: assets + 'styles/',
     appFonts: assets + 'fonts/',
-    appImages: assets + 'images',
+    appImages: assets + 'images/',
     root: root,
     gulp: gulp_dir,
     index: source + index,
