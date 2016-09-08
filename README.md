@@ -7,10 +7,8 @@ A seed project for custom Four51 Solutions built on AngularJS
 Node.js is required for the following node package manager (npm) tasks. If you don't have node.js installed, you can download it [here](http://nodejs.org/).
 
 ```sh
-$ npm -g install karma bower
-$ npm -g install "gulpjs/gulp-cli#4.0"
+
 $ npm install
-$ bower install
 $ gulp build
 ```
 
@@ -20,7 +18,7 @@ You should now have a few more directories in your project.
 OrderCloud/
   |- build/
   |- node_modules/
-  |- vendor/
+  |- bower_components/
 ```
 
 ## Configure WebStorm
@@ -44,13 +42,7 @@ At a high level, the structure looks roughly like this:
 
 ```
 OrderCloud/
-  |- Gulp/
-  |- |- assetTasks.js
-  |- |- generalTasks.js
-  |- |- scriptTasks.js
-  |- |- testTasks.js
-  |- |- watchTasks.js
-  |- karma/
+  |- gulp/
   |- node_modules/
   |- src/
   |  |- app/
@@ -58,15 +50,12 @@ OrderCloud/
   |  |- assets/
   |  |  |- <static files>
   |  |- index.html
-  |- vendor/
+  |- bower_components/
   |  |- <bower components>
-  |- .bowerrc
   |- bower.json
-  |- gulpConfig.js
-  |- Gulpfile.js
-  |- karma.conf.js
-  |- module.prefix
-  |- module.suffix
+  |- gulp.config.js
+  |- gulpfile.js
+  |- server.js
   |- package.json
 ```
 
@@ -82,15 +71,9 @@ of the tools](tools.md) before continuing with this section.
 Here it is:
 
 `OrderCloud` uses [Gulp](http://gulpjs.com/) as its build system, so
-[Node.js](http://nodejs.org) is required. Also, we are using Gulp 4.0 prior to 
-its official release date. You can install Gulp 4.0 on your machine globally by running
-the following command:
+[Node.js](http://nodejs.org) is required.
 
-```sh
-$ npm -g install "gulpjs/gulp-cli#4.0" karma bower
-```
-
-And then install the remaining build dependencies locally:
+Install the build dependencies locally:
 
 ```sh
 $ npm install
@@ -103,6 +86,8 @@ everything needed into a folder called `node_modules/`.
 There are many Bower packages used by `OrderCloud`, like AngularJS and the
 OrderCloud-Angular-SDK, which are listed in `bower.js`. To install them into the
 `vendor/` directory, simply run:
+
+**This is already installed after running $ npm install
 
 ```sh
 $ bower install
@@ -128,7 +113,6 @@ commands:
 
 ```sh
 $ gulp build
-$ gulp watch
 ```
 
 The built files are placed in the `build/` directory by default. And you application
