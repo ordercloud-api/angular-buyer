@@ -11,7 +11,8 @@ function OrdercloudSearch () {
         scope: {
             placeholder: '@',
             servicename: '@',
-            controlleras: '='
+            controlleras: '=',
+            model:'@'
         },
         restrict: 'E',
         templateUrl: 'common/search/templates/search.tpl.html',
@@ -41,13 +42,13 @@ function OrdercloudSearchController($timeout, $scope, OrderCloud, TrackSearch) {
                     if (!$scope.controlleras.searchfunction) {
                         Service.ListIncoming(null, null, n)
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                     else {
                         $scope.controlleras.searchfunction($scope.searchTerm)
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                 }
@@ -55,13 +56,27 @@ function OrdercloudSearchController($timeout, $scope, OrderCloud, TrackSearch) {
                     if (!$scope.controlleras.searchfunction) {
                         Service.List(n, null, null, null, null, {'RedemptionCode': '!*'})
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                     else {
                         $scope.controlleras.searchfunction($scope.searchTerm)
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
+                            });
+                    }
+                }
+                else if ($scope.servicename === 'Users') {
+                    if (!$scope.controlleras.searchfunction) {
+                        Service.List(null, n)
+                            .then(function (data){
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
+                            });
+                    }
+                    else {
+                        $scope.controlleras.searchfunction($scope.searchTerm)
+                            .then(function (data){
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                 }
@@ -69,13 +84,13 @@ function OrdercloudSearchController($timeout, $scope, OrderCloud, TrackSearch) {
                     if (!$scope.controlleras.searchfunction) {
                         Service.List(null, n, null, null)
                             .then(function (data) {
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                     else {
                         $scope.controlleras.searchfunction($scope.searchTerm)
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                 }
@@ -83,13 +98,13 @@ function OrdercloudSearchController($timeout, $scope, OrderCloud, TrackSearch) {
                     if (!$scope.controlleras.searchfunction) {
                         Service.List(n)
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                     else {
                         $scope.controlleras.searchfunction($scope.searchTerm)
                             .then(function (data){
-                                $scope.controlleras.list = data;
+                                $scope.model ? $scope.controlleras[$scope.model] = data : $scope.controlleras.list = data;
                             });
                     }
                 }
