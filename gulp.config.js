@@ -1,6 +1,6 @@
 var source = './src/',
     assets = 'assets/',
-    components = './../components-development-submodule/',
+    components = './../Components/',
     build = './build/',
     bowerFiles = './bower_components/',
     npmFiles = './node_modules',
