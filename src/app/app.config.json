@@ -3,6 +3,7 @@
   "scope": "BuyerReader",
   "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX",
   "buyerid": "XXXXX",
+  "catalogid": "XXXXX",
   "environment": "prod",
   "anonymous": false,
   "base": {

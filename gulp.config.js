@@ -112,5 +112,6 @@ function getConstants() {
     if (process.env.scope) result.scope = process.env.scope;
     if (process.env.ocscope) result.ocscope = process.env.ocscope;
     if (process.env.buyerid) result.buyerid = process.env.buyerid;
+    if (process.env.catalogid) result.catalogid = process.env.catalogid;
     return result;
 }
