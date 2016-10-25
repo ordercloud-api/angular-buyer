@@ -42,7 +42,7 @@ function SetBuyerID(OrderCloud, buyerid) {
 }
 
 function SetCatalogID(OrderCloud, catalogid){
-    OrderCloud.CatalogID.Get() === catalogid ? angular.noop() : OrderCloud.CatalogID.Set(catalogid);
+    catalogid ? OrderCloud.CatalogID.Set(catalogid) : OrderCloud.CatalogID.Set(OrderCloud.BuyerID.Get());
 }
 
 function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider) {
