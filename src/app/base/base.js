@@ -75,7 +75,7 @@ function BaseConfig($stateProvider, $injector) {
             },
             ComponentList: function($state, $q, Underscore, CurrentUser) {
                 var deferred = $q.defer();
-                var nonSpecific = ['Buyers', 'Products', 'Specs', 'Price Schedules', 'Admin Users', 'Product Facets'];
+                var nonSpecific = ['Buyers', 'Products', 'Specs', 'Price Schedules', 'Admin Users', 'Admin User Groups', 'Admin Addresses', 'Product Facets'];
                 var components = {
                     nonSpecific: [],
                     buyerSpecific: []

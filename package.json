@@ -16,7 +16,8 @@
     "start": "node server.js",
     "build-all": "gulp inject index",
     "test": "gulp test:unit",
-    "test-e2e": "gulp test:e2e"
+    "test-e2e": "gulp test:e2e",
+    "gulp": "gulp"
   },
   "repository": {
     "type": "git",
