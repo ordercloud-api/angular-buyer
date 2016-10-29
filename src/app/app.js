@@ -24,6 +24,7 @@ angular.module('orderCloud', [
     'ordercloud-geography'
     ])
     .run(SetBuyerID)
+    .run(SetCatalogID)
     .config(Routing)
     .config(ErrorHandling)
     .config(Interceptor)
@@ -38,6 +39,10 @@ function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
 
 function SetBuyerID(OrderCloud, buyerid) {
     OrderCloud.BuyerID.Get() == buyerid ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
+}
+
+function SetCatalogID(OrderCloud, catalogid){
+    catalogid ? OrderCloud.CatalogID.Set(catalogid) : OrderCloud.CatalogID.Set(OrderCloud.BuyerID.Get());
 }
 
 function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider) {
