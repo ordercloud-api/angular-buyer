@@ -1,4 +1,4 @@
-angular.module('ordercloud-catalog-select', {})
+angular.module('ordercloud-catalog-select', [])
     .directive('ordercloudSelectCatalog', SelectCatalogDirective)
     .controller('SelectCatalogCtrl', SelectCatalogController)
 ;
@@ -20,16 +20,42 @@ function SelectCatalogController($scope, $state, OrderCloud){
 
     vm.align = $scope.align;
 
+    //DON'T DELETE
     OrderCloud.Catalogs.List().then(function(data){
         vm.CatalogList = data;
     });
+
+
+    //vm.buyerID = {
+    //    buyerID: OrderCloud.BuyerID.Get()
+    //};
+    //
+    //OrderCloud.Catalogs.ListAssignments(null, null, null, vm.buyerID).then(function(data){
+    //    vm.CatalogList = data;
+    //});
+
+    //OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments()).then(function(data){
+    //    vm.CatalogList = data;
+    //});
+
+
+    //OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments()).then(function(data){
+    //    vm.assignedCatalog = data;
+    //});
+
+    //vm.AssignedCatalogs = function(assignment){
+    //  return OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments(assignment.ID))
+    //      .then(function(data){
+    //          vm.CatalogList = data;
+    //      })
+    //};
 
     OrderCloud.Catalogs.Get(OrderCloud.CatalogID.Get()).then(function(data){
         vm.selectedCatalog = data;
     });
 
     vm.ChangeCatalog = function(catalog){
-        OrderCloud.Catalog.Get(catalog.ID).then(function(data){
+        OrderCloud.Catalogs.Get(catalog.ID).then(function(data){
             vm.selectedCatalog = data;
             OrderCloud.CatalogID.Set(data.ID);
             $state.reload($state.current);
