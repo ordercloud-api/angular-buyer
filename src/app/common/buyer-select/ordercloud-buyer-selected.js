@@ -30,9 +30,10 @@ function SelectBuyerController($scope, $state, OrderCloud) {
 
     vm.ChangeBuyer = function(buyer) {
         OrderCloud.Buyers.Get(buyer.ID).then(function(data) {
+            //$scope.$broadcast('buyerChanged');
             vm.selectedBuyer = data;
             OrderCloud.BuyerID.Set(data.ID);
-            $state.reload($state.current);
+            $state.reload();
         });
     };
 

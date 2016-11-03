@@ -1,5 +1,5 @@
 <div>
-    <div uib-dropdown dropdown-append-to-body="true" ng-if="selectCatalog.CatalogList.Items.length > 1">
+    <div uib-dropdown dropdown-append-to-body="true" ng-if="selectCatalog.CatalogList.length">
         <button class="btn btn-default btn-block btn-select-buyer" uib-dropdown-toggle>
             <span class="text-primary"><small>Selected Catalog:</small></span>
             <span class="buyer-name"><b>{{selectCatalog.selectedCatalog.Name}}</b></span>
@@ -22,7 +22,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr role="menuitem" ng-repeat="catalog in selectCatalog.CatalogList.Items" ng-click="selectCatalog.ChangeCatalog(catalog)">
+                        <tr role="menuitem" ng-repeat="catalog in selectCatalog.CatalogList" ng-click="selectCatalog.ChangeCatalog(catalog)">
                             <td>{{catalog.ID}}</td>
                             <td>{{catalog.Name}}</td>
                         </tr>

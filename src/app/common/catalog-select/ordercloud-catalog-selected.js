@@ -21,9 +21,10 @@ function SelectCatalogController($scope, $state, OrderCloud){
     vm.align = $scope.align;
 
     //DON'T DELETE
-    OrderCloud.Catalogs.List().then(function(data){
-        vm.CatalogList = data;
-    });
+    //OrderCloud.Catalogs.List().then(function(data){
+    //    vm.CatalogList = data;
+    //});
+
 
 
     //vm.buyerID = {
@@ -35,12 +36,12 @@ function SelectCatalogController($scope, $state, OrderCloud){
     //});
 
     //OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments()).then(function(data){
-    //    vm.CatalogList = data;
+    //    vm.assignedCatalogs = data;
     //});
 
-
-    //OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments()).then(function(data){
-    //    vm.assignedCatalog = data;
+    //OrderCloud.BuyerID.Get().then(function(data){
+    //    OrderCloud.Catalogs.ListAssignments();
+    //        vm.assignedCatalogs = data;
     //});
 
     //vm.AssignedCatalogs = function(assignment){
@@ -50,9 +51,17 @@ function SelectCatalogController($scope, $state, OrderCloud){
     //      })
     //};
 
-    OrderCloud.Catalogs.Get(OrderCloud.CatalogID.Get()).then(function(data){
-        vm.selectedCatalog = data;
+    OrderCloud.Catalogs.ListAssignments(null, null, null, OrderCloud.BuyerID.Get()).then(function(data){
+        var catalogs = [];
+        angular.forEach(data.Items, function(catalogAssignment){
+            OrderCloud.Catalogs.Get(catalogAssignment.CatalogID).then(function(catalog){
+                catalogs.push(catalog);
+            });
+        });
+        vm.CatalogList = catalogs;
     });
+
+    vm.selectedCatalog = OrderCloud.CatalogID.Get();
 
     vm.ChangeCatalog = function(catalog){
         OrderCloud.Catalogs.Get(catalog.ID).then(function(data){
