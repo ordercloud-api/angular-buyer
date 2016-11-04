@@ -25,35 +25,14 @@ function SelectCatalogController($scope, $state, OrderCloud){
     //    vm.CatalogList = data;
     //});
 
-
-
-    //vm.buyerID = {
-    //    buyerID: OrderCloud.BuyerID.Get()
-    //};
-    //
-    //OrderCloud.Catalogs.ListAssignments(null, null, null, vm.buyerID).then(function(data){
-    //    vm.CatalogList = data;
-    //});
-
-    //OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments()).then(function(data){
-    //    vm.assignedCatalogs = data;
-    //});
-
-    //OrderCloud.BuyerID.Get().then(function(data){
-    //    OrderCloud.Catalogs.ListAssignments();
-    //        vm.assignedCatalogs = data;
-    //});
-
-    //vm.AssignedCatalogs = function(assignment){
-    //  return OrderCloud.BuyerID.Get(OrderCloud.Catalogs.ListAssignments(assignment.ID))
-    //      .then(function(data){
-    //          vm.CatalogList = data;
-    //      })
-    //};
-
+    //This makes the Catalogs ListAssignments API call, and sets the last parameter to the API Call to
+    //get the BuyerID
     OrderCloud.Catalogs.ListAssignments(null, null, null, OrderCloud.BuyerID.Get()).then(function(data){
+        //We set this variable to an array so that we can loop through the objects in it in the ForEach fn
         var catalogs = [];
         angular.forEach(data.Items, function(catalogAssignment){
+            //data.Items pulls in what's returned from the ListAssignments API call, and then
+            //the function makes a Catalogs Get API call to get the ID of the data returned
             OrderCloud.Catalogs.Get(catalogAssignment.CatalogID).then(function(catalog){
                 catalogs.push(catalog);
             });
@@ -81,3 +60,14 @@ function SelectCatalogController($scope, $state, OrderCloud){
         }
     }
 }
+
+
+//OrderCloud.Catalogs.ListAssignments(null, null, null, OrderCloud.BuyerID.Get()).then(function(data){
+//    var catalogs = [];
+//    angular.forEach(data.Items, function(catalogAssignment){
+//        OrderCloud.Catalogs.Get(catalogAssignment.CatalogID).then(function(catalog){
+//            catalogs.push(catalog);
+//        });
+//    });
+//    vm.CatalogList = catalogs;
+//});
