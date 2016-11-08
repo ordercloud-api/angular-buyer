@@ -60,14 +60,3 @@ function SelectCatalogController($scope, $state, OrderCloud){
         }
     }
 }
-
-
-//OrderCloud.Catalogs.ListAssignments(null, null, null, OrderCloud.BuyerID.Get()).then(function(data){
-//    var catalogs = [];
-//    angular.forEach(data.Items, function(catalogAssignment){
-//        OrderCloud.Catalogs.Get(catalogAssignment.CatalogID).then(function(catalog){
-//            catalogs.push(catalog);
-//        });
-//    });
-//    vm.CatalogList = catalogs;
-//});
