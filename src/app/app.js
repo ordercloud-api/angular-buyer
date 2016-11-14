@@ -14,6 +14,7 @@ angular.module('orderCloud', [
     'jcs-autoValidate',
     'ordercloud-infinite-scroll',
     'ordercloud-buyer-select',
+    'ordercloud-catalog-select',
     'ordercloud-search',
     'ordercloud-assignment-helpers',
     'ordercloud-paging-helpers',
