@@ -11,7 +11,7 @@ describe('Component: Infinite Scroll', function() {
         beforeEach(inject(function($compile, Paging) {
             scope.ctrl = {};
             element = $compile('<div ordercloud-infinite-scroll class="table-container" servicename="Products" controlleras="ctrl"></div>')(scope);
-            spyOn(Paging, 'paging').and.returnValue(true);
+            spyOn(Paging, 'Paging').and.returnValue(true);
         }));
         it ('should initialize the directive', function() {
             expect(element.isolateScope().controlleras).toEqual({});

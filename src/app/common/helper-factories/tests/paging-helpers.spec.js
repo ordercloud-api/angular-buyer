@@ -15,7 +15,7 @@ describe('Factory: Paging', function() {
         oc = OrderCloud;
     }));
     it('setSelected should create or update a selected property on the first array if it also exists in the second assignments array', function() {
-        paging.setSelected(listArray, assignmentsArray, 'ID');
+        paging.SetSelected(listArray, assignmentsArray, 'ID');
         expect(listArray).toEqual([{ID: 1}, {ID: 2, selected: true}, {ID: 3, selected: true}])
     });
     describe('pagingFunction', function() {
@@ -49,25 +49,25 @@ describe('Factory: Paging', function() {
             spyOn(service, 'ListAssignments').and.returnValue(objectAssignmentsList);
         });
         it('should call the List method of the service passed in if page is less than total pages', function() {
-            paging.paging(objectList, serviceName);
+            paging.Paging(objectList, serviceName);
             scope.$digest();
             expect(service.List).toHaveBeenCalledWith(null, objectList.Meta.Page + 1, objectList.Meta.PageSize)
         });
         it('should not call the List method of the service if pages is greater than or equal to total pages', function() {
             objectList.Meta.Page = 2;
-            paging.paging(objectList, serviceName);
+            paging.Paging(objectList, serviceName);
             scope.$digest();
             expect(service.List).not.toHaveBeenCalledWith(null, objectList.Meta.Page + 1, objectList.Meta.PageSize)
         });
 
         it('should call the ListAssignments method of the service passed in if page is less than total pages', function() {
-            paging.paging(objectList, serviceName, objectAssignmentsList, assignFunc);
+            paging.Paging(objectList, serviceName, objectAssignmentsList, assignFunc);
             scope.$digest();
             expect(service.ListAssignments).toHaveBeenCalled()
         });
         it('should not call the List method of the service if pages is greater than or equal to total pages', function() {
             objectAssignmentsList.Meta.Page = 2;
-            paging.paging(objectList, serviceName, objectAssignmentsList, assignFunc);
+            paging.Paging(objectList, serviceName, objectAssignmentsList, assignFunc);
             scope.$digest();
             expect(service.ListAssignments).not.toHaveBeenCalled()
         });

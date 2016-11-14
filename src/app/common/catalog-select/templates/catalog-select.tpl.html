@@ -1,0 +1,39 @@
+<div>
+    <div uib-dropdown dropdown-append-to-body="true" ng-if="selectCatalog.CatalogList.length">
+        <button class="btn btn-default btn-block btn-select-buyer" uib-dropdown-toggle>
+            <span class="text-primary"><small>Selected Catalog:</small></span>
+            <span class="buyer-name"><b>{{selectCatalog.selectedCatalog.Name}}</b></span>
+        </button>
+        <div class="buyer-list-menu" ng-class="{'dropdown-menu-right':selectCatalog.align == 'right'}" uib-dropdown-menu role="menu">
+            <section class="table-fixed-header">
+                <div class="table-header-bg"></div>
+                <div class="table-container" ordercloud-infinite-scroll controlleras="selectCatalog">
+                    <table class="table table-hover">
+                        <colgroup>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>
+                                <div>ID</div>
+                            </th>
+                            <th>
+                                <div>Name</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr role="menuitem" ng-repeat="catalog in selectCatalog.CatalogList" ng-click="selectCatalog.ChangeCatalog(catalog)">
+                            <td>{{catalog.ID}}</td>
+                            <td>{{catalog.Name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <button class="btn btn-default btn-block btn-select-buyer" ng-if="selectCatalog.CatalogList.Items.length == 1">
+        <span class="text-muted"><small>Active Buyer:</small></span>
+        <span class="buyer-name"><b>{{selectCatalog.selectedCatalog.Name}}</b></span>
+    </button>
+</div>

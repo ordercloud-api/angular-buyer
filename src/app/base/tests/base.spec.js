@@ -3,7 +3,9 @@ describe('Component: Base', function() {
         scope,
         oc,
         underscore;
-    beforeEach(module('orderCloud'));
+    beforeEach(module('orderCloud', function($provide){
+       $provide.value('ComponentList', {});
+    }));
     beforeEach(module('orderCloud.sdk'));
     beforeEach(module('ui.router'));
     beforeEach(inject(function($q, $rootScope, OrderCloud, Underscore) {
@@ -64,31 +66,5 @@ describe('Component: Base', function() {
         it ('should initialize the currentUser into its scope', function() {
             expect(baseCtrl.currentUser).toBe(fake_user);
         });
-    });
-
-    describe('Controller: BaseLeftCtrl', function(){
-        var baseLeftCtrl,
-            fake_components = {
-                nonSpecific: ['test1', 'test2', 'test3'],
-                buyerSpecific: ['test4', 'test5', 'test6']
-            };
-        beforeEach(inject(function($controller) {
-            baseLeftCtrl = $controller('BaseLeftCtrl', {
-                ComponentList: fake_components,
-                Order: null
-            });
-        }));
-        it ('should initialize the components lists', function() {
-            expect(baseLeftCtrl.catalogItems).toBe(fake_components.nonSpecific);
-            expect(baseLeftCtrl.organizationItems).toBe(fake_components.buyerSpecific);
-        });
-    });
-
-    describe('Controller: BaseTopCtrl', function(){
-        var baseTopCtrl;
-        beforeEach(inject(function($controller) {
-            baseTopCtrl = $controller('BaseTopCtrl', {});
-        }));
-        /* No tests needed */
     });
 });
