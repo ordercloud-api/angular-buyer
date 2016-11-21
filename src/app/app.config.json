@@ -1,9 +1,9 @@
 {
-  "appname": "Stormalong Harbor",
+  "appname": "Buyer A Application",
   "scope": "FullAccess",
-  "clientid": "BE70491A-FAE4-4C50-8F57-643BC54F86C7",
-  "buyerid": "1020buyer",
-  "catalogid": "1020buyer",
+  "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
+  "buyerid": "A",
+  "catalogid": "SHARED",
   "environment": "prod",
   "anonymous": false,
   "base": {
