@@ -1,6 +1,6 @@
 {
   "appname": "Buyer A Application",
-  "scope": "FullAccess",
+  "scope": "FullAccess DevCenterImpersonate",
   "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
   "buyerid": "A",
   "catalogid": "SHARED",
