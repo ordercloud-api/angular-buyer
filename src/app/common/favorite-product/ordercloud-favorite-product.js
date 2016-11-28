@@ -25,6 +25,6 @@ function FavoriteProductController($scope){
     };
 
     vm.removeFromFavorite = function(){
-        
+
     };
 }
