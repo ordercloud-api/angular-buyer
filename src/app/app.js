@@ -3,7 +3,6 @@ angular.module('orderCloud', [
     'ngAnimate',
     'ngMessages',
     'ngTouch',
-    'snap',
     'ui.tree',
     'ui.router',
     'ui.bootstrap',
