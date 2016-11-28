@@ -20,6 +20,8 @@ function FavoriteProductController($scope){
 
     vm.align = $scope.align;
 
+    vm.heartToggle = false;
+
     vm.addToFavorite = function(){
 
     };

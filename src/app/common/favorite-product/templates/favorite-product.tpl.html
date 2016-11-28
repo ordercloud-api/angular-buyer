@@ -2,7 +2,13 @@
     <button ng-click="markAs(!isFavorite)"  class="glyphicons glyphicons-heart"
             ng-class="{'glyphicon-heart' : favoriteProduct.addToFavorite() , 'glyphicon-heart-empty' : !favoriteProduct.removeFromFavorite() }">
     </button>
-    <i class="fa fa-heart" aria-hidden="true"></i>
-    <i class="fa fa-heart-o" aria-hidden="true"></i>
+    <button class="btn btn-default">
+        <div ng-if="favoriteProduct.heartToggle">
+            <i class="fa fa-heart" aria-hidden="true"></i>
+        </div>
+        <div ng-if="!favoriteProduct.heartToggle">
+            <i class="fa fa-heart-o" aria-hidden="true"></i>
+        </div>
+    </button>
 
 </div>
