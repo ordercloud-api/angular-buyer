@@ -1,15 +1,9 @@
 {
-  "appname": "Buyer A Application",
-  "scope": "FullAccess DevCenterImpersonate",
+  "appname": "Angular Seed",
+  "scope": "FullAccess",
   "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
   "buyerid": "A",
   "catalogid": "SHARED",
   "environment": "prod",
-  "anonymous": false,
-  "base": {
-    "left":true,
-    "right":false,
-    "top":true,
-    "bottom":false
-  }
+  "anonymous": false
 }
