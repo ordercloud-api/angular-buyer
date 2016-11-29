@@ -1,9 +1,9 @@
 {
-  "appname": "Angular Seed",
+  "appname": "Stormalong Harbor",
   "scope": "FullAccess",
-  "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
-  "buyerid": "A",
-  "catalogid": "SHARED",
+  "clientid": "BE70491A-FAE4-4C50-8F57-643BC54F86C7",
+  "buyerid": "1020Buyer",
+  "catalogid": "1020Buyer",
   "environment": "prod",
   "anonymous": false
 }
