@@ -1,0 +1,14 @@
+//Style Architecture POC
+  //https://scotch.io/tutorials/aesthetic-sass-1-architecture-and-style-organization
+@import 'components/glob';
+@import 'global/glob';
+@import 'layout/glob';
+@import 'pages/glob';
+@import 'utils/glob';
+
+//Theme styles are imported last for proper overwriting
+@import 'theme/glob';
+
+//shame.less is where we put all the styles that need to be organized
+  // and refactored into the standard architecture
+@import 'shame';
