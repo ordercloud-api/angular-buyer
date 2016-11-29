@@ -1,0 +1,45 @@
+//Buyer Select
+.btn-select-buyer {
+  border-radius: @nav-pills-border-radius;
+  border-left: none;
+  // background-color: @side-nav-bg;
+  // border-color: lighten(@side-nav-bg,10%);
+  color: #ffffff; //TODO: variable
+}
+
+//Buttons
+.btn {
+  text-transform: uppercase;
+}
+
+//Pills
+.nav-pills {
+  > li {
+    > a {
+      color: #ffffff; //TODO: variable
+      font-weight: 400;
+
+      &:hover,
+      &:focus {
+        background-color: darken(@nav-pills-active-link-hover-bg, 10%);
+      }
+    }
+
+    &.active > a {
+      font-weight: 900;
+    }
+
+    > h4 {
+      font-size: 11px; //TODO: variable
+      font-weight: 400;
+      padding: @nav-link-padding;
+    }
+  }
+}
+
+//Panels
+.panel-default {
+  > .panel-heading {
+    font-weight: 900;
+  }
+}
