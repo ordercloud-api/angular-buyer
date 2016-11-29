@@ -18,7 +18,6 @@ angular.module('orderCloud', [
     'ordercloud-assignment-helpers',
     'ordercloud-paging-helpers',
     'ordercloud-auto-id',
-    'ordercloud-current-order',
     'ordercloud-address',
     'ordercloud-lineitems',
     'ordercloud-geography'
