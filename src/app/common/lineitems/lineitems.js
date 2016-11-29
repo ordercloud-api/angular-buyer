@@ -3,7 +3,7 @@ angular.module('ordercloud-lineitems', [])
     .controller('LineItemModalCtrl', LineItemModalController)
 ;
 
-function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderCloud, CurrentOrder) {
+function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderCloud) {
     return {
         SpecConvert: _specConvert,
         RemoveItem: _removeItem,
@@ -43,16 +43,17 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
                 // If all line items are removed delete the order.
                 OrderCloud.LineItems.List(Order.ID)
                     .then(function (data) {
-                        if (!data.Items.length) {
-                            CurrentOrder.Remove();
-                            OrderCloud.Orders.Delete(Order.ID).then(function () {
-                                $state.reload();
-                                $rootScope.$broadcast('OC:RemoveOrder');
-                            });
-                        }
-                        else {
+                        //if (!data.Items.length) {
+                        //    //TODO: Remove current order
+                        //    //CurrentOrder.Remove();
+                        //    OrderCloud.Orders.Delete(Order.ID).then(function () {
+                        //        $state.reload();
+                        //        $rootScope.$broadcast('OC:RemoveOrder');
+                        //    });
+                        //}
+                        //else {
                             $state.reload();
-                        }
+                        //}
                     });
             });
     }
