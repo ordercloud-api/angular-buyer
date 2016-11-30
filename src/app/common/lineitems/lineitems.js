@@ -6,6 +6,7 @@ angular.module('ordercloud-lineitems', [])
 function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderCloud) {
     return {
         SpecConvert: _specConvert,
+        AddItem: _addItem,
         RemoveItem: _removeItem,
         UpdateQuantity: _updateQuantity,
         GetProductInfo: _getProductInfo,
@@ -35,6 +36,34 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
             results.push(spec_to_push);
         });
         return results;
+    }
+
+    function _addItem(order, product){
+        var deferred = $q.defer();
+
+        var li = {
+            ProductID: product.ID,
+            Quantity: product.Quantity,
+            Specs: _specConvert(product.Specs)
+        };
+        li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
+        console.log(product, "here is li before sent to create a line item", li);
+        OrderCloud.LineItems.Create(order.ID, li).then(function(lineItem) {
+            console.log("lineitem before broadcast", lineItem);
+            $rootScope.$broadcast('LineItemAddedToCart', order.ID, lineItem);
+            deferred.resolve();
+            console.log("lineitem", lineItem);
+        });
+
+        function isSingleShipping(order) {
+            return Underscore.pluck(order.LineItems, 'ShippingAddressID').length == 1;
+        }
+
+        function getSingleShippingAddressID(order) {
+            return order.LineItems[0].ShippingAddressID;
+        }
+
+        return deferred.promise;
     }
 
     function _removeItem(Order, LineItem) {
