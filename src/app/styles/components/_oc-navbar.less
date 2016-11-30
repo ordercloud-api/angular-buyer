@@ -24,6 +24,10 @@
   &.oc-navbar-top {
 	min-height: @navbar-height; // Ensure a navbar always shows (e.g., without a .navbar-brand in collapsed mode)
 	margin-bottom: @navbar-margin-bottom;
+	.dropdown-menu {
+	  margin-top: 0;
+	  .border-top-radius(0);
+	}
   }
 /*  &.oc-navbar-left {
 	float:left;
@@ -42,6 +46,20 @@
   }
 }
 
+//TODO: I don't like this
+.oc-nav {
+  @media(max-width:@screen-xs-max) {
+	& > .oc-flex-layout:last-child {
+	  width:100%;
+	}
+  }
+  @media(min-width:@screen-sm-min) {
+	& > .account-cart {
+	  order:2;
+	}
+  }
+}
+
 .oc-nav-item {
   display:inline-block;
   padding:@navbar-padding-vertical @navbar-padding-horizontal;
@@ -51,20 +69,37 @@
 	color:@navbar-default-link-color;
   }
   &-brand {
+	order:0;
 	font-family:@headings-font-family;
 	font-size:1.2em;
 	font-weight:bold;
+	height: @navbar-height;
+
 	a {
 	  color:@navbar-default-brand-color;
 	}
-  }
-  &-account,
-  &-cart {
-	float:right;
+
+	&:hover,
+	&:focus {
+	  text-decoration: none;
+	}
+
+	> img {
+	  display: block;
+	}
+	@media(max-width:@screen-xs-max) {
+	}
   }
   &-form {
+	flex-grow:1;
+	flex-shrink:1;
 	padding-top:@navbar-padding-vertical - 7px;
 	padding-bottom:@navbar-padding-vertical - 7px;
+	@shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 0 rgba(255,255,255,.1);
+	.box-shadow(@shadow);
+	@media(max-width:@screen-xs-max) {
+	  //width:100%;
+	}
   }
 }
 
