@@ -1,4 +1,9 @@
 // add padding to offset body from fixed navbar
 body {
-    padding-top: calc(@navbar-height + @navbar-margin-bottom);
+    padding-top: (2*@navbar-height) + @navbar-margin-bottom;
+
+    @media(min-width:@screen-sm-min) {
+        padding-top: @navbar-height + @navbar-margin-bottom;
+
+    }
 }
