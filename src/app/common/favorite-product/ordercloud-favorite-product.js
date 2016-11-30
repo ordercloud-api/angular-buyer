@@ -6,7 +6,7 @@ angular.module('ordercloud-favorite-product', [])
 function FavoriteProductDirective(){
     return {
         scope: {
-            align: '@',
+            currentUser: '=',
             product: '='
         },
         restrict: 'E',
@@ -16,60 +16,44 @@ function FavoriteProductDirective(){
     };
 }
 
-function FavoriteProductController($scope, OrderCloud, toastr){
+function FavoriteProductController($scope, OrderCloud, Underscore, toastr){
     var vm = this;
+    var hasFavorites = $scope.currentUser.xp && $scope.currentUser.xp.FavoriteProducts;
+    vm.isFavorited = hasFavorites && $scope.currentUser.xp.FavoriteProducts.indexOf($scope.product.ID) > -1;
 
-    vm.align = $scope.align;
-    vm.product = $scope.product;
 
-    //console.log('product scope', vm.product.Name);
+    vm.toggleFavoriteProduct = function(){
+        function addProduct(existingList){
+            existingList.push($scope.product.ID);
+            OrderCloud.Me.Patch({xp: {FavoriteProducts: existingList}})
+                .then(function(){
+                    vm.isFavorited = true;
+                    toastr.success($scope.product.Name + ' was added to your favorites');
+                });
+        }
+        function removeProduct(){
+            var updatedList = Underscore.without($scope.currentUser.xp.FavoriteProducts, $scope.product.ID);
+            OrderCloud.Me.Patch({xp: {FavoriteProducts: updatedList}})
+                .then(function(){
+                    vm.isFavorited = false;
+                    $scope.currentUser.xp.FavoriteProducts = updatedList;
+                    toastr.success($scope.product.Name + ' was removed from your favorites');
+                });
+        }
+        if (hasFavorites){
+            if (vm.isFavorited){
+                removeProduct();
+                console.log('Product Removed');
+            } else {
+                addProduct($scope.currentUser.xp.FavoriteProducts);
+                console.log('Product Added');
+            }
 
-    //grabs current user
-    //vm.user = function(){
-    //    return OrderCloud.Me.Get();
-    //};
-    //vm.currentUser = vm.user();
-
-    vm.addFavoriteProduct = function(){
-        OrderCloud.Me.Get()
-            .then(function(){
-                if(OrderCloud.Me.Get({xp: null})) {
-                    console.log('user', OrderCloud.Me.Get());
-                    OrderCloud.Me.Patch({xp: {FavoriteProducts: vm.product.ID}})
-                        .then(function(){
-                            toastr.success(vm.product.Name + ' was added to your favorites');
-                        });
-                } else if (OrderCloud.Me.Get({xp: {FavoriteProducts: []}})) {
-                        //.then(function(){
-
-                        //check existing xp values
-                            //IF DUPLICATES
-                                //return error for duplicates
-                            //ELSE
-                                //add new xp value
-                                /*
-                                 vm.addToFavorites = AddToFavorites;
-
-                                 function AddToFavorites(){
-                                 AddProduct($scope.product);
-                                 }
-
-                                 function AddProduct(product){
-                                 var products = []
-                                 products.push(OrderCloud.Me.Get({xp: {FavoriteProducts: product.ID}}));
-                                 }
-                                 */
-                        //});
-                }
-
-            });
+        } else {
+            addProduct([]);
+            console.log('Favorites array added');
+        }
+        
     };
-
-
-    //vm.heartToggle = false;
-
-
-    vm.removeFromFavorite = function(){
-
-    };
+    
 }
