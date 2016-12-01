@@ -29,13 +29,6 @@ angular.module('orderCloud', [
     .config(Interceptor)
     .controller('AppCtrl', AppCtrl)
     .config(DatePickerConfig)
-    .directive('prettySubmit', function () {
-        return function (scope, element, attr) {
-            $(element).submit(function(event) {
-                event.preventDefault();
-            });
-        };
-    })
 ;
 
 function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
