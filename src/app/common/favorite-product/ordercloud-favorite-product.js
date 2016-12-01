@@ -16,7 +16,7 @@ function FavoriteProductDirective(){
     };
 }
 
-function FavoriteProductController($scope, OrderCloud, Underscore, toastr){
+function FavoriteProductController($scope, OrderCloud, Underscore, toastr, $state){
     var vm = this;
     var hasFavorites = $scope.currentUser.xp && $scope.currentUser.xp.FavoriteProducts;
     vm.isFavorited = hasFavorites && $scope.currentUser.xp.FavoriteProducts.indexOf($scope.product.ID) > -1;
