@@ -46,18 +46,6 @@
   }
 }
 
-//TODO: I don't like this
-.oc-nav {
-  @media(max-width:@screen-xs-max) {
-	& > .oc-flex-layout:last-child {
-	  width:100%;
-	}
-  }
-  @media(min-width:@screen-sm-min) {
-	& > .account-cart {
-	  order:2;
-	}
-  }
 }
 
 .oc-nav-item {
@@ -99,6 +87,16 @@
 	.box-shadow(@shadow);
 	@media(max-width:@screen-xs-max) {
 	  //width:100%;
+	}
+  }
+  &-cart {
+	position:relative;
+	.badge {
+	  position:absolute;
+	  left:5px;
+	  bottom:5px;
+	  background-color:@brand-danger;
+	  color:white;
 	}
   }
 }
