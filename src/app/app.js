@@ -68,10 +68,10 @@ function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname
     vm.title = appname;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
-    vm.contentLoading = undefined;
+    vm.stateLoading = undefined;
 
     function cleanLoadingIndicators() {
-        if (vm.contentLoading && vm.contentLoading.promise && !vm.contentLoading.promise.$cgBusyFulfilled) vm.contentLoading.resolve(); //resolve leftover loading promises
+        if (vm.stateLoading && vm.stateLoading.promise && !vm.stateLoading.promise.$cgBusyFulfilled) vm.stateLoading.resolve(); //resolve leftover loading promises
     }
 
     //Detect if the app was loaded on a touch device with relatively good certainty
@@ -93,7 +93,7 @@ function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname
         defer.wrapperClass = 'indicator-container';
         (toState.data && toState.data.loadingMessage) ? defer.message = toState.data.loadingMessage : defer.message = null;
         defer.templateUrl = 'common/loading-indicators/templates/view.loading.tpl.html';
-        vm.contentLoading = defer;
+        vm.stateLoading = defer;
     });
 
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
