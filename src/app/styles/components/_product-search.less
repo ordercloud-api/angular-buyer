@@ -1,0 +1,61 @@
+form[name="OrderCloudProductSearch"] {
+  position:relative;
+  .form-group {
+    margin:0;
+  }
+  .dropdown-menu {
+    border-top:0;
+    left:0;
+    top:100%;
+    right:0;
+  }
+  li.active {
+    small {
+      color:white;
+    }
+  }
+}
+
+.oc-nav-item-form {
+  form[name="OrderCloudProductSearch"] {
+    input {
+      &[aria-expanded="true"] {
+        border-radius:@border-radius-base @border-radius-base 0 0;
+      }
+    }
+  }
+}
+
+//mobile search modal
+.modal-dialog.modal-product-search {
+  margin:0;
+  width:100%;
+  .modal-content {
+    border-radius:0;
+    border:none;
+    padding:0;
+    height:100vh;
+  }
+  .oc-flex-layout {
+    padding:15px;
+    border-bottom:1px solid @hr-border;
+  }
+  form[name="OrderCloudProductSearch"] .dropdown-menu {
+    padding:0;
+    margin:0;
+    position:relative;
+    top:0 !important;
+    left:0 !important;
+    width:100%;
+    border-radius:0;
+    box-shadow:none;
+    border:none;
+    li {
+      border-bottom:1px solid @hr-border;
+      a {
+        padding-left:15px;
+        padding-right:15px;
+      }
+    }
+  }
+}
