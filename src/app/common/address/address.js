@@ -44,6 +44,8 @@ function AddressFilter() {
             //city, state zip
             result.push(address.City + ', ' + address.State + ' ' + address.Zip);
 
+            if (address.Phone) result.push(address.Phone);
+
             return result.join('<br/>');
         }
         else {
