@@ -1,0 +1,24 @@
+.l {
+    // use flexbox for layout on small+ screens
+    @media (min-width: @screen-sm-min) {
+        // add flex display to product grid wrapper
+        &-product-grid {
+            // TODO: figure out exactly what this dot extend syntax is doing...
+            .oc-flex-layout.horizontal;
+            .oc-flex-layout.wrap;
+            // flex each item within the grid wrapper
+            &__item {
+                .oc-flex-layout.vertical;
+            }
+        }
+        // add flex display to product grid wrapper
+        &-category-grid {
+            .oc-flex-layout.horizontal;
+            .oc-flex-layout.wrap;
+            // flex each item within the grid wrapper
+            &__item {
+                .oc-flex-layout.vertical;
+            }
+        }
+    }
+}
