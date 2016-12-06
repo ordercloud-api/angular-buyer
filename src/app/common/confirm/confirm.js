@@ -32,10 +32,10 @@ function ConfirmModalController($uibModalInstance, ConfirmMessage) {
 	vm.message = ConfirmMessage;
 
 	vm.confirm = function() {
-		$uibModalInstance.close(true);
+		$uibModalInstance.close();
 	};
 
 	vm.cancel = function() {
-		$uibModalInstance.close(false);
+		$uibModalInstance.dismiss();
 	};
 }
