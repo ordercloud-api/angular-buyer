@@ -37,7 +37,6 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         });
         return results;
     }
-
     function _addItem(order, product){
         var deferred = $q.defer();
 
@@ -47,12 +46,9 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
             Specs: _specConvert(product.Specs)
         };
         li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
-        console.log(product, "here is li before sent to create a line item", li);
         OrderCloud.LineItems.Create(order.ID, li).then(function(lineItem) {
-            console.log("lineitem before broadcast", lineItem);
             $rootScope.$broadcast('LineItemAddedToCart', order.ID, lineItem);
             deferred.resolve();
-            console.log("lineitem", lineItem);
         });
 
         function isSingleShipping(order) {
