@@ -16,7 +16,31 @@
   }
   input {
     &[aria-expanded="true"] {
-      border-radius:@border-radius-base @border-radius-base 0 0;
+      .border-bottom-radius(0);
+    }
+  }
+}
+
+.c-typeaheadnotify {
+  .dropdown-menu;
+  display:block;
+  padding:@grid-gutter-width/2;
+  margin:0;
+  border-top:0;
+  left:0;
+  right:0;
+  .border-top-radius(0);
+  & + input {
+    .border-bottom-radius(0);
+  }
+  &.c-typeaheadnotify--noresults {
+    text-align:center;
+    font-style:italic;
+  }
+  &.c-typeaheadnotify--loading {
+    height:50px;
+    & ~ .dropdown-menu {
+      display:none !important;
     }
   }
 }
@@ -45,6 +69,7 @@
     }
 
   }
+  .c-typeaheadnotify,
   .dropdown-menu {
     padding:0;
     margin:0;
@@ -67,5 +92,8 @@
         }
       }
     }
+  }
+  .c-typeaheadnotify--noresults {
+    padding:@grid-gutter-width/2;
   }
 }
