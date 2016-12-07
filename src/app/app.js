@@ -15,7 +15,6 @@ angular.module('orderCloud', [
     'ordercloud-infinite-scroll',
     'ordercloud-buyer-select',
     'ordercloud-catalog-select',
-    'ordercloud-favorite-product',
     'ordercloud-search',
     'ordercloud-assignment-helpers',
     'ordercloud-paging-helpers',
