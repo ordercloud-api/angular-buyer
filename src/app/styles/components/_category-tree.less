@@ -1,0 +1,51 @@
+treecontrol.oc-tree {
+  & > ul {
+	padding:@grid-gutter-width/4 0;
+	font-family:@font-family-base;
+	font-size:@font-size-base;
+  }
+  li {
+	i {
+	  font: normal normal normal @fa-font-size-base/@fa-line-height-base FontAwesome; // shortening font declaration
+	  font-size: inherit; // can't have font-size inherit on line above, so need to override
+	  text-rendering: auto; // optimizelegibility throws things off #1094
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+	  &.tree-branch-head {
+		position: absolute;
+		width: 20px;
+		height: 20px;
+		line-height:20px;
+		vertical-align:middle;
+		text-align:center;
+		left: 10px;
+		top:@grid-gutter-width/4;
+	  }
+	  &.tree-leaf-head {
+		display:none !important;
+	  }
+	}
+	&.tree-collapsed {
+	  & > i.tree-branch-head {
+		&:before {
+		  content:@fa-var-caret-right;
+		}
+	  }
+	}
+	&.tree-expanded {
+	  & > i.tree-branch-head {
+		&:before {
+		  content:@fa-var-caret-down;
+		}
+	  }
+	}
+	.tree-label {
+	  display:block;
+	  padding: @grid-gutter-width/4 @grid-gutter-width/2;
+	  &.tree-selected {
+		color:@link-color;
+		font-weight:bold;
+	  }
+	}
+  }
+}
