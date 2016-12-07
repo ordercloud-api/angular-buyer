@@ -1,4 +1,4 @@
-form[name="OrderCloudProductSearch"] {
+.c-productsearch {
   position:relative;
   .form-group {
     margin:0;
@@ -14,14 +14,9 @@ form[name="OrderCloudProductSearch"] {
       color:white;
     }
   }
-}
-
-.oc-nav-item-form {
-  form[name="OrderCloudProductSearch"] {
-    input {
-      &[aria-expanded="true"] {
-        border-radius:@border-radius-base @border-radius-base 0 0;
-      }
+  input {
+    &[aria-expanded="true"] {
+      border-radius:@border-radius-base @border-radius-base 0 0;
     }
   }
 }
@@ -36,11 +31,21 @@ form[name="OrderCloudProductSearch"] {
     padding:0;
     height:100vh;
   }
-  .oc-flex-layout {
+  form[name="OrderCloudProductSearch"] {
+    position:relative;
     padding:15px;
     border-bottom:1px solid @hr-border;
+    .oc-flex-layout.horizontal;
+    .oc-flex-layout.horizontal.gutter;
+    .oc-flex-layout.no-wrap;
+    .oc-flex-layout.center;
+    fieldset {
+      flex-grow:1;
+      margin-bottom:0;
+    }
+
   }
-  form[name="OrderCloudProductSearch"] .dropdown-menu {
+  .dropdown-menu {
     padding:0;
     margin:0;
     position:relative;
@@ -55,6 +60,11 @@ form[name="OrderCloudProductSearch"] {
       a {
         padding-left:15px;
         padding-right:15px;
+      }
+      &.active {
+        small {
+          color: white;
+        }
       }
     }
   }
