@@ -1,0 +1,13 @@
+.clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+    // adding width and height 0 to fix safari flexbox layout bug
+    width: 0;
+    height: 0;
+  }
+  &:after {
+    clear: both;
+  }
+}
