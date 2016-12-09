@@ -9,7 +9,7 @@ angular.module('orderCloud', [
     'orderCloud.sdk',
     'LocalForageModule',
     'toastr',
-    'cgBusy',
+    'angular-busy',
     'jcs-autoValidate',
     'treeControl',
     'ordercloud-infinite-scroll',
