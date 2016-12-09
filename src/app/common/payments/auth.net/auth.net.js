@@ -11,8 +11,6 @@ function AuthorizeNet( $q, $resource, OrderCloud) {
 
     };
 
-
-
     function _createCreateCard(creditCard, buyerID) {
           var year = creditCard.ExpirationYear.toString().substring(2,4);
             var ExpirationDate = creditCard.ExpirationMonth.concat(year);
