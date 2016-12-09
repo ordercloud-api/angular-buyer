@@ -5,14 +5,20 @@
     .oc-flex-layout.wrap;
     .oc-flex-layout.center;
   }
-  &__img {
-    margin-bottom: 0;
-  }
-  &--center {
+  &--centered {
     @media (min-width: @screen-sm-min) {
       .oc-flex-layout.horizontal;
       .oc-flex-layout.wrap;
       .oc-flex-layout.center;
+    }
+  }
+  &__img {
+    margin-bottom: 0;
+  }
+  &__info--top {
+    padding-bottom: @padding-large-vertical;
+    @media (min-width: @screen-sm-min) {
+      padding-bottom: 0;
     }
   }
   &__name {
