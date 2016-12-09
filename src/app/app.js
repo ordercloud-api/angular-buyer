@@ -23,7 +23,8 @@ angular.module('orderCloud', [
     'ordercloud-lineitems',
     'ordercloud-geography',
     'ordercloud-payment-authorizeNet',
-    'ordercloud-credit-card'
+    'ordercloud-credit-card',
+    'hl.sticky'
     ])
     .run(SetBuyerID)
     .run(SetCatalogID)

@@ -1,11 +1,51 @@
-#cart_view {
-  table {
+.c-line-item {
+  // use flexbox for layout on small+ screens
+  @media (min-width: @screen-sm-min) {
+    .oc-flex-layout.horizontal;
+    .oc-flex-layout.wrap;
+    .oc-flex-layout.center;
+  }
+  &--centered {
+    @media (min-width: @screen-sm-min) {
+      .oc-flex-layout.horizontal;
+      .oc-flex-layout.wrap;
+      .oc-flex-layout.center;
+    }
+  }
+  &__img {
     margin-bottom: 0;
   }
-  td {
-    vertical-align: middle;
-    .thumbnail {
+  &__info--top {
+    padding-bottom: @padding-large-vertical;
+    @media (min-width: @screen-sm-min) {
+      padding-bottom: 0;
+    }
+  }
+  &__name {
+    margin-top: 0;
+  }
+  &__price {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  &__qty-input {
+    width: 100%;
+    .form-group {
       margin-bottom: 0;
     }
+  }
+  &__total {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  // declare smaller gutters on cart line items
+  &.row,
+  .row {
+    margin-left: -(@grid-gutter-width / 4);
+    margin-right: -(@grid-gutter-width / 4);
+  }
+  [class^="col-"] {
+    padding-left: @grid-gutter-width / 4;
+    padding-right: @grid-gutter-width / 4;
   }
 }
