@@ -1,32 +1,7 @@
 angular.module('ordercloud-credit-card', [])
-    .filter('creditCard', CreditCardFilter)
     .factory('creditCardUtility', CreditCardUtility)
 ;
 
-
-function CreditCardFilter($filter) {
-    return function(creditCard, option) {
-        if (!creditCard) return null;
-        if (option === 'full') {
-            var result = [];
-
-            // //credit card  holder name
-            result.push('<b>' + creditCard.CardholderName + '</b>');
-
-             //card type
-            result.push('Card Type: ' + creditCard.CardType);
-
-             //partial account number
-            result.push('Partial Account Number: ' + creditCard.PartialAccountNumber);
-
-             //expiration date
-             result.push('Expiration: ' + ($filter('date')(creditCard.ExpirationDate, 'MM/yy')));
-
-            return result.join('<br/>');
-        }
-
-    };
-}
 
 function CreditCardUtility() {
     //return the expirationMonth array and its function

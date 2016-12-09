@@ -5,22 +5,15 @@ angular.module('ordercloud-payment-authorizeNet', [])
 function AuthorizeNet( $q, $resource, OrderCloud) {
     return {
         'CreateCreditCard': _createCreateCard,
-        'UpdateCreditCard': _updateUpdateCreditCard(),
-        'DeleteCreditCard' : _deleteCreditCard(),
-        'AuthAndCapture' : _authAndCapture()
+        'UpdateCreditCard': _updateCreditCard,
+        'DeleteCreditCard' : _deleteCreditCard
+        // 'AuthAndCapture' : _authAndCapture
 
     };
 
-    // function _update(orderID, lineItemID, lineItem, buyerID) {
-    //     return makeApiCall('PUT', '/v1/buyers/:buyerID/orders/:orderID/lineitems/:lineItemID', {
-    //         'buyerID': buyerID ? buyerID : BuyerID().Get(),
-    //         'orderID': orderID,
-    //         'lineItemID': lineItemID
-    //     }, lineItem);
-    // }
+
 
     function _createCreateCard(creditCard, buyerID) {
-          console.log(creditCard);
           var year = creditCard.ExpirationYear.toString().substring(2,4);
             var ExpirationDate = creditCard.ExpirationMonth.concat(year);
 
@@ -35,18 +28,38 @@ function AuthorizeNet( $q, $resource, OrderCloud) {
                 'CardCode' : creditCard.CardCode
             }
         });
-        // return  a;
     }
 
-    function _updateUpdateCreditCard() {
+    function _updateCreditCard(creditCard, buyerID) {
+        var year = creditCard.ExpirationYear.toString().substring(2,4);
+        var ExpirationDate = creditCard.ExpirationMonth.concat(year);
+
+        return makeApiCall('POST',{
+            'buyerID' : buyerID ? buyerID : OrderCloud.BuyerID.Get(),
+            'TransactionType' : "updateCreditCard",
+            'CardDetails' : {
+                'CreditCardID' : creditCard.ID,
+                'CardholderName' : creditCard.CardholderName,
+                'CardType' : creditCard.CardType,
+                'CardNumber' : 'XXXX'+ creditCard.PartialAccountNumber,
+                'ExpirationDate' : ExpirationDate
+            }
+        });
 
     }
-    function _deleteCreditCard() {
+    function _deleteCreditCard(creditCard, buyerID) {
+        return makeApiCall('POST', {
+            'buyerID': buyerID ? buyerID : OrderCloud.BuyerID.Get(),
+            'TransactionType': "deleteCreditCard",
+            'CardDetails': {
+                'CreditCardID': creditCard.ID
+            }
+        });
 
     }
-    function _authAndCapture() {
-
-    }
+    // function _authAndCapture() {
+    //
+    // }
 
 
     function makeApiCall(method, requestBody) {
