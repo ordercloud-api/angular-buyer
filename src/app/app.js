@@ -9,7 +9,7 @@ angular.module('orderCloud', [
     'orderCloud.sdk',
     'LocalForageModule',
     'toastr',
-    'cgBusy',
+    'angular-busy',
     'jcs-autoValidate',
     'treeControl',
     'ordercloud-infinite-scroll',
@@ -52,9 +52,9 @@ function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvid
     $locationProvider.html5Mode(true);
 }
 
-function ErrorHandling($provide) {
+function ErrorHandling($qProvider, $provide) {
     $provide.decorator('$exceptionHandler', handler);
-
+    $qProvider.errorOnUnhandledRejections(false);
     function handler($delegate, $injector) {
         return function(ex, cause) {
             $delegate(ex, cause);
