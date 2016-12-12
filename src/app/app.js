@@ -22,6 +22,8 @@ angular.module('orderCloud', [
     'ordercloud-address',
     'ordercloud-lineitems',
     'ordercloud-geography',
+    'ordercloud-payment-authorizeNet',
+    'ordercloud-credit-card',
     'hl.sticky'
     ])
     .run(SetBuyerID)
