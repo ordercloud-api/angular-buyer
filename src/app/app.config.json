@@ -1,10 +1,10 @@
 {
   "appname": "Angular Seed",
   "scope": "FullAccess",
-  "clientid": "9D2478A7-1B9E-4E79-90C6-69253B4DF824",
-  "buyerid": "B",
+  "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
+  "buyerid": "A",
   "catalogid": "SHARED",
   "environment": "prod",
   "defaultstate": "home",
-  "anonymous": true
+  "anonymous": false
 }

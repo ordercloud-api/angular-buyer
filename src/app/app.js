@@ -12,6 +12,7 @@ angular.module('orderCloud', [
     'angular-busy',
     'jcs-autoValidate',
     'treeControl',
+    'hl.sticky',
     'ordercloud-infinite-scroll',
     'ordercloud-buyer-select',
     'ordercloud-catalog-select',
@@ -23,55 +24,41 @@ angular.module('orderCloud', [
     'ordercloud-lineitems',
     'ordercloud-geography',
     'ordercloud-payment-authorizeNet',
-    'ordercloud-credit-card',
-    'hl.sticky'
+    'ordercloud-credit-card'
     ])
-    .run(SetBuyerID)
-    .run(SetCatalogID)
-    .config(Routing)
-    .config(ErrorHandling)
-    .config(Interceptor)
-    .config(DatePickerConfig)
+    .config(AppConfig)
+    .run(AppRun)
     .controller('AppCtrl', AppCtrl)
 ;
 
-function SetBuyerID(OrderCloud, buyerid) {
-    OrderCloud.BuyerID.Get() == buyerid ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
-}
-
-function SetCatalogID(OrderCloud, catalogid){
-    catalogid ? OrderCloud.CatalogID.Set(catalogid) : OrderCloud.CatalogID.Set(OrderCloud.BuyerID.Get());
-}
-
-function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider, defaultstate) {
+function AppConfig($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider, defaultstate, $qProvider, $provide, $httpProvider) {
+    //Routing
+    $locationProvider.html5Mode(true);
     $urlMatcherFactoryProvider.strictMode(false);
     $urlRouterProvider.otherwise(function ($injector) {
         var $state = $injector.get('$state');
-        $state.go(defaultstate);
+        $state.go(defaultstate); //Set the default state name in app.config.json
     });
-    $locationProvider.html5Mode(true);
-}
 
-function ErrorHandling($qProvider, $provide) {
+    //Error Handling
     $provide.decorator('$exceptionHandler', handler);
-    $qProvider.errorOnUnhandledRejections(false);
-    function handler($delegate, $injector) {
+    $qProvider.errorOnUnhandledRejections(false); //Stop .catch validation from angular v1.6.0
+    function handler($delegate, $injector) { //Catch all for unhandled errors
         return function(ex, cause) {
             $delegate(ex, cause);
             $injector.get('toastr').error(ex.data ? (ex.data.error || (ex.data.Errors ? ex.data.Errors[0].Message : ex.data)) : ex.message, 'Error');
         };
     }
-}
 
-function Interceptor($httpProvider) {
+    //HTTP Interceptor for OrderCloud Authentication
     $httpProvider.interceptors.push(function($q, $rootScope) {
         return {
             'responseError': function(rejection) {
                 if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 401) {
-                    $rootScope.$broadcast('OC:AccessInvalidOrExpired');
+                    $rootScope.$broadcast('OC:AccessInvalidOrExpired'); //Trigger RememberMe || AuthAnonymous in AppCtrl
                 }
                 if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 403){
-                    $rootScope.$broadcast('OC:AccessForbidden');
+                    $rootScope.$broadcast('OC:AccessForbidden'); //Trigger warning toastr message for insufficient permissions
                 }
                 return $q.reject(rejection);
             }
@@ -79,9 +66,25 @@ function Interceptor($httpProvider) {
     });
 }
 
-function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
+function AppRun(OrderCloud, catalogid, uibDatepickerConfig, uibDatepickerPopupConfig, defaultErrorMessageResolver) {
+    //Set Default CatalogID
+    catalogid ? OrderCloud.CatalogID.Set(catalogid) : OrderCloud.CatalogID.Set(OrderCloud.BuyerID.Get());
+
+    //Default Datepicker Options
     uibDatepickerConfig.showWeeks = false;
     uibDatepickerPopupConfig.showButtonBar = false;
+
+    //Set Custom Error Messages for angular-auto-validate      --- http://jonsamwell.github.io/angular-auto-validate/ ---
+    defaultErrorMessageResolver.getErrorMessages().then(function (errorMessages) {
+        errorMessages['customPassword'] = 'Password must be at least eight characters long and include at least one letter and one number';
+        //regex for customPassword = ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$
+        errorMessages['positiveInteger'] = 'Please enter a positive integer';
+        //regex positiveInteger = ^[0-9]*[1-9][0-9]*$
+        errorMessages['ID_Name'] = 'Only Alphanumeric characters, hyphens and underscores are allowed';
+        //regex ID_Name = ([A-Za-z0-9\-\_]+)
+        errorMessages['confirmpassword'] = 'Your passwords do not match';
+        errorMessages['noSpecialChars'] = 'Only Alphanumeric characters are allowed';
+    });
 }
 
 function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname, anonymous, defaultstate) {
