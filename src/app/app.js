@@ -31,14 +31,9 @@ angular.module('orderCloud', [
     .config(Routing)
     .config(ErrorHandling)
     .config(Interceptor)
-    .controller('AppCtrl', AppCtrl)
     .config(DatePickerConfig)
+    .controller('AppCtrl', AppCtrl)
 ;
-
-function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
-    uibDatepickerConfig.showWeeks = false;
-    uibDatepickerPopupConfig.showButtonBar = false;
-}
 
 function SetBuyerID(OrderCloud, buyerid) {
     OrderCloud.BuyerID.Get() == buyerid ? angular.noop() : OrderCloud.BuyerID.Set(buyerid);
@@ -48,9 +43,12 @@ function SetCatalogID(OrderCloud, catalogid){
     catalogid ? OrderCloud.CatalogID.Set(catalogid) : OrderCloud.CatalogID.Set(OrderCloud.BuyerID.Get());
 }
 
-function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider) {
+function Routing($urlRouterProvider, $urlMatcherFactoryProvider, $locationProvider, defaultstate) {
     $urlMatcherFactoryProvider.strictMode(false);
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise(function ($injector) {
+        var $state = $injector.get('$state');
+        $state.go(defaultstate);
+    });
     $locationProvider.html5Mode(true);
 }
 
@@ -65,7 +63,28 @@ function ErrorHandling($qProvider, $provide) {
     }
 }
 
-function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname, anonymous) {
+function Interceptor($httpProvider) {
+    $httpProvider.interceptors.push(function($q, $rootScope) {
+        return {
+            'responseError': function(rejection) {
+                if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 401) {
+                    $rootScope.$broadcast('OC:AccessInvalidOrExpired');
+                }
+                if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 403){
+                    $rootScope.$broadcast('OC:AccessForbidden');
+                }
+                return $q.reject(rejection);
+            }
+        };
+    });
+}
+
+function DatePickerConfig(uibDatepickerConfig, uibDatepickerPopupConfig){
+    uibDatepickerConfig.showWeeks = false;
+    uibDatepickerPopupConfig.showButtonBar = false;
+}
+
+function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname, anonymous, defaultstate) {
     var vm = this;
     vm.name = appname;
     vm.title = appname;
@@ -109,31 +128,21 @@ function AppCtrl($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname
     });
 
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+        if (toState.name == defaultstate) event.preventDefault(); //prevent infinite loop when error occurs on default state (otherwise in Routing config)
         cleanLoadingIndicators();
         console.log(error);
     });
 
     $rootScope.$on('OC:AccessInvalidOrExpired', function() {
-        if (!anonymous) LoginService.RememberMe();
+        if (anonymous) {
+            cleanLoadingIndicators();
+            LoginService.AuthAnonymous();
+        } else {
+            LoginService.RememberMe();
+        }
     });
 
     $rootScope.$on('OC:AccessForbidden', function(){
         toastr.warning("You do not have permission to access this page.");
-    });
-}
-
-function Interceptor($httpProvider) {
-    $httpProvider.interceptors.push(function($q, $rootScope) {
-        return {
-            'responseError': function(rejection) {
-                if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 401) {
-                    $rootScope.$broadcast('OC:AccessInvalidOrExpired');
-                }
-                if (rejection.config.url.indexOf('ordercloud.io') > -1 && rejection.status == 403){
-                    $rootScope.$broadcast('OC:AccessForbidden');
-                }
-                return $q.reject(rejection);
-            }
-        };
     });
 }
