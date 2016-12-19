@@ -47,7 +47,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         };
         li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
         OrderCloud.LineItems.Create(order.ID, li).then(function(lineItem) {
-            $rootScope.$broadcast('LineItemAddedToCart', order.ID, lineItem);
+            $rootScope.$broadcast('OC:UpdateOrder', order.ID);
             deferred.resolve();
         });
 
@@ -65,21 +65,8 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
     function _removeItem(Order, LineItem) {
         OrderCloud.LineItems.Delete(Order.ID, LineItem.ID)
             .then(function () {
-                // If all line items are removed delete the order.
-                OrderCloud.LineItems.List(Order.ID)
-                    .then(function (data) {
-                        //if (!data.Items.length) {
-                        //    //TODO: Remove current order
-                        //    //CurrentOrder.Remove();
-                        //    OrderCloud.Orders.Delete(Order.ID).then(function () {
-                        //        $state.reload();
-                        //        $rootScope.$broadcast('OC:RemoveOrder');
-                        //    });
-                        //}
-                        //else {
-                            $state.reload();
-                        //}
-                    });
+                $rootScope.$broadcast('OC:UpdateOrder', Order.ID);
+                $rootScope.$broadcast('OC:UpdateLineItem',Order);
             });
     }
 
