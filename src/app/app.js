@@ -13,7 +13,6 @@ angular.module('orderCloud', [
     'jcs-autoValidate',
     'treeControl',
     'hl.sticky',
-    'ordercloud-infinite-scroll',
     'ordercloud-assignment-helpers',
     'ordercloud-paging-helpers',
     'ordercloud-auto-id',
