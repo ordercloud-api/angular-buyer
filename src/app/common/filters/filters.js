@@ -24,7 +24,7 @@ function faCreditCard() {
             case 'mastercard':
                 result = 'fa-cc-mastercard';
                 break;
-            case 'amex':
+            case 'american express':
                 result = 'fa-cc-amex';
                 break;
             case 'diners club':
