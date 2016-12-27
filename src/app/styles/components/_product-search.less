@@ -1,99 +1,12 @@
+// product search
 .c-productsearch {
-  position:relative;
+  position: relative;
   .form-group {
-    margin:0;
-  }
-  .dropdown-menu {
-    border-top:0;
-    left:0;
-    top:100%;
-    right:0;
+    margin: 0;
   }
   li.active {
     small {
-      color:white;
+      color: white;
     }
-  }
-  input {
-    &[aria-expanded="true"] {
-      .border-bottom-radius(0);
-    }
-  }
-}
-
-.c-typeaheadnotify {
-  .dropdown-menu;
-  display:block;
-  padding:@grid-gutter-width/2;
-  margin:0;
-  border-top:0;
-  left:0;
-  right:0;
-  .border-top-radius(0);
-  & + input {
-    .border-bottom-radius(0);
-  }
-  &.c-typeaheadnotify--noresults {
-    text-align:center;
-    font-style:italic;
-  }
-  &.c-typeaheadnotify--loading {
-    height:50px;
-    & ~ .dropdown-menu {
-      display:none !important;
-    }
-  }
-}
-
-//mobile search modal
-.modal-dialog.modal-product-search {
-  margin:0;
-  width:100%;
-  .modal-content {
-    border-radius:0;
-    border:none;
-    padding:0;
-    height:100vh;
-  }
-  form[name="OrderCloudProductSearch"] {
-    position:relative;
-    padding:15px;
-    border-bottom:1px solid @hr-border;
-    .oc-flex-layout.horizontal;
-    .oc-flex-layout.horizontal.gutter;
-    .oc-flex-layout.no-wrap;
-    .oc-flex-layout.center;
-    fieldset {
-      flex-grow:1;
-      margin-bottom:0;
-    }
-
-  }
-  .c-typeaheadnotify,
-  .dropdown-menu {
-    padding:0;
-    margin:0;
-    position:relative;
-    top:0 !important;
-    left:0 !important;
-    width:100%;
-    border-radius:0;
-    box-shadow:none;
-    border:none;
-    li {
-      border-bottom:1px solid @hr-border;
-      a {
-        padding-left:15px;
-        padding-right:15px;
-      }
-      &.active {
-        small {
-          color: white;
-        }
-      }
-    }
-  }
-  .c-typeaheadnotify--noresults {
-    padding:@grid-gutter-width/2;
   }
 }
