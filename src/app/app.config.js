@@ -8,7 +8,7 @@ function AppConfig($urlRouterProvider, $urlMatcherFactoryProvider, $locationProv
     $urlMatcherFactoryProvider.strictMode(false);
     $urlRouterProvider.otherwise(function ($injector) {
         var $state = $injector.get('$state');
-        $state.go(defaultstate); //Set the default state name in app.config.json
+        $state.go(defaultstate); //Set the default state name in app.constants.json
     });
 
     //Error Handling

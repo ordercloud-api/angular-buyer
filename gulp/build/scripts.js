@@ -11,7 +11,7 @@ var gulp = require('gulp'),
 gulp.task('clean:scripts', function() {
     return del([
         config.build + '**/*.js',
-        '!' + config.build + '**/app.config.js'
+        '!' + config.build + '**/app.constants.js'
     ]);
 });
 

@@ -5,8 +5,8 @@
 ```
 src/
   |- app/
-  |  |- app.config.json
-  |  |- app.configuration.js
+  |  |- app.config.js
+  |  |- app.constants.json
   |  |- app.controller.js
   |  |- app.module.js
   |  |- app.run.js
@@ -52,11 +52,11 @@ angular.module('orderCloud', [
 	])
 ```
 
-## `app.configuration.js`
+## `app.config.js`
 
 With app modules broken down in this way, all routing is performed by the
 submodules we include, as that is where our app's functionality is really
-defined.  So all we need to do in `app.configuration.js` is specify a default route to follow,
+defined.  So all we need to do in `app.config.js` is specify a default route to follow,
 which route of course is defined in a submodule. In this case, our `home` module
 is where we want to start, which has a defined route for `/home` in
 `src/app/home/home.js`.
@@ -96,12 +96,10 @@ not specific to the template or route, such as menu logic or page title wiring.
 
 One of the design philosophies of `OrderCloud-Seed-AngularJS` is that tests should exist
 alongside the code they test and that the build system should be smart enough to
-know the difference and react accordingly. As such, the unit test for `app.*..js`
+know the difference and react accordingly. As such, the unit test for `app.*.js`
 is `app.spec.js`, though it is quite minimal.
 
 ### Global application styles
-
-By default, we include [Ambient](http://ionlyseespots.github.io/ambient-design/index.html) which is an internally developed design framework that makes use of HTML5 elements & CSS3 attributes to layout the document outline.
 
 Within the `src/app/` directory we included a `global.less` and `variables.less` file.
 These should be utilized for application wide LESS variables and mixins.  Each component

@@ -10,8 +10,8 @@ src/
   |- app/
   |  |- common/
   |  |- styles/
-  |  |- app.config.json
-  |  |- app.configuration.js
+  |  |- app.config.js
+  |  |- app.constants.json
   |  |- app.controller.js
   |  |- app.module.js
   |  |- app.run.js

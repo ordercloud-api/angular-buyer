@@ -44,7 +44,7 @@
                 config.components.styles.less,
                 config.components.styles.css
             ), ['styles']);
-            gulp.watch(config.src + '**/app.config.json', ['app-config'])
+            gulp.watch(config.src + '**/app.constants.json', ['app-config'])
                 .on('change', browserSync.reload);
         }
         return nodemon ({
