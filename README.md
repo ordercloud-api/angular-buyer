@@ -53,7 +53,7 @@ OrderCloud/
   |- bower_components/
   |  |- <bower components>
   |- bower.json
-  |- gulp.constants.js
+  |- gulp.config.js
   |- gulpfile.js
   |- server.js
   |- package.json
