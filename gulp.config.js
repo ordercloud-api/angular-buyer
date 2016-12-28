@@ -50,7 +50,10 @@ module.exports = {
         }
     },
     appFiles: [
-        build + '**/app.js',
+        build + '**/app.module.js',
+        build + '**/app.configuration.js',
+        build + '**/app.run.js',
+        build + '**/app.controller.js',
         build + '**/*.js',
         build + '**/*.css',
         source + '**/*.css'
