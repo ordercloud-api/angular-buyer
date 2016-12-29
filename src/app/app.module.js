@@ -1,0 +1,25 @@
+angular.module('orderCloud', [
+        'ngSanitize',
+        'ngAnimate',
+        'ngMessages',
+        'ngTouch',
+        'ui.tree',
+        'ui.router',
+        'ui.bootstrap',
+        'orderCloud.sdk',
+        'LocalForageModule',
+        'toastr',
+        'angular-busy',
+        'jcs-autoValidate',
+        'treeControl',
+        'hl.sticky',
+        'ordercloud-assignment-helpers',
+        'ordercloud-paging-helpers',
+        'ordercloud-auto-id',
+        'ordercloud-address',
+        'ordercloud-lineitems',
+        'ordercloud-geography',
+        'ordercloud-payment-authorizeNet',
+        'ordercloud-credit-card'
+    ]
+);

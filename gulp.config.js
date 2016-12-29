@@ -50,7 +50,10 @@ module.exports = {
         }
     },
     appFiles: [
-        build + '**/app.js',
+        build + '**/app.module.js',
+        build + '**/app.config.js',
+        build + '**/app.run.js',
+        build + '**/app.controller.js',
         build + '**/*.js',
         build + '**/*.css',
         source + '**/*.css'
@@ -79,7 +82,7 @@ module.exports = {
 
 function getConstants() {
     var result = {};
-    var constants = JSON.parse(fs.readFileSync(source + 'app/app.config.json'));
+    var constants = JSON.parse(fs.readFileSync(source + 'app/app.constants.json'));
     var environment = process.env.environment || constants.environment;
     switch (environment) {
         case 'local':

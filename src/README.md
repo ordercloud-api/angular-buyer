@@ -8,12 +8,16 @@ tests of such code.
 ```
 src/
   |- app/
-  |  |- home/
-  |  |- app.js
+  |  |- common/
+  |  |- styles/
+  |  |- app.config.js
+  |  |- app.constants.json
+  |  |- app.controller.js
+  |  |- app.module.js
+  |  |- app.run.js
   |  |- app.spec.js
-  |  |- global.less
-  |  |- variables.less
   |- assets/
+  |  |- images/
   |- index.html
 ```
 

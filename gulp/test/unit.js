@@ -13,7 +13,10 @@ function runUnitTests() {
     var target = gulp.src('./gulp/test/SpecRunner.html'),
         bowerFiles = gulp.src(mainBowerFiles({includeDev: true, filter: '**/*.js'}), {read: false}),
         appFiles = gulp.src([].concat(
-            config.build + '**/app.js',
+            config.build + '**/app.module.js',
+            config.build + '**/app.config.js',
+            config.build + '**/app.run.js',
+            config.build + '**/app.controller.js',
             config.build + '**/*.js'
         ), {read: false}),
         specFiles = gulp.src([].concat(
