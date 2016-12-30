@@ -2,7 +2,7 @@ angular.module('ordercloud-assignment-helpers', [])
     .factory('Assignments', AssignmentHelpers)
 ;
 
-function AssignmentHelpers($q, $state, Underscore) {
+function AssignmentHelpers($q, $state) {
     return {
         GetAssigned: _getAssigned,
         GetSelected: _getSelected,
@@ -14,25 +14,25 @@ function AssignmentHelpers($q, $state, Underscore) {
 
     function _getAssigned(AssignmentsArray, ID_Name) {
         //TODO: Save this result in temp variable so I don't do this operation twice every time.
-        return Underscore.pluck(AssignmentsArray, ID_Name);
+        return _.pluck(AssignmentsArray, ID_Name);
     }
 
     function _getSelected(ListArray) {
-        return Underscore.pluck(Underscore.where(ListArray, {selected: true}), 'ID');
+        return _.pluck(_.where(ListArray, {selected: true}), 'ID');
     }
 
     function _getUnselected(ListArray) {
-        return Underscore.pluck(Underscore.filter(ListArray, function(item) {
+        return _.pluck(_.filter(ListArray, function(item) {
             return !item.selected;
         }), 'ID');
     }
 
     function _getToAssign(ListArray, AssignmentsArray, ID_Name) {
-        return Underscore.difference(_getSelected(ListArray), _getAssigned(AssignmentsArray, ID_Name));
+        return _.difference(_getSelected(ListArray), _getAssigned(AssignmentsArray, ID_Name));
     }
 
     function _getToDelete(ListArray, AssignmentsArray, ID_Name) {
-        return Underscore.intersection(_getUnselected(ListArray), _getAssigned(AssignmentsArray, ID_Name));
+        return _.intersection(_getUnselected(ListArray), _getAssigned(AssignmentsArray, ID_Name));
     }
 
     function _saveAssignments(ListArray, AssignmentsArray, SaveFunc, DeleteFunc, ID_Name) {

@@ -42,8 +42,11 @@
 
     <!-- include source files here... -->
     <!-- inject:js -->
-    <script src="/build/app/app.js"></script>
+    <script src="/build/app/app.module.js"></script>
     <script src="/build/app/app.config.js"></script>
+    <script src="/build/app/app.run.js"></script>
+    <script src="/build/app/app.controller.js"></script>
+    <script src="/build/app/app.constants.js"></script>
     <script src="/build/app/account/account.js"></script>
     <script src="/build/app/addPromotion/addPromotion.js"></script>
     <script src="/build/app/base/base.js"></script>
@@ -72,27 +75,20 @@
     <script src="/build/app/checkout/shipping/checkout.shipping.rates.js"></script>
     <script src="/build/app/common/address/address.js"></script>
     <script src="/build/app/common/auto-id/auto-id.js"></script>
-    <script src="/build/app/common/buyer-select/ordercloud-buyer-selected.js"></script>
-    <script src="/build/app/common/catalog-select/ordercloud-catalog-selected.js"></script>
     <script src="/build/app/common/confirm/confirm.js"></script>
     <script src="/build/app/common/confirmPassword/confirmPassword.js"></script>
     <script src="/build/app/common/credit-card/credit-card.js"></script>
-    <script src="/build/app/common/files/files.js"></script>
     <script src="/build/app/common/filters/filters.js"></script>
-    <script src="/build/app/common/geography/geography.js"></script>
     <script src="/build/app/common/helper-factories/assignment-helpers.js"></script>
     <script src="/build/app/common/helper-factories/paging-helpers.js"></script>
-    <script src="/build/app/common/infinite-scroll/infinite-scroll.js"></script>
     <script src="/build/app/common/lineitems/lineitems.js"></script>
     <script src="/build/app/common/localforage/localforage.config.js"></script>
     <script src="/build/app/common/media/ordercloud.media.js"></script>
-    <script src="/build/app/common/ordercloud-logo/ordercloud_logo.js"></script>
     <script src="/build/app/common/ordercloud-parameters/ordercloud-parameters.js"></script>
-    <script src="/build/app/common/search/search.js"></script>
     <script src="/build/app/common/token-refresh/token-refresh.js"></script>
-    <script src="/build/app/common/underscore/underscore.factory.js"></script>
     <script src="/build/app/productDetail/quantityInput/quantityInput.js"></script>
     <script src="/build/app/productDetail/specForm/specForms.js"></script>
+    <script src="/build/app/checkout/payment/directives/payment.directives.js"></script>
     <script src="/build/app/common/payments/auth.net/auth.net.js"></script>
     <!-- endinject -->
 
@@ -100,20 +96,19 @@
     <!-- spec:js -->
     <script src="/src/app/app.spec.js"></script>
     <script src="/src/app/common/auto-id/tests/auto-id.spec.js"></script>
-    <script src="/src/app/common/buyer-select/tests/buyer-select.spec.js"></script>
-    <script src="/src/app/common/catalog-select/tests/catalog-select.spec.js"></script>
-    <script src="/src/app/common/files/tests/files.spec.js"></script>
     <script src="/src/app/common/helper-factories/tests/assignment-helpers.spec.js"></script>
     <script src="/src/app/common/helper-factories/tests/paging-helpers.spec.js"></script>
-    <script src="/src/app/common/infinite-scroll/tests/infinite-scroll.spec.js"></script>
-    <script src="/src/app/common/ordercloud-logo/tests/ordercloud_logo.spec.js"></script>
-    <script src="/src/app/common/search/tests/search.spec.js"></script>
     <script src="/../Components/account/tests/account.spec.js"></script>
     <script src="/../Components/addPromotion/tests/addPromotion.spec.js"></script>
     <script src="/../Components/base/tests/base.spec.js"></script>
     <script src="/../Components/cart/test/cart.spec.js"></script>
     <script src="/../Components/categoryBrowse/tests/categoryBrowse.spec.js"></script>
+    <script src="/../Components/checkout/tests/checkout.confirmation.spec.js"></script>
+    <script src="/../Components/checkout/tests/checkout.payment.spec.js"></script>
+    <script src="/../Components/checkout/tests/checkout.review.spec.js"></script>
+    <script src="/../Components/checkout/tests/checkout.shipping.spec.js"></script>
     <script src="/../Components/checkout/tests/checkout.spec.js"></script>
+    <script src="/../Components/checkout/tests/payments.spec.js"></script>
     <script src="/../Components/favoriteOrders/tests/favoriteOrder.spec.js"></script>
     <script src="/../Components/favoriteProducts/tests/favoriteProducts.spec.js"></script>
     <script src="/../Components/login/tests/login.spec.js"></script>
