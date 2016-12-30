@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <!-- OrderCloud will appear as the tab's title until Angular loads application.title's value -->
-    <title ng-bind="application.title">OrderCloud</title>
+    <title ng-bind="application.$state.current.data.pageTitle + (application.$state.current.data.pageTitle ? ' | ' : '') + application.name">OrderCloud</title>
     <base href="/">
     <!-- bower:css -->
     <!-- endinject -->

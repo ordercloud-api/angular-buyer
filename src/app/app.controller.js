@@ -5,7 +5,6 @@ angular.module('orderCloud')
 function AppController($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname, anonymous, defaultstate) {
     var vm = this;
     vm.name = appname;
-    vm.title = appname;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
     vm.stateLoading = undefined;
@@ -36,13 +35,8 @@ function AppController($q, $rootScope, $state, $ocMedia, toastr, LoginService, a
         vm.stateLoading = defer;
     });
 
-    $rootScope.$on('$stateChangeSuccess', function(e, toState) {
+    $rootScope.$on('$stateChangeSuccess', function() {
         cleanLoadingIndicators();
-        if (toState.data && toState.data.componentName) {
-            vm.title = toState.data.componentName + ' | ' + appname;
-        } else {
-            vm.title = appname;
-        }
     });
 
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
