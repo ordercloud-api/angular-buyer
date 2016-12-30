@@ -4,7 +4,6 @@ angular.module('orderCloud')
 
 function AppController($q, $rootScope, $state, $ocMedia, toastr, LoginService, appname, anonymous, defaultstate) {
     var vm = this;
-    vm.name = appname;
     vm.title = appname;
     vm.$state = $state;
     vm.$ocMedia = $ocMedia;
