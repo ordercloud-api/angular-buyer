@@ -1,0 +1,19 @@
+<div ng-class="{row: showField}">
+    <div class="form-group" ng-class="{'col-sm-6': showField}">
+        <select id="{{spec.ID}}"
+                ng-required="spec.Required"
+                class="form-control"
+                ng-model="spec.OptionID"
+                ng-options="option.ID as option.Value for option in spec.Options ">
+            <option value=""> </option>
+        </select>
+    </div>
+    <div class="form-group col-sm-6" ng-if="showField">
+        <input id="{{spec.OptionID + '_value'}}"
+               type="text"
+               placeholder="Custom value..."
+               ng-model="spec.Value"
+               class="form-control"
+               ng-required="spec.Required">
+    </div>
+</div>

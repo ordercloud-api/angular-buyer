@@ -1,0 +1,9 @@
+<div ng-form="AddPromotionForm">
+    <label for="PromoCode" class="sr-only">Promotion Code</label>
+    <div class="input-group">
+        <input id="PromoCode" type="text" class="form-control" placeholder="Enter Promotion Code" autocomplete="off" autocorrect="off" ng-model="$ctrl.promoCode">
+        <span class="input-group-btn">
+            <button class="btn btn-primary" ng-disabled="!$ctrl.promoCode.length" type="button" ng-click="$ctrl.submit($ctrl.order.ID, $ctrl.promoCode)">Apply</button>
+        </span>
+    </div>
+</div>

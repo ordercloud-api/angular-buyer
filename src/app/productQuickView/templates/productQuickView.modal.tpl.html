@@ -1,0 +1,53 @@
+<form name="OCProductForm" ng-submit="productQuickView.addToCart()" autocomplete="off" novalidate>
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="productQuickView.cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h1>{{productQuickView.item.Name || productQuickView.item.ID}} <small ng-if="productQuickView.item.Name">{{productQuickView.item.ID}}</small></h1>
+	</div>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-6">
+				<!--PRODUCT IMAGE-->
+				<div class="thumbnail">
+					<img class="img-responsive" alt="{{productQuickView.item.xp.image.Name || 'Product Image'}}"
+						 ng-src="{{productQuickView.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productQuickView.item.Name}}">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default" ng-if="productQuickView.item.Description">
+					<div class="panel-heading">
+						<h3 class="panel-title">Description</h3>
+					</div>
+					<div class="panel-body">
+						{{productQuickView.item.Description}}
+					</div>
+				</div>
+				<div class="panel panel-default" ng-if="productQuickView.item.StandardPriceSchedule.PriceBreaks">
+					<div class="panel-heading">
+						<h3 class="panel-title">Price Breaks</h3>
+					</div>
+					<table class="table">
+						<thead>
+						<tr>
+							<th>Quantity</th>
+							<th>Price</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr ng-repeat="priceBreak in productQuickView.item.StandardPriceSchedule.PriceBreaks">
+							<td>{{priceBreak.Quantity}}</td>
+							<td>{{priceBreak.Price}}</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<oc-spec-form product="productQuickView.item"></oc-spec-form>
+				<fieldset class="form-group">
+					<oc-quantity-input product="productQuickView.item" label="Quantity"></oc-quantity-input>
+				</fieldset>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-block btn-success">Add to Cart  <span ng-if="productQuickView.item.Quantity"  class="badge badge-success">{{productQuickView.findPrice(productQuickView.item.Quantity) | currency}}</span></button>
+	</div>
+</form>

@@ -1,0 +1,51 @@
+<form name="OCProductForm" ng-submit="productDetail.addToCart()" id="product_view" autocomplete="off" novalidate>
+    <h1>{{productDetail.item.Name || productDetail.item.ID}} <small ng-if="productDetail.item.Name">{{productDetail.item.ID}}</small>
+        <ordercloud-favorite-product product="productDetail.item" current-user="base.currentUser"></ordercloud-favorite-product>
+    </h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <!--PRODUCT IMAGE-->
+            <div class="thumbnail">
+                <img class="img-responsive" alt="{{productDetail.item.xp.image.Name || 'Product Image'}}"
+                     ng-src="{{productDetail.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productDetail.item.Name}}">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default" ng-if="productDetail.item.Description">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Description</h3>
+                </div>
+                <div class="panel-body">
+                    {{productDetail.item.Description}}
+                </div>
+            </div>
+            <div class="panel panel-default" ng-if="productDetail.item.StandardPriceSchedule.PriceBreaks">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Price Breaks</h3>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="priceBreak in productDetail.item.StandardPriceSchedule.PriceBreaks">
+                        <td>{{priceBreak.Quantity}}</td>
+                        <td>{{priceBreak.Price}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <oc-spec-form product="productDetail.item"></oc-spec-form>
+            <fieldset class="form-group">
+                <oc-quantity-input product="productDetail.item" label="Quantity"></oc-quantity-input>
+            </fieldset>
+            <fieldset class="form-group">
+                <button type="submit" class="btn btn-block btn-success">Add to Cart  <span ng-if="productDetail.item.Quantity"  class="badge badge-success">{{productDetail.findPrice(productDetail.item.Quantity) | currency}}</span></button>
+            </fieldset>
+        </div>
+    </div>
+</form>
