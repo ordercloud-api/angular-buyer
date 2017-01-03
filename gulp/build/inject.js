@@ -14,7 +14,7 @@ gulp.task('inject', ['clean:inject', 'scripts', 'assets', 'app-config', 'bower-f
         appFiles = gulp.src([].concat(config.appFiles, config.components.styles.css), {read: false});
 
     return target
-        .pipe(inject(bowerFiles, {name: 'bower'}))
-        .pipe(inject(appFiles))
+        .pipe(inject(bowerFiles, {name: 'bower', ignorePath: config.bowerFiles.replace('.', ''), addPrefix: 'bower_files'}))
+        .pipe(inject(appFiles, {ignorePath: config.build.replace('.', '')}))
         .pipe(gulp.dest(config.build));
 });

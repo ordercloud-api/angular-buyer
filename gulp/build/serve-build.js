@@ -6,16 +6,10 @@ var gulp = require('gulp'),
         .alias('d', 'debug')
         .argv,
     serve = require('../serve'),
-    unit = require('../test/unit'),
-    plato = require('../test/plato');
+    unit = require('../test/unit');
 
 gulp.task('serve-build', ['inject'], function() {
     serve(true /*isDev*/);
     if (argv.debug) {
-        unit.RunUnitTests();
-        unit.ServeTests();
-        plato.GenerateReport(function () {
-            plato.OpenReport();
-        });
     }
 });

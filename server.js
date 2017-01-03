@@ -16,10 +16,14 @@ switch(env) {
         break;
     default:
         console.log('*** DEV ***');
+        // Host bower_files
+        app.use('/bower_files', express.static(config.root + config.bowerFiles.replace('.', '')));
+        // Host unminfied javascript files
         app.use(express.static(config.root + config.build.replace('.', '')));
+        // Host unchanged html files
         app.use(express.static(config.root + config.src.replace('.', '') + 'app/'));
-        app.use(express.static(config.root));
-        app.use(express.static(config.root + config.components.dir));
+        // Host components html files
+        app.use(express.static(config.root + config.components.dir.replace('.', '')));
         app.get('/*', function(req, res) {
             res.sendFile(config.root + config.build.replace('.', '') + 'index.html');
         });
