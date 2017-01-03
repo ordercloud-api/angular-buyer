@@ -3,7 +3,7 @@ angular.module('ordercloud-lineitems', [])
     .controller('LineItemModalCtrl', LineItemModalController)
 ;
 
-function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderCloud) {
+function LineItemFactory($rootScope, $q, $state, $uibModal, OrderCloud) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
@@ -52,7 +52,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         });
 
         function isSingleShipping(order) {
-            return Underscore.pluck(order.LineItems, 'ShippingAddressID').length == 1;
+            return _.pluck(order.LineItems, 'ShippingAddressID').length == 1;
         }
 
         function getSingleShippingAddressID(order) {
@@ -82,7 +82,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
 
     function _getProductInfo(LineItems) {
         var li = LineItems.Items || LineItems;
-        var productIDs = Underscore.uniq(Underscore.pluck(li, 'ProductID'));
+        var productIDs = _.uniq(_.pluck(li, 'ProductID'));
         var dfd = $q.defer();
         var queue = [];
         angular.forEach(productIDs, function (productid) {
@@ -91,7 +91,7 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, Underscore, OrderClo
         $q.all(queue)
             .then(function (results) {
                 angular.forEach(li, function (item) {
-                    item.Product = angular.copy(Underscore.where(results, {ID: item.ProductID})[0]);
+                    item.Product = angular.copy(_.where(results, {ID: item.ProductID})[0]);
                 });
                 dfd.resolve(li);
             });
