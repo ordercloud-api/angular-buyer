@@ -28,9 +28,7 @@ gulp.task('test:e2e', ['start-localhost'], function() {
                 '--suite', argv.suite || 'all'
             ]
         }))
-        .on('end', function() {
-            browserSync.exit();
-        })
+        .on('end', browserSync.exit)
         .on('error', function (e) {
             throw e;
         });

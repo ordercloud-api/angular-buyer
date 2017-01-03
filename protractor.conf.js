@@ -1,12 +1,11 @@
-var jar = require('selenium-server-standalone-jar'),
+var webdriver = require('chromedriver'),
     config = require('./gulp.config');
 
 exports.config = {
     framework: 'jasmine',
-	seleniumServerJar: jar.path,
-  	specs: ['./src/**/*.test.js'],
+    directConnect: true,
   	baseUrl: 'http://localhost:3000',
-  	chromeDriver: './node_modules/chromedriver/lib/chromedriver/chromedriver.exe',
+  	chromeDriver: webdriver.path,
   	capabilities: {
         'browserName': 'chrome'
     },
