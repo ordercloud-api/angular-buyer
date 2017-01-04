@@ -1,9 +1,9 @@
 {
-  "appname": "Angular Seed",
+  "appname": "Angular Buyer",
   "scope": "FullAccess",
-  "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
-  "buyerid": "A",
-  "catalogid": "SHARED",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "buyerid": "XXXX",
+  "catalogid": "XXXX",
   "environment": "prod",
   "defaultstate": "home",
   "anonymous": false
