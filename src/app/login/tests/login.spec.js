@@ -1,8 +1,7 @@
-describe('Component: Login', function() {
+fdescribe('Component: Login', function() {
     var scope,
         q,
         loginFactory,
-        Token_Refresh,
         oc,
         credentials = {
             Username: 'notarealusername',
@@ -10,17 +9,16 @@ describe('Component: Login', function() {
         };
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService, TokenRefresh) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
         q = $q;
         scope = $rootScope.$new();
         loginFactory = LoginService;
         oc = OrderCloud;
-        Token_Refresh = TokenRefresh;
     }));
 
     describe('Factory: LoginService', function() {
         var client_id;
-        beforeEach(inject(function(clientid, TokenRefresh) {
+        beforeEach(inject(function(clientid) {
             client_id = clientid;
         }));
         describe('SendVerificationCode', function() {
@@ -93,7 +91,7 @@ describe('Component: Login', function() {
             beforeEach(function(){
                 var deferred = q.defer();
                 deferred.resolve({access_token:'ACCESS_TOKEN'});
-                spyOn(Token_Refresh, 'Refresh').and.returnValue(deferred.promise);
+                spyOn(oc.Refresh, 'GetToken').and.returnValue(deferred.promise);
 
                 var dfd = q.defer();
                 dfd.resolve();
@@ -102,22 +100,22 @@ describe('Component: Login', function() {
 
             });
 
-            it('should call the TokenRefresh.GetToken method, refresh the token, and store the new token in cookies', function(){
-                spyOn(Token_Refresh, 'GetToken').and.returnValue('REFRESH_TOKEN');
+            it('should find the refresh token, refresh the access token, and store the new access token in cookies', function(){
+                spyOn(oc.Refresh, 'ReadToken').and.returnValue('REFRESH_TOKEN');
                 loginFactory.RememberMe();
 
-                expect(Token_Refresh.GetToken).toHaveBeenCalled();
-                expect(Token_Refresh.Refresh).toHaveBeenCalledWith('REFRESH_TOKEN');
+                expect(oc.Refresh.ReadToken).toHaveBeenCalled();
+                expect(oc.Refresh.GetToken).toHaveBeenCalledWith('REFRESH_TOKEN');
                 scope.$digest();
                 expect(oc.BuyerID.Set).toHaveBeenCalled();
                 expect(oc.Auth.SetToken).toHaveBeenCalledWith('ACCESS_TOKEN');
             });
 
             it('should not attempt to refresh users who do not have a refresh token', function() {
-                spyOn(Token_Refresh, 'GetToken').and.returnValue(null);
+                spyOn(oc.Refresh, 'ReadToken').and.returnValue(null);
                 loginFactory.RememberMe();
-                expect(Token_Refresh.GetToken).toHaveBeenCalled();
-                expect(Token_Refresh.Refresh).not.toHaveBeenCalled();
+                expect(oc.Refresh.ReadToken).toHaveBeenCalled();
+                expect(oc.Refresh.GetToken).not.toHaveBeenCalled();
             })
 
         });
