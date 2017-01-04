@@ -2,11 +2,8 @@ language: node_js
 node_js:
   - "5.6.0"
 
-before_script:
-  - npm install
-  - bower install
+before_install:
+  - npm install -g bower gulp
 
 script:
   - npm run test
-  - npm run test-e2e
-

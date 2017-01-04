@@ -1,4 +1,4 @@
-fdescribe('Component: Login', function() {
+describe('Component: Login', function() {
     var scope,
         q,
         loginFactory,

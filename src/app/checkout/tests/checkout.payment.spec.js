@@ -53,14 +53,6 @@ describe('Component: Checkout Payment', function() {
             rootScope = $rootScope;
         }));
 
-        describe('Function: next', function() {
-            it ('should call $state.go() with "checkout.review"', inject(function($state) {
-                spyOn($state, 'go').and.callThrough();
-                checkoutPaymentCtrl.next();
-                expect($state.go).toHaveBeenCalledWith("checkout.review");
-            }))
-        });
-
         describe('Function: createAddress', function() {
             beforeEach(function() {
                 var df = q.defer();
