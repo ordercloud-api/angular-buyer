@@ -1,12 +1,10 @@
 var gulp = require('gulp'),
     config = require('../../gulp.config'),
-    browserSync = require('browser-sync'),
     argv = require('yargs')
         .count('debug')
         .alias('d', 'debug')
         .argv,
-    serve = require('../serve'),
-    unit = require('../test/unit');
+    serve = require('../serve');
 
 gulp.task('serve-build', ['inject'], function() {
     serve(true /*isDev*/);
