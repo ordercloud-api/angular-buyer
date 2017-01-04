@@ -22,7 +22,7 @@ function LoginConfig($stateProvider) {
     ;
 }
 
-function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, TokenRefresh, clientid, buyerid, anonymous) {
+function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, clientid, buyerid, anonymous) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -88,10 +88,10 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, TokenRe
     }
 
     function _rememberMe() {
-        var availableRefreshToken = TokenRefresh.GetToken() || null;
+        var availableRefreshToken = OrderCloud.Refresh.ReadToken() || null;
 
         if (availableRefreshToken) {
-            TokenRefresh.Refresh(availableRefreshToken)
+            OrderCloud.Refresh.GetToken(availableRefreshToken)
                 .then(function(data) {
                     OrderCloud.BuyerID.Set(buyerid);
                     OrderCloud.Auth.SetToken(data.access_token);
@@ -107,7 +107,7 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, TokenRe
     }
 }
 
-function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, LoginService, TokenRefresh, buyerid) {
+function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, LoginService, buyerid) {
     var vm = this;
     vm.credentials = {
         Username: null,
@@ -131,7 +131,7 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
         };
         vm.loading.promise = OrderCloud.Auth.GetToken(vm.credentials)
             .then(function(data) {
-                vm.rememberStatus ? TokenRefresh.SetToken(data['refresh_token']) : angular.noop();
+                vm.rememberStatus ? OrderCloud.Refresh.SetToken(data['refresh_token']) : angular.noop();
                 OrderCloud.BuyerID.Set(buyerid);
                 OrderCloud.Auth.SetToken(data['access_token']);
                 $state.go('home');

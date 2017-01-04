@@ -34,7 +34,7 @@
     "angular-ui-tree": "^2.16.0",
     "angular-bootstrap": "^1.3.3",
 
-    "ordercloud-ng-sdk": "1.0.26",
+    "ordercloud-ng-sdk": "1.0.27",
     "angular-auto-validate": "^1.19.5",
     "font-awesome": "^4.6.3",
     "angular-localforage": "^1.2.5",
