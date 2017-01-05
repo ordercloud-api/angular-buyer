@@ -215,7 +215,6 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 
 	$scope.$watch('payment', function(n,o) {
 		if (n && !n.CreditCardID) {
-			console.log('hit');
 			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', false);
 		} else {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', true);
