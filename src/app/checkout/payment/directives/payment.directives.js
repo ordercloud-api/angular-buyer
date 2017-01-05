@@ -48,7 +48,7 @@ function PaymentPurchaseOrderController($scope, $rootScope, toastr, OrderCloud, 
 						$scope.payment = data;
 					});
 				} else {
-					OrderCloud.Payments.Create(vm.order.ID, {Type: 'PurchaseOrder'})
+					OrderCloud.Payments.Create($scope.order.ID, {Type: 'PurchaseOrder'})
 						.then(function(data) {
 							$scope.payment = data;
 						});

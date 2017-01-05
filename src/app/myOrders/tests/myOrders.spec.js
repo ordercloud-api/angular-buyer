@@ -4,20 +4,22 @@ describe('Component: MyOrders', function() {
         oc,
         ocParameters,
         mockParams,
-        state
-        ;
+        state,
+        currentUser;
     beforeEach(module(function($provide) {
-        mockParams = {search:null, page: null, pageSize: null, searchOn: null, sortBy: null, filters: null, from: null, to: null};
+        mockParams = {search:null, page: null, pageSize: null, searchOn: null, sortBy: null, filters: null, from: null, to: null, favorites: null};
         $provide.value('Parameters', mockParams);
+        $provide.value('CurrentUser', {ID:"FAKE_USER"});
     }));
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, OrderCloudParameters, $state) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, OrderCloudParameters, CurrentUser, $state) {
         q = $q;
         scope = $rootScope.$new();
         oc = OrderCloud;
         ocParameters = OrderCloudParameters;
         state = $state;
+        currentUser = CurrentUser;
     }));
 
     describe('State: myOrders', function() {
@@ -31,7 +33,7 @@ describe('Component: MyOrders', function() {
             $injector.invoke(state.resolve.Parameters);
             expect(ocParameters.Get).toHaveBeenCalled();
         }));
-        xit('should resolve OrderList', inject(function($injector) {
+        it('should resolve OrderList', inject(function($injector) {
             mockParams.filters = {Status:'!Unsubmitted'};
             mockParams.pageSize = 12;
             $injector.invoke(state.resolve.OrderList);
@@ -45,6 +47,7 @@ describe('Component: MyOrders', function() {
         ;
         beforeEach(inject(function($state, $stateParams) {
             stateParams = $stateParams;
+            stateParams.orderid = 'FAKE_ORDER';
             state = $state.get('myOrders.detail');
 
             mockPaymentList = {
@@ -66,9 +69,9 @@ describe('Component: MyOrders', function() {
             $injector.invoke(state.resolve.SelectedOrder);
             expect(oc.Me.GetOrder).toHaveBeenCalledWith(stateParams.orderid);
         }));
-        xit('should resolve Payments', inject(function($injector){
+        it('should resolve SelectedPayments', inject(function($injector){
             $injector.invoke(state.resolve.SelectedPayments);
-            expect(oc.Payments.List).toHaveBeenCalledWith(stateParams.orderid, null, 1, 100);
+            expect(oc.Payments.List).toHaveBeenCalledWith(stateParams.orderid);
             scope.$digest();
             expect(oc.Me.GetCreditCard).toHaveBeenCalledWith(mockPaymentList.Items[0].CreditCardID);
         }));
@@ -127,7 +130,7 @@ describe('Component: MyOrders', function() {
                 mockParams.to = '12/12/2016';
                 myOrdersCtrl.clearFilters();
             });
-            xit('should reload state with the following parameters cleared: filter, from, and to', function(){
+            it('should reload state with the following parameters cleared: filter, from, and to', function(){
                 expect(state.go).toHaveBeenCalled();
                 expect(ocParameters.Create).toHaveBeenCalledWith(clearedParams, true);
             });

@@ -66,8 +66,8 @@ describe('Component: Product Search', function(){
             });
         });
         describe('updateSort', function(){
-            xit('should reload page with value and sort order, if both are defined', function(){
-                productSearchCtrl.updateSort('ID', '!');
+            it('should reload page with value and sort order, if both are defined', function(){
+                productSearchCtrl.updateSort('!ID');
                 expect(state.go).toHaveBeenCalled();
                 expect(ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: '!ID'}, false);
             });
