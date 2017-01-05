@@ -16,7 +16,7 @@
     "postinstall": "bower install && npm run build-all",
     "start": "node server.js",
     "build-all": "gulp inject index",
-    "tests": "gulp test:unit test:e2e"
+    "test": "gulp test:unit"
   },
   "repository": {
     "type": "git",
