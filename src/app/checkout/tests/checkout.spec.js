@@ -218,14 +218,6 @@ describe('Component: Checkout', function() {
             }));
         });
 
-        describe('OC:OrderPaymentsUpdated', function() {
-            xit('should call Payments List method on broadcasted orderid', inject(function($rootScope) {
-                $rootScope.$broadcast('OC:OrderPaymentsUpdated', order.ID);
-                scope.$digest();
-                expect(oc.Payments.List).toHaveBeenCalledWith(order.ID);
-            }));
-        });
-
         describe('removePromotion', function() {
             it('should call Orders RemovePromotion method', function() {
                 checkoutController.removePromotion(order, {Code: 'Promo123'});

@@ -48,7 +48,7 @@ function PaymentPurchaseOrderController($scope, $rootScope, toastr, OrderCloud, 
 						$scope.payment = data;
 					});
 				} else {
-					OrderCloud.Payments.Create(vm.order.ID, {Type: 'PurchaseOrder'})
+					OrderCloud.Payments.Create($scope.order.ID, {Type: 'PurchaseOrder'})
 						.then(function(data) {
 							$scope.payment = data;
 						});
@@ -215,7 +215,6 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 
 	$scope.$watch('payment', function(n,o) {
 		if (n && !n.CreditCardID) {
-			console.log('hit');
 			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', false);
 		} else {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', true);

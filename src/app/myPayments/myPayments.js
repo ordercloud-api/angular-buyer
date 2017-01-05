@@ -61,7 +61,7 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, OrderCloudC
 
                 AuthorizeNet.DeleteCreditCard(creditCard)
                     .then(function(){
-                        toastr.success('CreditCard Deleted', 'Success');
+                        toastr.success('Credit Card Deleted', 'Success');
                         df.resolve();
                         $state.reload('myPayments');
                     })
