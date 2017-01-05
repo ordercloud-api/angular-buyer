@@ -3,7 +3,7 @@ describe('Component: Product Search', function(){
         q,
         oc,
         state,
-        ocParameters,
+        _ocParameters,
         parameters,
         mockProductList
         ;
@@ -12,12 +12,12 @@ describe('Component: Product Search', function(){
     }));
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($rootScope, $q, OrderCloud, OrderCloudParameters, $state, Parameters){
+    beforeEach(inject(function($rootScope, $q, OrderCloud, ocParameters, $state, Parameters){
         scope = $rootScope.$new();
         q = $q;
         oc = OrderCloud;
         state = $state;
-        ocParameters = OrderCloudParameters;
+        _ocParameters = ocParameters;
         parameters = Parameters;
         mockProductList = {
             Items:['product1', 'product2'],
@@ -31,12 +31,12 @@ describe('Component: Product Search', function(){
         var state;
         beforeEach(inject(function($state){
             state = $state.get('productSearchResults');
-            spyOn(ocParameters, 'Get');
+            spyOn(_ocParameters, 'Get');
             spyOn(oc.Me, 'ListProducts');
         }));
         it('should resolve Parameters', inject(function($injector){
             $injector.invoke(state.resolve.Parameters);
-            expect(ocParameters.Get).toHaveBeenCalled();
+            expect(_ocParameters.Get).toHaveBeenCalled();
         }));
         it('should resolve ProductList', inject(function($injector){
             parameters.filters = {ParentID:'12'};
@@ -50,52 +50,52 @@ describe('Component: Product Search', function(){
             var state = $state;
             productSearchCtrl = $controller('ProductSearchCtrl', {
                 $state: state,
-                OrderCloudParameters: ocParameters,
+                ocParameters: _ocParameters,
                 $scope: scope,
                 ProductList: mockProductList
             });
-            spyOn(ocParameters, 'Create');
+            spyOn(_ocParameters, 'Create');
             spyOn(state, 'go');
         }));
         describe('filter', function(){
-            it('should reload state and call OrderCloudParameters.Create with any parameters', function(){
+            it('should reload state and call ocParameters.Create with any parameters', function(){
                 productSearchCtrl.parameters = {pageSize: 1};
                 productSearchCtrl.filter(true);
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({pageSize:1}, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({pageSize:1}, true);
             });
         });
         describe('updateSort', function(){
             it('should reload page with value and sort order, if both are defined', function(){
                 productSearchCtrl.updateSort('!ID');
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: '!ID'}, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: '!ID'}, false);
             });
             it('should reload page with just value, if no order is defined', function(){
                 productSearchCtrl.updateSort('ID');
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: 'ID'}, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: 'ID'}, false);
             });
         });
         describe('updatePageSize', function(){
             it('should reload state with the new pageSize', function(){
                 productSearchCtrl.updatePageSize('25');
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: '25', sortBy: null}, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: '25', sortBy: null}, true);
             });
         });
         describe('pageChanged', function(){
             it('should reload state with the new page', function(){
                 productSearchCtrl.pageChanged('newPage');
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: 'newPage',  pageSize: null, sortBy: null}, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: 'newPage',  pageSize: null, sortBy: null}, false);
             });
         });
         describe('reverseSort', function(){
             it('should reload state with a reverse sort call', function(){
                 productSearchCtrl.parameters.sortBy = 'ID';
                 productSearchCtrl.reverseSort();
-                expect(ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: '!ID'}, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({searchTerm: null, page: null,  pageSize: null, sortBy: '!ID'}, false);
             });
         });
     });

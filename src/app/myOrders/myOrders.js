@@ -15,8 +15,8 @@ function MyOrdersConfig($stateProvider) {
             },
             url: '/myorders?from&to&search&page&pageSize&searchOn&sortBy&filters?favorites',
             resolve: {
-                Parameters: function($stateParams, OrderCloudParameters) {
-                    return OrderCloudParameters.Get($stateParams);
+                Parameters: function($stateParams, ocParameters) {
+                    return ocParameters.Get($stateParams);
                 },
                 OrderList: function(OrderCloud, Parameters, CurrentUser) {
                     if (Parameters.favorites && CurrentUser.xp.FavoriteOrders) {
@@ -84,7 +84,7 @@ function MyOrdersConfig($stateProvider) {
         });
 }
 
-function MyOrdersController($state, $ocMedia, OrderCloud, OrderCloudParameters, OrderList, Parameters) {
+function MyOrdersController($state, $ocMedia, OrderCloud, ocParameters, OrderList, Parameters) {
     var vm = this;
     vm.list = OrderList;
     vm.parameters = Parameters;
@@ -100,7 +100,7 @@ function MyOrdersController($state, $ocMedia, OrderCloud, OrderCloudParameters, 
     //Reload the state with new parameters
     vm.filter = function(resetPage) {
         if(vm.parameters.filters && vm.parameters.filters.Status === null) delete vm.parameters.filters.Status;
-        $state.go('.', OrderCloudParameters.Create(vm.parameters, resetPage));
+        $state.go('.', ocParameters.Create(vm.parameters, resetPage));
     };
 
     vm.toggleFavorites = function() {
@@ -172,7 +172,7 @@ function MyOrdersController($state, $ocMedia, OrderCloud, OrderCloudParameters, 
     };
 }
 
-function MyOrderDetailController($state, $exceptionHandler, toastr, OrderCloud, OrderCloudConfirm, SelectedOrder, SelectedPayments, LineItemList, PromotionList) {
+function MyOrderDetailController($state, $exceptionHandler, toastr, OrderCloud, ocConfirm, SelectedOrder, SelectedPayments, LineItemList, PromotionList) {
     var vm = this;
     vm.order = SelectedOrder;
     vm.list = LineItemList;
@@ -181,7 +181,7 @@ function MyOrderDetailController($state, $exceptionHandler, toastr, OrderCloud, 
     vm.promotionList = PromotionList.Meta ? PromotionList.Items : PromotionList;
     
     vm.cancelOrder = function(orderid) {
-        OrderCloudConfirm.Confirm('Are you sure you want to cancel this order?')
+        ocConfirm.Confirm('Are you sure you want to cancel this order?')
             .then(function() {
                 OrderCloud.Orders.Cancel(orderid)
                     .then(function() {

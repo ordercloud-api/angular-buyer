@@ -34,7 +34,7 @@ function RepeatOrderController(toastr, OrderCloud, RepeatOrderFactory) {
     };
 }
 
-function RepeatOrderFactory($q, $state, $localForage, toastr, OrderCloud, LineItemHelpers, CurrentOrder, appname) {
+function RepeatOrderFactory($q, $state, $localForage, toastr, OrderCloud, ocLineItems, CurrentOrder, appname) {
     return {
         SetAccessToken: _setAccessToken,
         CheckLineItemsValid: _checkLineItemsValid,
@@ -71,7 +71,7 @@ function RepeatOrderFactory($q, $state, $localForage, toastr, OrderCloud, LineIt
                 angular.forEach(productList, function(product) {
                     productIds.push(product.ID);
                 });
-                LineItemHelpers.ListAll(originalOrderID)
+                ocLineItems.ListAll(originalOrderID)
                     .then(function(lineItemList) {
                         var invalidLI = [];
                         var validLI =[];
@@ -132,7 +132,7 @@ function RepeatOrderFactory($q, $state, $localForage, toastr, OrderCloud, LineIt
         $localForage.getItem(appname + '.CurrentOrderID')
             .then(function(order_id) {
                 if (order_id) {
-                    LineItemHelpers.ListAll(order_id)
+                    ocLineItems.ListAll(order_id)
                         .then(function(li) {
                             if (li.length) {
                                 toastr.warning('The line items from your current order were added to this reorder.', 'Please be advised')

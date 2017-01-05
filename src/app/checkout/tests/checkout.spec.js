@@ -42,10 +42,10 @@ describe('Component: Checkout', function() {
             }
         });
     }));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, LineItemHelpers, CurrentOrder, OrderPayments, SubmittedOrder) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, ocLineItems, CurrentOrder, OrderPayments, SubmittedOrder) {
         q = $q;
         oc = OrderCloud;
-        lineItemHelpers = LineItemHelpers;
+        lineItemHelpers = ocLineItems;
         scope = $rootScope.$new();
         currentOrder = CurrentOrder;
         submittedOrder = SubmittedOrder;

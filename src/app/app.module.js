@@ -12,13 +12,6 @@ angular.module('orderCloud', [
         'angular-busy',
         'jcs-autoValidate',
         'treeControl',
-        'hl.sticky',
-        'ordercloud-assignment-helpers',
-        'ordercloud-paging-helpers',
-        'ordercloud-auto-id',
-        'ordercloud-address',
-        'ordercloud-lineitems',
-        'ordercloud-payment-authorizeNet',
-        'ordercloud-credit-card'
+        'hl.sticky'
     ]
 );

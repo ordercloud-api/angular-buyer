@@ -3,7 +3,7 @@ describe('Component: Category Browse', function(){
         q,
         oc,
         state,
-        ocParameters,
+        _ocParameters,
         mockProductList,
         categoryList
         ;
@@ -12,12 +12,12 @@ describe('Component: Category Browse', function(){
     }));
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($rootScope, $q, OrderCloud, OrderCloudParameters, $state){
+    beforeEach(inject(function($rootScope, $q, OrderCloud, ocParameters, $state){
         scope = $rootScope.$new();
         q = $q;
         oc = OrderCloud;
         state = $state;
-        ocParameters = OrderCloudParameters;
+        _ocParameters = ocParameters;
         categoryList = ['category1', 'category2'];
         mockProductList = {
             Items:['product1', 'product2'],
@@ -34,13 +34,13 @@ describe('Component: Category Browse', function(){
             state = $state.get('categoryBrowse');
             var defer = q.defer();
             defer.resolve();
-            spyOn(ocParameters, 'Get');
+            spyOn(_ocParameters, 'Get');
             spyOn(oc.Me, 'ListCategories');
             spyOn(oc.Me, 'ListProducts');
         }));
         it('should resolve Parameters', inject(function($injector){
             $injector.invoke(state.resolve.Parameters);
-            expect(ocParameters.Get).toHaveBeenCalled();
+            expect(_ocParameters.Get).toHaveBeenCalled();
         }));
         it('should resolve CategoryList', inject(function($injector){
             $injector.invoke(state.resolve.CategoryList);
@@ -71,42 +71,42 @@ describe('Component: Category Browse', function(){
             categoryBrowseCtrl = $controller('CategoryBrowseCtrl', {
                 $scope: scope,
                 $state: state,
-                OrderCloudParameters: ocParameters,
+                ocParameters: _ocParameters,
                 CategoryList: categoryList,
                 ProductList: mockProductList,
                 Parameters: Parameters,
                 SelectedCategory: selectedCategory
             });
             spyOn(state, 'go');
-            spyOn(ocParameters, 'Create');
+            spyOn(_ocParameters, 'Create');
         }));
         describe('filter', function(){
-            it('should reload state and call OrderCloudParameters.Create with any parameters', function(){
+            it('should reload state and call ocParameters.Create with any parameters', function(){
                 categoryBrowseCtrl.parameters = {pageSize: 1};
                 categoryBrowseCtrl.filter(true);
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({pageSize:1}, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({pageSize:1}, true);
             });
         });
         describe('updateCategoryList', function(){
             it('should reload state with new category ID parameter', function(){
                 categoryBrowseCtrl.updateCategoryList('newCategoryID');
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({categoryPage: null, productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID:'newCategoryID'}, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({categoryPage: null, productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID:'newCategoryID'}, true);
             });
         });
         describe('changeCategoryPage', function(){
             it('should reload state with the new categoryPage', function(){
                 categoryBrowseCtrl.changeCategoryPage('newCategoryPage');
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({categoryPage: 'newCategoryPage', productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID: null}, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({categoryPage: 'newCategoryPage', productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID: null}, false);
             });
         });
         describe('changeProductPage', function(){
             it('should reload state with the new productPage', function(){
                 categoryBrowseCtrl.changeProductPage('newProductPage', function(){
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith({categoryPage: null, productPage: 'newProductPage',  pageSize: null, sortBy: null, filters: null, categoryID: null}, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith({categoryPage: null, productPage: 'newProductPage',  pageSize: null, sortBy: null, filters: null, categoryID: null}, false);
                 });
             });
         });

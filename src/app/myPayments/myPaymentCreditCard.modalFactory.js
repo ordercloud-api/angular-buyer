@@ -35,9 +35,9 @@ function MyPaymentCreditCardModalFactory($uibModal) {
     }
 }
 
-function CreateCreditCardModalController($q, $exceptionHandler, $uibModalInstance, creditCardUtility, AuthorizeNet) {
+function CreateCreditCardModalController($q, $exceptionHandler, $uibModalInstance, ocCreditCardUtility, ocAuthNet) {
     var vm = this;
-    vm.creditCardInfo = creditCardUtility;
+    vm.creditCardInfo = ocCreditCardUtility;
     vm.creditCard = {};
 
     vm.cancel = function() {
@@ -47,10 +47,10 @@ function CreateCreditCardModalController($q, $exceptionHandler, $uibModalInstanc
     vm.submit = function() {
         //loading indicator promise
         var df = $q.defer();
-        df.templateUrl = 'common/loading-indicators/templates/view.loading.tpl.html';
+        df.templateUrl = 'common/templates/view.loading.tpl.html';
         df.message = 'Creating Credit Card';
         vm.loading = df;
-        AuthorizeNet.CreateCreditCard(vm.creditCard)
+        ocAuthNet.CreateCreditCard(vm.creditCard)
             .then(function(data){
                 df.resolve();
                 $uibModalInstance.close(data.ResponseBody);
@@ -61,9 +61,9 @@ function CreateCreditCardModalController($q, $exceptionHandler, $uibModalInstanc
     };
 }
 
-function EditCreditCardModalController($q, $exceptionHandler, $uibModalInstance,  creditCardUtility, AuthorizeNet, SelectedCreditCard) {
+function EditCreditCardModalController($q, $exceptionHandler, $uibModalInstance,  ocCreditCardUtility, ocAuthNet, SelectedCreditCard) {
     var vm = this;
-    vm.creditCardInfo = creditCardUtility;
+    vm.creditCardInfo = ocCreditCardUtility;
     vm.creditCard = SelectedCreditCard;
     var date = new Date(vm.creditCard.ExpirationDate);
     vm.creditCard.ExpirationMonth  = (date.toISOString().substring(5,7));
@@ -76,11 +76,11 @@ function EditCreditCardModalController($q, $exceptionHandler, $uibModalInstance,
     vm.submit = function() {
         //loading indicator promise
         var df =  $q.defer();
-        df.templateUrl = 'common/loading-indicators/templates/view.loading.tpl.html';
+        df.templateUrl = 'common/templates/view.loading.tpl.html';
         df.message = 'Editing Credit Card';
         vm.loading = df;
 
-        AuthorizeNet.UpdateCreditCard(vm.creditCard)
+        ocAuthNet.UpdateCreditCard(vm.creditCard)
             .then(function(data){
                 df.resolve();
                 $uibModalInstance.close(data.ResponseBody);

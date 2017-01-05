@@ -31,7 +31,7 @@ function AppController($q, $rootScope, $state, $ocMedia, toastr, LoginService, a
         //defer.delay = 200;
         defer.wrapperClass = 'indicator-container';
         (toState.data && toState.data.loadingMessage) ? defer.message = toState.data.loadingMessage : defer.message = null;
-        defer.templateUrl = 'common/loading-indicators/templates/view.loading.tpl.html';
+        defer.templateUrl = 'common/templates/view.loading.tpl.html';
         vm.stateLoading = defer;
     });
 

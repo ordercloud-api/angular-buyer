@@ -1,5 +1,5 @@
-angular.module('ordercloud-credit-card', [])
-    .factory('creditCardUtility', CreditCardUtility)
+angular.module('orderCloud')
+    .factory('ocCreditCardUtility', CreditCardUtility)
 ;
 
 

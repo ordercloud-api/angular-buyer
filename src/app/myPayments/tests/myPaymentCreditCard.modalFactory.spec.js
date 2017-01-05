@@ -62,19 +62,18 @@ describe('Component: myPayments', function() {
     });
     describe('Controller: CreateCreditCardModalController', function(){
         var CreateCreditCardModalCtrl,
-            ccUtility,
             authNet,
             data
             ;
-        beforeEach(inject(function($controller, $exceptionHandler, AuthorizeNet){
-            authNet = AuthorizeNet;
+        beforeEach(inject(function($controller, $exceptionHandler, ocAuthNet, ocCreditCardUtility){
+            authNet = ocAuthNet;
             data = { ResponseBody : {}};
             CreateCreditCardModalCtrl = $controller('CreateCreditCardModalCtrl', {
                 $q : q,
                 $exceptionHandler: $exceptionHandler,
                 $uibModalInstance: uibModalInstance,
-                creditCardUtility: ccUtility,
-                AuthorizeNet : authNet
+                ocCreditCardUtility: ocCreditCardUtility,
+                ocAuthNet : authNet
             });
             var defer = q.defer();
              defer.resolve(data);
@@ -87,7 +86,7 @@ describe('Component: myPayments', function() {
             });
         });
         describe('submit', function(){
-            it('should call AuthorizeNet Create Credit Card then close modal', function(){
+            it('should call ocAuthNet Create Credit Card then close modal', function(){
                 CreateCreditCardModalCtrl.submit();
                 expect(authNet.CreateCreditCard).toHaveBeenCalledWith({});
                 scope.$digest();
@@ -103,7 +102,7 @@ describe('Component: myPayments', function() {
             ccUtility
             ;
 
-        beforeEach(inject(function($controller, $exceptionHandler,creditCardUtility, AuthorizeNet ){
+        beforeEach(inject(function($controller, $exceptionHandler,ocCreditCardUtility, ocAuthNet ){
             mockCCResolve = {
                 CardType: "Visa",
                 CardholderName: "Test Card",
@@ -116,16 +115,16 @@ describe('Component: myPayments', function() {
                 PartialAccountNumber: "4555",
                 Token: "1802947170"
             };
-            ccUtility = creditCardUtility;
-            authNet = AuthorizeNet;
+            ccUtility = ocCreditCardUtility;
+            authNet = ocAuthNet;
             exceptionHandler = $exceptionHandler;
 
             EditCreditCardModalCtrl = $controller('EditCreditCardModalCtrl', {
                 $q: q,
                 $exceptionHandler: exceptionHandler,
                 $uibModalInstance: uibModalInstance,
-                AuthorizeNet: authNet,
-                creditCardUtility: ccUtility,
+                ocAuthNet: authNet,
+                ocCreditCardUtility: ccUtility,
                 SelectedCreditCard: mockCCResolve
             });
             var defer = q.defer();
@@ -139,7 +138,7 @@ describe('Component: myPayments', function() {
             });
         });
         describe('submit', function(){
-            it('should call AuthorizeNet Update Credit Card', function(){
+            it('should call ocAuthNet Update Credit Card', function(){
                 EditCreditCardModalCtrl.submit();
                 expect(authNet.UpdateCreditCard).toHaveBeenCalledWith(mockCCResolve);
                 scope.$digest();

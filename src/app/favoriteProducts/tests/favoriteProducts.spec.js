@@ -16,12 +16,12 @@ describe('Component: FavoriteProducts', function(){
         $provide.value('FavoriteProducts', []);
         $provide.value('CurrentUser', {xp: {FavoriteProducts: ['favoriteProduct']}});
     }));
-    beforeEach(inject(function($q, OrderCloud, $rootScope, Parameters, OrderCloudParameters, CurrentUser, FavoriteProducts, toastr){
+    beforeEach(inject(function($q, OrderCloud, $rootScope, Parameters, ocParameters, CurrentUser, FavoriteProducts, toastr){
         q = $q;
         oc = OrderCloud;
         scope = $rootScope.$new();
         parameters = Parameters;
-        ocParams = OrderCloudParameters;
+        ocParams = ocParameters;
         favoriteProducts = FavoriteProducts;
         currentUser = CurrentUser;
         toaster = toastr;

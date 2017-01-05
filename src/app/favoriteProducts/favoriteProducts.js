@@ -17,8 +17,8 @@ function FavoriteProductsConfig($stateProvider){
                 pageTitle: "Favorite Products"
             },
             resolve: {
-                Parameters: function ($stateParams, OrderCloudParameters) {
-                    return OrderCloudParameters.Get($stateParams);
+                Parameters: function ($stateParams, ocParameters) {
+                    return ocParameters.Get($stateParams);
                 },
                 FavoriteProducts: function(OrderCloud, Parameters, CurrentUser){
                     if (CurrentUser.xp && CurrentUser.xp.FavoriteProducts.length) {
@@ -31,7 +31,7 @@ function FavoriteProductsConfig($stateProvider){
         });
 }
 
-function FavoriteProductsController(OrderCloudParameters, OrderCloud, $state, $ocMedia, Parameters, CurrentUser, FavoriteProducts){
+function FavoriteProductsController(ocParameters, OrderCloud, $state, $ocMedia, Parameters, CurrentUser, FavoriteProducts){
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.list = FavoriteProducts;
@@ -47,7 +47,7 @@ function FavoriteProductsController(OrderCloudParameters, OrderCloud, $state, $o
 
     //reload the state with new filters
     vm.filter = function(resetPage) {
-        $state.go('.', OrderCloudParameters.Create(vm.parameters, resetPage));
+        $state.go('.', ocParameters.Create(vm.parameters, resetPage));
     };
 
     //clear the relevant filters, reload the state & reset the page

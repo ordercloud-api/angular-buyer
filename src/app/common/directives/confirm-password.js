@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .directive('confirmpassword', confirmpassword)
 ;
-
+//TODO: remove this directive in favor of ui.validate
 function confirmpassword() {
     return {
         restrict: 'A',

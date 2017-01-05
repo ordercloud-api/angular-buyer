@@ -10,7 +10,7 @@ function checkoutReviewConfig($stateProvider) {
 			controller: 'CheckoutReviewCtrl',
 			controllerAs: 'checkoutReview',
 			resolve: {
-				LineItemsList: function($q, $state, toastr, OrderCloud, LineItemHelpers, CurrentOrder) {
+				LineItemsList: function($q, $state, toastr, OrderCloud, ocLineItems, CurrentOrder) {
 					var dfd = $q.defer();
 					OrderCloud.LineItems.List(CurrentOrder.ID)
 						.then(function(data) {
@@ -18,7 +18,7 @@ function checkoutReviewConfig($stateProvider) {
 								dfd.resolve(data);
 							}
 							else {
-								LineItemHelpers.GetProductInfo(data.Items)
+								ocLineItems.GetProductInfo(data.Items)
 									.then(function() {
 										dfd.resolve(data);
 									});

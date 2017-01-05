@@ -16,8 +16,8 @@ function ProductSearchConfig($stateProvider) {
             controller: 'ProductSearchCtrl',
             controllerAs: 'productSearch',
             resolve: {
-                Parameters: function(OrderCloudParameters, $stateParams) {
-                    return OrderCloudParameters.Get($stateParams);
+                Parameters: function(ocParameters, $stateParams) {
+                    return ocParameters.Get($stateParams);
                 },
                 ProductList: function(OrderCloud, Parameters) {
                     return OrderCloud.Me.ListProducts(Parameters.searchTerm, Parameters.page, Parameters.pageSize || 12, null, Parameters.sortBy);
@@ -26,7 +26,7 @@ function ProductSearchConfig($stateProvider) {
         });
 }
 
-function ProductSearchController($state, OrderCloudParameters, Parameters, ProductList) {
+function ProductSearchController($state, ocParameters, Parameters, ProductList) {
     var vm = this;
     vm.list = ProductList;
     vm.parameters = Parameters;
@@ -34,7 +34,7 @@ function ProductSearchController($state, OrderCloudParameters, Parameters, Produ
 
     //Reload the state with new parameters
     vm.filter = function(resetPage) {
-        $state.go('.', OrderCloudParameters.Create(vm.parameters, resetPage));
+        $state.go('.', ocParameters.Create(vm.parameters, resetPage));
     };
 
     vm.updateSort = function(value) {

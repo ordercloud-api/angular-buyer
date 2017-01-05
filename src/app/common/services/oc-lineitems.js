@@ -1,9 +1,8 @@
-angular.module('ordercloud-lineitems', [])
-    .factory('LineItemHelpers', LineItemFactory)
-    .controller('LineItemModalCtrl', LineItemModalController)
+angular.module('orderCloud')
+    .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $state, $uibModal, OrderCloud) {
+function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
@@ -150,18 +149,4 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, OrderCloud) {
             });
         return dfd.promise;
     }
-}
-
-function LineItemModalController($uibModalInstance) {
-    var vm = this;
-    vm.address = {};
-
-    vm.submit = function () {
-        $uibModalInstance.close(vm.address);
-    };
-
-    vm.cancel = function () {
-        vm.address = {};
-        $uibModalInstance.dismiss('cancel');
-    };
 }
