@@ -44,6 +44,7 @@ function RepeatOrderModalCtrl(LineItems, OrderID, $uibModalInstance, $state, Rep
     vm.invalidLI = LineItems.invalid;
     vm.validLI = LineItems.valid;
 
+
     vm.cancel = function(){
         $uibModalInstance.dismiss();
     };
@@ -61,7 +62,7 @@ function RepeatOrderModalCtrl(LineItems, OrderID, $uibModalInstance, $state, Rep
     };
 }
 
-function RepeatOrderFactory($q, $rootScope, $exceptionHandler, OrderCloud, LineItemHelpers) {
+function RepeatOrderFactory($q, $rootScope, toastr, $exceptionHandler, OrderCloud, LineItemHelpers) {
     return {
         GetValidLineItems: getValidLineItems,
         AddLineItemsToCart: addLineItemsToCart
@@ -113,7 +114,7 @@ function RepeatOrderFactory($q, $rootScope, $exceptionHandler, OrderCloud, LineI
         }
     }
 
-    function addLineItemsToCart(validLI, OrderID) {
+    function addLineItemsToCart(validLI, orderID) {
         var queue = [];
         var dfd = $q.defer();
         angular.forEach(validLI, function(li){
@@ -122,16 +123,14 @@ function RepeatOrderFactory($q, $rootScope, $exceptionHandler, OrderCloud, LineI
                 Quantity: li.Quantity,
                 Specs: li.Specs
             };
-            //LineItemHelpers.AddItem(orderid, lineItemToAdd)
-            //    .then(function(){
-            //        toastr.success('Product(s) added to cart', 'Success');
-            //        $state.go('cart', {}, {reload: true});
-            //    });
-            queue.push(OrderCloud.LineItems.Create(OrderID, lineItemToAdd));
+            queue.push(OrderCloud.LineItems.Create(orderID, lineItemToAdd));
+            console.log('orderID', orderID);
+            console.log('lineItem', lineItemToAdd);
         });
         $q.all(queue)
             .then(function(){
                 dfd.resolve();
+                toastr.success('Product(s) Add to Cart', 'Success');
             })
             .catch(function(error){
                 $exceptionHandler(error);

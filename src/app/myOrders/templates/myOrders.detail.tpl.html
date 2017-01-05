@@ -2,7 +2,8 @@
     <h3>
         <div class="pull-right">
             <ordercloud-favorite-order current-user="base.currentUser" order="myOrderDetail.order"></ordercloud-favorite-order>
-            <ordercloud-repeat-order original-order-id="myOrderDetail.order.ID" current-order-id="myOrderDetail.currentOrder.ID"></ordercloud-repeat-order>            <button ng-if="myOrderDetail.canCancel" ng-click="myOrderDetail.cancelOrder(myOrderDetail.order.ID)" class="btn btn-default"><span class="text-danger">Cancel Order</span></button>
+            <button ng-if="myOrderDetail.canCancel" ng-click="myOrderDetail.cancelOrder(myOrderDetail.order.ID)" class="btn btn-default"><span class="text-danger">Cancel Order</span></button>
+            <ordercloud-repeat-order original-order-id="myOrderDetail.order.ID" current-order-id="base.currentOrder.ID"></ordercloud-repeat-order>
         </div>
         <button ui-sref="^" class="btn btn-default"><i class="fa fa-arrow-left"></i></button>
         <b>Order ID:</b> {{myOrderDetail.order.ID}}
