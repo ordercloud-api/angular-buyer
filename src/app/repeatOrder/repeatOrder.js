@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .factory('RepeatOrderFactory', RepeatOrderFactory)
     .component('ordercloudRepeatOrder', {
-        templateUrl: 'repeatOrder/templates/repeatOrder.component.tpl.html',
+        templateUrl: 'repeatOrder/templates/repeatOrder.component.html',
         controller: RepeatOrderCtrl,
         bindings: {
             currentOrderId: '<',
@@ -18,7 +18,7 @@ function RepeatOrderCtrl(toastr, RepeatOrderFactory, $uibModal) {
 
     vm.openReorderModal = function(){
         var uibModalInstance = $uibModal.open({
-            templateUrl: 'repeatOrder/templates/repeatOrder.modal.tpl.html',
+            templateUrl: 'repeatOrder/templates/repeatOrder.modal.html',
             controller:  RepeatOrderModalCtrl,
             controllerAs: 'repeatModal',
             size: 'md',
@@ -38,12 +38,11 @@ function RepeatOrderCtrl(toastr, RepeatOrderFactory, $uibModal) {
     };
 }
 
-function RepeatOrderModalCtrl(LineItems, OrderID, Underscore, $uibModalInstance, $state, RepeatOrderFactory){
+function RepeatOrderModalCtrl(LineItems, OrderID, $uibModalInstance, $state, RepeatOrderFactory){
     var vm = this;
     vm.orderid = OrderID;
     vm.invalidLI = LineItems.invalid;
     vm.validLI = LineItems.valid;
-
 
     vm.cancel = function(){
         $uibModalInstance.dismiss();
@@ -62,7 +61,7 @@ function RepeatOrderModalCtrl(LineItems, OrderID, Underscore, $uibModalInstance,
     };
 }
 
-function RepeatOrderFactory($q, $rootScope, $exceptionHandler, Underscore, OrderCloud, LineItemHelpers) {
+function RepeatOrderFactory($q, $rootScope, $exceptionHandler, OrderCloud, LineItemHelpers) {
     return {
         GetValidLineItems: getValidLineItems,
         AddLineItemsToCart: addLineItemsToCart
@@ -72,7 +71,7 @@ function RepeatOrderFactory($q, $rootScope, $exceptionHandler, Underscore, Order
         var dfd = $q.defer();
         ListAllMeProducts()
             .then(function(productList) {
-                var productIds = Underscore.pluck(productList, 'ID');
+                var productIds = _.pluck(productList, 'ID');
                 LineItemHelpers.ListAll(originalOrderID)
                     .then(function(lineItemList) {
                         lineItemList.ProductIds = productIds;
