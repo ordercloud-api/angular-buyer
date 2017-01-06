@@ -1,5 +1,7 @@
 angular.module('orderCloud')
     .factory('RepeatOrderFactory', RepeatOrderFactory)
+    .controller('RepeatOrderCtrl', RepeatOrderCtrl)
+    .controller('RepeatOrderModalCtrl', RepeatOrderModalCtrl)
     .component('ordercloudRepeatOrder', {
         templateUrl: 'repeatOrder/templates/repeatOrder.component.html',
         controller: RepeatOrderCtrl,

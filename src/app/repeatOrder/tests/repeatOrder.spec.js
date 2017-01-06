@@ -1,30 +1,28 @@
-fdescribe('Component: RepeatOrder', function(){
+describe('Component: ordercloudRepeatOrder', function(){
     var scope,
         q,
         state,
         modalInstance,
-        repeatFactory,
         orderID,
         lineItems
         ;
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($rootScope, $q, $state, RepeatOrderFactory) {
+    beforeEach(inject(function($rootScope, $q, $state) {
         scope = $rootScope.$new();
         q = $q;
         state = $state;
-        repeatFactory = RepeatOrderFactory;
         orderID = 'testOrderID123123';
         lineItems = {};
+        modalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
     }));
     describe('Controller: RepeatOrderCtrl', function(){
         var repeatOrderCtrl,
             toaster;
-        beforeEach(inject(function($componentController, toastr, RepeatOrderFactory){
+        beforeEach(inject(function($controller, toastr){
             toaster = toastr;
-            repeatOrderCtrl = $componentController('RepeatOrderCtrl', {
-                repeatFactory: RepeatOrderFactory,
-                toaster: toastr,
+            repeatOrderCtrl = $controller('RepeatOrderCtrl', {
+                toastr: toaster,
                 orderID: 'undefined',
                 lineItems: {
                     valid: {},
@@ -44,74 +42,96 @@ fdescribe('Component: RepeatOrder', function(){
         })
     });
     describe('Controller: RepeatOrderModalCtrl', function(){
-        var repeatOrderModalCtrl,
-            toaster;
-        beforeEach(inject(function($componentController, toastr, RepeatOrderFactory){
-            toaster = toastr;
-            repeatOrderModalCtrl = $componentController('RepeatOrderModalCtrl', {
-                repeatOrderFactory: RepeatOrderFactory,
-                orderID: 'testOrderID123123',
-                toaster: toastr,
-                lineItems: {
+        var repeatOrderModalCtrl;
+        var repeatOrderFactory;
+        beforeEach(inject(function($controller, $state, RepeatOrderFactory){
+            repeatOrderFactory = RepeatOrderFactory;
+            repeatOrderModalCtrl = $controller('RepeatOrderModalCtrl', {
+                OrderID: 'testOrderID123123',
+                $state: $state,
+                RepeatOrderFactory: repeatOrderFactory,
+                LineItems: {
                     valid: {},
                     invalid: {}
                 },
                 $uibModalInstance: modalInstance
-            })
+            });
         }));
         describe('cancel', function() {
             beforeEach(function() {
-                spyOn(modalInstance, 'dismiss');
                 repeatOrderModalCtrl.cancel();
             });
             it('should call the modalInstance dismiss method', function(){
-                expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+                expect(modalInstance.dismiss).toHaveBeenCalled();
             })
         });
         describe('submit', function(){
             beforeEach(function(){
                 var defer = q.defer();
                 defer.resolve();
-                spyOn(modalInstance, 'close');
-                spyOn(repeatOrderFactory, 'AddLineItemsToCart');
+                spyOn(repeatOrderFactory, 'AddLineItemsToCart').and.returnValue(defer.promise);
                 repeatOrderModalCtrl.submit();
             });
             it('should call the modalInstance close method', function(){
+                scope.$digest();
                 expect(modalInstance.close).toHaveBeenCalled();
             });
             it('should call the RepeatOrderFactory AddLineItemsToCart method', function(){
-                expect(repeatOrderFactory.AddLineItemsToCart).toHaveBeenCalledWith(repeatOrderModalCtrl.lineItems.valid, repeatOrderModalCtrl.orderID);
+                expect(repeatOrderFactory.AddLineItemsToCart).toHaveBeenCalledWith(repeatOrderModalCtrl.validLI, repeatOrderModalCtrl.orderid);
             })
         })
     });
-    describe('Factory: RepeatOrder', function(){
+    fdescribe('Factory: RepeatOrderFactory', function(){
         var oc,
             toaster,
-            lineItemHelpers,
+            repeatOrderFactory,
+            _ocLineItems,
             originalOrderID
             ;
-        beforeEach(inject(function(OrderCloud, toastr, ocLineItems){
+        beforeEach(inject(function(OrderCloud, toastr, RepeatOrderFactory, ocLineItems){
             oc = OrderCloud;
             toaster = toastr;
-            lineItemHelpers = ocLineItems;
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(lineItemHelpers, 'ListAll').and.returnValue(defer.promise);
-            spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
-            spyOn(oc.LineItems, 'Create').and.returnValue(defer.promise);
-            spyOn(toaster, 'success');
+            repeatOrderFactory = RepeatOrderFactory;
+            _ocLineItems = ocLineItems;
+            originalOrderID = 'testOriginalOrderID123';
         }));
-        it('should call lineItemHelpers ListAll method', function(){
-            expect(lineItemHelpers.ListAll).toBeCalledWith(originalOrderID);
+        describe('GetValidLineItems', function(){
+            beforeEach(function(){
+                var defer = q.defer();
+                defer.resolve();
+                spyOn(_ocLineItems, 'ListAll').and.returnValue(defer.promise);
+            });
+            it('should call lineItemHelpers ListAll method', function(){
+                repeatOrderFactory.GetValidLineItems(originalOrderID);
+                expect(_ocLineItems.ListAll).toBeCalledWith(originalOrderID);
+            });
         });
-        it('should call the OrderCloud Me ListProducts method', function(){
-            expect(oc.Me.ListProducts).toHaveBeenCalledWith(null, 1, 100);
+        describe('ListAllMeProducts', function(){
+            beforeEach(function(){
+                var defer = q.defer();
+                defer.resolve();
+                spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
+            });
+            it('should call the OrderCloud Me ListProducts method', function(){
+                repeatOrderFactory.ListAllMeProducts();
+                expect(oc.Me.ListProducts).toHaveBeenCalledWith(null, 1, 100);
+            });
         });
-        it('should call the OrderCloud LineItems Create method', function(){
-            expect(oc.LineItems.Create).toHaveBeenCalledWith();
+        describe('AddLineItemsToCart', function(){
+            beforeEach(function(){
+                var defer = q.defer();
+                defer.resolve();
+                spyOn(oc.LineItems, 'Create').and.returnValue(defer.promise);
+            });
+            it('should call the OrderCloud LineItems Create method', function(){
+                repeatOrderFactory.AddLineItemsToCart();
+                expect(oc.LineItems.Create).toHaveBeenCalledWith();
+            });
+            it('should call the toastr success method', function(){
+                spyOn(toaster, 'success');
+                repeatOrderFactory.AddLineItemsToCart();
+                expect(toaster.success).toHaveBeenCalledWith('Product(s) Add to Cart', 'Success');
+            })
         });
-        it('should call the toastr success method', function(){
-            expect(toaster.success).toHaveBeenCalledWith('Product(s) Add to Cart', 'Success');
-        })
-    })
+    });
 });
