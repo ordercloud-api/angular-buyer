@@ -61,11 +61,11 @@ describe('Component: myAddresses', function() {
     describe('Controller: CreateAddressModalController', function(){
         var createAddressModalCtrl
         ;
-        beforeEach(inject(function($controller, $exceptionHandler, OCGeography){
+        beforeEach(inject(function($controller, $exceptionHandler, ocGeography){
             createAddressModalCtrl = $controller('CreateAddressModalCtrl', {
                 $exceptionHandler: $exceptionHandler,
                 $uibModalInstance: uibModalInstance,
-                OCGeography: OCGeography
+                ocGeography: ocGeography
             });
             var defer = q.defer();
             defer.resolve('newAddress');
@@ -90,12 +90,12 @@ describe('Component: myAddresses', function() {
         var editAddressModalCtrl,
         mockAddressResolve
         ;
-        beforeEach(inject(function($controller, $exceptionHandler, OCGeography){
+        beforeEach(inject(function($controller, $exceptionHandler, ocGeography){
             mockAddressResolve = {name:'mockAddress', ID:'1'}
             editAddressModalCtrl = $controller('EditAddressModalCtrl', {
                 $exceptionHandler: $exceptionHandler,
                 $uibModalInstance: uibModalInstance,
-                OCGeography: OCGeography,
+                ocGeography: ocGeography,
                 SelectedAddress: mockAddressResolve
             });
             var defer = q.defer();

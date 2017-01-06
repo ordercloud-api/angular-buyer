@@ -29,11 +29,11 @@ describe('Component: Checkout Review', function() {
             }
         });
     }));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, CurrentOrder, OrderPayments, LineItemHelpers) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, CurrentOrder, OrderPayments, ocLineItems) {
         q = $q;
         oc = OrderCloud;
         scope = $rootScope.$new();
-        lineItemHelpers = LineItemHelpers;
+        lineItemHelpers = ocLineItems;
         currentOrder = CurrentOrder;
         orderPayments = OrderPayments;
         order = {

@@ -28,14 +28,14 @@ describe('Component: myAddresses', function(){
         var myAddressesCtrl,
             state,
             toaster,
-            ocConfirm,
+            confirm,
             addressModal,
             mockAddressList
         ;
-        beforeEach(inject(function($state, toastr, OrderCloudConfirm, MyAddressesModal, $controller){
+        beforeEach(inject(function($state, toastr, ocConfirm, MyAddressesModal, $controller){
             state = $state;
             toaster = toastr;
-            ocConfirm = OrderCloudConfirm;
+            confirm = ocConfirm;
             addressModal = MyAddressesModal;
             mockAddressList = 'address1';
             myAddressesCtrl = $controller('MyAddressesCtrl', {
@@ -79,12 +79,12 @@ describe('Component: myAddresses', function(){
             beforeEach(function(){
                 var defer = q.defer();
                 defer.resolve();
-                spyOn(ocConfirm, 'Confirm').and.returnValue(defer.promise);
+                spyOn(confirm, 'Confirm').and.returnValue(defer.promise);
                 spyOn(oc.Me, 'DeleteAddress').and.returnValue(defer.promise);
                 myAddressesCtrl.delete({'address':{ID: 'ID123'}});
             });
             it('should delete address, after prompting user to confirm', function(){
-                expect(ocConfirm.Confirm).toHaveBeenCalledWith('Are you sure you want to delete this address?');
+                expect(confirm.Confirm).toHaveBeenCalledWith('Are you sure you want to delete this address?');
                 scope.$digest();
                 expect(oc.Me.DeleteAddress).toHaveBeenCalledWith('ID123');
                 expect(toaster.success).toHaveBeenCalledWith('Address Deleted', 'Success');

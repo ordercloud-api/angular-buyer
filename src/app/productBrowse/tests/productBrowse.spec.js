@@ -37,14 +37,14 @@ describe('Component: ProductBrowse', function(){
 
     describe('State: productBrowse', function(){
         var state;
-        beforeEach(inject(function($state, OrderCloudParameters){
+        beforeEach(inject(function($state, ocParameters){
             state = $state.get('productBrowse');
-            spyOn(OrderCloudParameters, 'Get').and.returnValue(null);
+            spyOn(ocParameters, 'Get').and.returnValue(null);
             spyOn(oc.Me, 'ListCategories').and.returnValue(null);
         }));
-        it('should resolve Parameters', inject(function($injector, OrderCloudParameters){
+        it('should resolve Parameters', inject(function($injector, ocParameters){
             $injector.invoke(state.resolve.Parameters);
-            expect(OrderCloudParameters.Get).toHaveBeenCalled();
+            expect(ocParameters.Get).toHaveBeenCalled();
         }));
         it('should resolve CategoryList', inject(function($injector){
             $injector.invoke(state.resolve.CategoryList);
@@ -53,14 +53,14 @@ describe('Component: ProductBrowse', function(){
     });
     describe('State: productBrowse.products', function(){
         var state;
-        beforeEach(inject(function($state, OrderCloudParameters){
+        beforeEach(inject(function($state, ocParameters){
             state = $state.get('productBrowse.products');
-            spyOn(OrderCloudParameters, 'Get').and.returnValue(null);
+            spyOn(ocParameters, 'Get').and.returnValue(null);
             spyOn(oc.Me, 'ListProducts').and.returnValue(null);
         }));
-        it('should resolve Parameters', inject(function($injector, OrderCloudParameters){
+        it('should resolve Parameters', inject(function($injector, ocParameters){
             $injector.invoke(state.resolve.Parameters);
-            expect(OrderCloudParameters.Get).toHaveBeenCalled();
+            expect(ocParameters.Get).toHaveBeenCalled();
         }));
         it('should resolve ProductList', inject(function($injector){
             $injector.invoke(state.resolve.ProductList);

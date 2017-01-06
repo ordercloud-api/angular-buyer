@@ -126,7 +126,7 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
         $('#Remember').blur();
         $('#submit_login').blur();
         vm.loading = {
-            templateUrl: 'common/loading-indicators/templates/view.loading.tpl.html',
+            templateUrl: 'common/templates/view.loading.tpl.html',
             message: null
         };
         vm.loading.promise = OrderCloud.Auth.GetToken(vm.credentials)

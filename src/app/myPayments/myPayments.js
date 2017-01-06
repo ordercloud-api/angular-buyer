@@ -28,7 +28,7 @@ function MyPaymentsConfig($stateProvider) {
         });
 }
 
-function MyPaymentsController($q, $state, toastr, $exceptionHandler, OrderCloudConfirm, AuthorizeNet, MyPaymentCreditCardModal, UserCreditCards, UserSpendingAccounts, GiftCards) {
+function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, ocAuthNet, MyPaymentCreditCardModal, UserCreditCards, UserSpendingAccounts, GiftCards) {
     var vm = this;
     vm.personalCreditCards =  UserCreditCards;
     vm.personalSpendingAccounts = UserSpendingAccounts;
@@ -52,14 +52,14 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, OrderCloudC
 
     vm.delete = function(creditCard){
 
-        OrderCloudConfirm.Confirm("Are you sure you want to delete this Credit Card?")
+        ocConfirm.Confirm("Are you sure you want to delete this Credit Card?")
             .then(function(){
                 var df = $q.defer();
-                df.templateUrl = 'common/loading-indicators/templates/view.loading.tpl.html';
+                df.templateUrl = 'common/templates/view.loading.tpl.html';
                 df.message = 'Deleting Selected Credit Card';
                 vm.loading = df;
 
-                AuthorizeNet.DeleteCreditCard(creditCard)
+                ocAuthNet.DeleteCreditCard(creditCard)
                     .then(function(){
                         toastr.success('Credit Card Deleted', 'Success');
                         df.resolve();

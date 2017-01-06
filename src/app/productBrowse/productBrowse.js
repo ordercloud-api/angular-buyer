@@ -20,8 +20,8 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
                 pageTitle: 'Browse Products'
             },
             resolve: {
-                Parameters: function ($stateParams, OrderCloudParameters) {
-                    return OrderCloudParameters.Get($stateParams);
+                Parameters: function ($stateParams, ocParameters) {
+                    return ocParameters.Get($stateParams);
                 },
                 CategoryList: function(OrderCloud) {
                     return OrderCloud.Me.ListCategories(null, 1, 100, null, null, null, 'all');
@@ -53,8 +53,8 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
             controller: 'ProductViewCtrl',
             controllerAs: 'productView',
             resolve: {
-                Parameters: function ($stateParams, OrderCloudParameters) {
-                    return OrderCloudParameters.Get($stateParams);
+                Parameters: function ($stateParams, ocParameters) {
+                    return ocParameters.Get($stateParams);
                 },
                 ProductList: function(OrderCloud, CurrentUser, Parameters) {
                     if (Parameters.favorites && CurrentUser.xp.FavoriteProducts) {
@@ -143,7 +143,7 @@ function ProductBrowseController($state, $uibModal, CategoryList, CategoryTree, 
     };
 }
 
-function ProductViewController($state, $ocMedia, OrderCloudParameters, OrderCloud, CurrentOrder, ProductList, CategoryList, Parameters){
+function ProductViewController($state, $ocMedia, ocParameters, OrderCloud, CurrentOrder, ProductList, CategoryList, Parameters){
     var vm = this;
     vm.parameters = Parameters;
     vm.categories = CategoryList;
@@ -159,7 +159,7 @@ function ProductViewController($state, $ocMedia, OrderCloudParameters, OrderClou
 
     //reload the state with new filters
     vm.filter = function(resetPage) {
-        $state.go('.', OrderCloudParameters.Create(vm.parameters, resetPage));
+        $state.go('.', ocParameters.Create(vm.parameters, resetPage));
     };
 
     //clear the relevant filters, reload the state & reset the page

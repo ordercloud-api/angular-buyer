@@ -136,7 +136,7 @@ function PaymentSpendingAccountController($scope, $rootScope, toastr, OrderCloud
 		$scope.payment.SpendingAccountID = scope.spendingAccount.ID;
 
 		$scope.updatingSpendingAccountPayment = {
-			templateUrl: 'common/loading-indicators/templates/view.loading.tpl.html',
+			templateUrl: 'common/templates/view.loading.tpl.html',
 			message:null
 		};
 		$scope.updatingSpendingAccountPayment.promise = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)
@@ -226,7 +226,7 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 		var oldSelection = angular.copy($scope.payment.CreditCardID);
 		$scope.payment.CreditCardID = scope.creditCard.ID;
 		$scope.updatingCreditCardPayment = {
-			templateUrl: 'common/loading-indicators/templates/view.loading.tpl.html',
+			templateUrl: 'common/templates/view.loading.tpl.html',
 			message:null
 		};
 		$scope.updatingCreditCardPayment.promise = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)

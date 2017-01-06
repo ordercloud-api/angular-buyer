@@ -1,5 +1,5 @@
-angular.module('ordercloud-payment-authorizeNet', [])
-    .factory('AuthorizeNet', AuthorizeNet)
+angular.module('orderCloud')
+    .factory('ocAuthNet', AuthorizeNet)
 ;
 
 function AuthorizeNet( $q, $resource, OrderCloud) {
@@ -12,8 +12,8 @@ function AuthorizeNet( $q, $resource, OrderCloud) {
     };
 
     function _createCreateCard(creditCard, buyerID) {
-          var year = creditCard.ExpirationYear.toString().substring(2,4);
-            var ExpirationDate = creditCard.ExpirationMonth.concat(year);
+        var year = creditCard.ExpirationYear.toString().substring(2,4);
+        var ExpirationDate = creditCard.ExpirationMonth.concat(year);
 
         return makeApiCall('POST',{
             'buyerID' : buyerID ? buyerID : OrderCloud.BuyerID.Get(),

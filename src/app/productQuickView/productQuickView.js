@@ -42,11 +42,11 @@ function ProductQuickViewService($uibModal) {
 	return service;
 }
 
-function ProductQuickViewController(toastr, $uibModalInstance, SelectedProduct, CurrentOrder, LineItemHelpers) {
+function ProductQuickViewController(toastr, $uibModalInstance, SelectedProduct, CurrentOrder, ocLineItems) {
 	var vm = this;
 	vm.item = SelectedProduct;
 	vm.addToCart = function() {
-		LineItemHelpers.AddItem(CurrentOrder, vm.item)
+		ocLineItems.AddItem(CurrentOrder, vm.item)
 			.then(function(){
 				toastr.success('Product added to cart', 'Success');
 				$uibModalInstance.close();
