@@ -124,8 +124,6 @@ function RepeatOrderFactory($q, $rootScope, toastr, $exceptionHandler, OrderClou
                 Specs: li.Specs
             };
             queue.push(OrderCloud.LineItems.Create(orderID, lineItemToAdd));
-            console.log('orderID', orderID);
-            console.log('lineItem', lineItemToAdd);
         });
         $q.all(queue)
             .then(function(){
