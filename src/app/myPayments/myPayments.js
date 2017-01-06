@@ -36,34 +36,31 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, 
 
     vm.createCreditCard = function(){
         MyPaymentCreditCardModal.Create()
-        .then(function() {
+        .then(function(data) {
             toastr.success('Credit Card Created', 'Success');
-            $state.reload('myPayments');
+            vm.personalCreditCards.Items.push(data);
         });
     };
 
-    vm.edit = function(creditCard){
-        MyPaymentCreditCardModal.Edit(creditCard)
-            .then(function(){
+    vm.edit = function(scope){
+        MyPaymentCreditCardModal.Edit(scope.creditCard)
+            .then(function(data){
                 toastr.success('Credit Card Updated', 'Success');
-                $state.reload('myPayments');
+                vm.personalCreditCards.Items[scope.$index] = data;
             });
     };
 
-    vm.delete = function(creditCard){
-
+    vm.delete = function(scope){
         ocConfirm.Confirm("Are you sure you want to delete this Credit Card?")
             .then(function(){
-                var df = $q.defer();
-                df.templateUrl = 'common/templates/view.loading.tpl.html';
-                df.message = 'Deleting Selected Credit Card';
-                vm.loading = df;
-
-                ocAuthNet.DeleteCreditCard(creditCard)
+                vm.loading = {
+                    templateUrl: 'common/templates/view.loading.tpl.html',
+                    message: 'Deleting Selected Credit Card'
+                };
+                vm.loading.promise = ocAuthNet.DeleteCreditCard(scope.creditCard)
                     .then(function(){
                         toastr.success('Credit Card Deleted', 'Success');
-                        df.resolve();
-                        $state.reload('myPayments');
+                        vm.personalCreditCards.Items.splice(scope.$index, 1);
                     })
                     .catch(function(error) {
                         $exceptionHandler(error);

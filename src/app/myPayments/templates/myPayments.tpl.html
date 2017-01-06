@@ -1,28 +1,31 @@
-<article id="myPayments" cg-busy="myPayments.loading">
-    <!--PERSONAL CREDIT CARDS-->
-    <button class="btn btn-primary pull-right" ng-click="myPayments.createCreditCard()"><i
-            class="fa fa-plus-circle"></i> New Credit Card
-    </button>
-    <h3><i class="fa fa-credit-card"></i> Personal Credit Cards</h3>
-    <hr>
-    <div class="panel panel-default" ng-repeat="creditCard in myPayments.personalCreditCards.Items">
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-xs-2 col-sm-1 text-center">
-                    <i class="fa fa-2x {{creditCard.CardType | faCreditCard}}"></i>
-                </div>
-                <div class="col-xs-6 col-sm-8">
-                    <b>{{creditCard.CardholderName}}</b> <br ng-if="creditCard.CardholderName">
-                    <span class="text-muted">{{'XXXX-XXXX-XXXX-' + creditCard.PartialAccountNumber}}</span><br>
-                    <small class="text-muted">Expires On: {{creditCard.ExpirationDate | date:'MM/yy'}}</small>
-                </div>
-                <div class="col-xs-4 col-sm-3 text-right">
-                    <a href="" ng-click="myPayments.delete(creditCard)">Delete</a> |
-                    <a href="" ng-click="myPayments.edit(creditCard)">Edit</a>
+<article id="myPayments">
+    <div cg-busy="myPayments.loading">
+        <!--PERSONAL CREDIT CARDS-->
+        <button class="btn btn-primary pull-right" ng-click="myPayments.createCreditCard()"><i
+                class="fa fa-plus-circle"></i> New Credit Card
+        </button>
+        <h3><i class="fa fa-credit-card"></i> Personal Credit Cards</h3>
+        <hr>
+        <div class="panel panel-default" ng-repeat="creditCard in myPayments.personalCreditCards.Items">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-2 col-sm-1 text-center">
+                        <i class="fa fa-2x {{creditCard.CardType | faCreditCard}}"></i>
+                    </div>
+                    <div class="col-xs-6 col-sm-8">
+                        <b>{{creditCard.CardholderName}}</b> <br ng-if="creditCard.CardholderName">
+                        <span class="text-muted">{{'XXXX-XXXX-XXXX-' + creditCard.PartialAccountNumber}}</span><br>
+                        <small class="text-muted">Expires On: {{creditCard.ExpirationDate | date:'MM/yy'}}</small>
+                    </div>
+                    <div class="col-xs-4 col-sm-3 text-right">
+                        <a href="" ng-click="myPayments.delete(this)">Delete</a> |
+                        <a href="" ng-click="myPayments.edit(this)">Edit</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="no-matches" ng-if="!myPayments.personalCreditCards">
         You have not created any personal credit cards. <br>
         <a href="" ng-click="myPayments.createCreditCard()">Creat one now!</a>

@@ -39,7 +39,12 @@ describe('Component: myPayments', function() {
             confirm,
             creditCardModal,
             authNet,
-            mockCreditCard
+            mockCreditCard,
+            mockSpendingAccount,
+            mockGiftCard,
+            mockCCresponse,
+            mockSAresponse,
+            mockGCresponse
         ;
 
         beforeEach(inject(function($controller, $q, $state, toastr, $exceptionHandler, ocConfirm, ocAuthNet, MyPaymentCreditCardModal) {
@@ -50,7 +55,7 @@ describe('Component: myPayments', function() {
             authNet = ocAuthNet;
             mockCreditCard =   {
                 "ID": "testCompanyACard",
-                "Editable": false,
+                "Editable": true,
                 "Token": null,
                 "DateCreated": "2016-12-07T17:49:28.73+00:00",
                 "CardType": "visa",
@@ -79,49 +84,57 @@ describe('Component: myPayments', function() {
                     "EndDate": "2017-02-02T00:00:00+00:00",
                     "xp": null
             };
+            mockCCresponse = {Items:[mockCreditCard]};
+            mockSAresponse = {Items:[mockSpendingAccount]};
+            mockGCresponse = {Items:[mockGiftCard]};
             creditCardModal = MyPaymentCreditCardModal;
             myPaymentCtrl = $controller('MyPaymentsCtrl', {
                 $scope : scope,
                 $state : state,
                 toastr : toaster,
-                UserCreditCards : mockCreditCard,
+                UserCreditCards : mockCCresponse,
                 MyPaymentCreditCardModal : creditCardModal,
-                ocConfirm : ocConfirm,
+                ocConfirm : confirm,
                 $exceptionHandler: exceptionHandler,
-                UserSpendingAccounts : mockSpendingAccount,
-                GiftCards : mockGiftCard,
+                UserSpendingAccounts : mockSAresponse,
+                GiftCards : mockGCresponse,
                 ocAuthNet: authNet
             });
-            spyOn(state, 'reload');
+            //spyOn(state, 'reload');
             spyOn(toaster, 'success');
         }));
+        it ('should initialize the view model of the controller', function() {
+            expect(myPaymentCtrl.personalCreditCards).toEqual(mockCCresponse);
+            expect(myPaymentCtrl.personalSpendingAccounts).toEqual(mockSAresponse);
+            expect(myPaymentCtrl.giftCards).toEqual(mockGCresponse);
+        });
         describe('Create Credit Card', function(){
             beforeEach(function(){
                 var df = q.defer();
-                df.resolve();
+                df.resolve("NEW_CREDIT_CARD");
                 spyOn(creditCardModal, 'Create').and.returnValue(df.promise);
                 // spyOn(oc.Payments, 'List').and.returnValue(df.promise);
                 myPaymentCtrl.createCreditCard();
             });
-            it('should call the create credit card modal then reload the state and display success toastr', function(){
+            it('should call the create credit card modal and add the new credit card to the view model', function(){
                 expect(creditCardModal.Create).toHaveBeenCalled();
                 scope.$digest();
                 expect(toaster.success).toHaveBeenCalledWith('Credit Card Created', 'Success');
-                expect(state.reload).toHaveBeenCalledWith('myPayments');
+                expect(myPaymentCtrl.personalCreditCards).toEqual({Items:[mockCreditCard, "NEW_CREDIT_CARD"]});
             });
         });
         describe('Edit a Credit Card', function(){
             beforeEach(function(){
                 var df = q.defer();
-                df.resolve();
+                df.resolve("EDITED_CREDIT_CARD");
                 spyOn(creditCardModal, 'Edit').and.returnValue(df.promise);
-                myPaymentCtrl.edit(mockCreditCard);
+                myPaymentCtrl.edit({$index: 0, creditCard:mockCreditCard});
             });
-            it('should call the edit credit card modal then reload the state and display success toaster', function(){
+            it('should call the edit credit card modal then replace the old credit card in the array', function(){
                 expect(creditCardModal.Edit).toHaveBeenCalledWith(mockCreditCard);
                 scope.$digest();
                 expect(toaster.success).toHaveBeenCalledWith('Credit Card Updated', 'Success');
-                expect(state.reload).toHaveBeenCalledWith('myPayments');
+                expect(myPaymentCtrl.personalCreditCards).toEqual({Items:["EDITED_CREDIT_CARD"]});
             })
         });
         describe('Delete a Credit Card', function(){
@@ -130,7 +143,7 @@ describe('Component: myPayments', function() {
                 df.resolve();
                 spyOn(confirm, 'Confirm').and.returnValue(df.promise);
                 spyOn(authNet, 'DeleteCreditCard').and.returnValue(df.promise);
-                myPaymentCtrl.delete(mockCreditCard);
+                myPaymentCtrl.delete({$index:0, creditCard:mockCreditCard});
             });
             it('should call the delete credit card function, then  call Authorize.Net service , then reload the state and display success toaster', function(){
                 expect(confirm.Confirm).toHaveBeenCalledWith("Are you sure you want to delete this Credit Card?");
@@ -139,7 +152,7 @@ describe('Component: myPayments', function() {
                 expect(authNet.DeleteCreditCard).toHaveBeenCalled();
                 scope.$digest();
                 expect(toaster.success).toHaveBeenCalledWith('Credit Card Deleted', 'Success');
-                expect(state.reload).toHaveBeenCalledWith('myPayments');
+                expect(myPaymentCtrl.personalCreditCards).toEqual({Items: []});
             })
         })
 
