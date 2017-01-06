@@ -48,7 +48,7 @@ function PaymentPurchaseOrderController($scope, $rootScope, toastr, OrderCloud, 
 						$scope.payment = data;
 					});
 				} else {
-					OrderCloud.Payments.Create(vm.order.ID, {Type: 'PurchaseOrder'})
+					OrderCloud.Payments.Create($scope.order.ID, {Type: 'PurchaseOrder'})
 						.then(function(data) {
 							$scope.payment = data;
 						});
@@ -136,7 +136,7 @@ function PaymentSpendingAccountController($scope, $rootScope, toastr, OrderCloud
 		$scope.payment.SpendingAccountID = scope.spendingAccount.ID;
 
 		$scope.updatingSpendingAccountPayment = {
-			templateUrl: 'common/loading-indicators/templates/view.loading.tpl.html',
+			templateUrl: 'common/templates/view.loading.tpl.html',
 			message:null
 		};
 		$scope.updatingSpendingAccountPayment.promise = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)
@@ -215,7 +215,6 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 
 	$scope.$watch('payment', function(n,o) {
 		if (n && !n.CreditCardID) {
-			console.log('hit');
 			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', false);
 		} else {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', true);
@@ -227,7 +226,7 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 		var oldSelection = angular.copy($scope.payment.CreditCardID);
 		$scope.payment.CreditCardID = scope.creditCard.ID;
 		$scope.updatingCreditCardPayment = {
-			templateUrl: 'common/loading-indicators/templates/view.loading.tpl.html',
+			templateUrl: 'common/templates/view.loading.tpl.html',
 			message:null
 		};
 		$scope.updatingCreditCardPayment.promise = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)

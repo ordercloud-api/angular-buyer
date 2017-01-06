@@ -15,7 +15,7 @@ function CartConfig($stateProvider) {
                 pageTitle: "Shopping Cart"
             },
             resolve: {
-                LineItemsList: function($q, $state, toastr, OrderCloud, LineItemHelpers, CurrentOrder) {
+                LineItemsList: function($q, $state, toastr, OrderCloud, ocLineItems, CurrentOrder) {
                     var dfd = $q.defer();
                     OrderCloud.LineItems.List(CurrentOrder.ID)
                         .then(function(data) {
@@ -23,7 +23,7 @@ function CartConfig($stateProvider) {
                                 dfd.resolve(data);
                             }
                             else {
-                                LineItemHelpers.GetProductInfo(data.Items)
+                                ocLineItems.GetProductInfo(data.Items)
                                     .then(function() {
                                         dfd.resolve(data);
                                     });
@@ -42,17 +42,17 @@ function CartConfig($stateProvider) {
         });
 }
 
-function CartController($rootScope, $state, OrderCloud, LineItemHelpers, LineItemsList, CurrentPromotions, OrderCloudConfirm) {
+function CartController($rootScope, $state, OrderCloud, ocLineItems, LineItemsList, CurrentPromotions, ocConfirm) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
 
     vm.updateQuantity = function(order, lineItem) {
-        LineItemHelpers.UpdateQuantity(order, lineItem);
+        ocLineItems.UpdateQuantity(order, lineItem);
     };
 
     vm.removeItem = function(order, lineItem) {
-        LineItemHelpers.RemoveItem(order, lineItem);
+        ocLineItems.RemoveItem(order, lineItem);
     };
 
     vm.removePromotion = function(order, scope) {
@@ -63,7 +63,7 @@ function CartController($rootScope, $state, OrderCloud, LineItemHelpers, LineIte
     };
 
     vm.cancelOrder = function(order){
-        OrderCloudConfirm.Confirm("Are you sure you want cancel this order?")
+        ocConfirm.Confirm("Are you sure you want cancel this order?")
             .then(function() {
                 OrderCloud.Orders.Delete(order.ID)
                     .then(function(){
@@ -75,7 +75,7 @@ function CartController($rootScope, $state, OrderCloud, LineItemHelpers, LineIte
     $rootScope.$on('OC:UpdateLineItem', function(event,Order) {
         OrderCloud.LineItems.List(Order.ID)
             .then(function(data) {
-                LineItemHelpers.GetProductInfo(data.Items)
+                ocLineItems.GetProductInfo(data.Items)
                     .then(function() {
                         vm.lineItems = data;
                     });

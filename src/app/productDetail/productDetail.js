@@ -20,13 +20,13 @@ function ProductConfig($stateProvider) {
 }
 
 
-function ProductDetailController($exceptionHandler, Product, CurrentOrder, LineItemHelpers, toastr) {
+function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLineItems, toastr) {
     var vm = this;
     vm.item = Product;
     vm.finalPriceBreak = null;
 
     vm.addToCart = function() {
-        LineItemHelpers.AddItem(CurrentOrder, vm.item)
+        ocLineItems.AddItem(CurrentOrder, vm.item)
             .then(function(){
                 toastr.success('Product added to cart', 'Success')
             })

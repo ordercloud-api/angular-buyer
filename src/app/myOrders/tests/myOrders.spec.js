@@ -2,36 +2,38 @@ describe('Component: MyOrders', function() {
     var scope,
         q,
         oc,
-        ocParameters,
+        _ocParameters,
         mockParams,
-        state
-        ;
+        state,
+        currentUser;
     beforeEach(module(function($provide) {
-        mockParams = {search:null, page: null, pageSize: null, searchOn: null, sortBy: null, filters: null, from: null, to: null};
+        mockParams = {search:null, page: null, pageSize: null, searchOn: null, sortBy: null, filters: null, from: null, to: null, favorites: null};
         $provide.value('Parameters', mockParams);
+        $provide.value('CurrentUser', {ID:"FAKE_USER"});
     }));
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, OrderCloudParameters, $state) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, ocParameters, CurrentUser, $state) {
         q = $q;
         scope = $rootScope.$new();
         oc = OrderCloud;
-        ocParameters = OrderCloudParameters;
+        _ocParameters = ocParameters;
         state = $state;
+        currentUser = CurrentUser;
     }));
 
     describe('State: myOrders', function() {
         var state;
         beforeEach(inject(function($state) {
             state = $state.get('myOrders');
-            spyOn(ocParameters, 'Get');
+            spyOn(_ocParameters, 'Get');
             spyOn(oc.Me, 'ListOutgoingOrders');
         }));
         it('should resolve Parameters', inject(function($injector){
             $injector.invoke(state.resolve.Parameters);
-            expect(ocParameters.Get).toHaveBeenCalled();
+            expect(_ocParameters.Get).toHaveBeenCalled();
         }));
-        xit('should resolve OrderList', inject(function($injector) {
+        it('should resolve OrderList', inject(function($injector) {
             mockParams.filters = {Status:'!Unsubmitted'};
             mockParams.pageSize = 12;
             $injector.invoke(state.resolve.OrderList);
@@ -45,6 +47,7 @@ describe('Component: MyOrders', function() {
         ;
         beforeEach(inject(function($state, $stateParams) {
             stateParams = $stateParams;
+            stateParams.orderid = 'FAKE_ORDER';
             state = $state.get('myOrders.detail');
 
             mockPaymentList = {
@@ -66,9 +69,9 @@ describe('Component: MyOrders', function() {
             $injector.invoke(state.resolve.SelectedOrder);
             expect(oc.Me.GetOrder).toHaveBeenCalledWith(stateParams.orderid);
         }));
-        xit('should resolve Payments', inject(function($injector){
+        it('should resolve SelectedPayments', inject(function($injector){
             $injector.invoke(state.resolve.SelectedPayments);
-            expect(oc.Payments.List).toHaveBeenCalledWith(stateParams.orderid, null, 1, 100);
+            expect(oc.Payments.List).toHaveBeenCalledWith(stateParams.orderid);
             scope.$digest();
             expect(oc.Me.GetCreditCard).toHaveBeenCalledWith(mockPaymentList.Items[0].CreditCardID);
         }));
@@ -91,11 +94,11 @@ describe('Component: MyOrders', function() {
                 $state: state,
                 $ocMedia: ocMedia,
                 OrderCloud: oc,
-                OrderCloudParameters: ocParameters,
+                ocParameters: _ocParameters,
                 OrderList: [],
                 Parameters: Parameters
             });
-            spyOn(ocParameters, 'Create');
+            spyOn(_ocParameters, 'Create');
             spyOn(state, 'go');
         }));
         describe('search', function(){
@@ -105,7 +108,7 @@ describe('Component: MyOrders', function() {
             });
             it('should reload state with search parameters: vm.parameters.search', function(){
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith(mockParams, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith(mockParams, true);
             });
         });
         describe('clearSearch', function(){
@@ -115,7 +118,7 @@ describe('Component: MyOrders', function() {
             });
             it('should reload state with search parameters cleared', function(){
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith(mockParams, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith(mockParams, true);
             });
         });
         describe('clearFilters', function(){
@@ -127,9 +130,9 @@ describe('Component: MyOrders', function() {
                 mockParams.to = '12/12/2016';
                 myOrdersCtrl.clearFilters();
             });
-            xit('should reload state with the following parameters cleared: filter, from, and to', function(){
+            it('should reload state with the following parameters cleared: filter, from, and to', function(){
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith(clearedParams, true);
+                expect(_ocParameters.Create).toHaveBeenCalledWith(clearedParams, true);
             });
         });
         describe('reverseSort', function(){
@@ -142,14 +145,14 @@ describe('Component: MyOrders', function() {
                 expectedParams.sortBy = 'Something';
                 myOrdersCtrl.reverseSort();
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith(expectedParams, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith(expectedParams, false);
             }),
             it('if param.sortBy is something it should reload state with param.sortBy equal to !something', function(){
                 mockParams.sortBy = 'Something';
                 expectedParams.sortBy = '!Something';
                 myOrdersCtrl.reverseSort();
                 expect(state.go).toHaveBeenCalled();
-                expect(ocParameters.Create).toHaveBeenCalledWith(expectedParams, false);
+                expect(_ocParameters.Create).toHaveBeenCalledWith(expectedParams, false);
             });
         });
         describe('pageChanged', function(){
@@ -179,20 +182,20 @@ describe('Component: MyOrders', function() {
     });
     describe('Controller: MyOrderDetailCtrl', function() {
         var orderDetailCtrl,
-            ocConfirm,
+            confirm,
             toaster,
             mockOrderID
         ;
-        beforeEach(inject(function($controller, toastr, OrderCloudConfirm) {
+        beforeEach(inject(function($controller, toastr, ocConfirm) {
             toaster = toastr;
-            ocConfirm = OrderCloudConfirm;
+            confirm = ocConfirm;
             mockOrderID = 'Order123';
             orderDetailCtrl = $controller('MyOrderDetailCtrl', {
                 $scope: scope,
                 $state: state,
                 toaster: toastr,
                 OrderCloud: oc,
-                OrderCloudConfirm: ocConfirm,
+                ocConfirm: ocConfirm,
                 SelectedOrder: [],
                 SelectedPayments: [],
                 LineItemList: [],
@@ -205,13 +208,13 @@ describe('Component: MyOrders', function() {
             beforeEach(function() {
                 var defer = q.defer();
                 defer.resolve();
-                spyOn(ocConfirm, 'Confirm').and.returnValue(defer.promise);
+                spyOn(confirm, 'Confirm').and.returnValue(defer.promise);
                 spyOn(oc.Orders, 'Cancel').and.returnValue(defer.promise);
                 spyOn(toaster, 'success');
                 orderDetailCtrl.cancelOrder(mockOrderID);
             });
             it('should call OrderCloud Confirm', function() {
-                expect(ocConfirm.Confirm).toHaveBeenCalledWith('Are you sure you want to cancel this order?');
+                expect(confirm.Confirm).toHaveBeenCalledWith('Are you sure you want to cancel this order?');
             });
             it('should call Orders.Cancel', function(){
                 scope.$digest();

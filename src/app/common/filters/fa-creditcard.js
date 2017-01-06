@@ -1,18 +1,6 @@
 angular.module('orderCloud')
-    .filter('humanize', humanize)
     .filter('faCreditCard', faCreditCard)
 ;
-
-function humanize() {
-    return function(string) {
-        if (!string) return;
-
-        return string
-                .replace(/([A-Z])/g, ' $1')
-                .replace(/^./, function(str){ return str.toUpperCase(); })
-                .trim();
-    }
-}
 
 function faCreditCard() {
     return function(type) {

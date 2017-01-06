@@ -12,8 +12,8 @@ function CategoryBrowseConfig($stateProvider, catalogid){
             controller:'CategoryBrowseCtrl',
             controllerAs:'categoryBrowse',
             resolve: {
-                Parameters: function($stateParams, OrderCloudParameters) {
-                    return OrderCloudParameters.Get($stateParams);
+                Parameters: function($stateParams, ocParameters) {
+                    return ocParameters.Get($stateParams);
                 },
                 CategoryList: function(OrderCloud, Parameters) {
                     if(Parameters.categoryID) { Parameters.filters ? Parameters.filters.ParentID = Parameters.categoryID : Parameters.filters = {ParentID:Parameters.categoryID}; } 
@@ -43,7 +43,7 @@ function CategoryBrowseConfig($stateProvider, catalogid){
         });
 }
 
-function CategoryBrowseController($state, OrderCloudParameters, CategoryList, ProductList, Parameters, SelectedCategory) {
+function CategoryBrowseController($state, ocParameters, CategoryList, ProductList, Parameters, SelectedCategory) {
     var vm = this;
     vm.categoryList = CategoryList;
     vm.productList = ProductList;
@@ -55,7 +55,7 @@ function CategoryBrowseController($state, OrderCloudParameters, CategoryList, Pr
     };
 
     vm.filter = function(resetPage) {
-        $state.go('.', OrderCloudParameters.Create(vm.parameters, resetPage));
+        $state.go('.', ocParameters.Create(vm.parameters, resetPage));
     };
 
     vm.updateCategoryList = function(category){

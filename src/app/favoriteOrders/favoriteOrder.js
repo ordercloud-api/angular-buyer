@@ -16,13 +16,11 @@ function FavoriteOrderCtrl(OrderCloud, toastr){
     };
 
     vm.toggleFavoriteOrder = function(){
-        if(vm.hasFavorites){
-            if(vm.isFavorited){
-                removeOrder();
-            } else{
-                addOrder(vm.currentUser.xp.FavoriteOrders);
-            }
-        } else{
+        if (vm.hasFavorites && vm.isFavorited){
+            removeOrder();
+        } else if (vm.hasFavorites && !vm.isFavorited) {
+            addOrder(vm.currentUser.xp.FavoriteOrders);
+        } else {
             addOrder([]);
         }
     };

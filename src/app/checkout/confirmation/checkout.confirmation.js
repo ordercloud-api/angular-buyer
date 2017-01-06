@@ -59,11 +59,11 @@ function checkoutConfirmationConfig($stateProvider) {
 
 					return deferred.promise;
 				},
-				LineItemsList: function($q, $state, toastr, LineItemHelpers, SubmittedOrder, OrderCloud) {
+				LineItemsList: function($q, $state, toastr, ocLineItems, SubmittedOrder, OrderCloud) {
 					var dfd = $q.defer();
 					OrderCloud.LineItems.List(SubmittedOrder.ID)
 						.then(function(data) {
-							LineItemHelpers.GetProductInfo(data.Items)
+							ocLineItems.GetProductInfo(data.Items)
 								.then(function() {
 									dfd.resolve(data);
 								});

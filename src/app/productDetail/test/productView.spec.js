@@ -14,7 +14,7 @@ describe('Component: ProductDetail', function(){
     beforeEach(module(function($provide) {
         $provide.value('CurrentOrder', {ID: "MockOrderID3456"})
     }));
-    beforeEach(inject(function($rootScope, OrderCloud, LineItemHelpers, CurrentOrder){
+    beforeEach(inject(function($rootScope, OrderCloud, ocLineItems, CurrentOrder){
         scope = $rootScope.$new();
         oc = OrderCloud;
         mockProduct = {
@@ -31,7 +31,7 @@ describe('Component: ProductDetail', function(){
 
             }
         };
-        lineItemHelpers = LineItemHelpers;
+        lineItemHelpers = ocLineItems;
         currentOrder = CurrentOrder;
 
     }));
@@ -66,7 +66,7 @@ describe('Component: ProductDetail', function(){
             productDetailCtrl = $controller('ProductDetailCtrl',{
                 Product : mockProduct,
                 CurrentOrder: currentOrder,
-                LineItemHelpers: lineItemHelpers,
+                ocLineItems: lineItemHelpers,
                 toastr : toaster
             });
 
@@ -80,7 +80,7 @@ describe('Component: ProductDetail', function(){
                 spyOn(toaster, 'success');
                 productDetailCtrl.addToCart();
             });
-           it('should  call the LineItemHelpers AddItem method and display toastr', function(){
+           it('should  call the ocLineItems AddItem method and display toastr', function(){
              expect(lineItemHelpers.AddItem).toHaveBeenCalledWith(currentOrder, mockProduct);
            });
             it('should call toastr when successful', function(){

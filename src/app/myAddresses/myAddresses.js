@@ -22,7 +22,7 @@ function MyAddressesConfig($stateProvider) {
         });
 }
 
-function MyAddressesController($state, toastr, OrderCloud, OrderCloudConfirm, MyAddressesModal, AddressList) {
+function MyAddressesController($state, toastr, OrderCloud, ocConfirm, MyAddressesModal, AddressList) {
     var vm = this;
     vm.list = AddressList;
     vm.create = function() {
@@ -43,10 +43,10 @@ function MyAddressesController($state, toastr, OrderCloud, OrderCloudConfirm, My
 
     vm.delete = function(scope) {
         vm.loading = [];
-        OrderCloudConfirm.Confirm("Are you sure you want to delete this address?")
+        ocConfirm.Confirm("Are you sure you want to delete this address?")
             .then(function() {
                 vm.loading[scope.$index] = {
-                    templateUrl:'common/loading-indicators/templates/view.loading.tpl.html',
+                    templateUrl:'common/templates/view.loading.tpl.html',
                     message:null
                 };
                 vm.loading[scope.$index].promise = OrderCloud.Me.DeleteAddress(scope.address.ID)

@@ -35,10 +35,10 @@ function MyAddressesModalFactory($uibModal) {
     }
 }
 
-function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, OrderCloud, OCGeography) {
+function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, OrderCloud, ocGeography) {
     var vm = this;
-    vm.countries = OCGeography.Countries;
-    vm.states = OCGeography.States;
+    vm.countries = ocGeography.Countries;
+    vm.states = ocGeography.States;
     vm.address = {
         //defaults selected country to US
         Country: 'US',
@@ -53,7 +53,7 @@ function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, 
 
     vm.submit = function() {
         vm.loading = {
-            templateUrl:'common/loading-indicators/templates/view.loading.tpl.html',
+            templateUrl:'common/templates/view.loading.tpl.html',
             message:'Creating Address'
         };
         vm.loading.promise = OrderCloud.Me.CreateAddress(vm.address)
@@ -66,10 +66,10 @@ function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, 
     };
 }
 
-function EditAddressModalController($exceptionHandler, $uibModalInstance, OrderCloud, OCGeography, SelectedAddress) {
+function EditAddressModalController($exceptionHandler, $uibModalInstance, OrderCloud, ocGeography, SelectedAddress) {
     var vm = this;
-    vm.countries = OCGeography.Countries;
-    vm.states = OCGeography.States;
+    vm.countries = ocGeography.Countries;
+    vm.states = ocGeography.States;
     vm.address = SelectedAddress;
     vm.addressID = angular.copy(SelectedAddress.ID);
 
@@ -83,7 +83,7 @@ function EditAddressModalController($exceptionHandler, $uibModalInstance, OrderC
 
     vm.submit = function() {
         vm.loading = {
-            templateUrl:'common/loading-indicators/templates/view.loading.tpl.html',
+            templateUrl:'common/templates/view.loading.tpl.html',
             message:'Saving Address'
         };
         vm.loading.promise = OrderCloud.Me.UpdateAddress(vm.addressID, vm.address)

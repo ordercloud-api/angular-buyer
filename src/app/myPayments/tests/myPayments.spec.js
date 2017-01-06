@@ -36,18 +36,18 @@ describe('Component: myPayments', function() {
             state,
             toaster,
             exceptionHandler,
-            ocConfirm,
+            confirm,
             creditCardModal,
             authNet,
             mockCreditCard
         ;
 
-        beforeEach(inject(function($controller, $q, $state, toastr, $exceptionHandler, OrderCloudConfirm, AuthorizeNet, MyPaymentCreditCardModal) {
+        beforeEach(inject(function($controller, $q, $state, toastr, $exceptionHandler, ocConfirm, ocAuthNet, MyPaymentCreditCardModal) {
             state = $state;
             toaster = toastr;
             exceptionHandler = $exceptionHandler;
-            ocConfirm = OrderCloudConfirm;
-            authNet = AuthorizeNet;
+            confirm = ocConfirm;
+            authNet = ocAuthNet;
             mockCreditCard =   {
                 "ID": "testCompanyACard",
                 "Editable": false,
@@ -86,11 +86,11 @@ describe('Component: myPayments', function() {
                 toastr : toaster,
                 UserCreditCards : mockCreditCard,
                 MyPaymentCreditCardModal : creditCardModal,
-                OrderCloudConfirm : ocConfirm,
+                ocConfirm : ocConfirm,
                 $exceptionHandler: exceptionHandler,
                 UserSpendingAccounts : mockSpendingAccount,
                 GiftCards : mockGiftCard,
-                AuthorizeNet: authNet
+                ocAuthNet: authNet
             });
             spyOn(state, 'reload');
             spyOn(toaster, 'success');
@@ -128,12 +128,12 @@ describe('Component: myPayments', function() {
             beforeEach(function(){
                 var df = q.defer();
                 df.resolve();
-                spyOn(ocConfirm, 'Confirm').and.returnValue(df.promise);
+                spyOn(confirm, 'Confirm').and.returnValue(df.promise);
                 spyOn(authNet, 'DeleteCreditCard').and.returnValue(df.promise);
                 myPaymentCtrl.delete(mockCreditCard);
             });
-            xit('should call the delete credit card function, then  call Authorize.Net service , then reload the state and display success toaster', function(){
-                expect(ocConfirm.Confirm).toHaveBeenCalledWith("Are you sure you want to delete this Credit Card?");
+            it('should call the delete credit card function, then  call Authorize.Net service , then reload the state and display success toaster', function(){
+                expect(confirm.Confirm).toHaveBeenCalledWith("Are you sure you want to delete this Credit Card?");
                 scope.$digest();
 
                 expect(authNet.DeleteCreditCard).toHaveBeenCalled();

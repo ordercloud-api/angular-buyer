@@ -1,9 +1,8 @@
-angular.module('ordercloud-lineitems', [])
-    .factory('LineItemHelpers', LineItemFactory)
-    .controller('LineItemModalCtrl', LineItemModalController)
+angular.module('orderCloud')
+    .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $state, $uibModal, OrderCloud) {
+function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
@@ -46,10 +45,14 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, OrderCloud) {
             Specs: _specConvert(product.Specs)
         };
         li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
-        OrderCloud.LineItems.Create(order.ID, li).then(function(lineItem) {
-            $rootScope.$broadcast('OC:UpdateOrder', order.ID);
-            deferred.resolve();
-        });
+        OrderCloud.LineItems.Create(order.ID, li)
+            .then(function(lineItem) {
+                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                deferred.resolve();
+            })
+            .catch(function(error) {
+                deferred.reject(error);
+            });
 
         function isSingleShipping(order) {
             return _.pluck(order.LineItems, 'ShippingAddressID').length == 1;
@@ -150,18 +153,4 @@ function LineItemFactory($rootScope, $q, $state, $uibModal, OrderCloud) {
             });
         return dfd.promise;
     }
-}
-
-function LineItemModalController($uibModalInstance) {
-    var vm = this;
-    vm.address = {};
-
-    vm.submit = function () {
-        $uibModalInstance.close(vm.address);
-    };
-
-    vm.cancel = function () {
-        vm.address = {};
-        $uibModalInstance.dismiss('cancel');
-    };
 }

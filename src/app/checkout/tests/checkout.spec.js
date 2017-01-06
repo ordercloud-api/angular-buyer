@@ -42,10 +42,10 @@ describe('Component: Checkout', function() {
             }
         });
     }));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, LineItemHelpers, CurrentOrder, OrderPayments, SubmittedOrder) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, ocLineItems, CurrentOrder, OrderPayments, SubmittedOrder) {
         q = $q;
         oc = OrderCloud;
-        lineItemHelpers = LineItemHelpers;
+        lineItemHelpers = ocLineItems;
         scope = $rootScope.$new();
         currentOrder = CurrentOrder;
         submittedOrder = SubmittedOrder;
@@ -215,14 +215,6 @@ describe('Component: Checkout', function() {
                 $rootScope.$broadcast('OC:OrderBillAddressUpdated', order);
                 scope.$digest();
                 expect(checkoutController.billingAddress.ID).toEqual('TestAddress123456789');
-            }));
-        });
-
-        describe('OC:OrderPaymentsUpdated', function() {
-            xit('should call Payments List method on broadcasted orderid', inject(function($rootScope) {
-                $rootScope.$broadcast('OC:OrderPaymentsUpdated', order.ID);
-                scope.$digest();
-                expect(oc.Payments.List).toHaveBeenCalledWith(order.ID);
             }));
         });
 
