@@ -72,7 +72,6 @@ function AuthorizeNet( $q, $resource, OrderCloud) {
             }
         }).callApi(requestBody).$promise
             .then(function(data) {
-                console.log(data);
                 d.resolve(data);
             })
             .catch(function(ex) {
