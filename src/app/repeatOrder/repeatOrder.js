@@ -58,7 +58,7 @@ function RepeatOrderModalCtrl(LineItems, OrderID, $uibModalInstance, $state, Rep
     };
 }
 
-function RepeatOrderFactory($q, $rootScope, toastr, $exceptionHandler, OrderCloud, LineItemHelpers) {
+function RepeatOrderFactory($q, $rootScope, toastr, $exceptionHandler, OrderCloud, ocLineItems) {
     return {
         GetValidLineItems: getValidLineItems,
         AddLineItemsToCart: addLineItemsToCart
@@ -69,7 +69,7 @@ function RepeatOrderFactory($q, $rootScope, toastr, $exceptionHandler, OrderClou
         ListAllMeProducts()
             .then(function(productList) {
                 var productIds = _.pluck(productList, 'ID');
-                LineItemHelpers.ListAll(originalOrderID)
+                ocLineItems.ListAll(originalOrderID)
                     .then(function(lineItemList) {
                         lineItemList.ProductIds = productIds;
                         var valid = [];

@@ -1,4 +1,4 @@
-fdescribe('Component: Repeat Order', function(){
+fdescribe('Component: RepeatOrder', function(){
     var scope,
         q,
         state,
@@ -86,12 +86,14 @@ fdescribe('Component: Repeat Order', function(){
     });
     describe('Factory: RepeatOrder', function(){
         var oc,
+            toaster,
             lineItemHelpers,
             originalOrderID
             ;
-        beforeEach(inject(function(OrderCloud, LineItemHelpers){
+        beforeEach(inject(function(OrderCloud, toastr, ocLineItems){
             oc = OrderCloud;
-            lineItemHelpers = LineItemHelpers;
+            toaster = toastr;
+            lineItemHelpers = ocLineItems;
             var defer = q.defer();
             defer.resolve();
             spyOn(lineItemHelpers, 'ListAll').and.returnValue(defer.promise);
@@ -106,7 +108,10 @@ fdescribe('Component: Repeat Order', function(){
             expect(oc.Me.ListProducts).toHaveBeenCalledWith(null, 1, 100);
         });
         it('should call the OrderCloud LineItems Create method', function(){
-            expect(oc.LineItems.Create).toHave
+            expect(oc.LineItems.Create).toHaveBeenCalledWith();
+        });
+        it('should call the toastr success method', function(){
+            expect(toaster.success).toHaveBeenCalledWith('Product(s) Add to Cart', 'Success');
         })
     })
 });
