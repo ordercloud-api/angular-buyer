@@ -62,8 +62,11 @@ function BaseController($rootScope, $state, ProductSearch, CurrentUser, CurrentO
             });
     };
 
-    $rootScope.$on('OC:UpdateOrder', function(event, OrderID) {
-        OrderCloud.Orders.Get(OrderID)
+    $rootScope.$on('OC:UpdateOrder', function(event, OrderID, message) {
+        vm.orderLoading = {
+            message: message
+        };
+        vm.orderLoading.promise = OrderCloud.Orders.Get(OrderID)
             .then(function(data) {
                 vm.currentOrder = data;
             });

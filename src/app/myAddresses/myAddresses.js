@@ -45,11 +45,7 @@ function MyAddressesController(toastr, OrderCloud, ocConfirm, MyAddressesModal, 
         vm.loading = [];
         ocConfirm.Confirm("Are you sure you want to delete this address?")
             .then(function() {
-                vm.loading[scope.$index] = {
-                    templateUrl:'common/templates/view.loading.tpl.html',
-                    message:null
-                };
-                vm.loading[scope.$index].promise = OrderCloud.Me.DeleteAddress(scope.address.ID)
+                vm.loading[scope.$index] = OrderCloud.Me.DeleteAddress(scope.address.ID)
                     .then(function() {
                         toastr.success('Address Deleted', 'Success');
                         vm.list.Items.splice(scope.$index, 1);

@@ -42,17 +42,18 @@ function CartConfig($stateProvider) {
         });
 }
 
-function CartController($rootScope, $state, OrderCloud, ocLineItems, LineItemsList, CurrentPromotions, ocConfirm) {
+function CartController($rootScope, $state, toastr, OrderCloud, ocLineItems, LineItemsList, CurrentPromotions, ocConfirm) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
-
-    vm.updateQuantity = function(order, lineItem) {
-        ocLineItems.UpdateQuantity(order, lineItem);
-    };
-
-    vm.removeItem = function(order, lineItem) {
-        ocLineItems.RemoveItem(order, lineItem);
+    vm.removeItem = function(order, scope) {
+        vm.lineLoading = [];
+        vm.lineLoading[scope.$index] = OrderCloud.LineItems.Delete(order.ID, scope.lineItem.ID)
+            .then(function () {
+                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                vm.lineItems.Items.splice(scope.$index, 1);
+                toastr.success('Line Item Removed');
+            });
     };
 
     vm.removePromotion = function(order, scope) {

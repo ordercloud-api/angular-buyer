@@ -125,11 +125,7 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
         $('#Password').blur();
         $('#Remember').blur();
         $('#submit_login').blur();
-        vm.loading = {
-            templateUrl: 'common/templates/view.loading.tpl.html',
-            message: null
-        };
-        vm.loading.promise = OrderCloud.Auth.GetToken(vm.credentials)
+        vm.loading = OrderCloud.Auth.GetToken(vm.credentials)
             .then(function(data) {
                 vm.rememberStatus ? OrderCloud.Refresh.SetToken(data['refresh_token']) : angular.noop();
                 OrderCloud.BuyerID.Set(buyerid);

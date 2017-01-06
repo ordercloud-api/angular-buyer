@@ -54,11 +54,7 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, 
         vm.loading = [];
         ocConfirm.Confirm("Are you sure you want to delete this Credit Card?")
             .then(function(){
-                vm.loading[scope.$index] = {
-                    templateUrl: 'common/templates/view.loading.tpl.html',
-                    message: 'Deleting Credit Card'
-                };
-                vm.loading[scope.$index].promise = ocAuthNet.DeleteCreditCard(scope.creditCard)
+                vm.loading[scope.$index] = ocAuthNet.DeleteCreditCard(scope.creditCard)
                     .then(function(){
                         toastr.success('Credit Card Deleted', 'Success');
                         vm.personalCreditCards.Items.splice(scope.$index, 1);
