@@ -17,7 +17,7 @@ describe('Base', function() {
 
     describe('base', function() {
         it ("should display the correct title", function() {
-            expect(page.getTitle()).toBe('OrderCloud');
+            expect(page.getTitle()).toBe('Angular Buyer');
         });
     })
 });
