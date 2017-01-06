@@ -17,7 +17,7 @@ function RepeatOrderCtrl(toastr, RepeatOrderFactory, $uibModal) {
     };
 
     vm.openReorderModal = function(){
-        var uibModalInstance = $uibModal.open({
+        $uibModal.open({
             templateUrl: 'repeatOrder/templates/repeatOrder.modal.html',
             controller:  RepeatOrderModalCtrl,
             controllerAs: 'repeatModal',
@@ -30,10 +30,6 @@ function RepeatOrderCtrl(toastr, RepeatOrderFactory, $uibModal) {
                     return RepeatOrderFactory.GetValidLineItems(vm.originalOrderId);
                 }
             }
-        });
-
-        uibModalInstance.result.then(function(data){
-            //TODO: reload entire state
         });
     };
 }
