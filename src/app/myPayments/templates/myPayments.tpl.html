@@ -1,12 +1,12 @@
 <article id="myPayments">
-    <div cg-busy="myPayments.loading">
+    <div >
         <!--PERSONAL CREDIT CARDS-->
         <button class="btn btn-primary pull-right" ng-click="myPayments.createCreditCard()"><i
                 class="fa fa-plus-circle"></i> New Credit Card
         </button>
         <h3><i class="fa fa-credit-card"></i> Personal Credit Cards</h3>
         <hr>
-        <div class="panel panel-default" ng-repeat="creditCard in myPayments.personalCreditCards.Items">
+        <div class="panel panel-default" ng-repeat="creditCard in myPayments.personalCreditCards.Items" cg-busy="myPayments.loading[$index]">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-2 col-sm-1 text-center">

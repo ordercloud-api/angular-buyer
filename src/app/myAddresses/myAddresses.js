@@ -22,22 +22,22 @@ function MyAddressesConfig($stateProvider) {
         });
 }
 
-function MyAddressesController($state, toastr, OrderCloud, ocConfirm, MyAddressesModal, AddressList) {
+function MyAddressesController(toastr, OrderCloud, ocConfirm, MyAddressesModal, AddressList) {
     var vm = this;
     vm.list = AddressList;
     vm.create = function() {
         MyAddressesModal.Create()
-            .then(function() {
+            .then(function(data) {
                 toastr.success('Address Created', 'Success');
-                $state.reload('myAddresses');
+                vm.list.Items.push(data);
             });
     };
 
-    vm.edit = function(address){
-        MyAddressesModal.Edit(address)
-            .then(function() {
+    vm.edit = function(scope){
+        MyAddressesModal.Edit(scope.address)
+            .then(function(data) {
                 toastr.success('Address Saved', 'Success');
-                $state.reload('myAddresses');
+                vm.list.Items[scope.$index] = data;
             });
     };
 
@@ -52,7 +52,7 @@ function MyAddressesController($state, toastr, OrderCloud, ocConfirm, MyAddresse
                 vm.loading[scope.$index].promise = OrderCloud.Me.DeleteAddress(scope.address.ID)
                     .then(function() {
                         toastr.success('Address Deleted', 'Success');
-                        $state.reload('myAddresses');
+                        vm.list.Items.splice(scope.$index, 1);
                     })
             })
             .catch(function() {
