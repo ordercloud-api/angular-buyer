@@ -81,29 +81,27 @@ describe('Component: ordercloudRepeatOrder', function(){
             })
         })
     });
-    fdescribe('Factory: RepeatOrderFactory', function(){
+    describe('Factory: RepeatOrderFactory', function(){
         var oc,
             toaster,
             repeatOrderFactory,
-            _ocLineItems,
+            ocLIs,
             originalOrderID
             ;
         beforeEach(inject(function(OrderCloud, toastr, RepeatOrderFactory, ocLineItems){
             oc = OrderCloud;
             toaster = toastr;
             repeatOrderFactory = RepeatOrderFactory;
-            _ocLineItems = ocLineItems;
+            ocLIs = ocLineItems;
             originalOrderID = 'testOriginalOrderID123';
         }));
         describe('GetValidLineItems', function(){
-            beforeEach(function(){
+            it('should call lineItemHelpers ListAll method', function(){
                 var defer = q.defer();
                 defer.resolve();
-                spyOn(_ocLineItems, 'ListAll').and.returnValue(defer.promise);
-            });
-            it('should call lineItemHelpers ListAll method', function(){
+                spyOn(ocLIs, 'ListAll').and.returnValue(defer.promise);
                 repeatOrderFactory.GetValidLineItems(originalOrderID);
-                expect(_ocLineItems.ListAll).toBeCalledWith(originalOrderID);
+                expect(ocLIs.ListAll).toBeCalledWith(originalOrderID);
             });
         });
         describe('ListAllMeProducts', function(){
