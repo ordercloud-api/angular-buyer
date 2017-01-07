@@ -32,7 +32,7 @@
                ng-max="{{item.Product.StandardPriceSchedule.MaxQuantity}}"
                ng-model="item.Quantity"
                ng-model-options="{ debounce: 1500 }"
-               ng-change="updateFn(order, item)"
+               ng-change="updateQuantity()"
                placeholder="Quantity">
         <select id="itemQuantity"
                 name="itemQuantity"
@@ -41,7 +41,7 @@
                 class="form-control"
                 ng-model="item.Quantity"
                 ng-model-options="{ debounce: 1500 }"
-                ng-change="updateFn(order, item)"
+                ng-change="updateQuantity()"
                 ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.Product.StandardPriceSchedule.PriceBreaks"></select>
     </div>
 </div>

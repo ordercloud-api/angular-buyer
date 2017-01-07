@@ -42,22 +42,25 @@ function CartConfig($stateProvider) {
         });
 }
 
-function CartController($rootScope, $state, OrderCloud, ocLineItems, LineItemsList, CurrentPromotions, ocConfirm) {
+function CartController($rootScope, $state, toastr, OrderCloud, LineItemsList, CurrentPromotions, ocConfirm) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
-
-    vm.updateQuantity = function(order, lineItem) {
-        ocLineItems.UpdateQuantity(order, lineItem);
+    vm.removeItem = function(order, scope) {
+        vm.lineLoading = [];
+        vm.lineLoading[scope.$index] = OrderCloud.LineItems.Delete(order.ID, scope.lineItem.ID)
+            .then(function () {
+                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                vm.lineItems.Items.splice(scope.$index, 1);
+                toastr.success('Line Item Removed');
+            });
     };
 
-    vm.removeItem = function(order, lineItem) {
-        ocLineItems.RemoveItem(order, lineItem);
-    };
-
+    //TODO: missing unit tests
     vm.removePromotion = function(order, scope) {
         OrderCloud.Orders.RemovePromotion(order.ID, scope.promotion.Code)
             .then(function() {
+                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
                 vm.promotions.splice(scope.$index, 1);
             });
     };
@@ -72,16 +75,7 @@ function CartController($rootScope, $state, OrderCloud, ocLineItems, LineItemsLi
             });
     };
 
-    $rootScope.$on('OC:UpdateLineItem', function(event,Order) {
-        OrderCloud.LineItems.List(Order.ID)
-            .then(function(data) {
-                ocLineItems.GetProductInfo(data.Items)
-                    .then(function() {
-                        vm.lineItems = data;
-                    });
-            });
-    });
-
+    //TODO: missing unit tests
     $rootScope.$on('OC:UpdatePromotions', function(event, orderid) {
         OrderCloud.Orders.ListPromotions(orderid)
             .then(function(data) {
@@ -90,7 +84,6 @@ function CartController($rootScope, $state, OrderCloud, ocLineItems, LineItemsLi
                 } else {
                     vm.promotions = data;
                 }
-                $rootScope.$broadcast('OC:UpdateOrder', orderid);
             });
     });
 }

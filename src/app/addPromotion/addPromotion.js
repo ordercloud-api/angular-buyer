@@ -12,6 +12,7 @@ function AddPromotionComponentCtrl($exceptionHandler, $rootScope, OrderCloud, to
         OrderCloud.Orders.AddPromotion(orderID, promoCode)
             .then(function(promo) {
                 $rootScope.$broadcast('OC:UpdatePromotions', orderID);
+                $rootScope.$broadcast('OC:UpdateOrder', orderID);
                 toastr.success('Promo code '+ promo.Code + ' added!', 'Success');
             })
             .catch(function(err) {

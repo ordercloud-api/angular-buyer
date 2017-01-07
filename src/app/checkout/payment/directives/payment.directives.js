@@ -134,12 +134,7 @@ function PaymentSpendingAccountController($scope, $rootScope, toastr, OrderCloud
 	$scope.updatePayment = function(scope) {
 		var oldSelection = angular.copy($scope.payment.SpendingAccountID);
 		$scope.payment.SpendingAccountID = scope.spendingAccount.ID;
-
-		$scope.updatingSpendingAccountPayment = {
-			templateUrl: 'common/templates/view.loading.tpl.html',
-			message:null
-		};
-		$scope.updatingSpendingAccountPayment.promise = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)
+		$scope.updatingSpendingAccountPayment = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)
 			.then(function() {
 				$scope.showPaymentOptions = false;
 				toastr.success('Using ' + scope.spendingAccount.Name,'Spending Account Payment');
@@ -225,11 +220,7 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 	$scope.updatePayment = function(scope) {
 		var oldSelection = angular.copy($scope.payment.CreditCardID);
 		$scope.payment.CreditCardID = scope.creditCard.ID;
-		$scope.updatingCreditCardPayment = {
-			templateUrl: 'common/templates/view.loading.tpl.html',
-			message:null
-		};
-		$scope.updatingCreditCardPayment.promise = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)
+		$scope.updatingCreditCardPayment = OrderCloud.Payments.Update($scope.order.ID, $scope.payment.ID, $scope.payment)
 			.then(function() {
 				$scope.showPaymentOptions = false;
 				toastr.success('Using ' + $filter('humanize')(scope.creditCard.CardType) + ' ending in ' + scope.creditCard.PartialAccountNumber,'Credit Card Payment');

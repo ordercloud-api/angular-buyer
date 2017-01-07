@@ -6,8 +6,6 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
-        RemoveItem: _removeItem,
-        UpdateQuantity: _updateQuantity,
         GetProductInfo: _getProductInfo,
         CustomShipping: _customShipping,
         UpdateShipping: _updateShipping,
@@ -36,6 +34,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
         });
         return results;
     }
+
     function _addItem(order, product){
         var deferred = $q.defer();
 
@@ -63,24 +62,6 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
         }
 
         return deferred.promise;
-    }
-
-    function _removeItem(Order, LineItem) {
-        OrderCloud.LineItems.Delete(Order.ID, LineItem.ID)
-            .then(function () {
-                $rootScope.$broadcast('OC:UpdateOrder', Order.ID);
-                $rootScope.$broadcast('OC:UpdateLineItem',Order);
-            });
-    }
-
-    function _updateQuantity(Order, LineItem) {
-        if (LineItem.Quantity > 0) {
-            OrderCloud.LineItems.Patch(Order.ID, LineItem.ID, {Quantity: LineItem.Quantity})
-                .then(function () {
-                    $rootScope.$broadcast('OC:UpdateOrder', Order.ID);
-                    $rootScope.$broadcast('OC:UpdateLineItem',Order);
-                });
-        }
     }
 
     function _getProductInfo(LineItems) {

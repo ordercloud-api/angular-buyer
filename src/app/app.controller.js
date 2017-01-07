@@ -28,10 +28,7 @@ function AppController($q, $rootScope, $state, $ocMedia, toastr, LoginService, a
     $rootScope.$on('$stateChangeStart', function(e, toState) {
         cleanLoadingIndicators();
         var defer = $q.defer();
-        //defer.delay = 200;
-        defer.wrapperClass = 'indicator-container';
-        (toState.data && toState.data.loadingMessage) ? defer.message = toState.data.loadingMessage : defer.message = null;
-        defer.templateUrl = 'common/templates/view.loading.tpl.html';
+        if (toState.data) defer.message = toState.data.loadingMessage;
         vm.stateLoading = defer;
     });
 

@@ -45,14 +45,11 @@ function CreateCreditCardModalController($q, $exceptionHandler, $uibModalInstanc
     };
 
     vm.submit = function() {
-        //loading indicator promise
-        var df = $q.defer();
-        df.templateUrl = 'common/templates/view.loading.tpl.html';
-        df.message = 'Creating Credit Card';
-        vm.loading = df;
-        ocAuthNet.CreateCreditCard(vm.creditCard)
+        vm.loading = {
+            message: 'Creating Credit Card'
+        };
+        vm.loading.promise = ocAuthNet.CreateCreditCard(vm.creditCard)
             .then(function(data){
-                df.resolve();
                 $uibModalInstance.close(data.ResponseBody);
             })
             .catch(function(error){
@@ -75,14 +72,11 @@ function EditCreditCardModalController($q, $exceptionHandler, $uibModalInstance,
 
     vm.submit = function() {
         //loading indicator promise
-        var df =  $q.defer();
-        df.templateUrl = 'common/templates/view.loading.tpl.html';
-        df.message = 'Editing Credit Card';
-        vm.loading = df;
-
-        ocAuthNet.UpdateCreditCard(vm.creditCard)
+        vm.loading = {
+            message: 'Editing Credit Card'
+        };
+        vm.loading.promise = ocAuthNet.UpdateCreditCard(vm.creditCard)
             .then(function(data){
-                df.resolve();
                 $uibModalInstance.close(data.ResponseBody);
             })
             .catch(function(error){

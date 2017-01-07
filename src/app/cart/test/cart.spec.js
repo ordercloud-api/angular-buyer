@@ -3,9 +3,9 @@ describe('Component: Cart', function() {
         q,
         oc,
         currentOrder,
-        currentPromotions,
-       lineItemHelpers,
+        rootScope,
         lineItemsList,
+        _ocLineItems,
         fakeOrder,
         user
         ;
@@ -14,12 +14,13 @@ describe('Component: Cart', function() {
     beforeEach(module(function($provide) {
         $provide.value('CurrentOrder', {ID: "MockOrderID3456"});
     }));
-    beforeEach(inject(function($rootScope, $q, OrderCloud, CurrentOrder, ocLineItems) {
+    beforeEach(inject(function($rootScope, $q, OrderCloud, ocLineItems, CurrentOrder) {
         scope = $rootScope.$new();
         q = $q;
         oc = OrderCloud;
+        _ocLineItems = ocLineItems;
         currentOrder = CurrentOrder;
-        lineItemHelpers = ocLineItems;
+        rootScope = $rootScope;
         fakeOrder = {
             ID: "TestOrder123456789",
             Type: "Standard",
@@ -33,15 +34,15 @@ describe('Component: Cart', function() {
             ShippingCost: null,
             TaxCost: null
         };
-         lineItemsList = {
-            "Items" : [{}, {}],
+        lineItemsList = {
+            "Items" : [{ID:"LI1"}, {ID:"LI2"}],
             "Meta" : {
                 "Page": 1,
                 "PageSize": 20,
                 "TotalCount":29,
                 "TotalPages": 3,
                 "ItemRange" : [1,2]
-             }
+            }
         };
         user = {
             ID: "TestUser132456789",
@@ -54,14 +55,14 @@ describe('Component: Cart', function() {
         };
     }));
 
-    describe('Configuration: CartConfig', function() {
+    describe('State: Cart', function() {
         var state;
         beforeEach(inject(function($state) {
             state = $state.get('cart');
             var defer = q.defer();
             defer.resolve(lineItemsList);
             spyOn(oc.LineItems,'List').and.returnValue(defer.promise);
-            spyOn(lineItemHelpers,'GetProductInfo').and.returnValue(defer.promise);
+            spyOn(_ocLineItems,'GetProductInfo').and.returnValue(defer.promise);
 
         }));
         it('should call LineItems.List',inject(function($injector){
@@ -71,7 +72,7 @@ describe('Component: Cart', function() {
         it('should call LineItemHelper', inject(function($injector){
             $injector.invoke(state.resolve.LineItemsList);
             scope.$digest();
-            expect(lineItemHelpers.GetProductInfo).toHaveBeenCalled();
+            expect(_ocLineItems.GetProductInfo).toHaveBeenCalled();
         }));
     });
 
@@ -82,47 +83,45 @@ describe('Component: Cart', function() {
             cartController = $controller('CartCtrl', {
                 $scope: scope,
                 CurrentPromotions: [],
-                LineItemsList: lineItemsList,
-                ocLineItems: lineItemHelpers
+                LineItemsList: lineItemsList
             });
             confirm = ocConfirm;
             var defer = q.defer();
             defer.resolve(lineItemsList);
-            spyOn(lineItemHelpers,'UpdateQuantity').and.returnValue(defer.promise);
-            spyOn(confirm,'Confirm').and.returnValue(defer.promise);
-            spyOn(oc.Orders, 'Delete').and.returnValue(defer.promise);
-            spyOn(oc.Orders,'Get').and.returnValue(defer.promise);
-            spyOn(oc.LineItems, 'List').and.returnValue(defer.promise);
-            spyOn(lineItemHelpers,'GetProductInfo').and.returnValue(defer.promise);
+            spyOn(rootScope, '$broadcast');
         }));
 
-       describe('updateQuantity',function(){
-          it('should call ocLineItems UpdateQuantity Method', function(){
-              cartController.updateQuantity(currentOrder,lineItemsList.Items[0]);
-              expect(lineItemHelpers.UpdateQuantity).toHaveBeenCalledWith(currentOrder,lineItemsList.Items[0]);
-          }) ;
-       });
-        describe('CancelOrder',function() {
-         it('should call OrderCloud Confirm modal prompt', function() {
-             cartController.cancelOrder();
-             expect(confirm.Confirm).toHaveBeenCalled();
-         });
-         it('should call OC Orders Delete Method', function(){
-             cartController.cancelOrder(fakeOrder);
-             scope.$digest();
-             expect(oc.Orders.Delete).toHaveBeenCalledWith(fakeOrder.ID);
-         });
-        });
-        describe('OC:UpdateLineItem',function() {
-            it('should call LineItems List Method', inject(function($rootScope) {
-                $rootScope.$broadcast('OC:UpdateLineItem' ,fakeOrder);
-                expect(oc.LineItems.List).toHaveBeenCalledWith(fakeOrder.ID);
-            }));
-            it('should call ocLineItems GetProductInfo Method', inject(function($rootScope) {
-                $rootScope.$broadcast('OC:UpdateLineItem' ,fakeOrder);
+        describe('removeItem()', function() {
+            beforeEach(function() {
+                var df = q.defer();
+                df.resolve();
+                spyOn(oc.LineItems, 'Delete').and.returnValue(df.promise);
+            });
+            it ('should delete the line item', function() {
+                cartController.removeItem(fakeOrder, {$index:0, lineItem: lineItemsList.Items[0]});
+                expect(oc.LineItems.Delete).toHaveBeenCalledWith(fakeOrder.ID, lineItemsList.Items[0].ID);
                 scope.$digest();
-                expect(oc.LineItems.List).toHaveBeenCalledWith(fakeOrder.ID);
-            }))
+                expect(rootScope.$broadcast).toHaveBeenCalledWith('OC:UpdateOrder', fakeOrder.ID);
+                expect(cartController.lineItems.Items).toEqual([{ID:"LI2"}]);
+            })
+        });
+
+        describe('CancelOrder',function() {
+            beforeEach(function() {
+                var df = q.defer();
+                df.resolve();
+                spyOn(confirm,'Confirm').and.returnValue(df.promise);
+                spyOn(oc.Orders, 'Delete').and.returnValue(df.promise);
+            });
+            it('should call OrderCloud Confirm modal prompt', function() {
+                cartController.cancelOrder();
+                expect(confirm.Confirm).toHaveBeenCalled();
+            });
+            it('should call OC Orders Delete Method', function(){
+                cartController.cancelOrder(fakeOrder);
+                scope.$digest();
+                expect(oc.Orders.Delete).toHaveBeenCalledWith(fakeOrder.ID);
+            });
         });
     });
 });
