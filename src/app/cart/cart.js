@@ -42,7 +42,7 @@ function CartConfig($stateProvider) {
         });
 }
 
-function CartController($rootScope, $state, toastr, OrderCloud, ocLineItems, LineItemsList, CurrentPromotions, ocConfirm) {
+function CartController($rootScope, $state, toastr, OrderCloud, LineItemsList, CurrentPromotions, ocConfirm) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
@@ -56,9 +56,11 @@ function CartController($rootScope, $state, toastr, OrderCloud, ocLineItems, Lin
             });
     };
 
+    //TODO: missing unit tests
     vm.removePromotion = function(order, scope) {
         OrderCloud.Orders.RemovePromotion(order.ID, scope.promotion.Code)
             .then(function() {
+                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
                 vm.promotions.splice(scope.$index, 1);
             });
     };
@@ -73,16 +75,7 @@ function CartController($rootScope, $state, toastr, OrderCloud, ocLineItems, Lin
             });
     };
 
-    $rootScope.$on('OC:UpdateLineItem', function(event,Order) {
-        OrderCloud.LineItems.List(Order.ID)
-            .then(function(data) {
-                ocLineItems.GetProductInfo(data.Items)
-                    .then(function() {
-                        vm.lineItems = data;
-                    });
-            });
-    });
-
+    //TODO: missing unit tests
     $rootScope.$on('OC:UpdatePromotions', function(event, orderid) {
         OrderCloud.Orders.ListPromotions(orderid)
             .then(function(data) {
@@ -91,7 +84,6 @@ function CartController($rootScope, $state, toastr, OrderCloud, ocLineItems, Lin
                 } else {
                     vm.promotions = data;
                 }
-                $rootScope.$broadcast('OC:UpdateOrder', orderid);
             });
     });
 }
