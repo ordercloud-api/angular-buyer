@@ -88,46 +88,65 @@ describe('Component: ordercloudRepeatOrder', function(){
             ocLIs,
             originalOrderID
             ;
-        beforeEach(inject(function(OrderCloud, toastr, RepeatOrderFactory, ocLineItems){
+        beforeEach(inject(function(OrderCloud, toastr, RepeatOrderFactory){
             oc = OrderCloud;
             toaster = toastr;
             repeatOrderFactory = RepeatOrderFactory;
-            ocLIs = ocLineItems;
             originalOrderID = 'testOriginalOrderID123';
         }));
         describe('GetValidLineItems', function(){
-            it('should call lineItemHelpers ListAll method', function(){
+            beforeEach(inject(function(ocLineItems){
+                ocLIs = ocLineItems;
+                var meProducts = {
+                    Meta: {
+                        TotalPages: 1
+                    },
+                    Items: [
+                        {
+                            Name: 'product1',
+                            ID: 'productID'
+                        }
+                    ]
+                };
                 var defer = q.defer();
-                defer.resolve();
+                defer.resolve(meProducts);
+                spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
                 spyOn(ocLIs, 'ListAll').and.returnValue(defer.promise);
                 repeatOrderFactory.GetValidLineItems(originalOrderID);
-                expect(ocLIs.ListAll).toBeCalledWith(originalOrderID);
-            });
-        });
-        describe('ListAllMeProducts', function(){
-            beforeEach(function(){
-                var defer = q.defer();
-                defer.resolve();
-                spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
-            });
+            }));
             it('should call the OrderCloud Me ListProducts method', function(){
-                repeatOrderFactory.ListAllMeProducts();
                 expect(oc.Me.ListProducts).toHaveBeenCalledWith(null, 1, 100);
             });
+            it('should call lineItemHelpers ListAll method', function(){
+                scope.$digest();
+                expect(ocLIs.ListAll).toHaveBeenCalledWith(originalOrderID);
+            })
         });
         describe('AddLineItemsToCart', function(){
             beforeEach(function(){
+                var validLI = [
+                    {
+                        ProductID: 'productID1',
+                        Quantity: 'productQuantity1',
+                        Specs: 'liSpecs1'
+                    },
+                    {
+                        ProductID: 'productID2',
+                        Quantity: 'productQuantity2',
+                        Specs: 'liSpecs2'
+                    }
+                ];
                 var defer = q.defer();
                 defer.resolve();
                 spyOn(oc.LineItems, 'Create').and.returnValue(defer.promise);
+                spyOn(toaster, 'success');
+                repeatOrderFactory.AddLineItemsToCart(validLI, originalOrderID);
             });
             it('should call the OrderCloud LineItems Create method', function(){
-                repeatOrderFactory.AddLineItemsToCart();
-                expect(oc.LineItems.Create).toHaveBeenCalledWith();
+                expect(oc.LineItems.Create).toHaveBeenCalledTimes(2);
             });
             it('should call the toastr success method', function(){
-                spyOn(toaster, 'success');
-                repeatOrderFactory.AddLineItemsToCart();
+                scope.$digest();
                 expect(toaster.success).toHaveBeenCalledWith('Product(s) Add to Cart', 'Success');
             })
         });
