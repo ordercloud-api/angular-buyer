@@ -34,7 +34,7 @@
                     <tbody>
                     <tr ng-repeat="priceBreak in productDetail.item.StandardPriceSchedule.PriceBreaks">
                         <td>{{priceBreak.Quantity}}</td>
-                        <td>{{priceBreak.Price}}</td>
+                        <td>{{priceBreak.Price | currency}}</td>
                     </tr>
                     </tbody>
                 </table>
