@@ -1,6 +1,5 @@
 var source = './src/',
     assets = 'assets/',
-    components = './../Components/',
     build = './build/',
     bowerFiles = './bower_components/',
     npmFiles = './node_modules',
@@ -36,19 +35,6 @@ module.exports = {
         '!' + source + '**/*.spec.js',
         '!' + source + '**/*.test.js'
     ],
-    components: {
-        dir: components,
-        scripts: [
-            components + '**/*.js',
-            '!' + components + '**/*.spec.js',
-            '!' + components + '**/*.test.js'
-        ],
-        templates: components + '**/*.html',
-        styles: {
-            less: components + '**/*.less',
-            css: components + '**/*.css'
-        }
-    },
     appFiles: [
         build + '**/app.module.js',
         build + '**/app.config.js',
