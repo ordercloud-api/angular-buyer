@@ -9,8 +9,7 @@ gulp.task('start-localhost', ['inject'], function() {
         server: {
             baseDir: [
                 config.root + config.build.replace('.', ''),
-                config.root + config.src.replace('.', '') + 'app/',
-                config.root + config.components.dir.replace('.', '')
+                config.root + config.src.replace('.', '') + 'app/'
             ],
             routes: {
                 '/bower_files': config.root + config.bowerFiles.replace('.', '')
@@ -21,7 +20,7 @@ gulp.task('start-localhost', ['inject'], function() {
 });
 
 gulp.task('test:e2e', ['start-localhost'], function() {
-	gulp.src([config.src + '**/*.test.js', config.components.dir + '**/*.test.js'])
+	gulp.src([config.src + '**/*.test.js'])
         .pipe(protractor({
             configFile: config.root + '/protractor.conf.js',
             args: [

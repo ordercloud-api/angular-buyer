@@ -18,8 +18,7 @@ gulp.task('clean:scripts', function() {
 gulp.task('scripts', ['clean:scripts'], function() {
     return gulp
         .src([].concat(
-            config.scripts,
-            config.components.scripts
+            config.scripts
         ))
         .pipe(cache(config.jsCache))
         .pipe(ngAnnotate())
@@ -31,8 +30,7 @@ gulp.task('scripts', ['clean:scripts'], function() {
 gulp.task('rebuild-scripts', function() {
     return gulp
         .src([].concat(
-            config.scripts,
-            config.components.scripts
+            config.scripts
         ))
         .pipe(cache('jsscripts'))
         .pipe(ngAnnotate())
