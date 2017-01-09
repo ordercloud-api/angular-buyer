@@ -3,6 +3,7 @@ describe('Component: MyOrders', function() {
         q,
         oc,
         _ocParameters,
+        _ocLineItems,
         mockParams,
         state,
         currentUser;
@@ -13,11 +14,12 @@ describe('Component: MyOrders', function() {
     }));
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, ocParameters, CurrentUser, $state) {
+    beforeEach(inject(function($q, $rootScope, OrderCloud, ocParameters, ocLineItems, CurrentUser, $state) {
         q = $q;
         scope = $rootScope.$new();
         oc = OrderCloud;
         _ocParameters = ocParameters;
+        _ocLineItems = ocLineItems;
         state = $state;
         currentUser = CurrentUser;
     }));
@@ -59,10 +61,13 @@ describe('Component: MyOrders', function() {
             var defer = q.defer();
             defer.resolve(mockPaymentList);
 
+            var lidefer = q.defer();
+            defer.resolve({Items:[]});
+
             spyOn(oc.Me, 'GetOrder');
             spyOn(oc.Payments, 'List').and.returnValue(defer.promise);
             spyOn(oc.Me, 'GetCreditCard');
-            spyOn(oc.LineItems, 'List');
+            spyOn(oc.LineItems, 'List').and.returnValue(lidefer.promise);
             spyOn(oc.Orders, 'ListPromotions');
         }));
         it('should resolve SelectedOrder', inject(function($injector) {
@@ -75,7 +80,7 @@ describe('Component: MyOrders', function() {
             scope.$digest();
             expect(oc.Me.GetCreditCard).toHaveBeenCalledWith(mockPaymentList.Items[0].CreditCardID);
         }));
-        it('should resolve LineItemList', inject(function($injector) {
+        it('should resolve LineItemList with full product info', inject(function($injector) {
             $injector.invoke(state.resolve.LineItemList);
             expect(oc.LineItems.List).toHaveBeenCalledWith(stateParams.orderid, null, 1, 100);
         }));

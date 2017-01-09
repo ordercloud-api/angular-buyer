@@ -114,10 +114,13 @@
                         <div class="col-xs-4">
                             <h4 class="c-line-item__price text-right">{{lineItem.UnitPrice | currency}}</h4>
                         </div>
-                        <div class="col-xs-4">
-                            <h4 class="c-line-item__qty-display text-center">
-                                <small class="text-muted">x</small> {{lineItem.Quantity}}
+                        <div class="col-xs-4 text-center">
+                            <h4 class="c-line-item__qty-display ">
+                                {{lineItem.Quantity}}
                             </h4>
+                            <small class="help-block" ng-if="lineItem.Product.QuantityMultiplier > 1">
+                                {{'x ' + lineItem.Product.QuantityMultiplier + (lineItem.Quantity ? (' (' + (lineItem.Quantity * lineItem.Product.QuantityMultiplier) + ')') : '')}}
+                            </small>
                         </div>
                         <div class="col-xs-4">
                             <h4 class="c-line-item__total text-right">{{lineItem.LineTotal | currency}}</h4>
