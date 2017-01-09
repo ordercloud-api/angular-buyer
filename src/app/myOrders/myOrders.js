@@ -74,8 +74,16 @@ function MyOrdersConfig($stateProvider) {
 
                     return deferred.promise;
                 },
-                LineItemList: function($stateParams, OrderCloud) {
-                    return OrderCloud.LineItems.List($stateParams.orderid, null, 1, 100);
+                LineItemList: function($q, $stateParams, OrderCloud, ocLineItems) {
+                    var dfd = $q.defer();
+                    OrderCloud.LineItems.List($stateParams.orderid, null, 1, 100)
+                        .then(function(data) {
+                            ocLineItems.GetProductInfo(data.Items)
+                                .then(function() {
+                                    dfd.resolve(data);
+                                });
+                        });
+                    return dfd.promise;
                 },
                 PromotionList: function($stateParams, OrderCloud){
                     return OrderCloud.Orders.ListPromotions($stateParams.orderid);
