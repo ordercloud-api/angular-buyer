@@ -11,7 +11,7 @@ gulp.task('clean:inject', function() {
 gulp.task('inject', ['clean:inject', 'scripts', 'assets', 'app-config', 'bower-fonts', 'styles'], function() {
     var target = gulp.src(config.index),
         bowerFiles = gulp.src(mainBowerFiles({filter: ['**/*.js', '**/*.css']}), {read: false}),
-        appFiles = gulp.src([].concat(config.appFiles, config.components.styles.css), {read: false});
+        appFiles = gulp.src([].concat(config.appFiles), {read: false});
 
     return target
         .pipe(inject(bowerFiles, {name: 'bower', ignorePath: config.bowerFiles.replace('.', ''), addPrefix: 'bower_files'}))

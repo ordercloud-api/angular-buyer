@@ -24,9 +24,7 @@ gulp.task('app-js', ['clean:app-js'], function() {
     return gulp
         .src([].concat(
             config.scripts,
-            config.components.scripts,
             config.templates,
-            config.components.templates,
             config.src + '**/app.constants.json'
         ))
         .pipe(jsonFilter)
