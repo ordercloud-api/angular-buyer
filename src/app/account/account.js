@@ -7,23 +7,17 @@ angular.module('orderCloud')
 	.controller('ConfirmPasswordCtrl', ConfirmPasswordController)
 ;
 
-function AccountConfig($stateProvider, $urlRouterProvider) {
-	$urlRouterProvider.when('/account', '/account/information');
+function AccountConfig($stateProvider) {
 	$stateProvider
 		.state('account', {
 			parent: 'base',
-			abstract: true,
 			url: '/account',
 			templateUrl: 'account/templates/account.tpl.html',
+			controller: 'AccountInfoCtrl',
+			controllerAs: 'accountInfo',
 			data: {
 				pageTitle: "Account"
 			}
-		})
-		.state('account.information', {
-			url: '/overview',
-			templateUrl: 'account/templates/accountDefaultView.tpl.html',
-			controller: 'AccountInfoCtrl',
-			controllerAs: 'accountInfo'
 		})
 	;
 }

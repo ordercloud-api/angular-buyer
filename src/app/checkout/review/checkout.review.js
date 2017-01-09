@@ -30,11 +30,15 @@ function checkoutReviewConfig($stateProvider) {
 						});
 					return dfd.promise;
 				},
-				OrderPaymentsDetail: function($q, OrderCloud, CurrentOrder) {
+				OrderPaymentsDetail: function($q, OrderCloud, CurrentOrder, $state) {
 					return OrderCloud.Payments.List(CurrentOrder.ID)
 						.then(function(data) {
 							//TODO: create a queue that can be resolved
 							var dfd = $q.defer();
+							if (!data.Items.length) {
+								dfd.reject();
+								$state.go('checkout.shipping');
+							}
 							var queue = [];
 							angular.forEach(data.Items, function(payment, index) {
 								if (payment.Type === 'CreditCard' && payment.CreditCardID) {
