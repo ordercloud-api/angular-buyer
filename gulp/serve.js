@@ -30,19 +30,15 @@
     module.exports = function (isDev) {
         if (isDev) {
             gulp.watch([].concat(
-                config.src + '**/*.html',
-                config.components.templates
+                config.src + '**/*.html'
             ))
                 .on('change', browserSync.reload);
             gulp.watch([].concat(
-                config.scripts,
-                config.components.scripts
+                config.scripts
             ), ['rebuild-scripts'])
                 .on('change', browserSync.reload);
             gulp.watch([].concat(
-                config.styles,
-                config.components.styles.less,
-                config.components.styles.css
+                config.styles
             ), ['styles']);
             gulp.watch(config.src + '**/app.constants.json', ['app-config'])
                 .on('change', browserSync.reload);
