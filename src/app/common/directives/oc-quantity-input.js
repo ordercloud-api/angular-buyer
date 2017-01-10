@@ -9,7 +9,8 @@ function OCQuantityInput(toastr, OrderCloud, $rootScope) {
             product: '=',
             lineitem: '=',
             label: '@',
-            order: '='
+            order: '=',
+            onUpdate: '&'
         },
         templateUrl: 'common/templates/quantityInput.tpl.html',
         replace: true,
@@ -22,13 +23,15 @@ function OCQuantityInput(toastr, OrderCloud, $rootScope) {
                 scope.item = scope.lineitem;
                 scope.content = "lineitem";
                 scope.updateQuantity = function() {
-                    console.log('hit');
                     if (scope.item.Quantity > 0) {
                         OrderCloud.LineItems.Patch(scope.order.ID, scope.item.ID, {Quantity: scope.item.Quantity})
-                            .then(function () {
+                            .then(function (data) {
+                                data.Product = scope.lineitem.Product;
+                                scope.item = data;
+                                scope.lineitem = data;
+                                if (typeof scope.onUpdate === "function") scope.onUpdate(scope.lineitem);
                                 toastr.success('Quantity Updated');
                                 $rootScope.$broadcast('OC:UpdateOrder', scope.order.ID, 'Calculating Order Total');
-
                             });
                     }
                 }
