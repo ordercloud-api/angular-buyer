@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div ui-view="left"></div>
 <div ui-view="right"></div>
 <snap-content id="BASE" snap-id="'MAIN'" snap-options="base.snapOptions" ng-class="{'desktop-left':base.left, 'desktop-right':base.right}" cg-busy="application.contentLoading">
@@ -6,3 +7,9 @@
     <footer id="BASE_BOTTOM" ui-view="bottom"></footer>
 </snap-content>
 
+=======
+<header class="c-header c-header--fixed-top">
+    <nav ui-view="nav"></nav>
+</header>
+<main ui-view class="container" cg-busy="application.stateLoading"></main>
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2

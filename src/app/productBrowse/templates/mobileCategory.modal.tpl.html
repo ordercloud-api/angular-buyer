@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="mobileCategoryModal.cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Categories</h4>
+</div>
+<div class="modal-body">
+    <treecontrol class="oc-tree"
+                 tree-model="mobileCategoryModal.treeConfig.treeData"
+                 options="mobileCategoryModal.treeConfig.treeOptions"
+                 selected-node="mobileCategoryModal.treeConfig.selectedNode"
+                 expanded-nodes="mobileCategoryModal.treeConfig.expandedNodes"
+                 on-selection="mobileCategoryModal.selectNode(node)">
+        {{node.Name}}
+    </treecontrol>
+</div>

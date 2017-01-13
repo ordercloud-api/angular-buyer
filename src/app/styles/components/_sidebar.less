@@ -1,0 +1,31 @@
+.c-sidebar {
+    display: none;
+    @media (min-width: @screen-sm-min) {
+        display: block;
+        overflow-y: auto;
+        height: calc(~"(100vh - @{body-padding-top})");
+    }
+    // overwrite bootstrap specificity
+    &.nav {
+        > li {
+            a {
+                padding-top: (@grid-gutter-width / 4);
+                padding-bottom: (@grid-gutter-width / 4);
+                &:hover,
+                &:focus {
+                    text-decoration: underline;
+                    background-color: transparent;
+                }
+            }
+        }
+    }
+}
+
+.c-section {
+    padding-top: @body-padding-top;
+    &__header {
+        margin-top: 0;
+        &:extend(.page-header);
+    }
+    &__body {}
+}

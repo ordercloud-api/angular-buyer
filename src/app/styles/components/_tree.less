@@ -1,0 +1,60 @@
+.category-tree {
+  ul {
+	list-style:none;
+	padding-left:15px;
+  }
+}
+.category-tree-item {
+  a {
+	text-decoration:none;
+	color:@text-color;
+  }
+  &.selected > a {
+	font-weight:bold;
+	color:@brand-primary;
+  }
+}
+
+.tree-node {
+  background: @well-bg;
+  border: 1px solid @well-border;
+  color: @text-color;
+  border-radius:@border-radius-base;
+  &.inactive-node {
+    background-color: @state-warning-bg;
+    border-color: @state-warning-border;
+  }
+}
+
+.tree-node-content {
+  padding:0.3em;
+  margin-bottom: 10px;
+  display:flex;
+  flex-flow:row nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  p:first-child {
+    padding-left:10px;
+  }
+  p {
+    flex-grow: 1;
+    margin:0;
+  }
+  .fa-folder,
+  .fa-folder-open {
+    color:@link-color;
+    padding:10px;
+    width:30px;
+    text-align:center;
+  }
+}
+
+.angular-ui-tree-placeholder {
+  border-radius:@border-radius-base;
+  background: fade(@link-color, 15) ;
+  border: 2px dashed @link-color;
+}
+
+.new-category {
+  cursor: pointer;
+}

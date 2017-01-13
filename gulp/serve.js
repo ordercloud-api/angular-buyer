@@ -30,6 +30,7 @@
     module.exports = function (isDev) {
         if (isDev) {
             gulp.watch([].concat(
+<<<<<<< HEAD
                 config.src + '**/*.html',
                 config.components.templates
             ))
@@ -45,6 +46,19 @@
                 config.components.styles.css
             ), ['styles']);
             gulp.watch(config.src + '**/app.config.json', ['app-config'])
+=======
+                config.src + '**/*.html'
+            ))
+                .on('change', browserSync.reload);
+            gulp.watch([].concat(
+                config.scripts
+            ), ['rebuild-scripts'])
+                .on('change', browserSync.reload);
+            gulp.watch([].concat(
+                config.styles
+            ), ['styles']);
+            gulp.watch(config.src + '**/app.constants.json', ['app-config'])
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
                 .on('change', browserSync.reload);
         }
         return nodemon ({

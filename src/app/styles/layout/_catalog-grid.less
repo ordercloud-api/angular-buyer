@@ -1,0 +1,24 @@
+.l-product-grid {
+    // use flexbox for layout on small+ screens
+    // add flex display to product grid wrapper
+    @media (min-width: @screen-sm-min) {
+        .oc-flex-layout.horizontal;
+        .oc-flex-layout.wrap;
+        // flex each item within the grid wrapper
+        &__item {
+            .oc-flex-layout.vertical;
+        }
+    }
+}
+.l-category-grid {
+    // use flexbox for layout on small+ screens
+    // add flex display to product grid wrapper
+    @media (min-width: @screen-sm-min) {
+        .oc-flex-layout.horizontal;
+        .oc-flex-layout.wrap;
+        // flex each item within the grid wrapper
+        &__item {
+            .oc-flex-layout.vertical;
+        }
+    }
+}

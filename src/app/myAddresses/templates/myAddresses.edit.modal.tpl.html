@@ -1,0 +1,69 @@
+<form name="myAddressesEditModalForm" ng-submit="editAddress.submit()" cg-busy="editAddress.loading">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="editAddress.cancel()"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Edit Address</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset>
+            <div class="form-group">
+                <label for="addressNameInput">Address Name</label>
+                <input id="addressNameInput" placeholder="(Optional)" ng-model="editAddress.address.AddressName" type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="addressCompanyNameInput">Company Name</label>
+                <input id="addressCompanyNameInput" placeholder="(Optional)" ng-model="editAddress.address.CompanyName" type="text" class="form-control">
+            </div>
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label for="addressFirstNameInput">First Name</label>
+                    <input id="addressFirstNameInput" placeholder="(Optional)" ng-model="editAddress.address.FirstName" type="text" class="form-control">
+                </div>
+                <div class="col-sm-6 form-group">
+                    <label for="addressLastNameInput">Last Name</label>
+                    <input id="addressLastNameInput" placeholder="(Optional)" ng-model="editAddress.address.LastName" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addressStreet1Input">Street 1</label>
+                <input id="addressStreet1Input" ng-model="editAddress.address.Street1" type="text" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="addressStreet2Input">Street 2</label>
+                <input id="addressStreet2Input" placeholder="(Optional)" ng-model="editAddress.address.Street2" type="text" class="form-control">
+            </div>
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label for="addressCityInput">City</label>
+                    <input id="addressCityInput" type="text" class="form-control" ng-model="editAddress.address.City" />
+                </div>
+                <div class="col-sm-3 form-group" ng-show="editAddress.address.Country == 'US'">
+                    <label for="addressStateInput">State</label>
+                    <select id="addressStateInput" class="form-control" ng-options="state.value as state.label for state in editAddress.states" ng-model="editAddress.address.State" required/>
+                </div>
+                <div class="col-sm-3 form-group" ng-hide="editAddress.address.Country == 'US'">
+                    <label for="addressStateInput">State</label>
+                    <input id="addressStateInput" class="form-control" ng-model="editAddress.address.State" required/>
+                </div>
+                <div class="col-sm-3 form-group">
+                    <label for="addressZipInput">Zip</label>
+                    <input id="addressZipInput" type="text" class="form-control" ng-model="editAddress.address.Zip" required/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 form-group">
+                    <label for="addressCountryInput">Country</label>
+                    <select id="addressCountryInput" class="form-control" ng-options="country.value as country.label for country in editAddress.countries" ng-model="editAddress.address.Country" ng-change="editAddress.address.State = null" required/>
+                </div>
+                <div class="col-sm-6 form-group">
+                    <label for="addressPhoneInput">Phone Number</label>
+                    <input id="addressPhoneInput" type="text" class="form-control" ng-model="editAddress.address.Phone" />
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block" ng-disabled="myAddressesEditModalForm.$invalid || (!editAddress.address.Billing && !editAddress.address.Shipping)">Save</button>
+        </div>
+    </div>
+</form>

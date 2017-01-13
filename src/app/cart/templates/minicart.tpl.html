@@ -1,0 +1,67 @@
+
+<div id="minicart" class="dropdown" uib-dropdown is-open="minicart.showLineItems" ng-if="minicart.LineItems.Items.length">
+    <!--<div class="btn-group" uib-dropdown-toggle >-->
+        <!--<div class="btn btn-default">-->
+            <!--<span>-->
+                <!--<i class="fa fa-shopping-cart"></i>-->
+                <!--<i class="badge">{{minicart.LineItems.Meta.TotalCount}}</i>-->
+            <!--</span>-->
+        <!--</div>-->
+        <!--<div class="btn btn-default">{{order.Subtotal | currency}} <span class="caret"></span></div>-->
+    <!--</div>-->
+    <!--//When mobile-->
+    <div uib-dropdown-toggle>
+        <div id="minicartButton" ng-click="minicart.toggleDropdown($event)">
+            <span>
+                <i class="fa fa-shopping-cart"></i>
+                <i class="badge">{{minicart.LineItems.Meta.TotalCount}}</i>
+                <i ng-if="!minicart.$ocMedia('max-width:767px')" class="caret"></i>
+            </span>
+        </div>
+        <!--<div class="btn btn-default">{{order.Subtotal | currency}}</div>-->
+    </div>
+    <!--//DropDown-->
+    <div ng-if="!minicart.$ocMedia('max-width:767px')" id="minicart_line_item_list" uib-dropdown-menu role="menu" class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+            <ng-pluralize count="minicart.LineItems.Meta.TotalCount"
+                          when="{
+                     'one': '1 item in your cart',
+                     'other': '{} items in your cart'}">
+            </ng-pluralize>
+            </div>
+        </div>
+        <div class="minicart-body">
+            <table class="table table-hover">
+
+
+                <tr ng-repeat="lineItem in minicart.LineItems.Items">
+                    <td>{{lineItem.Quantity}}</td>
+                    <td>
+                        <a href="#">{{lineItem.Product.Name}}</a><br>
+                        <small class="text-muted">{{lineItem.ProductID}}</small>
+                        </br>
+                    </td>
+                    <td style="padding-right: 25px;">
+                        <b class="text-success">{{lineItem.LineTotal | currency}}</b>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="panel-footer">
+            <div class="row">
+                <div ng-class="{'col-xs-6': minicart.checkForCheckout(), 'col-xs-12': !minicart.checkForCheckout()}">
+                    <button class="btn btn-info btn-block" ng-click="minicart.goToCart()">Cart</button>
+                </div>
+                <div class="col-xs-6"  ng-if="minicart.checkForCheckout()">
+                    <button class="btn btn-success btn-block" ui-sref="checkout">Checkout</button>
+                </div>
+            </div>
+            <div class="row express-checkout" ng-if="minicart.checkForExpress()">
+                <div class="col-xs-12">
+                    <button class="btn btn-success btn-block" ui-sref="expressCheckout">Express Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

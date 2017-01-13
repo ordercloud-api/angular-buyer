@@ -2,7 +2,12 @@ describe('Component: Account', function() {
     var scope,
         q,
         account,
+<<<<<<< HEAD
         accountFactory;
+=======
+        accountFactory,
+        uibModalInstance;
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
     beforeEach(inject(function($q, $rootScope, AccountService) {
@@ -19,6 +24,10 @@ describe('Component: Account', function() {
             Active: true
         };
         accountFactory = AccountService;
+<<<<<<< HEAD
+=======
+        uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     }));
 
     describe('Factory: AccountService', function() {
@@ -72,6 +81,7 @@ describe('Component: Account', function() {
         });
     });
 
+<<<<<<< HEAD
     describe('Controller: AccountCtrl', function() {
         var accountCtrl, currentProfile;
         beforeEach(inject(function($state, $controller) {
@@ -155,11 +165,113 @@ describe('Component: Account', function() {
             changePasswordCtrl = $controller('ChangePasswordCtrl', {
                 $scope: scope,
                 CurrentUser: {}
+=======
+    describe('Controller: AccountInfoCtrl', function() {
+        var accountInfoCtrl,
+            uibModal,
+            actualOptions;
+        beforeEach(inject(function ($uibModal, $controller) {
+            accountInfoCtrl = $controller('AccountInfoCtrl', {
+                CurrentUser: {},
+                Profile: {}
+            });
+            uibModal = $uibModal;
+            accountInfoCtrl.editInfoModalOptions = {
+                animation: true,
+                templateUrl: 'account/templates/accountSettings.modal.tpl.html',
+                controller: 'AccountEditModalCtrl',
+                controllerAs: 'accountEditModal',
+                backdrop: 'static',
+                size: 'md',
+                resolve: {
+                    Profile: jasmine.any(Function),
+                    CurrentUser: jasmine.any(Function)
+                }
+            };
+            accountInfoCtrl.changePasswordModalOptions = {
+                animation: true,
+                templateUrl: 'account/templates/changePassword.modal.tpl.html',
+                controller: 'ChangePasswordModalCtrl',
+                controllerAs: 'changePasswordModal',
+                backdrop:'static',
+                size: 'md',
+                resolve: {
+                    CurrentUser: jasmine.any(Function)
+                }
+            };
+        }));
+        describe('editInfo', function() {
+            it('should call the $uibModal open with editInfo modal', function() {
+                spyOn(uibModal, 'open').and.callFake(function(options) {
+                    actualOptions = options;
+                    return uibModalInstance;
+                });
+                accountInfoCtrl.editInfo();
+                expect(uibModal.open).toHaveBeenCalledWith(accountInfoCtrl.editInfoModalOptions);
+            });
+        });
+        describe('changePassword', function() {
+            it('should call the $uibModal open with changePassword modal', function() {
+                spyOn(uibModal, 'open').and.callFake(function(options) {
+                    actualOptions = options;
+                    return uibModalInstance;
+                });
+                accountInfoCtrl.changePassword();
+                expect(uibModal.open).toHaveBeenCalledWith(accountInfoCtrl.changePasswordModalOptions);
+            });
+        });
+    });
+
+    describe('Controller: AccountEditModalCtrl', function() {
+       var accountEditModalCtrl, currentProfile;
+        beforeEach(inject(function($state, $controller) {
+           accountEditModalCtrl = $controller('AccountEditModalCtrl', {
+               $uibModalInstance: uibModalInstance,
+               CurrentUser: {},
+               Profile: {}
+           });
+        }));
+        describe('update', function() {
+            beforeEach(inject(function() {
+                currentProfile = {};
+                accountEditModalCtrl.Profile = {};
+                var defer = q.defer();
+                defer.resolve();
+                spyOn(accountFactory, 'Update').and.returnValue(defer.promise);
+                accountEditModalCtrl.update();
+            }));
+            it('should call the Accounts Update method', inject(function() {
+                expect(accountFactory.Update).toHaveBeenCalledWith(currentProfile, accountEditModalCtrl.Profile);
+            }));
+        });
+        describe('submit', function() {
+            it('should close the modal', function() {
+                accountEditModalCtrl.submit();
+                expect(uibModalInstance.close).toHaveBeenCalled();
+            });
+        });
+        describe('cancel', function() {
+            it('should dismiss the modal', function() {
+                accountEditModalCtrl.cancel();
+                expect(uibModalInstance.dismiss).toHaveBeenCalled();
+            });
+        });
+    });
+
+    describe('Controller: ChangePasswordModalCtrl', function () {
+        var changePasswordModalCtrl;
+        beforeEach(inject(function($state, $controller) {
+            changePasswordModalCtrl = $controller('ChangePasswordModalCtrl', {
+                $scope: scope,
+                CurrentUser: {},
+                $uibModalInstance: uibModalInstance
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
             });
             spyOn($state, 'go').and.returnValue(true);
         }));
         describe('changePassword', function() {
             beforeEach(inject(function() {
+<<<<<<< HEAD
                 changePasswordCtrl.currentUser = account;
                 var defer = q.defer();
                 defer.resolve(account);
@@ -171,6 +283,51 @@ describe('Component: Account', function() {
             }));
         });
 
+=======
+                changePasswordModalCtrl.currentUser = account;
+                var defer = q.defer();
+                defer.resolve(account);
+                spyOn(accountFactory, 'ChangePassword').and.returnValue(defer.promise);
+                changePasswordModalCtrl.changePassword();
+            }));
+            it ('should call the Accounts ChangePassword method', inject(function() {
+                expect(accountFactory.ChangePassword).toHaveBeenCalledWith(changePasswordModalCtrl.currentUser);
+            }));
+        });
+        describe('submit', function() {
+            it('should close the modal', function() {
+                changePasswordModalCtrl.submit();
+                expect(uibModalInstance.close).toHaveBeenCalled();
+            });
+        });
+        describe('cancel', function() {
+            it('should dismiss the modal', function(){
+                changePasswordModalCtrl.cancel();
+                expect(uibModalInstance.dismiss).toHaveBeenCalled();
+            });
+        });
+    });
+    describe('Controller: ConfirmPasswordCtrl', function () {
+        var confirmPasswordCtrl;
+        beforeEach(inject(function($controller) {
+            confirmPasswordCtrl = $controller('ConfirmPasswordCtrl', {
+                $uibModalInstance: uibModalInstance,
+                password: 'fakepassword'
+            });
+        }));
+        describe('submit', function() {
+            it('should close the modal after confirming password', function() {
+                confirmPasswordCtrl.submit();
+                expect(uibModalInstance.close).toHaveBeenCalledWith(confirmPasswordCtrl.password);
+            });
+        });
+        describe('cancel', function() {
+            it('should dismiss the modal', function() {
+                confirmPasswordCtrl.cancel();
+                expect(uibModalInstance.dismiss).toHaveBeenCalled();
+            });
+        });
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     });
 });
 

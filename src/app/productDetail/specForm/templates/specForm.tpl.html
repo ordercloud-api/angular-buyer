@@ -1,0 +1,15 @@
+<div ng-repeat="spec in product.Specs | orderBy:'ListOrder' track by $index">
+    <fieldset class="form-group" ng-if="spec.Options.length === 0">
+        <label for="{{spec.ID}}">{{spec.Name || spec.ID}}</label>
+        <p ng-if="!spec.AllowOpenText" class="form-control-static">{{spec.DefaultValue}}</p>
+        <input ng-if="spec.AllowOpenText"  id="{{spec.ID}}"
+               ng-required="spec.Required"
+               class="form-control"
+               ng-model="spec.Value"
+               type="text">
+    </fieldset>
+    <fieldset ng-if="spec.Options.length > 0">
+        <label for="{{spec.ID}}">{{spec.Name || spec.ID}}</label>
+        <spec-select-field spec="spec"></spec-select-field>
+    </fieldset>
+</div>

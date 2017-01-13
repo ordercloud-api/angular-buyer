@@ -5,14 +5,26 @@
 ```
 src/
   |- app/
+<<<<<<< HEAD
   |  |- home/
   |  |- about/
   |  |- app.js
+=======
+  |  |- app.config.js
+  |  |- app.constants.json
+  |  |- app.controller.js
+  |  |- app.module.js
+  |  |- app.run.js
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
   |  |- app.spec.js
 ```
 
 The `src/app` directory contains all code specific to this application. Apart
+<<<<<<< HEAD
 from `app.js` and its accompanying tests (discussed below), this directory is
+=======
+from `app.*.js` and its accompanying tests (discussed below), this directory is
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 filled with subdirectories corresponding to high-level sections of the
 application, often corresponding to top-level routes. Each directory can have as
 many subdirectories as it needs, and the build system will understand what to
@@ -22,9 +34,15 @@ route `/products`, though this is in no way enforced. Products may then have
 subdirectories for "create", "view", "search", etc. The "view" submodule may
 then define a route of `/products/:id`, ad infinitum.
 
+<<<<<<< HEAD
 ## `app.js`
 
 This is our main app configuration file. It kickstarts the whole process by
+=======
+## `app.module.js`
+
+This is our main app file. It kickstarts the whole process by
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 requiring all the modules that we need.
 
 By default, the OrderCloud AngularJS Seed includes a few useful modules written
@@ -50,9 +68,17 @@ angular.module('orderCloud', [
 	])
 ```
 
+<<<<<<< HEAD
 With app modules broken down in this way, all routing is performed by the
 submodules we include, as that is where our app's functionality is really
 defined.  So all we need to do in `app.js` is specify a default route to follow,
+=======
+## `app.config.js`
+
+With app modules broken down in this way, all routing is performed by the
+submodules we include, as that is where our app's functionality is really
+defined.  So all we need to do in `app.config.js` is specify a default route to follow,
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 which route of course is defined in a submodule. In this case, our `home` module
 is where we want to start, which has a defined route for `/home` in
 `src/app/home/home.js`.
@@ -63,6 +89,11 @@ is where we want to start, which has a defined route for `/home` in
 })
 ```
 
+<<<<<<< HEAD
+=======
+## `app.run.js`
+
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 Use the main applications run method to execute any code after services
 have been instantiated.
 
@@ -71,6 +102,11 @@ have been instantiated.
 })
 ```
 
+<<<<<<< HEAD
+=======
+## `app.controller.js`
+
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 And then we define our main application controller. This is a good place for logic
 not specific to the template or route, such as menu logic or page title wiring.
 
@@ -88,13 +124,20 @@ not specific to the template or route, such as menu logic or page title wiring.
 
 One of the design philosophies of `OrderCloud-Seed-AngularJS` is that tests should exist
 alongside the code they test and that the build system should be smart enough to
+<<<<<<< HEAD
 know the difference and react accordingly. As such, the unit test for `app.js`
+=======
+know the difference and react accordingly. As such, the unit test for `app.*.js`
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 is `app.spec.js`, though it is quite minimal.
 
 ### Global application styles
 
+<<<<<<< HEAD
 By default, we include [Ambient](http://ionlyseespots.github.io/ambient-design/index.html) which is an internally developed design framework that makes use of HTML5 elements & CSS3 attributes to layout the document outline.
 
+=======
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 Within the `src/app/` directory we included a `global.less` and `variables.less` file.
 These should be utilized for application wide LESS variables and mixins.  Each component
 within `src/app` will have a corresponding `less/` directory with a similar structure.

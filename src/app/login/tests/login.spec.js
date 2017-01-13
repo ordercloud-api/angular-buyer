@@ -2,7 +2,10 @@ describe('Component: Login', function() {
     var scope,
         q,
         loginFactory,
+<<<<<<< HEAD
         Token_Refresh,
+=======
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         oc,
         credentials = {
             Username: 'notarealusername',
@@ -10,17 +13,28 @@ describe('Component: Login', function() {
         };
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
+<<<<<<< HEAD
     beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService, TokenRefresh) {
+=======
+    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         q = $q;
         scope = $rootScope.$new();
         loginFactory = LoginService;
         oc = OrderCloud;
+<<<<<<< HEAD
         Token_Refresh = TokenRefresh;
+=======
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     }));
 
     describe('Factory: LoginService', function() {
         var client_id;
+<<<<<<< HEAD
         beforeEach(inject(function(clientid, TokenRefresh) {
+=======
+        beforeEach(inject(function(clientid) {
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
             client_id = clientid;
         }));
         describe('SendVerificationCode', function() {
@@ -42,6 +56,39 @@ describe('Component: Login', function() {
             });
         });
 
+<<<<<<< HEAD
+=======
+        describe('Logout', function() {
+            var cookies,
+                state;
+            beforeEach(inject(function($cookies, $state) {
+                var cookieResponse = {
+                    'a':'1',
+                    'b':'2'
+                };
+                cookies = $cookies;
+                state = $state;
+                var dfd = q.defer();
+                dfd.resolve();
+                spyOn(cookies, 'getAll').and.returnValue(cookieResponse);
+                spyOn(cookies, 'remove').and.callThrough();
+                spyOn(state, 'go').and.returnValue(dfd.promise);
+            }));
+
+            it('should remove all of the cookies', function() {
+                loginFactory.Logout();
+                expect(cookies.getAll).toHaveBeenCalled();
+                expect(cookies.remove).toHaveBeenCalledWith('a');
+                expect(cookies.remove).toHaveBeenCalledWith('b');
+            });
+
+            it('should redirect to home/login state', function() {
+                loginFactory.Logout();
+                expect(state.go).toHaveBeenCalled();
+            })
+        });
+
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         describe('ResetPassword', function() {
             var creds = {
                 ResetUsername: credentials.Username,
@@ -60,6 +107,7 @@ describe('Component: Login', function() {
         });
 
         describe('RememberMe', function(){
+<<<<<<< HEAD
             beforeEach(inject(function(){
                 var deferred = q.defer();
                 deferred.resolve(true);
@@ -70,6 +118,36 @@ describe('Component: Login', function() {
 
             it('should call the TokenRefresh.GetToken method', function(){
                 expect(Token_Refresh.GetToken).toHaveBeenCalled();
+=======
+            beforeEach(function(){
+                var deferred = q.defer();
+                deferred.resolve({access_token:'ACCESS_TOKEN'});
+                spyOn(oc.Refresh, 'GetToken').and.returnValue(deferred.promise);
+
+                var dfd = q.defer();
+                dfd.resolve();
+                spyOn(oc.BuyerID, 'Set').and.returnValue(dfd.promise);
+                spyOn(oc.Auth, 'SetToken').and.returnValue(dfd.promise);
+
+            });
+
+            it('should find the refresh token, refresh the access token, and store the new access token in cookies', function(){
+                spyOn(oc.Refresh, 'ReadToken').and.returnValue('REFRESH_TOKEN');
+                loginFactory.RememberMe();
+
+                expect(oc.Refresh.ReadToken).toHaveBeenCalled();
+                expect(oc.Refresh.GetToken).toHaveBeenCalledWith('REFRESH_TOKEN');
+                scope.$digest();
+                expect(oc.BuyerID.Set).toHaveBeenCalled();
+                expect(oc.Auth.SetToken).toHaveBeenCalledWith('ACCESS_TOKEN');
+            });
+
+            it('should not attempt to refresh users who do not have a refresh token', function() {
+                spyOn(oc.Refresh, 'ReadToken').and.returnValue(null);
+                loginFactory.RememberMe();
+                expect(oc.Refresh.ReadToken).toHaveBeenCalled();
+                expect(oc.Refresh.GetToken).not.toHaveBeenCalled();
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
             })
 
         });

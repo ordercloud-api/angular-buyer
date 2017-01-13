@@ -1,0 +1,49 @@
+<div id="modalMinicart" >
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <ng-pluralize count="minicartModal.lineItemsLength"
+                              when="{
+                     'one': '1 item in your cart',
+                     'other': '{} items in your cart'}">
+                </ng-pluralize>
+                <i class="fa fa-times-circle pull-right" ng-click="minicartModal.cancel()"></i>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="minicart-body">
+            <table class="table table-hover table-striped">
+                <tr ng-repeat="lineItem in minicartModal.lineItems">
+                    <td>{{lineItem.Quantity}}</td>
+                    <td>
+                        <a href="#">{{lineItem.Product.Name}}</a><br>
+                        <small class="text-muted">{{lineItem.ProductID}}</small>
+                        </br>
+                    </td>
+                    <td style="padding-right: 25px;">
+                        <b class="text-success">{{lineItem.LineTotal | currency}}</b>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-xs-6">
+                    <button class="btn btn-info btn-block" ng-click="minicartModal.goToCart()">Cart</button>
+                </div>
+                <div class="col-xs-6">
+                    <button class="btn btn-success btn-block" ng-click="minicartModal.goToCheckout()">Checkout</button>
+                </div>
+            </div>
+            <div class="row express-checkout">
+                <div class="col-xs-12">
+                    <button class="btn btn-success btn-block" ng-click="minicartModal.goToExpressCheckout()">Express
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

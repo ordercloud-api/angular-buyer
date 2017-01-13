@@ -1,0 +1,10 @@
+{
+  "appname": "Angular Buyer",
+  "scope": "FullAccess",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "buyerid": "XXXX",
+  "catalogid": "XXXX",
+  "environment": "prod",
+  "defaultstate": "home",
+  "anonymous": false
+}

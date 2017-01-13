@@ -1,4 +1,5 @@
 var gulp = require('gulp'),
+<<<<<<< HEAD
     inject = require('gulp-inject'),
     browserSync = require('browser-sync').create(),
     config = require('../../gulp.config'),
@@ -63,3 +64,14 @@ module.exports = {
     ServeTests: serveTests
 };
 
+=======
+    config = require('../../gulp.config'),
+    Server = require('karma').Server;
+
+gulp.task('test:unit', ['scripts', 'app-config'], function(done) {
+    new Server({
+        configFile: config.root + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2

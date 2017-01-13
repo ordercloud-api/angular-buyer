@@ -8,12 +8,25 @@ tests of such code.
 ```
 src/
   |- app/
+<<<<<<< HEAD
   |  |- home/
   |  |- app.js
   |  |- app.spec.js
   |  |- global.less
   |  |- variables.less
   |- assets/
+=======
+  |  |- common/
+  |  |- styles/
+  |  |- app.config.js
+  |  |- app.constants.json
+  |  |- app.controller.js
+  |  |- app.module.js
+  |  |- app.run.js
+  |  |- app.spec.js
+  |- assets/
+  |  |- images/
+>>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
   |- index.html
 ```
 
