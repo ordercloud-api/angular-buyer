@@ -1,9 +1,9 @@
 {
-  "appname": "CUPS Cafe Network",
+  "appname": "Angular Buyer",
   "scope": "FullAccess",
-  "clientid": "F286B844-C604-4081-9D22-F79EA176D8DC",
-  "buyerid": "cafebiba",
-  "catalogid": "defaultCupsCatalog",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "buyerid": "XXXX",
+  "catalogid": "XXXX",
   "environment": "prod",
   "defaultstate": "home",
   "anonymous": false
