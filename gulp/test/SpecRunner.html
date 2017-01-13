@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jasmine Spec Runner v2.4.1</title>
+
+    <!-- jasmine:css -->
+    <link rel="stylesheet" href="/node_modules/jasmine-core/lib/jasmine-core/jasmine.css">
+    <!-- endinject -->
+
+    <!-- jasmine:js -->
+    <script src="/node_modules/jasmine-core/lib/jasmine-core/jasmine.js"></script>
+    <script src="/node_modules/jasmine-core/lib/jasmine-core/jasmine-html.js"></script>
+    <script src="/node_modules/jasmine-core/lib/jasmine-core/boot.js"></script>
+    <!-- endinject -->
+
+    <!-- include bower files here... -->
+    <!-- bower:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="/bower_components/angular-touch/angular-touch.js"></script>
+    <script src="/bower_components/angular-messages/angular-messages.js"></script>
+    <script src="/bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+    <script src="/bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
+    <script src="/bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="/bower_components/angular-auto-validate/dist/jcs-auto-validate.js"></script>
+    <script src="/bower_components/snapjs/snap.js"></script>
+    <script src="/bower_components/localforage/dist/localforage.js"></script>
+    <script src="/bower_components/underscore/underscore.js"></script>
+    <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="/bower_components/angular-busy/dist/angular-busy.js"></script>
+    <script src="/bower_components/angular-mocks/angular-mocks.js"></script>
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/ordercloud-ng-sdk/dist/ordercloud-ng-sdk.js"></script>
+    <script src="/bower_components/angular-snap/angular-snap.js"></script>
+    <script src="/bower_components/angular-localforage/dist/angular-localForage.js"></script>
+    <!-- endinject -->
+
+    <!-- include source files here... -->
+    <!-- inject:js -->
+    <script src="/build/app/app.js"></script>
+    <script src="/build/app/app.config.js"></script>
+    <script src="/build/app/account/account.js"></script>
+    <script src="/build/app/addresses/addresses.js"></script>
+    <script src="/build/app/adminUsers/adminUsers.js"></script>
+    <script src="/build/app/base/base.js"></script>
+    <script src="/build/app/buyers/buyers.js"></script>
+    <script src="/build/app/cart/cart.js"></script>
+    <script src="/build/app/catalog/catalog.js"></script>
+    <script src="/build/app/catalogSearch/catalogSearch.js"></script>
+    <script src="/build/app/categories/categories.js"></script>
+    <script src="/build/app/checkout/checkout.js"></script>
+    <script src="/build/app/costCenters/costCenters.js"></script>
+    <script src="/build/app/creditCards/creditCards.js"></script>
+    <script src="/build/app/expressCheckout/expressCheckout.js"></script>
+    <script src="/build/app/giftCards/giftCards.js"></script>
+    <script src="/build/app/home/home.js"></script>
+    <script src="/build/app/login/login.js"></script>
+    <script src="/build/app/myOrders/myOrders.js"></script>
+    <script src="/build/app/orders/orders.js"></script>
+    <script src="/build/app/priceSchedules/priceBreakService.js"></script>
+    <script src="/build/app/priceSchedules/priceSchedules.js"></script>
+    <script src="/build/app/products/products.js"></script>
+    <script src="/build/app/promotions/promotions.js"></script>
+    <script src="/build/app/registration/registration.js"></script>
+    <script src="/build/app/repeatOrder/repeatOrder.js"></script>
+    <script src="/build/app/securityProfiles/securityProfiles.js"></script>
+    <script src="/build/app/shipments/shipments.js"></script>
+    <script src="/build/app/specs/specs.js"></script>
+    <script src="/build/app/spendingAccounts/spendingAccounts.js"></script>
+    <script src="/build/app/userGroups/userGroups.js"></script>
+    <script src="/build/app/users/users.js"></script>
+    <script src="/build/app/catalog/category/category.js"></script>
+    <script src="/build/app/catalog/product/ordercloud-order-input.js"></script>
+    <script src="/build/app/catalog/product/product.js"></script>
+    <script src="/build/app/catalog/productQuickView/productQuickView.js"></script>
+    <script src="/build/app/catalog/products/products.js"></script>
+    <script src="/build/app/checkout/billing/checkout.billing.js"></script>
+    <script src="/build/app/checkout/payment/checkout.payment.js"></script>
+    <script src="/build/app/checkout/shipping/checkout.shipping.js"></script>
+    <script src="/build/app/common/address/address.js"></script>
+    <script src="/build/app/common/auto-id/auto-id.js"></script>
+    <script src="/build/app/common/buyer-select/ordercloud-buyer-selected.js"></script>
+    <script src="/build/app/common/confirmPassword/confirmPassword.js"></script>
+    <script src="/build/app/common/current-order/current-order.js"></script>
+    <script src="/build/app/common/files/files.js"></script>
+    <script src="/build/app/common/geography/geography.js"></script>
+    <script src="/build/app/common/helper-factories/assignment-helpers.js"></script>
+    <script src="/build/app/common/helper-factories/paging-helpers.js"></script>
+    <script src="/build/app/common/infinite-scroll/infinite-scroll.js"></script>
+    <script src="/build/app/common/lineitems/lineitems.js"></script>
+    <script src="/build/app/common/localforage/localforage.config.js"></script>
+    <script src="/build/app/common/media/ordercloud.media.js"></script>
+    <script src="/build/app/common/ordercloud-logo/ordercloud_logo.js"></script>
+    <script src="/build/app/common/ordercloud-parameters/ordercloud-parameters.js"></script>
+    <script src="/build/app/common/search/search.js"></script>
+    <script src="/build/app/common/token-refresh/token-refresh.js"></script>
+    <script src="/build/app/common/underscore/underscore.factory.js"></script>
+    <script src="/build/app/facets/categoryFacets/categoryFacets.js"></script>
+    <script src="/build/app/facets/productFacets/productFacets.js"></script>
+    <script src="/build/app/orders/tests/orders.js"></script>
+    <!-- endinject -->
+
+    <!-- include spec files here... -->
+    <!-- spec:js -->
+    <script src="/src/app/app.spec.js"></script>
+    <script src="/src/app/account/tests/account.spec.js"></script>
+    <script src="/src/app/base/tests/base.spec.js"></script>
+    <script src="/src/app/login/tests/login.spec.js"></script>
+    <script src="/src/app/common/buyer-select/tests/buyer-select.spec.js"></script>
+    <script src="/src/app/common/auto-id/tests/auto-id.spec.js"></script>
+    <script src="/src/app/common/files/tests/files.spec.js"></script>
+    <script src="/src/app/common/helper-factories/tests/assignment-helpers.spec.js"></script>
+    <script src="/src/app/common/helper-factories/tests/paging-helpers.spec.js"></script>
+    <script src="/src/app/common/infinite-scroll/tests/infinite-scroll.spec.js"></script>
+    <script src="/src/app/common/ordercloud-logo/tests/ordercloud_logo.spec.js"></script>
+    <script src="/src/app/common/search/tests/search.spec.js"></script>
+    <script src="/../Components/addresses/tests/addresses.spec.js"></script>
+    <script src="/../Components/adminUsers/tests/admiunUsers.spec.js"></script>
+    <script src="/../Components/buyers/tests/buyer.spec.js"></script>
+    <script src="/../Components/cart/test/cart.spec.js"></script>
+    <script src="/../Components/catalog/test/catalog.spec.js"></script>
+    <script src="/../Components/catalog/test/productQuickView.spec.js"></script>
+    <script src="/../Components/catalogSearch/tests/catalogSearch.spec.js"></script>
+    <script src="/../Components/categories/tests/categories.spec.js"></script>
+    <script src="/../Components/checkout/tests/checkout.spec.js"></script>
+    <script src="/../Components/costCenters/tests/costCenters.spec.js"></script>
+    <script src="/../Components/creditCards/tests/creditCard.spec.js"></script>
+    <script src="/../Components/expressCheckout/tests/expressCheckout.spec.js"></script>
+    <script src="/../Components/giftCards/tests/giftCards.spec.js"></script>
+    <script src="/../Components/myOrders/tests/myOrders.spec.js"></script>
+    <script src="/../Components/orders/tests/orders.spec.js"></script>
+    <script src="/../Components/priceSchedules/tests/priceBreakService.spec.js"></script>
+    <script src="/../Components/priceSchedules/tests/priceSchedules.spec.js"></script>
+    <script src="/../Components/products/tests/products.spec.js"></script>
+    <script src="/../Components/promotions/tests/promotions.spec.js"></script>
+    <script src="/../Components/registration/tests/registration.spec.js"></script>
+    <script src="/../Components/repeatOrder/tests/repeatOrder.spec.js"></script>
+    <script src="/../Components/securityProfiles/test/securityProfiles.spec.js"></script>
+    <script src="/../Components/shipments/tests/shipments.spec.js"></script>
+    <script src="/../Components/specs/tests/specs.spec.js"></script>
+    <script src="/../Components/spendingAccounts/tests/spendingAccounts.spec.js"></script>
+    <script src="/../Components/userGroups/tests/userGroups.spec.js"></script>
+    <script src="/../Components/users/tests/users.spec.js"></script>
+    <script src="/../Components/catalog/category/tests/category.spec.js"></script>
+    <script src="/../Components/catalog/product/tests/ordercloud-order-input.spec.js"></script>
+    <script src="/../Components/catalog/product/tests/product.spec.js"></script>
+    <script src="/../Components/catalog/products/tests/products.spec.js"></script>
+    <script src="/../Components/facets/categoryFacets/tests/categoryFacets.spec.js"></script>
+    <script src="/../Components/facets/productFacets/tests/productFacets.spec.js"></script>
+    <!-- endinject -->
+</head>
+
+<body></body>
+
+</html>

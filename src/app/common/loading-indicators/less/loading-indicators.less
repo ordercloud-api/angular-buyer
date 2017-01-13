@@ -1,0 +1,65 @@
+.cg-busy-backdrop {
+  background-color:@body-bg;
+}
+
+.indicator-container { //fade the indicator in and out
+  position:absolute;
+  left:0; right:0; top:0; bottom:0;
+  z-index:1001;
+  &.ng-hide-add,
+  &.ng-hide-remove {
+	transition:all .3s ease;
+	display: block !important;
+  }
+  &.ng-hide-remove,
+  &.ng-hide-add.ng-hide-add-active {
+	opacity:0;
+  }
+  &.ng-hide-add-active,
+  &.ng-hide-remove.ng-hide-remove-active {
+	opacity:1;
+  }
+}
+
+.indicator {
+  display:flex;
+  flex-flow:column nowrap;
+  align-items:center;
+  justify-content:center;
+  position:absolute;
+  left:0; right:0; top:0; bottom:0;
+  .animation {
+	.dot {
+	  display:inline-block;
+	  margin:0 2px;
+	  width: 15px;
+	  height: 15px;
+	  background-color:@brand-primary;
+	  border-radius: 2px;
+	  animation-name:indicator-fade-in-out;
+	  animation-iteration-count: infinite;
+	  animation-duration:500ms;
+	  &:nth-of-type(2) {
+		animation-delay:100ms;
+	  }
+	  &:nth-of-type(3) {
+		animation-delay:200ms;
+	  }
+	}
+  }
+  .message {
+	margin-top:15px;
+  }
+}
+
+@keyframes indicator-fade-in-out {
+  0% {
+	opacity:1;
+  }
+  50% {
+	opacity:0.2;
+  }
+  100% {
+	opacity:1;
+  }
+}

@@ -1,0 +1,102 @@
+#BASE {
+  background-color:@body-bg;
+  overflow:hidden;
+  height:100%;
+  display:flex;
+  flex-flow:column nowrap;
+}
+
+#BASE {
+  &.desktop-left,
+  &.desktop-right {
+    transition:right 200ms ease-in-out, left 200ms ease-in-out;
+  }
+}
+
+@media(min-width:@screen-md-min) {
+  #BASE {
+    &.desktop-left {
+      left:@base-left-width;
+    }
+    &.desktop-right {
+      right:@base-right-width;
+    }
+  }
+}
+
+#BASE_TOP,
+#BASE_BOTTOM {
+  flex:0 1 auto;
+  .navbar {
+    margin:0;
+    border-radius:0;
+    border-left-width:0;
+    border-right-width:0;
+  }
+}
+
+#BASE_TOP {
+  .navbar {
+    border-top-width:0;
+  }
+}
+
+#BASE_BOTTOM {
+  .navbar {
+    border-bottom-width:0;
+  }
+}
+
+#BASE_LEFT,
+#BASE_RIGHT {
+  padding:@grid-gutter-width/2;
+  background-color:@side-nav-bg;;
+  border-style:solid;
+  border-color:@side-nav-border;
+  border-width:0;
+}
+
+#BASE_LEFT {
+  border-right-width:1px;
+  &.snap-drawer {
+    width:@base-left-width;
+  }
+}
+
+#BASE_RIGHT {
+  border-left-width:1px;
+  &.snap-drawer {
+    width:@base-right-width;
+  }
+}
+
+//===== Minicart in Base top/bottom
+#BASE_BOTTOM {
+  .dropdown .dropdown-menu {
+    top: auto;
+    bottom: 100%;
+    margin-bottom:2px;
+  }
+  :not(#minicart).dropdown .dropdown-menu {
+    margin-bottom: 0;
+    .border-top-radius(@border-radius-base);
+    .border-bottom-radius(0);
+  }
+  .caret {
+    border-top: 0;
+    border-bottom: 4px dashed;
+    content: "";
+  }
+}
+
+#BASE_BOTTOM,
+#BASE_TOP {
+  #minicart {
+    &:extend(.navbar-right);
+    &:extend(.navbar-form);
+    margin-right:0;
+    margin-top:0;
+    margin-bottom:0;
+  }
+}
+

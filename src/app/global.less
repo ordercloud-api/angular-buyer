@@ -1,0 +1,290 @@
+html {
+  height:100vh;
+  width:100vw;
+  max-width:@app-container-size;
+  margin:0 auto;
+  overflow:hidden;
+  background-color:@html-bg;
+}
+
+body {
+  height:100%;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+
+main {
+  flex:1 1 auto;
+  overflow:hidden;
+  position:relative;
+  > [id^="COMPONENT_"] { //Make the component container element fill the entire <main> for background styles
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-bottom:25px;
+  }
+}
+
+[ui-sref],
+[ng-click]{
+  cursor: pointer;
+}
+
+.container {
+  max-width:100%;
+}
+
+.pagination {
+  margin:0;
+}
+
+//TABLES WITH FIXED HEADERS
+.table-fixed-header {
+  position:relative;
+  padding-top:@table-header-height;
+  margin-bottom:@line-height-computed;
+  overflow:hidden;
+  .table-header-bg {
+    position:absolute;
+    left:0; right:0; top:0;
+    height:@table-header-height;
+    background:@table-bg;
+    border:1px solid @table-border-color;
+    border-bottom-width:2px;
+  }
+  .table-container {
+    background-color:@table-bg;
+    overflow-y:auto;
+    overflow-x:hidden;
+    max-height:@infinite-scroll-size;
+    border: 1px solid @table-border-color;
+    border-top-width:0;
+    table {
+      border-spacing:0;
+      margin-bottom:0;
+    }
+    td {
+      border:1px solid @table-border-color;
+      vertical-align:middle;
+      &:first-child {
+        border-left:none;
+      }
+      &:last-child {
+        border-left:none;
+      }
+    }
+    th {
+      height: 0;
+      line-height: 0;
+      padding: 0 25px;
+      color: transparent;
+      border: none;
+      white-space: nowrap;
+      span {
+        max-height:0;
+        height:0;
+        line-height:0;
+        margin:0;
+        padding:0;
+      }
+      div{
+        position: absolute;
+        background: transparent;
+        padding:@table-cell-padding;
+        color: @text-color;
+        top: 0;
+        margin-left: -25px;
+        line-height: @line-height-base;
+        vertical-align: bottom;
+        border-left:1px solid @table-border-color;
+      }
+      &:first-child div{
+        border: none;
+      }
+    }
+    tbody tr {
+      &:first-child {
+        td {
+          border-top:none;
+        }
+      }
+      &:last-child {
+        td {
+          border-bottom:none;
+        }
+      }
+    }
+  }
+}
+colgroup {
+  > col {
+    .action-column {
+      width:70px;
+    }
+  }
+}
+
+.table > tbody > tr {
+  > td {
+	&.actions-cell {
+	  text-align:center;
+	  white-space: nowrap;
+      @media(min-width:@screen-sm-min) {
+        text-align: right;
+        width: 1%;
+      }
+	}
+  }
+}
+
+// No matches message
+.no-matches {
+  @media(min-width:@screen-sm-min) {
+    margin-top:15px;
+  }
+  &:extend(.well);
+  text-align:center;
+}
+
+// OC Responsive Tables
+// commandeered from http://codepen.io/pixelchar/pen/rfuqK
+.oc-table-responsive {
+  &.table-bordered {
+    border:none;
+    & > tbody > tr{
+      & > th {
+        border:none;
+      }
+      & > td {
+        border-width:1px 0 0 0;
+      }
+    }
+  }
+
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  thead {
+    // Accessibly hide <thead> on narrow viewports
+    position: absolute;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+  }
+
+  // Set these items to display: block for narrow viewports
+  tbody,
+  tr,
+  th,
+  td {
+    display: block;
+    white-space: normal;
+  }
+
+  tr {
+    &:extend(.panel); //Mobile table row looks like a bootstrap panel
+    border-color: @panel-default-border;
+    overflow:hidden;
+  }
+
+  tbody {
+    & > tr > th {
+      border-top: none;
+      background-color: @panel-default-heading-bg;
+    }
+    td {
+      &[data-title] {
+        .clearfix(); //Clearfix solution for empty table cells on mobile
+        &:before {
+          content: attr(data-title);
+          float: left;
+          color: @gray-light;
+        }
+      }
+      @media(max-width:@screen-sm-min) {
+        text-align:right;
+      }
+    }
+  }
+
+  @media(min-width:@screen-sm-min) {
+    // Condensed tables on desktop
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th,
+        > td {
+          padding: @table-condensed-cell-padding;
+        }
+      }
+    }
+    &.table-bordered {
+      border:1px solid @table-border-color;
+      & > tbody > tr{
+        & > th {
+          border:1px solid @table-border-color;
+        }
+        & > td {
+          border-width:1px;
+        }
+      }
+    }
+    thead {
+      position: relative;
+      clip: auto;
+      height: auto;
+      width: auto;
+      overflow: auto;
+    }
+    tr {
+      display: table-row;
+      margin-bottom: 0;
+      border: none;
+      background-color:transparent;
+    }
+    th,
+    td {
+      // Undo display: block
+      display: table-cell;
+    }
+    tbody {
+      display:table-row-group;
+      tr {
+        display:table-row;
+      }
+      & > tr > th {
+        border-top: 1px solid @table-border-color;
+        background-color: transparent;
+      }
+      td {
+        &[data-title]:before {
+          content: none;
+        }
+      }
+    }
+  }
+  .fa-circle {
+    color:@gray-light;
+    &.active {
+      color:@brand-success;
+    }
+  }
+}

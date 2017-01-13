@@ -1,0 +1,35 @@
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#BASE_TOP_COLLAPSE" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="" ui-sref="home">{{application.name}}</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="BASE_TOP_COLLAPSE">
+            <ul class="nav navbar-nav navbar-right">
+                <li uib-dropdown ng-if="!base.currentUser.Anonymous">
+                    <a href="#" uib-dropdown-toggle role="button"><i class="fa fa-user"></i> Account <span class="caret"></span></a>
+                    <ul uib-dropdown-menu>
+                        <li class="dropdown-header">{{base.currentUser.FirstName + ' ' + base.currentUser.LastName}}</li>
+                        <li><a href="" ui-sref="account">Account</a></li>
+                        <li class="divider"></li>
+                        <li><a ng-click="application.logout()">Logout</a></li>
+                    </ul>
+                </li>
+                <li ng-if="base.currentUser.Anonymous && base.registrationAvailable">
+                    <a href="" ui-sref="registration" ui-sref-active="active">Register/Login</a>
+                </li>
+                <li>
+                    <ordercloud-minicart order="catalog.currentOrder"></ordercloud-minicart>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

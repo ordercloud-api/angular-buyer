@@ -1,0 +1,33 @@
+<aside id="BASE_RIGHT" snap-drawer="right" class="hidden-print">
+    <nav>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" ui-sref-active="active">
+                <a href="" ui-sref="home"><i class="fa fa-home"></i> Home</a>
+            </li>
+        </ul>
+    </nav>
+    <nav ng-if="base.catalogItems.length">
+        <h4 class="text-primary"><b>Organization</b></h4>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" ng-repeat="item in base.catalogItems | occomponents | orderBy:'Display'" ui-sref-active="active">
+                <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>
+            </li>
+        </ul>
+    </nav>
+    <nav ng-if="base.organizationItems.length">
+        <h4 class="text-primary"><b>Buyer Company</b></h4>
+        <ordercloud-select-buyer align="right"></ordercloud-select-buyer>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" ng-repeat="item in base.organizationItems | occomponents | orderBy:'Display'" ui-sref-active="active">
+                <a href="" ui-sref="{{item.StateRef}}">{{item.Display}}</a>
+                <div ng-if="item.Display == 'Catalog' && application.$state.includes('catalog')">
+                    <catalog-tree></catalog-tree>
+                    <ordercloud-catalog-facets></ordercloud-catalog-facets>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</aside>
+
+
+

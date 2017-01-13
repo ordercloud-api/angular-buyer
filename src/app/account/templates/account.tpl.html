@@ -1,0 +1,34 @@
+<article id="COMPONENT_Account" ui-view class="container-fluid">
+	<h3 class="page-header">Account</h3>
+	<form name="ProfileUpdateForm" ng-submit="account.update()" novalidate autocomplete="off">
+		<div class="row">
+			<div class="form-group col-sm-6">
+				<label>First Name</label>
+				<input type="text" ng-model="account.profile.FirstName" class="form-control" required/>
+			</div>
+			<div class="form-group col-sm-6">
+				<label>Last Name</label>
+				<input type="text" ng-model="account.profile.LastName" class="form-control" required/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label>User ID</label>
+			<input type="text" ng-model="account.profile.ID" class="form-control" required/>
+		</div>
+		<div class="form-group">
+			<label>Username</label>
+			<input type="text" ng-model="account.profile.Username" class="form-control" required/>
+		</div>
+		<div class="form-group">
+			<label>Email</label>
+			<input type="email" ng-model="account.profile.Email" class="form-control" required/>
+		</div>
+		<div class="form-group">
+			<label>Phone</label>
+			<input type="tel" ng-model="account.profile.Phone" class="form-control"/>
+		</div>
+		<button type="submit" class="btn btn-primary" ng-disabled="ProfileUpdateForm.$invalid || ProfileUpdateForm.$pristine">Save Changes</button>
+		<button type="button" class="btn btn-default" ng-disabled="ProfileUpdateForm.$pristine" ng-click="account.resetForm(ProfileUpdateForm)">Revert Changes</button>
+		<button type="button" class="btn btn-default" ui-sref=".changePassword">Change Password</button>
+	</form>
+</article>

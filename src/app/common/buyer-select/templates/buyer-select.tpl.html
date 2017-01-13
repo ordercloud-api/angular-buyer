@@ -1,0 +1,49 @@
+<div>
+    <div uib-dropdown dropdown-append-to-body="true" ng-if="selectBuyer.BuyerList.Items.length > 1">
+        <button class="btn btn-default btn-block btn-select-buyer" uib-dropdown-toggle>
+            <span class="text-primary"><small>Selected Buyer:</small></span>
+            <span class="buyer-name"><b>{{selectBuyer.selectedBuyer.Name}}</b></span>
+        </button>
+        <div class="buyer-list-menu" ng-class="{'dropdown-menu-right':selectBuyer.align == 'right'}" uib-dropdown-menu role="menu">
+            <section class="table-fixed-header">
+                <div class="table-header-bg"></div>
+                <div class="table-container" ordercloud-infinite-scroll controlleras="selectBuyer">
+                    <table class="table table-hover">
+                        <colgroup>
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>
+                                <div>ID</div>
+                            </th>
+                            <th>
+                                <div>Name</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr role="menuitem" ng-repeat="buyer in selectBuyer.BuyerList.Items" ng-click="selectBuyer.ChangeBuyer(buyer)">
+                            <td>{{buyer.ID}}</td>
+                            <td>{{buyer.Name}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <!--<li class="list-group-item">
+                <p>ID</p>
+                <p>Name</p>
+            </li>
+            <div ordercloud-infinite-scroll pagingfunction="selectBuyer.PagingFunction()">
+                <li class="list-group-item" role="menuitem" ng-repeat="buyer in selectBuyer.BuyerList.Items" ng-click="selectBuyer.ChangeBuyer(buyer)">
+                    <p>{{buyer.ID}}</p>
+                    <p>{{buyer.Name}}</p>
+                </li>
+            </div>-->
+        </div>
+    </div>
+    <button class="btn btn-default btn-block btn-select-buyer" ng-if="selectBuyer.BuyerList.Items.length == 1">
+        <span class="text-muted"><small>Active Buyer:</small></span>
+        <span class="buyer-name"><b>{{selectBuyer.selectedBuyer.Name}}</b></span>
+    </button>
+</div>

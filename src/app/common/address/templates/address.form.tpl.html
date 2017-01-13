@@ -1,0 +1,54 @@
+<div class="form-group" ng-form="address_form">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="address_name">Name</label>
+            <input required="true" id="address_name" type="text" ng-model="address.AddressName" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="address_company">Company</label>
+            <input id="address_company" type="text" ng-model="address.CompanyName" class="form-control">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="address_firstname">First Name</label>
+            <input ng-required="isbilling" id="address_firstname" type="text" ng-model="address.FirstName" class="form-control">
+        </div>
+        <div class="col-md-6">
+            <label for="address_lastname">Last Name</label>
+            <input ng-required="isbilling" id="address_lastname" type="text" ng-model="address.LastName" class="form-control">
+        </div>
+    </div>
+    <div>
+        <label for="address_street1">Line 1</label>
+        <input required="true" id="address_street1" type="text" ng-model="address.Street1" class="form-control">
+    </div>
+    <div>
+        <label for="address_street2">Line 2</label>
+        <input id="address_street2" type="text" ng-model="address.Street2" class="form-control">
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <label for="address_city">City</label>
+            <input required="true" id="address_city" type="text" ng-model="address.City" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <label for="address_state">State</label>
+            <select class="form-control" id="address_state" ng-model="address.State" ng-options="state.value as state.label for state in states" required/>
+        </div>
+        <div class="col-md-4">
+            <label for="address_zip">Zip</label>
+            <input required="true" id="address_zip" type="number" ng-model="address.Zip" class="form-control" maxlength="5" minlength="5">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="address_country">Country</label>
+            <select class="form-control" id="address_country" ng-model="address.Country" ng-options="country.value as country.label for country in countries" required/>
+        </div>
+        <div class="col-md-6">
+            <label for="address_phone">Phone</label>
+            <input id="address_phone" type="text" ng-model="address.Phone" class="form-control">
+        </div>
+    </div>
+</div>

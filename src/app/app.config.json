@@ -1,0 +1,15 @@
+{
+  "appname": "XXXXX",
+  "scope": "BuyerReader",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX",
+  "buyerid": "XXXXX",
+  "catalogid": "XXXXX",
+  "environment": "prod",
+  "anonymous": false,
+  "base": {
+    "left":true,
+    "right":false,
+    "top":true,
+    "bottom":false
+  }
+}
