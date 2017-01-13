@@ -12,6 +12,7 @@ angular.module('orderCloud', [
         'angular-busy',
         'jcs-autoValidate',
         'treeControl',
-        'hl.sticky'
+        'hl.sticky',
+        'angularPayments'
     ]
 );
