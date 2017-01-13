@@ -2,8 +2,6 @@ angular.module('orderCloud')
     .config(LoginConfig)
     .factory('LoginService', LoginService)
     .controller('LoginCtrl', LoginController)
-<<<<<<< HEAD
-=======
     .directive('prettySubmit', function () {
         return function (scope, element) {
             $(element).submit(function(event) {
@@ -11,7 +9,6 @@ angular.module('orderCloud')
             });
         };
     })
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 ;
 
 function LoginConfig($stateProvider) {
@@ -25,19 +22,12 @@ function LoginConfig($stateProvider) {
     ;
 }
 
-<<<<<<< HEAD
-function LoginService($q, $window, $state, toastr, OrderCloud, TokenRefresh, clientid, buyerid, anonymous) {
-=======
 function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, clientid, buyerid, anonymous) {
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
         RememberMe: _rememberMe,
-<<<<<<< HEAD
-=======
         AuthAnonymous: _authAnonymous,
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         Logout: _logout
     };
 
@@ -81,13 +71,6 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, clienti
         return deferred.promise;
     }
 
-<<<<<<< HEAD
-    function _logout(){
-        OrderCloud.Auth.RemoveToken();
-        OrderCloud.Auth.RemoveImpersonationToken();
-        OrderCloud.BuyerID.Set(null);
-        TokenRefresh.RemoveToken();
-=======
     function _authAnonymous() {
         return OrderCloud.Auth.GetToken('')
             .then(function(data) {
@@ -101,33 +84,10 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, clienti
         angular.forEach($cookies.getAll(), function(val, key) {
             $cookies.remove(key);
         });
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         $state.go(anonymous ? 'home' : 'login', {}, {reload: true});
     }
 
     function _rememberMe() {
-<<<<<<< HEAD
-        TokenRefresh.GetToken()
-            .then(function (refreshToken) {
-                if (refreshToken) {
-                    TokenRefresh.Refresh(refreshToken)
-                        .then(function(token) {
-                            OrderCloud.BuyerID.Set(buyerid);
-                            OrderCloud.Auth.SetToken(token.access_token);
-                            $state.go('home');
-                        })
-                        .catch(function () {
-                            toastr.error('Your token has expired, please log in again.');
-                        });
-                } else {
-                    _logout();
-                }
-            });
-    }
-}
-
-function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, LoginService, TokenRefresh, buyerid) {
-=======
         var availableRefreshToken = OrderCloud.Refresh.ReadToken() || null;
 
         if (availableRefreshToken) {
@@ -148,7 +108,6 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
 }
 
 function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, LoginService, buyerid) {
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     var vm = this;
     vm.credentials = {
         Username: null,
@@ -162,11 +121,6 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
     vm.rememberStatus = false;
 
     vm.submit = function() {
-<<<<<<< HEAD
-        OrderCloud.Auth.GetToken(vm.credentials)
-            .then(function(data) {
-                vm.rememberStatus ? TokenRefresh.SetToken(data['refresh_token']) : angular.noop();
-=======
         $('#Username').blur();
         $('#Password').blur();
         $('#Remember').blur();
@@ -174,7 +128,6 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
         vm.loading = OrderCloud.Auth.GetToken(vm.credentials)
             .then(function(data) {
                 vm.rememberStatus ? OrderCloud.Refresh.SetToken(data['refresh_token']) : angular.noop();
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
                 OrderCloud.BuyerID.Set(buyerid);
                 OrderCloud.Auth.SetToken(data['access_token']);
                 $state.go('home');

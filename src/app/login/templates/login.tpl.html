@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-<main id="COMPONENT_Login" ng-switch="login.form">
-    <div class="panel panel-default" ng-switch-when="login">
-        <form class="panel-body" name="LoginForm" ng-submit="login.submit()" >
-            <h1 class="text-center">Login</h1>
-            <div class="form-group">
-                <label for="Username">Username</label>
-                <input type="text" class="form-control" id="Username" ng-model="login.credentials.Username" ng-required="true" />
-=======
 <main class="login" ng-switch="login.form">
     <div class="panel panel-default" ng-switch-when="login" cg-busy="login.loading">
         <form action="." class="panel-body" name="LoginForm" ng-submit="login.submit()" pretty-submit>
@@ -14,7 +5,6 @@
             <div class="form-group">
                 <label for="Username">Username</label>
                 <input id="Username" type="text" class="form-control" autocapitalize="off" autocorrect="off" autocomplete="off" ng-model="login.credentials.Username" ng-required="true" />
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
             </div>
             <div class="form-group">
                 <label for="Password">Password</label>
@@ -22,11 +12,7 @@
             </div>
             <div class="form-group">
                 <label>
-<<<<<<< HEAD
-                    <input type="checkbox" ng-model="login.rememberStatus">
-=======
                     <input type="checkbox" id="Remember" ng-model="login.rememberStatus">
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
                     Remember Me
                 </label>
             </div>

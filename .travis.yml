@@ -1,16 +1,5 @@
 language: node_js
 node_js:
-<<<<<<< HEAD
-  - "4.2.6"
-
-before_script:
-  - npm install
-
-script:
-  - npm run test
-  - npm run test-e2e
-
-=======
   - "5.6.0"
 
 before_install:
@@ -18,4 +7,3 @@ before_install:
 
 script:
   - npm run test
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2

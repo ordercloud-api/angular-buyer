@@ -24,15 +24,8 @@ gulp.task('app-js', ['clean:app-js'], function() {
     return gulp
         .src([].concat(
             config.scripts,
-<<<<<<< HEAD
-            config.components.scripts,
-            config.templates,
-            config.components.templates,
-            config.src + '**/app.config.json'
-=======
             config.templates,
             config.src + '**/app.constants.json'
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         ))
         .pipe(jsonFilter)
         .pipe(ngConstant(config.ngConstantSettings))
@@ -45,14 +38,10 @@ gulp.task('app-js', ['clean:app-js'], function() {
         .pipe(fileSort())
         .pipe(wrapper(config.wrapper))
         .pipe(ngAnnotate())
-<<<<<<< HEAD
-        .pipe(concat('app.js'))
-=======
         .pipe(concat('app.module.js'))
         .pipe(concat('app.config.js'))
         .pipe(concat('app.run.js'))
         .pipe(concat('app.controller.js'))
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         .pipe(rev())
         .pipe(uglify({mangle:false})) //turning off mangle to fix the compile error
         .pipe(gulp.dest(config.compile + 'js/'))

@@ -2,10 +2,6 @@ describe('Component: Login', function() {
     var scope,
         q,
         loginFactory,
-<<<<<<< HEAD
-        Token_Refresh,
-=======
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         oc,
         credentials = {
             Username: 'notarealusername',
@@ -13,28 +9,16 @@ describe('Component: Login', function() {
         };
     beforeEach(module('orderCloud'));
     beforeEach(module('orderCloud.sdk'));
-<<<<<<< HEAD
-    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService, TokenRefresh) {
-=======
     beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         q = $q;
         scope = $rootScope.$new();
         loginFactory = LoginService;
         oc = OrderCloud;
-<<<<<<< HEAD
-        Token_Refresh = TokenRefresh;
-=======
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     }));
 
     describe('Factory: LoginService', function() {
         var client_id;
-<<<<<<< HEAD
-        beforeEach(inject(function(clientid, TokenRefresh) {
-=======
         beforeEach(inject(function(clientid) {
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
             client_id = clientid;
         }));
         describe('SendVerificationCode', function() {
@@ -56,8 +40,6 @@ describe('Component: Login', function() {
             });
         });
 
-<<<<<<< HEAD
-=======
         describe('Logout', function() {
             var cookies,
                 state;
@@ -88,7 +70,6 @@ describe('Component: Login', function() {
             })
         });
 
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         describe('ResetPassword', function() {
             var creds = {
                 ResetUsername: credentials.Username,
@@ -107,18 +88,6 @@ describe('Component: Login', function() {
         });
 
         describe('RememberMe', function(){
-<<<<<<< HEAD
-            beforeEach(inject(function(){
-                var deferred = q.defer();
-                deferred.resolve(true);
-                spyOn(Token_Refresh, 'GetToken').and.returnValue(deferred.promise);
-                loginFactory.RememberMe();
-
-            }));
-
-            it('should call the TokenRefresh.GetToken method', function(){
-                expect(Token_Refresh.GetToken).toHaveBeenCalled();
-=======
             beforeEach(function(){
                 var deferred = q.defer();
                 deferred.resolve({access_token:'ACCESS_TOKEN'});
@@ -147,7 +116,6 @@ describe('Component: Login', function() {
                 loginFactory.RememberMe();
                 expect(oc.Refresh.ReadToken).toHaveBeenCalled();
                 expect(oc.Refresh.GetToken).not.toHaveBeenCalled();
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
             })
 
         });

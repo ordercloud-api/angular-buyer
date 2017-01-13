@@ -18,12 +18,7 @@ gulp.task('styles', ['clean:styles'], function() {
     return gulp
         .src([].concat(
             mainBowerFiles({filter: '**/*.less'}),
-<<<<<<< HEAD
-            config.src + '**/*.less',
-            config.components.styles.less
-=======
             './src/app/styles/main.less'
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         ))
         .pipe(sourcemaps.init())
         .pipe(lessImport('oc-import.less'))

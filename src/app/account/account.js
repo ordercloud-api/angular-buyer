@@ -1,17 +1,10 @@
 angular.module('orderCloud')
 	.config(AccountConfig)
-<<<<<<< HEAD
-	.controller('AccountCtrl', AccountController)
-	.factory('AccountService', AccountService)
-	.controller('ConfirmPasswordCtrl', ConfirmPasswordController)
-	.controller('ChangePasswordCtrl', ChangePasswordController)
-=======
 	.controller('AccountInfoCtrl', AccountInfoController)
 	.controller('AccountEditModalCtrl', AccountEditModalController)
 	.factory('AccountService', AccountService)
 	.controller('ChangePasswordModalCtrl', ChangePasswordModalController)
 	.controller('ConfirmPasswordCtrl', ConfirmPasswordController)
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 ;
 
 function AccountConfig($stateProvider) {
@@ -20,31 +13,16 @@ function AccountConfig($stateProvider) {
 			parent: 'base',
 			url: '/account',
 			templateUrl: 'account/templates/account.tpl.html',
-<<<<<<< HEAD
-			controller: 'AccountCtrl',
-			controllerAs: 'account'
-		})
-		.state('account.changePassword', {
-			url: '/changepassword',
-			templateUrl: 'account/templates/changePassword.tpl.html',
-			controller: 'ChangePasswordCtrl',
-			controllerAs: 'changePassword'
-=======
 			controller: 'AccountInfoCtrl',
 			controllerAs: 'accountInfo',
 			data: {
 				pageTitle: "Account"
 			}
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 		})
 	;
 }
 
-<<<<<<< HEAD
-function AccountService($q, $uibModal, OrderCloud) {
-=======
 function AccountService($q, $uibModal, OrderCloud, toastr) {
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 	var service = {
 		Update: _update,
 		ChangePassword: _changePassword
@@ -68,27 +46,17 @@ function AccountService($q, $uibModal, OrderCloud, toastr) {
 			templateUrl: 'account/templates/confirmPassword.modal.tpl.html',
 			controller: 'ConfirmPasswordCtrl',
 			controllerAs: 'confirmPassword',
-<<<<<<< HEAD
-			size: 'sm'
-=======
 			size: 'md'
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 		}).result.then(function(password) {
 			var checkPasswordCredentials = {
 				Username: currentProfile.Username,
 				Password: password
 			};
-<<<<<<< HEAD
-			OrderCloud.Auth.GetToken(checkPasswordCredentials)
-				.then(function() {
-					updateUser();
-=======
 
 			OrderCloud.Auth.GetToken(checkPasswordCredentials)
 				.then(function() {
 					updateUser();
 					toastr.success('Account changes were saved.', 'Success!');
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 				})
 				.catch(function(ex) {
 					deferred.reject(ex);
@@ -130,11 +98,6 @@ function AccountService($q, $uibModal, OrderCloud, toastr) {
 	return service;
 }
 
-<<<<<<< HEAD
-function AccountController($exceptionHandler, toastr, AccountService, CurrentUser) {
-	var vm = this;
-	vm.profile = angular.copy(CurrentUser);
-=======
 function AccountInfoController($uibModal, CurrentUser){
 	var vm = this;
 	vm.profile = angular.copy(CurrentUser);
@@ -179,7 +142,6 @@ function AccountInfoController($uibModal, CurrentUser){
 function AccountEditModalController($uibModalInstance, $exceptionHandler, AccountService, CurrentUser, Profile){
 	var vm = this;
 	vm.profile = Profile;
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 	var currentProfile = CurrentUser;
 
 	vm.update = function() {
@@ -187,19 +149,11 @@ function AccountEditModalController($uibModalInstance, $exceptionHandler, Accoun
 			.then(function(data) {
 				vm.profile = angular.copy(data);
 				currentProfile = data;
-<<<<<<< HEAD
-				toastr.success('Account changes were saved.', 'Success!');
-			})
-			.catch(function(ex) {
-				vm.profile = currentProfile;
-				$exceptionHandler(ex)
-=======
 				vm.submit();
 			})
 			.catch(function(ex) {
 				vm.profile = currentProfile;
 				$exceptionHandler(ex);
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 			});
 	};
 
@@ -207,19 +161,9 @@ function AccountEditModalController($uibModalInstance, $exceptionHandler, Accoun
 		vm.profile = currentProfile;
 		form.$setPristine(true);
 	};
-<<<<<<< HEAD
-}
-
-function ConfirmPasswordController($uibModalInstance) {
-	var vm = this;
-
-	vm.submit = function() {
-		$uibModalInstance.close(vm.password);
-=======
 
 	vm.submit = function() {
 		$uibModalInstance.close();
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 	};
 
 	vm.cancel = function() {
@@ -227,11 +171,7 @@ function ConfirmPasswordController($uibModalInstance) {
 	};
 }
 
-<<<<<<< HEAD
-function ChangePasswordController($state, $exceptionHandler, toastr, AccountService, CurrentUser) {
-=======
 function ChangePasswordModalController(toastr, $state, $exceptionHandler, AccountService, $uibModalInstance, CurrentUser){
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
 	var vm = this;
 	vm.currentUser = CurrentUser;
 
@@ -242,15 +182,6 @@ function ChangePasswordModalController(toastr, $state, $exceptionHandler, Accoun
 				vm.currentUser.CurrentPassword = null;
 				vm.currentUser.NewPassword = null;
 				vm.currentUser.ConfirmPassword = null;
-<<<<<<< HEAD
-				$state.go('account');
-			})
-			.catch(function(ex) {
-				$exceptionHandler(ex)
-			});
-	};
-}
-=======
 				vm.submit();
 				$state.go('account.information');
 			})
@@ -279,4 +210,3 @@ function ConfirmPasswordController($uibModalInstance) {
 		$uibModalInstance.dismiss('cancel');
 	};
 }
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2

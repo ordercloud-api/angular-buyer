@@ -1,9 +1,5 @@
 var source = './src/',
     assets = 'assets/',
-<<<<<<< HEAD
-    components = './../Components/',
-=======
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     build = './build/',
     bowerFiles = './bower_components/',
     npmFiles = './node_modules',
@@ -39,29 +35,11 @@ module.exports = {
         '!' + source + '**/*.spec.js',
         '!' + source + '**/*.test.js'
     ],
-<<<<<<< HEAD
-    components: {
-        dir: components,
-        scripts: [
-            components + '**/*.js',
-            '!' + components + '**/*.spec.js',
-            '!' + components + '**/*.test.js'
-        ],
-        templates: components + '**/*.html',
-        styles: {
-            less: components + '**/*.less',
-            css: components + '**/*.css'
-        }
-    },
-    appFiles: [
-        build + '**/app.js',
-=======
     appFiles: [
         build + '**/app.module.js',
         build + '**/app.config.js',
         build + '**/app.run.js',
         build + '**/app.controller.js',
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
         build + '**/*.js',
         build + '**/*.css',
         source + '**/*.css'
@@ -90,11 +68,7 @@ module.exports = {
 
 function getConstants() {
     var result = {};
-<<<<<<< HEAD
-    var constants = JSON.parse(fs.readFileSync(source + 'app/app.config.json'));
-=======
     var constants = JSON.parse(fs.readFileSync(source + 'app/app.constants.json'));
->>>>>>> 281bb9e29d0e44c929457c755c5b59714e368ee2
     var environment = process.env.environment || constants.environment;
     switch (environment) {
         case 'local':
