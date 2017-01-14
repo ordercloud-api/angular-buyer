@@ -8,46 +8,55 @@
     <div class="modal-body">
         <fieldset>
             <div class="row">
-                <div class="form-group col-xs-12">
+                <div class="form-group col-md-6">
                     <label for="cardHolderNameInput">Card Holder Name</label>
-                    <input id="cardHolderNameInput"
+                    <input type="text"
                            class="form-control"
-                           type="text"
-                           ng-model="editCreditCard.creditCard.CardholderName">
+                           ng-model="editCreditCard.creditCard.CardholderName"
+                           disable-validation-message="">
                 </div>
-
             </div>
             <div class="row">
-
-                <div class="form-group col-xs-6">
-                    <label for="creditCardExpirationMonth">Expiration Month</label>
-                    <select id="creditCardExpirationMonth"
-                            class="form-control"
-                            required
-                            ng-model="editCreditCard.creditCard.ExpirationMonth"
-                            ng-options="month.string as month.string for month in editCreditCard.creditCardInfo.ExpirationMonths">
-                        <!--ng-change="editCreditCard.expirationDateChange(this.$index)"-->
-                    </select>
+                <div class="form-group col-md-6">
+                    <label for="creditCardNumberInput">Card Number</label>
+                    <input type="text"
+                           class="form-control"
+                           ng-model="editCreditCard.creditCard.CardNumber"
+                           payments-validate="card"
+                           payments-format="card"
+                           payments-type-model="creditCard.CardType"
+                           ng-class="creditCard.CardType"
+                           disable-validation-message=""/>
                 </div>
-                <div class="form-group col-xs-6">
-                    <label for="creditCardExpirationYear">Expiration Year</label>
-                    <select id="creditCardExpirationYear"
-                            class="form-control"
-                            required
-                            ng-model="editCreditCard.creditCard.ExpirationYear"
-                            ng-options="year as year for year in editCreditCard.creditCardInfo.ExpirationYears">
-                        <!--ng-change="checkoutPayment.expirationDateChange(this.$index)"-->
-                    </select>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="creditCardExpirationMonth">Expiration Date</label>
+                        <input type="text"
+                               class="form-control"
+                               ng-model="editCreditCard.creditCard.ExpirationDate"
+                               payments-validate="expiry"
+                               payments-format="expiry"
+                               disable-validation-message=""/>
+                    </div>
                 </div>
+                <div class="form-group col-md-3">
+                    <div class="form-group">
+                        <label for="cardCode">Security Code</label>
+                        <input type="text"
+                               class="form-control"
+                               ng-model="editCreditCard.creditCard.CardCode"
+                               payments-validate="cvc"
+                               payments-format="cvc"
+                               payments-type-model="type"
+                               disable-validation-message=""/>
 
-
+                    </div>
+                </div>
             </div>
-    </div>
-    </fieldset>
+        </fieldset>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary btn-block"
-                ng-disabled="myPaymentsCreditCardCreateModalForm.$invalid">Save
-        </button>
+        <button type="submit" class="btn btn-primary btn-block" ng-disabled="myPaymentsCreditCardCreateModalForm.$invalid">Save</button>
     </div>
 </form>
+
