@@ -26,17 +26,6 @@
                            ng-class="createCreditCard.creditCard.CardType"
                            disable-validation-message=""/>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="creditCardExpirationMonth">Expiration Date</label>
-                        <input type="text"
-                               class="form-control"
-                               ng-model="createCreditCard.creditCard.ExpirationDate"
-                               payments-validate="expiry"
-                               payments-format="expiry"
-                               disable-validation-message=""/>
-                    </div>
-                </div>
                 <div class="form-group col-md-3">
                    <div class="form-group">
                        <label for="cardCode">Security Code</label>
@@ -51,6 +40,27 @@
                    </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group col-xs-3">
+                    <label for="creditCardExpirationMonth">Expiration Month</label>
+                    <select id="creditCardExpirationMonth"
+                            class="form-control"
+                            required
+                            ng-model="createCreditCard.creditCard.ExpirationMonth"
+                            ng-options="month.string as month.string for month in createCreditCard.creditCardInfo.ExpirationMonths">
+                        <!--ng-change="createCreditCard.expirationDateChange(this.$index)"-->
+                    </select>
+                </div>
+                <div class="form-group col-xs-3">
+                    <label for="creditCardExpirationYear">Expiration Year</label>
+                    <select id="creditCardExpirationYear"
+                            class="form-control"
+                            required
+                            ng-model="createCreditCard.creditCard.ExpirationYear"
+                            ng-options="year as year for year in createCreditCard.creditCardInfo.ExpirationYears">
+                        <!--ng-change="checkoutPayment.expirationDateChange(this.$index)"-->
+                    </select>
+                </div>
         </fieldset>
     </div>
     <div class="modal-footer">
