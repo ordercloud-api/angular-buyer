@@ -49,8 +49,8 @@ function CreateCreditCardModalController($q, $exceptionHandler, $uibModalInstanc
             message: 'Creating Credit Card'
         };
 
-		vm.creditCard.ExpirationMonth  = vm.creditCard.ExpirationDate.split('/')[0];
-		vm.creditCard.ExpirationYear =  vm.creditCard.ExpirationDate.split('/')[1];
+		// vm.creditCard.ExpirationMonth  = vm.creditCard.ExpirationDate.split('/')[0];
+		// vm.creditCard.ExpirationYear =  vm.creditCard.ExpirationDate.split('/')[1];
 
         vm.loading.promise = ocAuthNet.CreateCreditCard(vm.creditCard)
             .then(function(data){
@@ -69,7 +69,7 @@ function EditCreditCardModalController($q, $exceptionHandler, $uibModalInstance,
     var date = new Date(vm.creditCard.ExpirationDate);
     vm.creditCard.ExpirationMonth  = (date.toISOString().substring(5,7));
     vm.creditCard.ExpirationYear =  date.getFullYear();
-    vm.creditCard.ExpirationDate = date.getMonth() + "/" + date.getFullYear();
+    //vm.creditCard.ExpirationDate = date.getMonth() + "/" + date.getFullYear();
 
     vm.cancel = function() {
         $uibModalInstance.dismiss();
