@@ -2,8 +2,10 @@ angular.module('orderCloud')
     .factory('ocCreditCardUtility', CreditCardUtility)
 ;
 
-
+// also check out fa-creditCard.js filter under the common folder
 function CreditCardUtility() {
+    var ExpirationDate;
+    var Year;
     //return the expirationMonth array and its function
     var creditCardUtility = {
         ExpirationMonths: [{
@@ -52,8 +54,18 @@ function CreditCardUtility() {
             'American Express',
             'Discover',
             'Visa'
-        ]
+        ],
+        // expects month as two digit string and year as a number, then converts and concats to 'XX/XXXX' string format
+        ExpirationDateFormat: function ExpirationDateFormat(month, year){
+            ExpirationDate = month.concat(convertYearToString(year));
+            return ExpirationDate;
+            }
     };
+    //expects number and converts to string  example: 2018 to '2018'
+    function convertYearToString (year){
+         Year = year.toString().substring(2, 4);
+        return Year;
+    }
 
     function _ccExpireYears() {
         var today = new Date();
