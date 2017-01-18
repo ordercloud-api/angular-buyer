@@ -10,9 +10,6 @@ function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
         'MakeAuthnetCall' : _makeApiCall
 
     };
-//if I want to check that the expiration data is formatted correctly. I could make a function that does what it needs to , return it in service then i can check that the functionality works
-    //check the api call, make sure it gets sent to the right url and it passes the body that I expect it too
-
 
     function _createCreateCard(creditCard, buyerID) {
         var ExpirationDate = ocCreditCardUtility.ExpirationDateFormat(creditCard.ExpirationMonth, creditCard.ExpirationYear);
