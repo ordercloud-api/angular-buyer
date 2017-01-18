@@ -1,4 +1,4 @@
-fdescribe('Factory: oc-authnet', function(){
+describe('Factory: oc-authnet', function(){
     var scope,
         q,
         oc,
