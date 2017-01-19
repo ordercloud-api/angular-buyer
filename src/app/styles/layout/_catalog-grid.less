@@ -1,14 +1,16 @@
 .l-product-grid {
     // use flexbox for layout on small+ screens
     // add flex display to product grid wrapper
-    margin: 0 -5px;
+    margin-left: -5px;
+    margin-right: -5px;
     @media (min-width: @screen-sm-min) {
         .oc-flex-layout.horizontal;
         .oc-flex-layout.wrap;
         // flex each item within the grid wrapper
         &__item {
             .oc-flex-layout.vertical;
-            padding: 0 5px;
+            padding-left: @grid-gutter-width/6;
+            padding-right: @grid-gutter-width/6;
         }
     }
 }
