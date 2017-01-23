@@ -13,6 +13,25 @@
             padding-right: @grid-gutter-width/6;
         }
     }
+    @media (max-width: @screen-xs-max){
+        .thumbnail {
+            border: none;
+        }
+        .oc-flex-layout.horizontal;
+        .oc-flex-layout.wrap;
+        // flex each item within the grid wrapper
+        &__item {
+            .oc-flex-layout.vertical;
+            padding-left: 2px;
+            padding-right: 2px;
+            body, p{
+                font-size: 10px;
+            }
+            h4{
+                font-size: 12px;
+            }
+        }
+    }
 }
 .l-category-grid {
     // use flexbox for layout on small+ screens
