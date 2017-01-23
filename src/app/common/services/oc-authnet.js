@@ -2,22 +2,20 @@ angular.module('orderCloud')
     .factory('ocAuthNet', AuthorizeNet)
 ;
 
-function AuthorizeNet( $q, $resource, OrderCloud) {
+function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
     return {
         'CreateCreditCard': _createCreateCard,
         'UpdateCreditCard': _updateCreditCard,
-        'DeleteCreditCard' : _deleteCreditCard
-        // 'AuthAndCapture' : _authAndCapture
+        'DeleteCreditCard' : _deleteCreditCard,
+        'MakeAuthnetCall' : _makeApiCall
 
     };
 
     function _createCreateCard(creditCard, buyerID) {
-        var year = creditCard.ExpirationYear.toString().substring(2,4);
-        var ExpirationDate = creditCard.ExpirationMonth.concat(year);
-
-        return makeApiCall('POST',{
+        var ExpirationDate = ocCreditCardUtility.ExpirationDateFormat(creditCard.ExpirationMonth, creditCard.ExpirationYear);
+        return _makeApiCall('POST', {
             'buyerID' : buyerID ? buyerID : OrderCloud.BuyerID.Get(),
-            'TransactionType' : "createCreditCard",
+            'TransactionType' : 'createCreditCard',
             'CardDetails' : {
                 'CardholderName' : creditCard.CardholderName,
                 'CardType' : creditCard.CardType,
@@ -29,12 +27,10 @@ function AuthorizeNet( $q, $resource, OrderCloud) {
     }
 
     function _updateCreditCard(creditCard, buyerID) {
-        var year = creditCard.ExpirationYear.toString().substring(2,4);
-        var ExpirationDate = creditCard.ExpirationMonth.concat(year);
-
-        return makeApiCall('POST',{
+        var ExpirationDate = ocCreditCardUtility.ExpirationDateFormat(creditCard.ExpirationMonth, creditCard.ExpirationYear);
+        return _makeApiCall('POST', {
             'buyerID' : buyerID ? buyerID : OrderCloud.BuyerID.Get(),
-            'TransactionType' : "updateCreditCard",
+            'TransactionType' : 'updateCreditCard',
             'CardDetails' : {
                 'CreditCardID' : creditCard.ID,
                 'CardholderName' : creditCard.CardholderName,
@@ -46,22 +42,17 @@ function AuthorizeNet( $q, $resource, OrderCloud) {
 
     }
     function _deleteCreditCard(creditCard, buyerID) {
-        return makeApiCall('POST', {
+        return _makeApiCall('POST', {
             'buyerID': buyerID ? buyerID : OrderCloud.BuyerID.Get(),
-            'TransactionType': "deleteCreditCard",
+            'TransactionType': 'deleteCreditCard',
             'CardDetails': {
                 'CreditCardID': creditCard.ID
             }
         });
-
     }
-    // function _authAndCapture() {
-    //
-    // }
 
-
-    function makeApiCall(method, requestBody) {
-        var apiUrl = 'https://api.ordercloud.io/v1/integrationproxy/authorizenettest';
+    function _makeApiCall(method, requestBody) {
+        var apiUrl = apiurl +'/v1/integrationproxy/authorizenettest';
         var d = $q.defer();
         $resource(apiUrl, null, {
             callApi: {
