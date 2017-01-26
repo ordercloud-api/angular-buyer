@@ -6,5 +6,6 @@
   "catalogid": "XXXX",
   "environment": "prod",
   "defaultstate": "home",
-  "anonymous": false
+  "anonymous": false,
+  "bootswatchtheme": null
 }

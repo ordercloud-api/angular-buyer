@@ -20,7 +20,11 @@ gulp.task('app-css', ['clean:app-css'], function() {
 
     return gulp
         .src([].concat(
-            mainBowerFiles({filter: ['**/*.css', '**/*.less']}),
+            mainBowerFiles({
+                filter: ['**/*.css', '**/*.less'],
+                overrides: {
+                    'bootswatch': config.checkBootswatchTheme()
+                }}),
             './src/app/styles/main.less'
         ))
         .pipe(lessFilter)
