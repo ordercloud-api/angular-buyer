@@ -1,11 +1,11 @@
 {
-  "appname": "Angular Buyer",
+  "appname": "Cosmetics-Buyer",
   "scope": "FullAccess",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-  "buyerid": "XXXX",
-  "catalogid": "XXXX",
+  "clientid": "6C086A9F-6252-40F6-8AD4-6234A099E49F",
+  "buyerid": "salonbuyer",
+  "catalogid": "salonbuyer",
   "environment": "prod",
   "defaultstate": "home",
   "anonymous": false,
-  "bootswatchtheme": null
+  "bootswatchtheme": "yeti"
 }
