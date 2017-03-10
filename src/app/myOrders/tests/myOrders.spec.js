@@ -219,7 +219,7 @@ describe('Component: MyOrders', function() {
                 orderDetailCtrl.cancelOrder(mockOrderID);
             });
             it('should call OrderCloud Confirm', function() {
-                expect(confirm.Confirm).toHaveBeenCalledWith('Are you sure you want to cancel this order?');
+                expect(confirm.Confirm).toHaveBeenCalled();
             });
             it('should call Orders.Cancel', function(){
                 scope.$digest();

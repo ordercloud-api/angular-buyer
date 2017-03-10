@@ -90,7 +90,7 @@ describe('Component: myAddresses', function(){
                 myAddressesCtrl.delete({$index:0, address:mockAddress});
             });
             it('should delete address, after prompting user to confirm', function(){
-                expect(confirm.Confirm).toHaveBeenCalledWith('Are you sure you want to delete this address?');
+                expect(confirm.Confirm).toHaveBeenCalled();
                 scope.$digest();
                 expect(oc.Me.DeleteAddress).toHaveBeenCalledWith('MOCK_ADDRESS_ID');
                 expect(toaster.success).toHaveBeenCalledWith('Address Deleted', 'Success');
