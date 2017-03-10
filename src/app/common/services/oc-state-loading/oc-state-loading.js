@@ -10,7 +10,6 @@ angular.module('orderCloud')
             $rootScope.$on('$stateChangeStart', function(e, toState) {
                 var parent = toState.parent || toState.name.split('.')[0];
                 stateLoading[parent] = $q.defer();
-                if ($ocMedia('max-width:767px')) $('#GlobalNav').offcanvas('hide');
             });
 
             $rootScope.$on('$stateChangeSuccess', function() {

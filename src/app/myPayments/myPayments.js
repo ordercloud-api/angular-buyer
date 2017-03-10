@@ -52,7 +52,10 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, 
 
     vm.delete = function(scope){
         vm.loading = [];
-        ocConfirm.Confirm("Are you sure you want to delete this Credit Card?")
+        ocConfirm.Confirm({
+                message:'Are you sure you want to delete <br> <b>' + 'xxxx-xxxx-xxxx-' + scope.creditCard.PartialAccountNumber + '</b>?',
+                confirmText: 'Delete credit card',
+                type: 'delete'})
             .then(function(){
                 vm.loading[scope.$index] = ocAuthNet.DeleteCreditCard(scope.creditCard)
                     .then(function(){

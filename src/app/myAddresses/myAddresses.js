@@ -43,7 +43,10 @@ function MyAddressesController(toastr, OrderCloud, ocConfirm, MyAddressesModal, 
 
     vm.delete = function(scope) {
         vm.loading = [];
-        ocConfirm.Confirm("Are you sure you want to delete this address?")
+        ocConfirm.Confirm({
+                message:'Are you sure you want to delete <br> <b>' + (scope.address.AddressName ? scope.address.AddressName : scope.address.ID) + '</b>?',
+                confirmText: 'Delete address',
+                type: 'delete'})
             .then(function() {
                 vm.loading[scope.$index] = OrderCloud.Me.DeleteAddress(scope.address.ID)
                     .then(function() {
