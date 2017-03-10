@@ -1,8 +1,8 @@
 angular.module('orderCloud')
-    .factory('ocGeography', OCGeography)
+    .factory('ocGeography', OrderCloudGeography)
 ;
 
-function OCGeography() {
+function OrderCloudGeography() {
     var _countries = [
         { "label": "United States of America", "value": "US"},
         { "label": "Afghanistan", "value": "AF"},

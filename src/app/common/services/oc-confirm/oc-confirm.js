@@ -8,17 +8,16 @@ function OrderCloudConfirmService($uibModal) {
         Confirm: _confirm
     };
 
-    function _confirm(message) {
+    function _confirm(options) {
         return $uibModal.open({
-            animation:false,
             backdrop:'static',
-            templateUrl: 'common/templates/confirm.modal.tpl.html',
+            templateUrl: 'common/services/oc-confirm/oc-confirm.modal.html',
             controller: 'ConfirmModalCtrl',
             controllerAs: 'confirmModal',
-            size: 'sm',
+            size: options.size || 'confirm',
             resolve: {
-                ConfirmMessage: function() {
-                    return message;
+                ConfirmOptions: function() {
+                    return options;
                 }
             }
         }).result
@@ -27,9 +26,12 @@ function OrderCloudConfirmService($uibModal) {
     return service;
 }
 
-function ConfirmModalController($uibModalInstance, ConfirmMessage) {
+function ConfirmModalController($uibModalInstance, ConfirmOptions) {
     var vm = this;
-    vm.message = ConfirmMessage;
+    vm.message = ConfirmOptions.message;
+    vm.confirmText = ConfirmOptions.confirmText;
+    vm.cancelText = ConfirmOptions.cancelText;
+    vm.type = ConfirmOptions.type;
 
     vm.confirm = function() {
         $uibModalInstance.close();

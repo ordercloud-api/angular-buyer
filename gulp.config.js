@@ -37,7 +37,10 @@ module.exports = {
     ],
     appFiles: [
         build + '**/app.module.js',
-        build + '**/app.config.js',
+        build + '**/common/config/routing.js',
+        build + '**/common/config/*.js',
+        build + '**/*s.config.js',
+        build + '**/*.config.js',
         build + '**/app.run.js',
         build + '**/app.controller.js',
         build + '**/*.js',
@@ -76,13 +79,13 @@ function getConstants() {
             result.authurl = 'http://core.four51.com:11629/oauth/token';
             result.apiurl = 'http://core.four51.com:9002';
             break;
-        case 'test':
-            result.authurl = 'https://testauth.ordercloud.io/oauth/token';
-            result.apiurl = 'https://testapi.ordercloud.io';
-            break;
         case 'qa':
             result.authurl = 'https://qaauth.ordercloud.io/oauth/token';
             result.apiurl = 'https://qaapi.ordercloud.io';
+            break;
+        case 'staging':
+            result.authurl = 'https://stagingauth.ordercloud.io/oauth/token';
+            result.apiurl = 'https://stagingapi.ordercloud.io';
             break;
         default:
             result.authurl = 'https://auth.ordercloud.io/oauth/token';
@@ -101,6 +104,8 @@ function getConstants() {
     if (process.env.appname) result.appname = process.env.appname;
     if (process.env.scope) result.scope = process.env.scope;
     if (process.env.ocscope) result.ocscope = process.env.ocscope;
+    if (process.env.html5mode) result.html5mode = process.env.html5mode;
+    if (process.env.bootswatchtheme) result.bootswatchtheme = process.env.bootswatchtheme;
     if (process.env.buyerid) result.buyerid = process.env.buyerid;
     if (process.env.catalogid) result.catalogid = process.env.catalogid;
     return result;

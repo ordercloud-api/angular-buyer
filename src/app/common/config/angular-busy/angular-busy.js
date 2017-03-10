@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .config(function(angularBusyDefaults) {
         angular.extend(angularBusyDefaults, {
-            templateUrl:'common/templates/view.loading.tpl.html',
+            templateUrl:'common/config/angular-busy/angular-busy.html',
             message:null,
             wrapperClass: 'indicator-container'
         })

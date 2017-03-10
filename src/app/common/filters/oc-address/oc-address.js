@@ -32,6 +32,9 @@ function AddressFilter() {
 
             return result.join('<br/>');
         }
+        else if (option == 'fullOneLine') {
+            return address.Street1 + (address.Street2 ? ', ' + address.Street2 : '') + ' ' + address.City + ', ' + address.State + ' ' + address.Zip;
+        }
         else {
             return address.Street1 + (address.Street2 ? ', ' + address.Street2 : '');
         }

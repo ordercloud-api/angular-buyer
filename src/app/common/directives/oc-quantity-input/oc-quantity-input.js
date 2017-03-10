@@ -12,7 +12,7 @@ function OCQuantityInput(toastr, OrderCloud, $rootScope) {
             order: '=',
             onUpdate: '&'
         },
-        templateUrl: 'common/templates/quantityInput.tpl.html',
+        templateUrl: 'common/directives/oc-quantity-input/oc-quantity-input.html',
         replace: true,
         link: function (scope) {
             if (scope.product){

@@ -5,6 +5,7 @@ angular.module('orderCloud')
 function faCreditCard() {
     return function(type) {
         var result = 'fa-credit-card-alt';
+        if (!type) return result;
         switch(type.toLowerCase()) {
             case 'visa':
                 result = 'fa-cc-visa';
