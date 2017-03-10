@@ -1,45 +1,51 @@
-# The `src` Directory
-
-## Overview
-
-The `src/` directory contains all code used in the application along with all
-tests of such code.
+# `./src/` Directory
+This is where the majority of development work will occur. It contains all
+of the application code, tests, and assets.
 
 ```
 src/
   |- app/
-  |  |- common/
-  |  |- styles/
-  |  |- app.config.js
-  |  |- app.constants.json
-  |  |- app.controller.js
-  |  |- app.module.js
-  |  |- app.run.js
-  |  |- app.spec.js
   |- assets/
-  |  |- images/
   |- index.html
 ```
 
-- `src/app/` - application-specific code, i.e. code not likely to be reused in
-  another application. [Read more &raquo;](app/README.md)
-- `src/assets/` - static files like fonts and images. 
-  [Read more &raquo;](assets/README.md)
-- `src/index.html` - this is the HTML document of the single-page application.
-  See below.
-
-See each directory for a detailed explanation.
+- [`src/app/`](app/README.md) - contains all of the application code and corresponding tests
+- [`src/assets/`](assets/README.md) - static files like fonts and images
+- [`src/index.html`](#indexhtml) - this is the HTML document of the single-page application
 
 ## `index.html`
+The index file is the HTML document of the single-page application (SPA).
+This is the highest level container for everything in your angular application.
 
-The `index.html` file is the HTML document of the single-page application (SPA)
-that should contain all markup that applies to everything in the app, such as
-the header and footer. It declares with `ngApp` that this is `orderCloud`,
-specifies the main `AppCtrl` controller, and contains the `uiView` directive
-into which route templates are placed.
+### `<html>`
+The [application module (orderCloud)](app/README.md) and [application controller (AppCtrl)](app/README.md)
+are both loaded on the `<html>` element. We use the
+[controllerAs syntax](https://toddmotto.com/digging-into-angulars-controller-as-syntax/), so keep
+in mind that anything attached to the `AppCtrl` view model is accessible under the name
+`application` in all of your template files.
 
-Unlike any other HTML document (e.g. the templates), `index.html` is compiled as
-a Grunt template, so variables from `Gruntfile.js` and `package.json` can be
-referenced from within it. Changing `name` in `package.json` from
-"orderCloud" will rename the resultant CSS and JavaScript placed in `build/`,
-so this HTML references them by variable for convenience.
+### `<head>`
+Within the `<head>` element there are some basic `<meta>` tags and a dynamic
+`<title>` tag which takes advantage of `ui-router`'s `$state` service and the `appname`
+constant. You can see how we are referencing the `AppCtrl` via the controllerAs syntax below:
+
+```html
+//dynamic application title
+
+<title ng-bind="application.$state.current.data.pageTitle + (application.$state.current.data.pageTitle ? ' | ' : '') + application.name">
+    OrderCloud
+</title>
+```
+After the `<title>`, there are some very important comments that are
+used to dynamically set the `base[href]` attribute and inject reference bower and application
+CSS styles during the gulp `build` and `compile`.
+
+At the end of the `<head>` you will find the link for the OrderCloud favicon.
+
+### `<body>`
+The body element contains the `ui-view` in which all other application templates will be loaded.
+Within the `<ui-view>` element we've placed the HTML used by [cg-busy]() to display a
+loading indicator while angular bootstraps itself.
+
+At the end of the body we again have some important comment markup that is used to
+dynamically inject all of the bower and application javascript files.
