@@ -1,9 +1,9 @@
 {
   "appname": "Angular Buyer",
   "scope": "FullAccess",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-  "buyerid": "XXXX",
-  "catalogid": "XXXX",
+  "clientid": "73FDFC1E-6FD5-4AFA-8751-C42C5CF47B57",
+  "buyerid": "A",
+  "catalogid": "SHARED",
   "environment": "prod",
   "defaultstate": "home",
   "anonymous": false,

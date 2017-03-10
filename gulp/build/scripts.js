@@ -38,3 +38,9 @@ gulp.task('rebuild-scripts', function() {
         .pipe(beautify({indentSize: config.indentSize}))
         .pipe(gulp.dest(config.build + 'app/'));
 });
+
+gulp.task('scripts-watch', ['rebuild-scripts'], function(done) {
+    var browserSync = require('browser-sync').get('oc-server');
+    browserSync.reload();
+    done();
+});

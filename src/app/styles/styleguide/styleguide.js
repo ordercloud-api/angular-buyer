@@ -8,7 +8,7 @@ function StyleguideConfig($stateProvider) {
 		.state('styleguide', {
 			parent: 'base',
 			url: '/styleguide',
-			templateUrl: 'styleguide/templates/styleguide.tpl.html',
+			templateUrl: 'styles/styleguide/templates/styleguide.html',
 			controller: 'StyleguideCtrl',
 			controllerAs: 'styleguide'
 		})

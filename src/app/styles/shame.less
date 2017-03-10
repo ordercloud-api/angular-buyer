@@ -1,12 +1,44 @@
 [ui-sref],
-[ng-click]{
+[ng-click],
+[uib-dropdown-toggle]{
   cursor: pointer;
-}
-
-body.modal-open {
-  padding-right:15px !important;
 }
 
 a[disabled] {
   pointer-events: none;
+}
+
+textarea {
+  resize:vertical;
+}
+
+.pagination {
+  margin-top:0;
+}
+
+.container-smooth {
+  margin-left:0;
+}
+
+.label[ng-repeat] {
+  margin-right:3px;
+  display:inline-block;
+}
+
+li,
+li a,
+.list-group-item {
+  > i:not(.fa-caret-down) {
+    width:1em;
+    text-align:center;
+    margin-right:3px;
+  }
+}
+
+.no-matches {
+  .panel;
+  .panel-default;
+  .panel-body;
+  color:@text-muted;
+  text-align:center;
 }
