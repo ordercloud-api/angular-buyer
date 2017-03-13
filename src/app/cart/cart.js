@@ -66,7 +66,10 @@ function CartController($rootScope, $state, toastr, OrderCloud, LineItemsList, C
     };
 
     vm.cancelOrder = function(order){
-        ocConfirm.Confirm("Are you sure you want cancel this order?")
+        ocConfirm.Confirm({
+                message:'Are you sure you want to cancel this order?',
+                confirmText: 'Yes, cancel order',
+                type: 'delete'})
             .then(function() {
                 OrderCloud.Orders.Delete(order.ID)
                     .then(function(){

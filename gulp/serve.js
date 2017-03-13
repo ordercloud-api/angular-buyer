@@ -36,8 +36,7 @@
                 .on('change', browserSync.reload);
             gulp.watch([].concat(
                 config.scripts
-            ), ['rebuild-scripts'])
-                .on('change', browserSync.reload);
+            ), ['scripts-watch']);
             gulp.watch([].concat(
                 config.styles
             ), ['styles']);

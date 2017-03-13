@@ -1,11 +1,12 @@
 {
   "appname": "Angular Buyer",
-  "scope": "FullAccess",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "scope": "MeAdmin MeXpAdmin MeAddressAdmin MeCreditCardAdmin",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXXXXXXXXXX",
   "buyerid": "XXXX",
+  "anonymous": false,
   "catalogid": "XXXX",
   "environment": "prod",
   "defaultstate": "home",
-  "anonymous": false,
+  "html5mode": false,
   "bootswatchtheme": null
 }

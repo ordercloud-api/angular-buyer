@@ -2,13 +2,6 @@ angular.module('orderCloud')
     .config(LoginConfig)
     .factory('LoginService', LoginService)
     .controller('LoginCtrl', LoginController)
-    .directive('prettySubmit', function () {
-        return function (scope, element) {
-            $(element).submit(function(event) {
-                event.preventDefault();
-            });
-        };
-    })
 ;
 
 function LoginConfig($stateProvider) {
@@ -22,7 +15,7 @@ function LoginConfig($stateProvider) {
     ;
 }
 
-function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, clientid, buyerid, anonymous) {
+function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, ocRolesService, clientid, buyerid, anonymous) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -84,6 +77,7 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, clienti
         angular.forEach($cookies.getAll(), function(val, key) {
             $cookies.remove(key);
         });
+        ocRolesService.Remove();
         $state.go(anonymous ? 'home' : 'login', {}, {reload: true});
     }
 
@@ -121,10 +115,6 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
     vm.rememberStatus = false;
 
     vm.submit = function() {
-        $('#Username').blur();
-        $('#Password').blur();
-        $('#Remember').blur();
-        $('#submit_login').blur();
         vm.loading = OrderCloud.Auth.GetToken(vm.credentials)
             .then(function(data) {
                 vm.rememberStatus ? OrderCloud.Refresh.SetToken(data['refresh_token']) : angular.noop();
@@ -138,7 +128,7 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
     };
 
     vm.forgotPassword = function() {
-        LoginService.SendVerificationCode(vm.credentials.Email)
+        vm.loading = LoginService.SendVerificationCode(vm.credentials.Email)
             .then(function() {
                 vm.setForm('verificationCodeSuccess');
                 vm.credentials.Email = null;
@@ -149,7 +139,7 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, Lo
     };
 
     vm.resetPassword = function() {
-        LoginService.ResetPassword(vm.credentials, vm.token)
+        vm.loading = LoginService.ResetPassword(vm.credentials, vm.token)
             .then(function() {
                 vm.setForm('resetSuccess');
                 vm.token = null;

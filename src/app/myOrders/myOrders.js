@@ -189,7 +189,10 @@ function MyOrderDetailController($state, $exceptionHandler, toastr, OrderCloud, 
     vm.promotionList = PromotionList.Meta ? PromotionList.Items : PromotionList;
     
     vm.cancelOrder = function(orderid) {
-        ocConfirm.Confirm('Are you sure you want to cancel this order?')
+        ocConfirm.Confirm({
+                message:'Are you sure you want to cancel this order?',
+                confirmText: 'Yes, cancel order',
+                type: 'delete'})
             .then(function() {
                 OrderCloud.Orders.Cancel(orderid)
                     .then(function() {

@@ -1,0 +1,14 @@
+<div ng-class="{'has-error': invalidExtension}">
+    <figure class="row">
+        <div class="col-xs-8 col-sm-5">
+            <img class="img-responsive" ng-src="{{model.xp.image.URL || 'http://placehold.it/300x300'}}" alt="Product Image">
+        </div>
+    </figure>
+    <div>
+        <br>
+        <button type="button" class="btn btn-default" ng-click="upload()">{{model.xp.image.URL  ? 'Replace Image' : 'Upload'}}</button>
+        <button type="button" class="btn btn-danger" ng-click="remove()" ng-if="model.xp.image.URL "><i class="fa fa-trash"></i></button>
+    </div>
+    <input class="ng-hide" name="upload" type="file" id="orderCloudUpload" />
+    <span class="help-block error-msg" ng-show="invalidExtension">Invalid File Type</span>
+</div>
