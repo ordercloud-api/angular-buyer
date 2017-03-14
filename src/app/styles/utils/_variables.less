@@ -25,8 +25,27 @@
     background-image: url(http://blog.etundra.com/wp-content/Media/2017/03/cafe-rio-hero.jpg); 
     position: relative;
     height: 100%;
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 0px;
+    padding-bottom: 400px;
+}
+
+@media (max-width: 991px) {
+    .jumbotron {
+        padding-bottom: 300px;
+    }
+}
+
+@media (max-width: 767px) {
+    .jumbotron {
+        padding-bottom: 200px;
+    }
+}
+
+.jumbotron h1 {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 60px;
+    font-weight: 300;
 }
 
 // Cards for homepage
@@ -38,13 +57,6 @@
 
 .top-buffer { 
     margin-top:20px; 
-}
-
-.jumbotron h1 {
-    color: #ffffff;
-    text-transform: uppercase;
-    font-size: 60px;
-    font-weight: 300;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
@@ -69,10 +81,4 @@
     background-color: #F2FBFF;
     border-color: #9CE1FF;
     color: #356E91;
-}
-
-@media (max-width: 767px) {
-    .col-xs-12.homepage, .col-sm-6.homepage {
-        margin-top:20px;
-    }
 }
