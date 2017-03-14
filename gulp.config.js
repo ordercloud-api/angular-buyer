@@ -63,7 +63,8 @@ module.exports = {
         cascade: true
     },
     jsCache: 'jsscripts',
-    indentSize: 4
+    indentSize: 4,
+    checkBootswatchTheme: _checkBootswatchTheme
 };
 
 function getConstants() {
@@ -103,4 +104,20 @@ function getConstants() {
     if (process.env.buyerid) result.buyerid = process.env.buyerid;
     if (process.env.catalogid) result.catalogid = process.env.catalogid;
     return result;
+}
+
+function _checkBootswatchTheme() {
+    var bootswatchBower = {};
+    var constants = JSON.parse(fs.readFileSync(source + 'app/app.constants.json'));
+
+    var theme = process.env.bootswatchtheme || constants.bootswatchtheme;
+
+    if (theme) {
+        bootswatchBower.main = [
+            "./" + theme + "/bootswatch.less",
+            "./" + theme + "/variables.less"
+        ]
+    }
+
+    return bootswatchBower;
 }

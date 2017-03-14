@@ -5,7 +5,15 @@
   bottom:0;
   top:0;
   .panel {
+    top: 15em;
     max-width:300px;
     margin:0 auto;
+    // for layout on small screens
+    @media (max-width: @screen-sm-max) {
+      background-color: transparent;
+      top: 5em;
+      border: none;
+      box-shadow: none;
+    }
   }
 }

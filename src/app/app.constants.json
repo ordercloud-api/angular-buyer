@@ -1,10 +1,11 @@
 {
   "appname": "Angular Buyer",
   "scope": "FullAccess",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-  "buyerid": "XXXX",
-  "catalogid": "XXXX",
+  "clientid": "7FC87166-D42A-4F2D-9587-159D98156314",
+  "buyerid": "caferio",
+  "catalogid": "caferio",
   "environment": "prod",
   "defaultstate": "home",
-  "anonymous": false
+  "anonymous": false,
+  "bootswatchtheme": "yeti"
 }
