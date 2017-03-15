@@ -126,7 +126,8 @@ function FavoriteProductController($scope, OrderCloud, toastr){
         function addProduct(existingList){
             existingList.push($scope.product.ID);
             OrderCloud.Me.Patch({xp: {FavoriteProducts: existingList}})
-                .then(function(){
+                .then(function(data){
+                    vm.hasFavorites = data.xp && data.xp.FavoriteProducts;
                     vm.isFavorited = true;
                     toastr.success($scope.product.Name + ' was added to your favorites');
                 });
