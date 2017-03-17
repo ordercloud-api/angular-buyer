@@ -109,7 +109,24 @@ function FavoriteProductDirective(){
 
 function FavoriteProductController($scope, OrderCloud, toastr){
     var vm = this;
-    vm.hasFavorites = $scope.currentUser && $scope.currentUser.xp && $scope.currentUser.xp.FavoriteProducts;
+    if($scope.currentUser && $scope.currentUser.xp && $scope.currentUser.xp.FavoriteProducts){
+        vm.hasFavorites = true;
+    }
+    else{
+        if($scope.currentUser && $scope.currentUser.xp){
+            $scope.currentUser.xp.FavoriteProducts = [];
+        }else{
+            $scope.currentUser.xp ={};
+            $scope.currentUser.xp.FavoriteProducts = [];
+        }
+        OrderCloud.Me.Patch( {xp:$scope.currentUser.xp})
+            .then(function(){
+                vm.hasFavorites = true;
+            })
+            .catch(function(ex){
+                console.log(ex);
+            });
+    }
     vm.isFavorited = vm.hasFavorites && $scope.currentUser.xp.FavoriteProducts.indexOf($scope.product.ID) > -1;
 
     vm.toggleFavoriteProduct = function(){
