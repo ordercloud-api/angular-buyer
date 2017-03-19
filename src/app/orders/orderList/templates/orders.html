@@ -52,7 +52,15 @@
     <!--====== LIST ======-->
     <div cg-busy="orders.searchLoading">
         <div class="no-matches" ng-if="!orders.list.Items.length">
-            <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders'}}</b>
+            <span ng-if="!orders.parameters.tab || orders.parameters.tab == 'history'">
+                <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders'}}</b>
+            </span>
+            <span ng-if="orders.parameters.tab == 'approvals'">
+                <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders awaiting your approval'}}</b>
+            </span>
+            <span ng-if="orders.parameters.tab == 'favorites'">
+                <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders have been favorited'}}</b>
+            </span>
         </div>
         <div ng-if="orders.list.Items.length">
             <div class="text-right">
