@@ -10,6 +10,13 @@ function OrdersController($state, $filter, $ocMedia, OrderCloud, ocParameters, o
     vm.fromDate = Parameters.fromDate;
     vm.toDate = Parameters.toDate;
 
+    vm.orderStatuses = [
+        {Value: 'Open', Name: 'Open'},
+        {Value: 'AwaitingApproval', Name: 'Awaiting Approval'},
+        {Value: 'Completed', Name: 'Completed'},
+        {Value: 'Declined', Name: 'Declined'}
+    ];
+
     vm.sortSelection = Parameters.sortBy ? (Parameters.sortBy.indexOf('!') == 0 ? Parameters.sortBy.split('!')[1] : Parameters.sortBy) : null;
     vm.filtersApplied = vm.parameters.fromDate || vm.parameters.toDate || ($ocMedia('max-width:767px') && vm.sortSelection); //Check if filters are applied, Sort by is a filter on mobile devices
     vm.showFilters = vm.filtersApplied;

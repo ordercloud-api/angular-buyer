@@ -31,6 +31,12 @@
     <form name="OrdersFiltersForm">
         <div class="row">
             <div class="col-sm-3 form-group">
+                <label for="Status">Status</label>
+                <select id="Status" class="form-control" ng-model="orders.parameters.status" ng-options="status.Value as status.Name for status in orders.orderStatuses" ng-change="orders.filter(true)">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-sm-3 form-group">
                 <label for="FromDate">From Date</label>
                 <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.fromDate" ng-blur="orders.filter(true)">
                 <input id="FromDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.fromDate" uib-datepicker-popup datepicker-options="{maxDate:orders.toDate}" is-open="fromDate.open" ng-change="orders.filter(true)" ng-click="fromDate.open = !fromDate.open">
@@ -70,6 +76,11 @@
                                 <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'ID'"></i>
                                 <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!ID'"></i>
                             </th>
+                            <th ng-click="orders.updateSort('Status')">
+                                Status
+                                <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'Status'"></i>
+                                <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!Status'"></i>
+                            </th>
                             <th ng-click="orders.updateSort('DateSubmitted')">
                                 Submitted
                                 <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'DateSubmitted'"></i>
@@ -90,6 +101,7 @@
                     <tbody>
                         <tr ng-repeat="order in orders.list.Items">
                             <td><a ng-click="orders.goToOrder(order)">{{order.ID}}</a></td>
+                            <td>{{order.Status | humanize}}</td>
                             <td>{{(order.DateSubmitted || order.DateCreated) | date:'short'}}</td>
                             <td>{{order.FromUserFirstName + ' ' + order.FromUserLastName}}</td>
                             <td>{{order.Subtotal | currency}}</td>
