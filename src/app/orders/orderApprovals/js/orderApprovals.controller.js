@@ -3,9 +3,10 @@ angular.module('orderCloud')
     .controller('ApprovalModalCtrl', ApprovalModalController)
 ;
 
-function OrderApprovalsController(OrderApprovals, OrderCloud, ocApprovals, $stateParams) {
+function OrderApprovalsController(OrderApprovals, CanApprove, OrderCloud, ocApprovals, $stateParams) {
     var vm = this;
     vm.list = OrderApprovals;
+    vm.canApprove = CanApprove;
 
     vm.pageChanged = function() {
         ocApprovals.List($stateParams.orderid, $stateParams.buyerid, vm.list.Meta.Page, vm.list.Meta.PageSize)
@@ -33,7 +34,7 @@ function ApprovalModalController(OrderID, Intent, $exceptionHandler, $uibModalIn
     var vm = this;
     vm.intent = Intent; // 'Approve' or 'Decline'
     vm.orderid = OrderID;
-    vm.comments = '';
+    vm.comments = null;
     
     vm.cancel = cancel;
     vm.submit = submit;

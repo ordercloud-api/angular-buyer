@@ -15,15 +15,15 @@
                     <th>Approving User Group</th>
                     <th>Approval Rule Name</th>
                     <th>Approval Rule Description</th>
-                    <th></th>
+                    <th ng-if="orderApprovals.canApprove"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Pending'}">
                     <td>{{approval.ApprovingUserGroup.Name}}</td>
                     <td>{{approval.ApprovalRule.Name}}</td>
-                    <td ng-bind-html="approval.ApprovalRule.Description" style="white-space: pre-wrap"></td>
-                    <th>
+                    <td ng-bind-html="approval.ApprovalRule.Description" style="white-space: pre-wrap">{{orderApprovals.canApprove}}</td>
+                    <th ng-if="orderApprovals.canApprove">
                         <button class="btn btn-sm btn-primary btn-block" ng-click="orderApprovals.updateApprovalStatus('Approve')">Approve</button>
                         <button class="btn btn-sm btn-danger btn-block" ng-click="orderApprovals.updateApprovalStatus('Decline')">Decline</button>
                     </th>
@@ -80,7 +80,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Declined'}">
-                        <td>{{approval.ApproverUserName}}</td>
+                        <td>{{approval.ApprovingUser.FirstName + ' ' + approval.ApprovingUser.LastName}}</td>
                         <td>{{approval.DateCompleted | date:'short'}}</td>
                         <td>{{approval.Comments}}</td>
                         <td>{{approval.ApprovalRule.Name}}</td>
