@@ -12,7 +12,7 @@ function OrdersConfig($stateProvider) {
             data: {
                 pageTitle: 'Orders'
             },
-            url: '/orders?from&to&search&page&pageSize&searchOn&sortBy&tab',
+            url: '/orders?from&to&search&page&pageSize&searchOn&sortBy&tab?status',
             resolve: {
                 Parameters: function($stateParams, ocParameters){
                     return ocParameters.Get($stateParams);

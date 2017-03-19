@@ -2,13 +2,15 @@ angular.module('orderCloud')
     .factory('ocOrders', ocOrdersService)
 ;
 
-function ocOrdersService(OrderCloud, $exceptionHandler){
+function ocOrdersService(OrderCloud){
     var service = {
         List: _list
     };
     
     function _list(Parameters, CurrentUser){
         var parameters = angular.copy(Parameters);
+
+        //exclude unsubmitted orders from list
         parameters.filters = {Status: '!Unsubmitted'};
 
         //set outgoing params to iso8601 format as expected by api
@@ -33,23 +35,15 @@ function ocOrdersService(OrderCloud, $exceptionHandler){
             parameters.filters.DateSubmitted = [('<' + parameters.to)];
         }
 
-        // if(parameters.tab === 'history'){
-        //     //
-        // }
-
-        // if(parameters.tab === 'approvals') {
-        //     //
-        // }
-
         if(parameters.tab === 'favorites') {
-
             if(CurrentUser.xp && CurrentUser.xp.FavoriteOrders) {
                 angular.extend(parameters.filters, {ID: CurrentUser.xp.FavoriteOrders.join('|')});
             }
         }
 
-        //create filter object for outgoing call. We don't want to use filters directly 
-        //in params because it looks ugly (displays as deserialized object)
+        if(parameters.status){
+            angular.extend(parameters.filters, {Status: parameters.status});
+        }
 
          // list orders with generated parameters
         var listType = parameters.tab === 'approvals' ? 'ListIncomingOrders' : 'ListOutgoingOrders';
