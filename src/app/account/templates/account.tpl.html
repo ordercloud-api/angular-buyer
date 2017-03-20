@@ -13,8 +13,8 @@
 			<li ui-sref-active="active">
 				<a href="" ui-sref="favoriteProducts">Favorite Products</a>
 			</li>
-			<li ui-sref-active="active">
-				<a href="" ui-sref="myOrders">Order History</a>
+			<li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}">
+				<a href="" ui-sref="orders">Orders</a>
 			</li>
 		</ul>
 	</aside>

@@ -30,12 +30,12 @@
       <div class="c-topnav__item c-topnav__account" uib-dropdown ng-if="!base.currentUser.Anonymous">
         <a uib-dropdown-toggle role="button"><i class="fa fa-user"></i> <span class="hidden-xs hidden-sm">Account</span> <span class="caret hidden-xs"></span></a>
         <ul class="dropdown-menu-right" uib-dropdown-menu>
-          <li ui-sref-active="active"><a ui-sref="account">My Account</a></li>
+          <li><a ui-sref="account">My Account</a></li>
           <li class="divider"></li>
           <li ui-sref-active="active"><a ui-sref="myAddresses">Personal Addresses</a></li>
           <li ui-sref-active="active"><a ui-sref="myPayments">Payment Methods</a></li>
           <li ui-sref-active="active"><a ui-sref="favoriteProducts">Favorite Products</a></li>
-          <li ui-sref-active="active"><a ui-sref="myOrders">Order History</a></li>
+          <li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}"><a ui-sref="orders">Orders</a></li>
           <li class="divider"></li>
           <li><a ng-click="application.logout()">Log out</a></li>
         </ul>
