@@ -3,7 +3,7 @@ angular.module('orderCloud')
     .controller('ApprovalModalCtrl', ApprovalModalController)
 ;
 
-function OrderApprovalsController(OrderApprovals, CanApprove, OrderCloud, ocApprovals, $stateParams) {
+function OrderApprovalsController($stateParams, OrderCloud, ocApprovals, OrderApprovals, CanApprove) {
     var vm = this;
     vm.list = OrderApprovals;
     vm.canApprove = CanApprove;

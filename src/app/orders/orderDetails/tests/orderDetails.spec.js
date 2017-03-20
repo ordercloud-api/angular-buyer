@@ -1,4 +1,4 @@
-fdescribe('Component: orders', function() {
+describe('Component: orderDetails', function() {
     var scope,
         q,
         oc,
@@ -51,7 +51,7 @@ fdescribe('Component: orders', function() {
 
 
 
-    describe('Controller: OrdersCtrl', function(){
+    describe('Controller: OrderDetailsCtrl', function(){
         var orderDetailsCtrl,
             mockMeta,
             mockResponse
@@ -75,11 +75,13 @@ fdescribe('Component: orders', function() {
 
 
         describe('pageChanged', function(){
-            it('should reload state with page from vm.lineItems.Meta.Page', function(){
+            it('should update results with page from vm.lineItems.Meta.Page', function(){
                 var mockPage = 3;
                 orderDetailsCtrl.lineItems.Meta.Page = mockPage;
                 orderDetailsCtrl.pageChanged();
                 expect(oc.LineItems.List).toHaveBeenCalledWith(mockOrderID, null, mockPage, 12, null, null, null, mockBuyerID);
+                scope.$digest();
+                expect(orderDetailsCtrl.lineItems).toEqual(mockResponse);
             });
         });
 
@@ -96,4 +98,3 @@ fdescribe('Component: orders', function() {
         });
     });
 });
-
