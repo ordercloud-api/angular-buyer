@@ -1,13 +1,13 @@
 angular.module('orderCloud')
-    .factory('ocOrderDetail', ocOrderDetailService)
+    .factory('ocOrderDetails', ocOrderDetailsService)
 ;
 
-function ocOrderDetailService($q, $exceptionHandler, OrderCloud){
+function ocOrderDetailsService($q, $exceptionHandler, OrderCloud){
     var service = {
-        GetOrderDetails: _getOrderDetails
+        Get: _get
     };
 
-    function _getOrderDetails(orderID){
+    function _get(orderID){
         return OrderCloud.Orders.Get(orderID)
             .then(function(order){
                 return getBuyerOrg(order);

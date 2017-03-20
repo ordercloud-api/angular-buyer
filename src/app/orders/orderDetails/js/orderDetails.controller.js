@@ -1,8 +1,8 @@
 angular.module('orderCloud')
-    .controller('OrderDetailCtrl', OrderDetailController)
+    .controller('OrderDetailsCtrl', OrderDetailsController)
 ;
 
-function OrderDetailController($stateParams, toastr, OrderCloud, ocOrders, SelectedOrder, OrderLineItems) {
+function OrderDetailsController($stateParams, OrderCloud, SelectedOrder, OrderLineItems) {
     var vm = this;
     vm.order = SelectedOrder;
     vm.lineItems = OrderLineItems;
