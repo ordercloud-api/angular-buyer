@@ -333,11 +333,15 @@ function PaymentsController($rootScope, $scope, $exceptionHandler, toastr, Order
 	};
 
 	$scope.removePayment = function(scope) {
-		OrderCloud.Payments.Delete($scope.order.ID, scope.payment.ID)
+		// TODO: when api bug EX-1053 is fixed refactor this to simply delete the payment
+		return OrderCloud.Payments.Patch($scope.order.ID, scope.payment.ID, {Type: 'PurchaseOrder', SpendingAccountID: null})
 			.then(function() {
-				$scope.payments.Items.splice(scope.$index, 1);
-				calculateMaxTotal();
-				toastr.success('Payment Removed');
+				return OrderCloud.Payments.Delete($scope.order.ID, scope.payment.ID)
+					.then(function(){
+						$scope.payments.Items.splice(scope.$index, 1);
+						calculateMaxTotal();
+						return toastr.success('Payment Removed');
+					});
 			});
 	};
 
