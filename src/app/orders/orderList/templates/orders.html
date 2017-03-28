@@ -39,12 +39,22 @@
             <div class="col-sm-3 form-group">
                 <label for="FromDate">From Date</label>
                 <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.fromDate" ng-blur="orders.filter(true)">
-                <input id="FromDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.fromDate" uib-datepicker-popup datepicker-options="{maxDate:orders.toDate}" is-open="fromDate.open" ng-change="orders.filter(true)" ng-click="fromDate.open = !fromDate.open">
+                <div class="input-group" ng-if="!application.isTouchDevice">
+                    <input id="FromDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.fromDate" uib-datepicker-popup datepicker-options="{maxDate:orders.toDate}" is-open="fromDate.open" ng-change="orders.filter(true)" ng-click="fromDate.open = !fromDate.open">
+                    <span class="input-group-btn" ng-if="orders.fromDate">
+                        <button class="btn btn-default" ng-click="orders.clearFrom()" type="button"><i class="fa fa-times text-danger"></i></button>
+                    </span>
+                </div>
             </div>
             <div class="col-sm-3 form-group">
                 <label for="ToDate">To Date</label>
                 <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.toDate" ng-blur="orders.filter(true)">
-                <input id="ToDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.toDate" uib-datepicker-popup datepicker-options="{minDate:orders.fromDate}" is-open="toDate.open" ng-change="orders.filter(true)" ng-click="toDate.open = !toDate.open">
+                <div class="input-group" ng-if="!application.isTouchDevice">
+                    <input id="ToDate" type="text" class="form-control" ng-model="orders.toDate" uib-datepicker-popup datepicker-options="{minDate:orders.fromDate, maxDate: orders.today}" is-open="toDate.open" ng-change="orders.filter(true)" ng-click="toDate.open = !toDate.open">
+                    <span class="input-group-btn" ng-if="orders.toDate">
+                        <button class="btn btn-default" ng-click="orders.clearTo()" type="button"><i class="fa fa-times text-danger"></i></button>
+                    </span>
+                </div>
             </div>
         </div>
     </form>
