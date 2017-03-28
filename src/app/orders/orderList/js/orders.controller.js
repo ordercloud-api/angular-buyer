@@ -26,6 +26,9 @@ function OrdersController($state, $filter, $ocMedia, OrderCloud, ocParameters, o
         Filter / Search / Sort / Pagination functions               
     */
     vm.filter = filter; //Reload the state with new parameters
+    vm.today = Date.now();
+    vm.clearFrom = clearFrom; //clears from parameters and resets page
+    vm.clearTo = clearTo; //clears to parameter and resets page
     vm.search = search; //Reload the state with new search parameter & reset the 
     vm.clearSearch = clearSearch; //Clear the search parameter, reload the state & reset the page
     vm.updateSort = updateSort;  //Conditionally set, reverse, remove the sortBy parameter & reload the state
@@ -53,6 +56,18 @@ function OrdersController($state, $filter, $ocMedia, OrderCloud, ocParameters, o
     function filter(resetPage) {
         formatDate();
         $state.go('.', ocParameters.Create(vm.parameters, resetPage));
+    }
+
+    function clearFrom(){
+        vm.parameters.from = null;
+        vm.fromDate = null;
+        vm.filter(true);
+    }
+
+    function clearTo(){
+        vm.parameters.to = null;
+        vm.toDate = null;
+        vm.filter(true);
     }
 
     function formatDate(){
