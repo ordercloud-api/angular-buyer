@@ -42,3 +42,28 @@ li a,
   color:@text-muted;
   text-align:center;
 }
+
+// Overriding default bootstrap behavior
+.navbar-header,
+.navbar-nav > li {
+  float: left;
+}
+.navbar-left {
+  float: left;
+  float: left !important;
+}
+.navbar-right {
+  float: right;
+  float: right !important;
+  margin-right: -15px;
+}
+.navbar-toggle {
+  float: left;
+  margin-left: @navbar-padding-horizontal;
+}
+// Hiding certain nav elements on smaller viewports
+.c-desktop-nav {
+  @media (max-width: @grid-float-breakpoint-max) {
+    display: none;
+  }
+}
