@@ -23,6 +23,9 @@ function BaseConfig($stateProvider) {
                         OrderCloud.BuyerID.Set(buyerid); //TODO: remove this line after refactor is complete
                         return data;
                     })
+                    .catch(function(ex) {
+                        $state.go('login');
+                    })
             },
             ExistingOrder: function($q, sdkOrderCloud, CurrentUser) {
                 var options = {
