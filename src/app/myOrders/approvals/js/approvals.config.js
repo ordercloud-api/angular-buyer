@@ -6,7 +6,7 @@ function ApprovalsConfig($stateProvider){
     $stateProvider
         .state('orderDetail.approvals', {
             url: '/approvals',
-            templateUrl: 'orders/orderApprovals/templates/orderApprovals.html',
+            templateUrl: 'myOrders/approvals/templates/approvals.html',
             controller: 'OrderApprovalsCtrl',
             controllerAs: 'orderApprovals',
             data: {

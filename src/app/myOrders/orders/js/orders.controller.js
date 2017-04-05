@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('OrdersCtrl', OrdersController)
 ;
 
-function OrdersController($state, $filter, $ocMedia, OrderCloud, ocParameters, ocOrders, OrderList, Parameters) {
+function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters, ocOrders, OrderList, Parameters) {
     var vm = this;
     vm.list = OrderList;
     vm.parameters = Parameters;
@@ -110,7 +110,8 @@ function OrdersController($state, $filter, $ocMedia, OrderCloud, ocParameters, o
     }
 
     function loadMore() {
-        return ocOrders.List(vm.parameters)
+        var parameters = angular.extend(vm.parameters, {page:vm.list.Meta.Page + 1});
+        return ocOrders.List(parameters)
             .then(function(data){
                 vm.list.Items = vm.list.Items.concat(data.Items);
                 vm.list.Meta = data.Meta;

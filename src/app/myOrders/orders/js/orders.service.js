@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocOrders', ocOrdersService)
 ;
 
-function ocOrdersService(OrderCloud){
+function ocOrdersService(sdkOrderCloud){
     var service = {
         List: _list
     };
@@ -11,7 +11,7 @@ function ocOrdersService(OrderCloud){
         var parameters = angular.copy(Parameters);
 
         //exclude unsubmitted orders from list
-        parameters.filters = {Status: '!Unsubmitted'};
+        //parameters.filters = {Status: '!Unsubmitted'};  //TODO: Uncomment this line when API ! is fixed
 
         //set outgoing params to iso8601 format as expected by api
         //set returning params to date object as expected by uib-datepicker
@@ -45,9 +45,13 @@ function ocOrdersService(OrderCloud){
             angular.extend(parameters.filters, {Status: parameters.status});
         }
 
-         // list orders with generated parameters
-        var listType = parameters.tab === 'approvals' ? 'ListIncomingOrders' : 'ListOutgoingOrders';
-        return OrderCloud.Me[listType](parameters.search, parameters.page, parameters.pageSize || 12, parameters.searchOn, parameters.sortBy, parameters.filters);
+        parameters.pageSize = parameters.pageSize ? parameters.pageSize : 12;
+
+        if (parameters.tab == 'approvals') {
+            return sdkOrderCloud.Me.ListApprovableOrders(parameters);
+        } else {
+            return sdkOrderCloud.Me.ListOrders(parameters);
+        }
     }
 
     return service;

@@ -7,7 +7,7 @@ function OrderDetailConfig($stateProvider){
         .state('orderDetail', {
             url: '/order/:orderid',
             parent: 'account',
-            templateUrl: 'orders/orderDetails/templates/orderDetails.html',
+            templateUrl: 'myOrders/order/templates/orderDetails.html',
             controller: 'OrderDetailsCtrl',
             controllerAs: 'orderDetails',
              data: {
@@ -17,8 +17,8 @@ function OrderDetailConfig($stateProvider){
                 SelectedOrder: function($stateParams, ocOrderDetails){
                     return ocOrderDetails.Get($stateParams.orderid);
                 },
-                OrderLineItems: function($stateParams, OrderCloud){
-                    return OrderCloud.LineItems.List($stateParams.orderid, null, 1, null, null, null, null, $stateParams.buyerid);
+                OrderLineItems: function($stateParams, sdkOrderCloud){
+                    return sdkOrderCloud.LineItems.List('outgoing', $stateParams.orderid);
                 }
             }
         });

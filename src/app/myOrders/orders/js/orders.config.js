@@ -6,7 +6,7 @@ function OrdersConfig($stateProvider) {
     $stateProvider
         .state('orders', {
             parent: 'account',
-            templateUrl: 'orders/orderList/templates/orders.html',
+            templateUrl: 'myOrders/orders/templates/orders.html',
             controller: 'OrdersCtrl',
             controllerAs: 'orders',
             data: {

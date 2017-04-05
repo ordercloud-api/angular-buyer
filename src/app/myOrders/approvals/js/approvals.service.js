@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocApprovals', ocApprovals)
 ;
 
-function ocApprovals(OrderCloud, $q, $uibModal, $state){
+function ocApprovals($q, $uibModal, $state, sdkOrderCloud){
     var service = {
         List: _list,
         UpdateApprovalStatus: _updateApprovalStatus
@@ -11,14 +11,24 @@ function ocApprovals(OrderCloud, $q, $uibModal, $state){
     function _list(orderID, buyerID, page, pageSize) {
         var deferred = $q.defer();
 
-        OrderCloud.Orders.ListApprovals(orderID, null, page, pageSize, null, 'Status', null, buyerID)
+        var options = {
+            page: page,
+            pageSize: pageSize,
+            sortBy: 'Status'
+        };
+        sdkOrderCloud.Orders.ListApprovals('outgoing', orderID, options)
             .then(function(data) {
                 getApprovingUserGroups(data)
             });
 
         function getApprovingUserGroups(data) {
             var userGroupIDs = _.uniq(_.pluck(data.Items, 'ApprovingGroupID'));
-            OrderCloud.UserGroups.List(null, 1, 100, null, null, {ID: userGroupIDs.join('|')}, buyerID)
+            var options = {
+                page: 1,
+                pageSize: 100,
+                filters: {ID: userGroupIDs.join('|')}
+            };
+            sdkOrderCloud.UserGroups.List(buyerID, options)
                 .then(function(userGroupList) {
                     _.each(data.Items, function(approval) {
                         approval.ApprovingUserGroup = _.findWhere(userGroupList.Items, {ID: approval.ApprovingGroupID});
@@ -32,7 +42,12 @@ function ocApprovals(OrderCloud, $q, $uibModal, $state){
 
         function getApprovingUsers(data){
             var userIDs = _.compact(_.uniq(_.pluck(data.Items, 'ApproverID')));
-            OrderCloud.Users.List(null, null, 1, 100, null, null, {ID: userIDs.join('|')}, buyerID)
+            var options = {
+                page: 1,
+                pageSize: 100,
+                filters: {ID: userIDs.join('|')}
+            };
+            sdkOrderCloud.Users.List(buyerID, options)
                 .then(function(userList){
                     _.each(data.Items, function(approval){
                         if(approval.Status !== 'Pending') approval.ApprovingUser = _.findWhere(userList.Items, {ID: approval.ApproverID});
@@ -46,7 +61,12 @@ function ocApprovals(OrderCloud, $q, $uibModal, $state){
 
         function getApprovalRules(data) {
             var approvalRuleIDs = _.pluck(data.Items, 'ApprovalRuleID');
-            OrderCloud.ApprovalRules.List(null, 1, 100, null, null, {ID: approvalRuleIDs.join('|')}, buyerID)
+            var options = {
+                page: 1,
+                pageSize: 100,
+                filters: {ID: approvalRuleIDs.join('|')}
+            };
+            sdkOrderCloud.ApprovalRules.List(buyerID, options)
                 .then(function(approvalRuleData) {
                     angular.forEach(data.Items, function(approval) {
                         approval.ApprovalRule = _.findWhere(approvalRuleData.Items, {ID: approval.ApprovalRuleID});
