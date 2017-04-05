@@ -41,13 +41,16 @@
 					</table>
 				</div>
 				<oc-spec-form product="productQuickView.item"></oc-spec-form>
-				<fieldset class="form-group">
+				<fieldset class="form-group" ng-if="productQuickView.item.PriceSchedule">
 					<oc-quantity-input product="productQuickView.item" label="Quantity"></oc-quantity-input>
 				</fieldset>
+				<div class="alert alert-danger" ng-if="!productQuickView.item.PriceSchedule">
+                You are not able to order this product.
+            </div>
 			</div>
 		</div>
 	</div>
-	<div class="modal-footer">
+	<div class="modal-footer" ng-if="productQuickView.item.PriceSchedule">
 		<button type="submit" class="btn btn-block btn-success">Add to Cart  <span ng-if="productQuickView.item.Quantity"  class="badge badge-success">{{productQuickView.findPrice(productQuickView.item.Quantity) | currency}}</span></button>
 	</div>
 </form>
