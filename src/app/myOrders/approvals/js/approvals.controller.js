@@ -30,7 +30,7 @@ function OrderApprovalsController($stateParams, OrderCloud, ocApprovals, OrderAp
     };
 }
 
-function ApprovalModalController(OrderID, Intent, $exceptionHandler, $uibModalInstance, OrderCloud, toastr){
+function ApprovalModalController(OrderID, Intent, $exceptionHandler, $uibModalInstance, sdkOrderCloud, toastr){
     var vm = this;
     vm.intent = Intent; // 'Approve' or 'Decline'
     vm.orderid = OrderID;
@@ -44,7 +44,7 @@ function ApprovalModalController(OrderID, Intent, $exceptionHandler, $uibModalIn
     }
 
     function submit(){
-        return OrderCloud.Orders[vm.intent](vm.orderid, vm.comments)
+        return sdkOrderCloud.Orders[vm.intent]('outgoing', vm.orderid, {comments: vm.comments})
             .then(function(){
                 toastr.success('Order ' + vm.intent + 'd');
                 $uibModalInstance.close();
