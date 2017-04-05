@@ -1,4 +1,4 @@
-<form action="." name="OrderCloudProductSearch" class="c-productsearch c-typeahead" ng-submit="$ctrl.onHardEnter($ctrl.searchTerm)" pretty-submit>
+<form name="OrderCloudProductSearch" class="c-productsearch c-typeahead" ng-submit="$ctrl.onHardEnter($ctrl.searchTerm)" pretty-submit>
     <div class="form-group" ng-class="{open:noResults}">
         <input type="search"
                 class="form-control"
@@ -12,7 +12,7 @@
                 typeahead-wait-ms="300"
                 typeahead-no-results="noResults"
                 typeahead-loading="loading"
-                typeahead-template-url="productSearch/templates/productSearch.typeahead.tpl.html"
+                typeahead-template-url="productSearch/templates/productSearch.typeahead.html"
         />
         <button class="sr-only" type="submit" value="Search"></button>
         <div class="c-typeahead__results">

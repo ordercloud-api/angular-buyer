@@ -40,7 +40,7 @@
         <div class="row l-product-grid">
             <div class="col-sm-6 col-md-4 col-lg-3 l-product-grid__item"
                  ng-repeat="product in productSearch.list.Items"
-                 ng-include="'common/templates/card.product.tpl.html'">
+                 ng-include="'common/templates/card.product.html'">
             </div>
         </div>
     </div>
@@ -50,6 +50,7 @@
     </div>
     <!-- Pagination -->
     <uib-pagination 
+        class="pagination-sm pull-right hidden-xs"
         boundary-links="productSearch.list.Meta.TotalPages > 5" 
         max-size="5" total-items="productSearch.list.Meta.TotalCount" 
         items-per-page="productSearch.list.Meta.PageSize" 
@@ -57,4 +58,9 @@
         ng-change="productSearch.pageChanged(productSearch.list.Meta.Page)"
         ng-if="productSearch.list.Meta.TotalPages > 1">
     </uib-pagination>
+    <button type="button"
+                    class="btn btn-default btn-block btn-lg visible-xs"
+                    ng-show="productSearch.list.Meta.Page < productSearch.list.Meta.TotalPages"
+                    ng-click="productSearch.loadMore()">Load More
+            </button>
 </article>

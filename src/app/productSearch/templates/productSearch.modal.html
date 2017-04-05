@@ -9,7 +9,7 @@
             <input type="text" id="ProductSearchInput" class="form-control" ng-model="$ctrl.searchTerm"
                 uib-typeahead="product as product.Name for product in $ctrl.getSearchResults()" typeahead-append-to="'.c-typeahead__results'"
                 typeahead-on-select="$ctrl.onSelect($item.ID)" typeahead-focus-first="false" typeahead-wait-ms="300" typeahead-no-results="noResults"
-                typeahead-loading="loading" typeahead-template-url="productSearch/templates/productSearch.typeahead.tpl.html"
+                typeahead-loading="loading" typeahead-template-url="productSearch/templates/productSearch.typeahead.html"
             />
         </fieldset>
         <button class="sr-only" type="submit" value="Search"></button>

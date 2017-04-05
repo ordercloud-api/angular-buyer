@@ -2,13 +2,13 @@ angular.module('orderCloud')
     .controller('BaseCtrl', BaseController)
 ;
 
-function BaseController($rootScope, $state, sdkOrderCloud, ProductSearch, CurrentUser, CurrentOrder) {
+function BaseController($rootScope, $state, sdkOrderCloud, ocProductSearch, CurrentUser, CurrentOrder) {
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
 
     vm.mobileSearch = function() {
-        ProductSearch.Open()
+        ocProductSearch.Open()
             .then(function(data) {
                 if (data.productID) {
                     $state.go('productDetail', {productid: data.productID});
