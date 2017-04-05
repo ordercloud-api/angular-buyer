@@ -9,7 +9,7 @@
         <div class="c-product-card__descrip hidden-xs" ng-if="product.Description" >
             <p>{{product.Description | limitTo: 40}}{{product.Description.length > 40 ? '...' : ''}}</p>
         </div>
-        <div class="text-right c-product-card__icons hidden-xs" prevent-click>
+        <div class="text-right c-product-card__icons hidden-xs" oc-prevent-click>
             <ordercloud-product-quick-view product="product" current-order="base.currentOrder"></ordercloud-product-quick-view>
             <ordercloud-favorite-product product="product" current-user="base.currentUser"></ordercloud-favorite-product>
         </div>
