@@ -1,14 +1,22 @@
 angular.module('orderCloud')
-    .component('ordercloudFavoriteOrder', {
+    .component('ordercloudFavoriteOrder', OrderCloudFavoriteOrderComponent())
+    .controller('FavoriteOrderCtrl', FavoriteOrderController)
+;
+
+function OrderCloudFavoriteOrderComponent() {
+    var component = {
         bindings:{
             currentUser: '<',
             order: '<'
         },
         templateUrl: 'favoriteOrders/templates/favoriteOrder.component.html',
-        controller: FavoriteOrderCtrl
-    });
+        controller: 'FavoriteOrderCtrl'
+    };
 
-function FavoriteOrderCtrl(OrderCloud, toastr){
+    return component;
+}
+
+function FavoriteOrderCtrl(toastr, sdkOrderCloud){
     var vm = this;
     vm.$onInit = function(){
         vm.hasFavorites = !!vm.currentUser && !!vm.currentUser.xp && !!vm.currentUser.xp.FavoriteOrders;
@@ -27,7 +35,7 @@ function FavoriteOrderCtrl(OrderCloud, toastr){
 
     function addOrder(existingList) {
         existingList.push(vm.order.ID);
-        OrderCloud.Me.Patch({xp: {FavoriteOrders: existingList}})
+        sdkOrderCloud.Me.Patch({xp: {FavoriteOrders: existingList}})
             .then(function(){
                 vm.isFavorited = true;
                 toastr.success('Order added to your favorites', 'Success');
@@ -36,7 +44,7 @@ function FavoriteOrderCtrl(OrderCloud, toastr){
 
     function removeOrder(){
         var updatedList = _.without(vm.currentUser.xp.FavoriteOrders, vm.order.ID);
-        OrderCloud.Me.Patch({xp: {FavoriteOrders: updatedList}})
+        sdkOrderCloud.Me.Patch({xp: {FavoriteOrders: updatedList}})
             .then(function(){
                 vm.isFavorited = false;
                 vm.currentUser.xp.FavoriteOrders = updatedList;
