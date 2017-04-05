@@ -8,12 +8,12 @@ function BaseConfig($stateProvider) {
         abstract: true,
         views: {
             '': {
-                templateUrl: 'base/templates/base.tpl.html',
+                templateUrl: 'base/templates/base.html',
                 controller: 'BaseCtrl',
                 controllerAs: 'base'
             },
             'nav@base': {
-                'templateUrl': 'base/templates/navigation.tpl.html'
+                'templateUrl': 'base/templates/navigation.html'
             }
         },
         resolve: {

@@ -1,6 +1,5 @@
 angular.module('orderCloud')
 	.config(HomeConfig)
-	.controller('HomeCtrl', HomeController)
 ;
 
 function HomeConfig($stateProvider) {
@@ -8,7 +7,7 @@ function HomeConfig($stateProvider) {
 		.state('home', {
 			parent: 'base',
 			url: '/home',
-			templateUrl: 'home/templates/home.tpl.html',
+			templateUrl: 'home/templates/home.html',
 			controller: 'HomeCtrl',
 			controllerAs: 'home',
 			data: {
@@ -16,8 +15,4 @@ function HomeConfig($stateProvider) {
 			}
 		})
 	;
-}
-
-function HomeController() {
-	var vm = this;
 }
