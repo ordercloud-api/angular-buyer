@@ -169,7 +169,7 @@ function OCPaymentCreditCard() {
 	}
 }
 
-function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderCloud, MyPaymentCreditCardModal, $exceptionHandler) {
+function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderCloud, ocMyCreditCards, $exceptionHandler) {
 	OrderCloud.Me.ListCreditCards(null, 1, 100, null, null, {})
 		.then(function(data) {
 			$scope.creditCards = data.Items;
@@ -233,7 +233,7 @@ function PaymentCreditCardController($scope, $rootScope, toastr, $filter, OrderC
 	};
 
 	$scope.createCreditCard = function() {
-		MyPaymentCreditCardModal.Create()
+		ocMyCreditCards.Create()
 			.then(function(card) {
 				toastr.success('Credit Card Created', 'Success');
 				$scope.creditCards.push(card);

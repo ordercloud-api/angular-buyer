@@ -7,7 +7,7 @@ function AccountConfig($stateProvider) {
 		.state('account', {
 			parent: 'base',
 			url: '/account',
-			templateUrl: 'account/templates/account.tpl.html',
+			templateUrl: 'account/templates/account.html',
 			controller: 'AccountCtrl',
 			controllerAs: 'account',
 			data: {

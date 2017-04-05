@@ -12,7 +12,7 @@ function checkoutShippingConfig($stateProvider) {
         });
 }
 
-function CheckoutShippingController($exceptionHandler, $rootScope, toastr, OrderCloud, MyAddressesModal, AddressSelectModal, ShippingRates, CheckoutConfig) {
+function CheckoutShippingController($exceptionHandler, $rootScope, toastr, OrderCloud, ocMyAddresses, AddressSelectModal, ShippingRates, CheckoutConfig) {
     var vm = this;
     vm.createAddress = createAddress;
     vm.changeShippingAddress = changeShippingAddress;
@@ -23,7 +23,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, Order
     vm.analyzeShipments = analyzeShipments;
 
     function createAddress(order) {
-        MyAddressesModal.Create()
+        ocMyAddresses.Create()
             .then(function(address) {
                 toastr.success('Address Created', 'Success');
                 order.ShippingAddressID = address.ID;
