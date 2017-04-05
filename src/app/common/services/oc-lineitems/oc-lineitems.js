@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud) {
+function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud, catalogid) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
@@ -70,7 +70,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud) {
         var dfd = $q.defer();
         var queue = [];
         angular.forEach(productIDs, function (productid) {
-            queue.push(OrderCloud.Me.GetProduct(productid));
+            queue.push(sdkOrderCloud.Me.GetProduct(catalogid, productid));
         });
         $q.all(queue)
             .then(function (results) {
@@ -94,7 +94,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud) {
         modalInstance.result
             .then(function (address) {
                 address.ID = Math.floor(Math.random() * 1000000).toString();
-                OrderCloud.LineItems.SetShippingAddress(Order.ID, LineItem.ID, address)
+                sdkOrderCloud.LineItems.SetShippingAddress('outgoing', Order.ID, LineItem.ID, address)
                     .then(function () {
                         $rootScope.$broadcast('LineItemAddressUpdated', LineItem.ID, address);
                     });
@@ -102,9 +102,9 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud) {
     }
 
     function _updateShipping(Order, LineItem, AddressID) {
-        OrderCloud.Addresses.Get(AddressID)
+        sdkOrderCloud.Me.GetAddress(AddressID)
             .then(function (address) {
-                OrderCloud.LineItems.SetShippingAddress(Order.ID, LineItem.ID, address);
+                sdkOrderCloud.LineItems.SetShippingAddress('outgoing', Order.ID, LineItem.ID, address);
                 $rootScope.$broadcast('LineItemAddressUpdated', LineItem.ID, address);
             });
     }
@@ -113,14 +113,19 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud) {
         var li;
         var dfd = $q.defer();
         var queue = [];
-        OrderCloud.LineItems.List(orderID, null, 1, 100)
+        var options = {
+            page: 1,
+            pageSize: 100
+        };
+        sdkOrderCloud.LineItems.List('outgoing', orderID, options)
             .then(function (data) {
                 li = data;
                 if (data.Meta.TotalPages > data.Meta.Page) {
                     var page = data.Meta.Page;
                     while (page < data.Meta.TotalPages) {
-                        page += 1;
-                        queue.push(OrderCloud.LineItems.List(orderID, null, page, 100));
+                        page++;
+                        options.page = page;
+                        queue.push(sdkOrderCloud.LineItems.List('outgoing', orderID, options));
                     }
                 }
                 $q.all(queue)
