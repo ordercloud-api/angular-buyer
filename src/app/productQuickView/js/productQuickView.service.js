@@ -10,7 +10,7 @@ function OrderCloudProductQuickViewService($uibModal) {
 	function _open(currentOrder, product) {
 		return $uibModal.open({
 			backdrop:'static',
-			templateUrl: 'productQuickView/templates/productQuickView.modal.tpl.html',
+			templateUrl: 'productQuickView/templates/productQuickView.modal.html',
 			controller: 'ProductQuickViewCtrl',
 			controllerAs: 'productQuickView',
 			size: 'lg',
