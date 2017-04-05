@@ -7,12 +7,16 @@
             <div class="panel panel-default" cg-busy="myAddresses.loading[$index]">
                 <div class="panel-body">
                     <div class="pull-right">
-                        <a href="" ng-click="myAddresses.delete(this)">Delete</a> |
-                        <a href="" ng-click="myAddresses.edit(this)">Edit</a>
+                        <a ng-click="myAddresses.delete(this)">Delete</a> |
+                        <a ng-click="myAddresses.edit(this)">Edit</a>
                     </div>
                     <p ng-bind-html="address | address:'full'"></p>
                 </div>
             </div>
+        </div>
+        <div class="no-matches" ng-if="!myAddresses.list.Items.length">
+            You have not created any personal addresses. <br>
+            <a ng-click="myAddresses.create()">Create one now!</a>
         </div>
     </div>
 </article>

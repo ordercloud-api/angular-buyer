@@ -24,14 +24,13 @@
                 </div>
             </div>
         </div>
+        <div class="no-matches" ng-if="!myPayments.personalCreditCards.Items.length">
+            You have not created any personal credit cards. <br>
+            <a href="" ng-click="myPayments.createCreditCard()">Create one now!</a>
+        </div>
     </div>
-
-    <div class="no-matches" ng-if="!myPayments.personalCreditCards">
-        You have not created any personal credit cards. <br>
-        <a href="" ng-click="myPayments.createCreditCard()">Creat one now!</a>
-    </div>
-    <br  ng-if="myPayments.personalSpendingAccounts">
-    <div ng-if="myPayments.personalSpendingAccounts">
+    <br ng-if="myPayments.personalSpendingAccounts.Items.length">
+    <div ng-if="myPayments.personalSpendingAccounts.Items.length">
         <h3><i class="fa fa-money"></i> Available Spending Accounts</h3>
         <hr>
         <div class="panel panel-default" ng-repeat="spendingAccount in myPayments.personalSpendingAccounts.Items">
@@ -59,8 +58,8 @@
             </div>
         </div>
     </div>
-    <br ng-if="myPayments.giftCards">
-    <div ng-if="myPayments.giftCards">
+    <br ng-if="myPayments.giftCards.Items.length">
+    <div ng-if="myPayments.giftCards.Items.length">
         <h3><i class="fa fa-gift"></i> Available Gift Cards</h3>
         <hr>
         <div class="panel panel-default" ng-repeat="giftCard in myPayments.giftCards.Items">
