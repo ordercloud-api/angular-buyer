@@ -1,24 +1,6 @@
 angular.module('orderCloud')
-    .config(ProductConfig)
     .controller('ProductDetailCtrl', ProductDetailController)
 ;
-
-function ProductConfig($stateProvider) {
-    $stateProvider
-        .state('productDetail', {
-            parent: 'base',
-            url: '/product/:productid',
-            templateUrl: 'productDetail/templates/productDetail.tpl.html',
-            controller: 'ProductDetailCtrl',
-            controllerAs: 'productDetail',
-            resolve: {
-                Product: function ($stateParams, OrderCloud) {
-                    return OrderCloud.Me.GetProduct($stateParams.productid);
-                }
-            }
-        });
-}
-
 
 function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLineItems, toastr) {
     var vm = this;
@@ -44,4 +26,3 @@ function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLin
         return vm.finalPriceBreak.Price * qty;
     };
 }
-
