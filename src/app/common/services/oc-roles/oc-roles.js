@@ -3,7 +3,7 @@ angular.module('orderCloud')
     .provider('ocRoles', OrderCloudRolesProvider)
 ;
 
-function OrderCloudRolesService($window, OrderCloud) {
+function OrderCloudRolesService($window, sdkOrderCloud) {
     var service = {
         Set: _set,
         Get: _get,
@@ -54,7 +54,7 @@ function OrderCloudRolesService($window, OrderCloud) {
 
     //Returns local service variable or obtains roles again from token
     function _get() {
-        return roles || _set(OrderCloud.Auth.ReadToken());
+        return roles || _set(sdkOrderCloud.GetToken());
     }
 
     //Removes local service variable
