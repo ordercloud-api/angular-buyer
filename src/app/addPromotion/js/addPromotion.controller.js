@@ -1,13 +1,8 @@
 angular.module('orderCloud')
-    .component('ocAddPromotion', {
-        templateUrl: 'addPromotion/templates/addPromotion.tpl.html',
-        bindings: {
-            order: '<'
-        },
-        controller: AddPromotionComponentCtrl
-    });
+    .controller('AddPromotionComponentCtrl', AddPromotionComponentController)
+;
 
-function AddPromotionComponentCtrl($exceptionHandler, $rootScope, sdkOrderCloud, toastr) {
+function AddPromotionComponentController($exceptionHandler, $rootScope, sdkOrderCloud, toastr) {
     this.submit = function(orderID, promoCode) {
         sdkOrderCloud.Orders.AddPromotion('outgoing', orderID, promoCode)
             .then(function(promo) {
