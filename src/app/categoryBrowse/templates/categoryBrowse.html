@@ -17,6 +17,7 @@
     </div>
     <!-- Category List Pagination -->
     <uib-pagination 
+        class="pagination-sm pull-right hidden-xs"
         boundary-links="categoryBrowse.categoryList.Meta.TotalPages > 5" 
         max-size="5" total-items="categoryBrowse.categoryList.Meta.TotalCount" 
         items-per-page="categoryBrowse.categoryList.Meta.PageSize" 
@@ -24,6 +25,11 @@
         ng-change="categoryBrowse.changeCategoryPage(categoryBrowse.categoryList.Meta.Page)" 
         ng-if="categoryBrowse.categoryList.Meta.TotalPages > 1">
     </uib-pagination>
+    <button type="button"
+        class="btn btn-default btn-block btn-lg visible-xs"
+        ng-show="categoryBrowse.categoryList.Meta.Page < categoryBrowse.categoryList.Meta.TotalPages"
+        ng-click="categoryBrowse.loadMoreCategories()">Load More Categories</button>
+
     <!-- Product List -->
     <div ng-if="categoryBrowse.productList.Items.length">
         <h3 class="page-header">{{categoryBrowse.productList.Items.length > 1 ? 'Products' : 'Product'}}</h3>
@@ -35,15 +41,22 @@
             </div>
         </div>
     </div>
+
     <!-- Product List Pagination -->
     <uib-pagination 
+        class="pagination-sm pull-right hidden-xs"
         boundary-links="categoryBrowse.productList.Meta.TotalPages > 5" 
         max-size="5" total-items="categoryBrowse.productList.Meta.TotalCount" 
         items-per-page="categoryBrowse.productList.Meta.PageSize" 
         ng-model="categoryBrowse.productList.Meta.Page"
         ng-change="categoryBrowse.changeProductPage(categoryBrowse.productList.Meta.Page)" 
-        ng-if="categoryBrowse.categoryList.Meta.TotalPages > 1">
+        ng-if="categoryBrowse.productList.Meta.TotalPages > 1">
     </uib-pagination>
+    <button type="button"
+        class="btn btn-default btn-block btn-lg visible-xs"
+        ng-show="categoryBrowse.productList.Meta.Page < categoryBrowse.productList.Meta.TotalPages"
+        ng-click="categoryBrowse.loadMoreProducts()">Load More Products</button>
+
     <!-- No Results -->
     <div ng-if="!categoryBrowse.productList.Items.length && !categoryBrowse.categoryList.Items.length">
         <div class="page-header">
