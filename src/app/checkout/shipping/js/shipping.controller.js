@@ -1,18 +1,8 @@
 angular.module('orderCloud')
-    .config(checkoutShippingConfig)
-    .controller('CheckoutShippingCtrl', CheckoutShippingController);
+    .controller('CheckoutShippingCtrl', CheckoutShippingController)
+;
 
-function checkoutShippingConfig($stateProvider) {
-    $stateProvider
-        .state('checkout.shipping', {
-            url: '/shipping',
-            templateUrl: 'checkout/shipping/templates/checkout.shipping.html',
-            controller: 'CheckoutShippingCtrl',
-            controllerAs: 'checkoutShipping'
-        });
-}
-
-function CheckoutShippingController($exceptionHandler, $rootScope, toastr, OrderCloud, ocMyAddresses, AddressSelectModal, ShippingRates, CheckoutConfig) {
+function CheckoutShippingController($exceptionHandler, $rootScope, toastr, sdkOrderCloud, ocMyAddresses, ocAddressSelect, ocShippingRates, CheckoutConfig) {
     var vm = this;
     vm.createAddress = createAddress;
     vm.changeShippingAddress = changeShippingAddress;
@@ -32,7 +22,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, Order
     }
 
     function changeShippingAddress(order) {
-        AddressSelectModal.Open('shipping')
+        ocAddressSelect.Open('shipping')
             .then(function(address) {
                 if (address == 'create') {
                     vm.createAddress(order);
@@ -45,7 +35,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, Order
 
     function saveShipAddress(order) {
         if (order && order.ShippingAddressID) {
-            OrderCloud.Orders.Patch(order.ID, {ShippingAddressID: order.ShippingAddressID})
+            sdkOrderCloud.Orders.Patch('outgoing', order.ID, {ShippingAddressID: order.ShippingAddressID})
                 .then(function(updatedOrder) {
                     $rootScope.$broadcast('OC:OrderShipAddressUpdated', updatedOrder);
                     vm.getShippingRates(order);
@@ -62,7 +52,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, Order
 
     function getShippingRates(order) {
         vm.shippersAreLoading = true;
-        vm.shippersLoading = ShippingRates.GetRates(order)
+        vm.shippersLoading = ocShippingRates.GetRates(order)
             .then(function(shipments) {
                 vm.shippersAreLoading = false;
                 vm.shippingRates = shipments;
@@ -71,11 +61,11 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, Order
     }
 
     function analyzeShipments(order) {
-        vm.shippingRates = ShippingRates.AnalyzeShipments(order, vm.shippingRates);
+        vm.shippingRates = ocShippingRates.AnalyzeShipments(order, vm.shippingRates);
     }
 
     function shipperSelected(order) {
-        ShippingRates.ManageShipments(order, vm.shippingRates)
+        ocShippingRates.ManageShipments(order, vm.shippingRates)
             .then(function() {
                 $rootScope.$broadcast('OC:UpdateOrder', order.ID);
             });
