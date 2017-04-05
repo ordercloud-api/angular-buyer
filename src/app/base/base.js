@@ -26,8 +26,14 @@ function BaseConfig($stateProvider) {
                         return data;
                     })
             },
-            ExistingOrder: function($q, OrderCloud, CurrentUser) {
-                return OrderCloud.Me.ListOutgoingOrders(null, 1, 1, null, "!DateCreated", {Status:"Unsubmitted"})
+            ExistingOrder: function($q, sdkOrderCloud, CurrentUser) {
+                var options = {
+                    page: 1,
+                    pageSize: 1,
+                    sortBy: '!DateCreated',
+                    filters: {Status: 'Unsubmitted'}
+                };
+                return sdkOrderCloud.Me.ListOrders(options)
                     .then(function(data) {
                         return data.Items[0];
                     });

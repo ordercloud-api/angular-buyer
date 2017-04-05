@@ -1,6 +1,6 @@
 {
   "appname": "Angular Buyer",
-  "scope": "MeAdmin MeXpAdmin MeAddressAdmin MeCreditCardAdmin",
+  "scope": ["MeAdmin MeXpAdmin MeAddressAdmin MeCreditCardAdmin Shopper"],
   "clientid": "AEFFD7B0-C7A4-4E68-AB31-15B454964A7B",
   "buyerid": "EXO-1E",
   "anonymous": false,
