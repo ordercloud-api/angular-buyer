@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
+function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
@@ -44,7 +44,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud) {
             Specs: _specConvert(product.Specs)
         };
         li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
-        OrderCloud.LineItems.Create(order.ID, li)
+        sdkOrderCloud.LineItems.Create('outgoing', order.ID, li)
             .then(function(lineItem) {
                 $rootScope.$broadcast('OC:UpdateOrder', order.ID);
                 deferred.resolve();

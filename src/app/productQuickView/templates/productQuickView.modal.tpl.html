@@ -21,7 +21,7 @@
 						{{productQuickView.item.Description}}
 					</div>
 				</div>
-				<div class="panel panel-default" ng-if="productQuickView.item.StandardPriceSchedule.PriceBreaks">
+				<div class="panel panel-default" ng-if="productQuickView.item.PriceSchedule.PriceBreaks">
 					<div class="panel-heading">
 						<h3 class="panel-title">Price Breaks</h3>
 					</div>
@@ -33,7 +33,7 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr ng-repeat="priceBreak in productQuickView.item.StandardPriceSchedule.PriceBreaks">
+						<tr ng-repeat="priceBreak in productQuickView.item.PriceSchedule.PriceBreaks">
 							<td>{{priceBreak.Quantity}}</td>
 							<td>{{priceBreak.Price}}</td>
 						</tr>

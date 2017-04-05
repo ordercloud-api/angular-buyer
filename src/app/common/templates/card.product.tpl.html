@@ -3,7 +3,7 @@
     <div class="caption c-product-card__body">
         <div class="c-product-card__info clearfix">
             <span class="pull-left c-product-card__id" ng-if="product.Name">{{product.ID | limitTo: 8}}{{product.ID.length > 8 ? '...' : ''}}</span>
-            <span class="pull-right c-product-card__price"><b class="text-primary">{{product.StandardPriceSchedule.PriceBreaks[0].Price | currency}}</b> <small class="text-muted">x {{product.StandardPriceSchedule.PriceBreaks[0].Quantity}}</small></span>
+            <span class="pull-right c-product-card__price"><b class="text-primary">{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</b> <small class="text-muted">x {{product.PriceSchedule.PriceBreaks[0].Quantity}}</small></span>
         </div>
         <h4 class="c-product-card__name" ng-class="">{{product.Name || product.ID}}</h4>
         <div class="c-product-card__descrip hidden-xs" ng-if="product.Description" >

@@ -18,7 +18,7 @@ function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLin
     };
 
     vm.findPrice = function(qty){
-        angular.forEach(vm.item.StandardPriceSchedule.PriceBreaks, function(priceBreak) {
+        angular.forEach(vm.item.PriceSchedule.PriceBreaks, function(priceBreak) {
             if (priceBreak.Quantity <= qty)
                 vm.finalPriceBreak = angular.copy(priceBreak);
         });
