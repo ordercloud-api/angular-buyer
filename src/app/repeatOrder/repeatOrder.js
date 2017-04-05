@@ -49,7 +49,6 @@ function RepeatOrderModalCtrl(LineItems, OrderID, $uibModalInstance, $state, Rep
 
     vm.submit = function(){
         vm.loading = {
-            templateUrl:'common/loading-indicators/templates/view.loading.tpl.html',
             message:'Adding Products to Cart'
         };
         vm.loading.promise = RepeatOrderFactory.AddLineItemsToCart(vm.validLI, vm.orderid)

@@ -6,7 +6,7 @@ function checkoutShippingConfig($stateProvider) {
     $stateProvider
         .state('checkout.shipping', {
             url: '/shipping',
-            templateUrl: 'checkout/shipping/templates/checkout.shipping.tpl.html',
+            templateUrl: 'checkout/shipping/templates/checkout.shipping.html',
             controller: 'CheckoutShippingCtrl',
             controllerAs: 'checkoutShipping'
         });

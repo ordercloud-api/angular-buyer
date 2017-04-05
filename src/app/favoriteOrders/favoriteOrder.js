@@ -4,7 +4,7 @@ angular.module('orderCloud')
             currentUser: '<',
             order: '<'
         },
-        templateUrl: 'favoriteOrders/templates/favoriteOrder.component.tpl.html',
+        templateUrl: 'favoriteOrders/templates/favoriteOrder.component.html',
         controller: FavoriteOrderCtrl
     });
 

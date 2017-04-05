@@ -6,7 +6,7 @@ function checkoutReviewConfig($stateProvider) {
 	$stateProvider
 		.state('checkout.review', {
 			url: '/review',
-			templateUrl: 'checkout/review/templates/checkout.review.tpl.html',
+			templateUrl: 'checkout/review/templates/checkout.review.html',
 			controller: 'CheckoutReviewCtrl',
 			controllerAs: 'checkoutReview',
 			resolve: {

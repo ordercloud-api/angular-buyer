@@ -29,7 +29,7 @@ function OCPaymentPurchaseOrder() {
 			order: '=',
 			payment: '=?'
 		},
-		templateUrl: 'checkout/payment/directives/templates/purchaseOrder.tpl.html',
+		templateUrl: 'checkout/payment/directives/templates/purchaseOrder.html',
 		controller: 'PaymentPurchaseOrderCtrl'
 	}
 }
@@ -85,7 +85,7 @@ function OCPaymentSpendingAccount() {
 			payment: '=?',
 			excludedSpendingAccounts: '=?excludeOptions'
 		},
-		templateUrl: 'checkout/payment/directives/templates/spendingAccount.tpl.html',
+		templateUrl: 'checkout/payment/directives/templates/spendingAccount.html',
 		controller: 'PaymentSpendingAccountCtrl',
 		controllerAs: 'paymentSA'
 	}
@@ -163,7 +163,7 @@ function OCPaymentCreditCard() {
 			payment: '=?',
 			excludedCreditCards: '=?excludeOptions'
 		},
-		templateUrl: 'checkout/payment/directives/templates/creditCard.tpl.html',
+		templateUrl: 'checkout/payment/directives/templates/creditCard.html',
 		controller: 'PaymentCreditCardCtrl',
 		controllerAs: 'paymentCC'
 	}
@@ -252,7 +252,7 @@ function OCPayment() {
 			paymentIndex: '=?',
 			excludeOptions: '=?'
 		},
-		templateUrl: 'checkout/payment/directives/templates/payment.tpl.html',
+		templateUrl: 'checkout/payment/directives/templates/payment.html',
 		controller: 'PaymentCtrl',
 		controllerAs: 'ocPayment'
 	}
@@ -296,7 +296,7 @@ function OCPayments() {
 			order: '=',
 			methods: '=?'
 		},
-		templateUrl: 'checkout/payment/directives/templates/payments.tpl.html',
+		templateUrl: 'checkout/payment/directives/templates/payments.html',
 		controller: 'PaymentsCtrl'
 	}
 }

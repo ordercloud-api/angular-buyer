@@ -85,7 +85,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloud, sdkOrderCloud, c
     function _customShipping(Order, LineItem) {
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'common/lineitems/templates/shipping.tpl.html',
+            templateUrl: 'common/lineitems/templates/shipping.html',
             controller: 'LineItemModalCtrl',
             controllerAs: 'liModal',
             size: 'lg'

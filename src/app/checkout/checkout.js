@@ -17,7 +17,7 @@ function checkoutConfig($urlRouterProvider, $stateProvider) {
             abstract:true,
 			parent: 'base',
 			url: '/checkout',
-			templateUrl: 'checkout/templates/checkout.tpl.html',
+			templateUrl: 'checkout/templates/checkout.html',
 			controller: 'CheckoutCtrl',
 			controllerAs: 'checkout',
 			resolve: {
@@ -122,7 +122,7 @@ function AddressSelectModalService($uibModal) {
 
     function _open(type) {
         return $uibModal.open({
-            templateUrl: 'checkout/templates/addressSelect.modal.tpl.html',
+            templateUrl: 'checkout/templates/addressSelect.modal.html',
             controller: 'AddressSelectCtrl',
             controllerAs: 'addressSelect',
             backdrop: 'static',

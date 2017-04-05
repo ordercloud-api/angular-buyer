@@ -7,7 +7,7 @@ function checkoutConfirmationConfig($stateProvider) {
 		.state('confirmation', {
 			parent: 'base',
 			url: '/confirmation/:orderid',
-			templateUrl: 'checkout/confirmation/templates/checkout.confirmation.tpl.html',
+			templateUrl: 'checkout/confirmation/templates/checkout.confirmation.html',
 			controller: 'CheckoutConfirmationCtrl',
 			controllerAs: 'checkoutConfirmation',
 			resolve: {
