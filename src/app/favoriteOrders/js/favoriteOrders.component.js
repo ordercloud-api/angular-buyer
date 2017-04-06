@@ -16,7 +16,7 @@ function OrderCloudFavoriteOrderComponent() {
     return component;
 }
 
-function FavoriteOrderCtrl(toastr, sdkOrderCloud){
+function FavoriteOrderController(toastr, sdkOrderCloud){
     var vm = this;
     vm.$onInit = function(){
         vm.hasFavorites = !!vm.currentUser && !!vm.currentUser.xp && !!vm.currentUser.xp.FavoriteOrders;
