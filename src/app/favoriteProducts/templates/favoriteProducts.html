@@ -1,0 +1,56 @@
+<article id="favoriteProducts">
+    <div class="form-group c-form-group">
+        <form class="form-inline pull-right" ng-if="favoriteProducts.list">
+            <fieldset class="form-group c-form-group_form-group"><!-- c-form-group_form-group  -->
+                <label for="SortSelect" class="c-form-group_form-group--label">Sort By:</label>
+                <div style="display:inline-table" ng-class="{'input-group':favoriteProducts.sortSelection}">
+                    <select id="SortSelect" class="form-control" ng-model="favoriteProducts.sortSelection"
+                            ng-change="favoriteProducts.updateSort()">
+                        <option value="" ng-show="favoriteProducts.sortSelection">None</option>
+                        <option value="ID">ID</option>
+                        <option value="Name">Name</option>
+                    </select>
+                    <div ng-if="favoriteProducts.sortSelection" class="input-group-btn">
+                        <button class="btn btn-default" ng-click="favoriteProducts.reverseSort()">
+                            <i class="fa" ng-class="{
+                        'fa-sort-alpha-asc': favoriteProducts.sortSelection == 'Name' && favoriteProducts.parameters.sortBy == 'Name',
+                        'fa-sort-alpha-desc': favoriteProducts.sortSelection == 'Name' && favoriteProducts.parameters.sortBy == '!Name',
+                        'fa-sort-numeric-asc': favoriteProducts.sortSelection == 'ID' && favoriteProducts.parameters.sortBy == 'ID',
+                        'fa-sort-numeric-desc': favoriteProducts.sortSelection == 'ID' && favoriteProducts.parameters.sortBy == '!ID'
+                        }"></i>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <!--END FILTERS-->
+        <h5 class="pull-left" ng-if="favoriteProducts.list">
+            <b>{{(application.$ocMedia('min-width:768px') ? favoriteProducts.list.Meta.ItemRange[0] : '1') + ' - ' +  favoriteProducts.list.Meta.ItemRange[1] + ' of ' + favoriteProducts.list.Meta.TotalCount + ' results'}}</b>
+        </h5>
+        <div class="clearfix"></div>
+    </div>
+    <div class="no-matches" ng-if="!favoriteProducts.list">
+        <b>You currently do not have any favorite products.</b>
+    </div>
+    <div ng-if="favoriteProducts.list.Items.length">
+        <div class="row l-product-grid">
+            <div class="col-sm-6 col-md-4 col-lg-3 l-product-grid__item"
+                 ng-repeat="product in favoriteProducts.list.Items"
+                 ng-include="'common/templates/card.product.html'">
+            </div>
+        </div>
+    </div>
+    <div class="text-center" ng-if="application.$ocMedia('min-width:768px') && favoriteProducts.list.Meta.TotalPages > 1">
+        <uib-pagination boundary-links="favoriteProducts.list.Meta.TotalPages > 5"
+                        max-size="5" total-items="favoriteProducts.list.Meta.TotalCount"
+                        items-per-page="favoriteProducts.list.Meta.PageSize"
+                        ng-model="favoriteProducts.list.Meta.Page"
+                        ng-change="favoriteProducts.pageChanged()"></uib-pagination>
+    </div>
+    <button type="button"
+            ng-if="application.$ocMedia('max-width:767px')"
+            class="btn btn-default btn-block btn-lg"
+            ng-show="favoriteProducts.list.Meta.Page < favoriteProducts.list.Meta.TotalPages"
+            ng-click="favoriteProducts.loadMore()">Load More
+    </button>
+</article>

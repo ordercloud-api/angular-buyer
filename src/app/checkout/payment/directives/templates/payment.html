@@ -1,0 +1,19 @@
+<!--Single Payment, Multiple Types View-->
+<div ng-form="{{'OCPayment' + paymentIndex}}" class="clearfix">
+	<fieldset class="form-group" ng-if="methods.length > 1 && (!payment.ID || payment.Editing)">
+		<label for="payment_method">Payment Method</label>
+		<select id="payment_method" class="form-control" ng-model="payment.Type" ng-options="method as (method | humanize) for method in methods" required></select>
+	</fieldset>
+	<div ng-if="payment.Type == 'PurchaseOrder'" ng-if="!payment.ID || payment.Editing">
+		<oc-payment-po order="order" payment="payment"></oc-payment-po>
+	</div>
+	<div ng-if="payment.Type == 'SpendingAccount'" ng-if="!payment.ID || payment.Editing">
+		<oc-payment-sa order="order" payment="payment" exclude-options="excludeOptions.SpendingAccounts"></oc-payment-sa>
+	</div>
+	<div ng-if="payment.Type == 'CreditCard'" ng-if="!payment.ID || payment.Editing">
+		<oc-payment-cc order="order" payment="payment" exclude-options="excludeOptions.CreditCards"></oc-payment-cc>
+	</div>
+	<div ng-if="payment.Type == 'PurchaseOrder' && (payment.Editing || !payment.ID)">
+		<button type="button" class="btn btn-success" ng-click="savePayment(payment)">Save</button>
+	</div>
+</div>

@@ -1,0 +1,59 @@
+<div class="row">
+	<aside class="col-md-3">
+		<ul class="nav nav-pills nav-stacked"  hl-sticky anchor="top" offset-top="70" media-query="min-width: 992px">
+			<li ng-class="{active:application.$state.is('account')}">
+				<a href="" ui-sref="account">My Account</a>
+			</li>
+			<li ui-sref-active="active">
+				<a href="" ui-sref="myAddresses">Personal Addresses</a>
+			</li>
+			<li ui-sref-active="active">
+				<a href="" ui-sref="myPayments">Payment Methods</a>
+			</li>
+			<li ui-sref-active="active">
+				<a href="" ui-sref="favoriteProducts">Favorite Products</a>
+			</li>
+			<li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}">
+				<a href="" ui-sref="orders({tab: 'history'})">Orders</a>
+			</li>
+		</ul>
+	</aside>
+	<article class="col-md-9" cg-busy="application.stateLoading('account')" ui-view>
+		<h3><i class="fa fa-cog"></i> My Account</h3>
+		<hr>
+		<form class="progressive" name="account.profileForm" autocomplete="off" novalidate ng-submit="account.updateProfile()" oc-readonly-roles="MeAdmin"
+		    pretty-submit>
+			<fieldset class="form-group row">
+				<div class="col-xs-6">
+					<label for="FirstName">First name</label>
+					<input id="FirstName" name="FirstName" type="text" class="form-control" ng-model="account.profile.FirstName" required>
+				</div>
+				<div class="col-xs-6">
+					<label for="LastName">Last name</label>
+					<input id="LastName" name="LastName" type="text" class="form-control" ng-model="account.profile.LastName" required>
+				</div>
+			</fieldset>
+			<fieldset class="form-group">
+				<label for="Email">Email address</label>
+				<input id="Email" name="Email" type="email" class="form-control" ng-model="account.profile.Email" required>
+			</fieldset>
+			<fieldset class="form-group">
+				<label for="Phone">Phone number</label>
+				<input id="Phone" name="Phone" type="tel" placeholder="(Optional)" class="form-control" ng-model="account.profile.Phone">
+			</fieldset>
+			<button type="submit" class="btn btn-default" oc-if-roles="MeAdmin">Update profile</button>
+			<button type="button" class="btn btn-default" oc-if-roles="MeAdmin" ng-click="account.changePassword()"><i class="fa fa-lock"></i> Change Password</button>
+		</form>
+		<hr>
+		<form name="account.settingsForm" ng-submit="account.updateUsername()" autocomplete="off" novalidate oc-readonly-roles="MeAdmin"
+		    pretty-submit>
+			<fieldset class="form-group">
+				<label for="Username">Username</label>
+				<input id="Username" name="Username" ng-change="account.usernameChange()" type="text" class="form-control" ng-model="account.profile.Username" required>
+			</fieldset>
+			<button type="submit" class="btn btn-default" oc-if-roles="MeAdmin">Update username</button>
+		</form>
+		<hr>
+		<button type="button" class="btn btn-danger btn-block" ng-click="application.logout()"><i class="fa fa-power-off"></i> Logout</button>
+	</article>
+</div>
