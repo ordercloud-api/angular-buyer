@@ -64,7 +64,7 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
                     } else if (Parameters.filters) {
                         delete Parameters.filters.ID;
                     }
-                    var parameters = angular.extend(Parameters, {catalogID: catalogid, filters: {categoryid: Parameters.categoryid}});
+                    var parameters = angular.extend(Parameters, {catalogID: catalogid, categoryid: Parameters.categoryid, depth: 'all'});
                     return sdkOrderCloud.Me.ListProducts(parameters);
                 }
             }

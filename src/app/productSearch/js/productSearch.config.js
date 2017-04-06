@@ -15,7 +15,7 @@ function ProductSearchConfig($stateProvider) {
                     return ocParameters.Get($stateParams);
                 },
                 ProductList: function(sdkOrderCloud, Parameters, catalogid) {
-                    var parameters = angular.extend(Parameters, {catalogID: catalogid, pageSize: (Parameters.pageSize || 12)});
+                    var parameters = angular.extend(Parameters, {catalogID: catalogid, depth: 'all', pageSize: (Parameters.pageSize || 12)});
                     return sdkOrderCloud.Me.ListProducts(parameters);
                 }
             }

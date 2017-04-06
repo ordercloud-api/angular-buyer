@@ -22,7 +22,7 @@ function CategoryBrowseConfig($stateProvider, catalogid){
                 ProductList: function(sdkOrderCloud, Parameters, catalogid) {
                     if(Parameters && Parameters.filters && Parameters.filters.ParentID) {
                         delete Parameters.filters.ParentID;
-                        var parameters = angular.extend(Parameters, {catalogID: catalogid, page: (Parameters.productPage || Parameters.page), pageSize: (Parameters.pageSize || 12)});
+                        var parameters = angular.extend(Parameters, {depth: 'all', catalogID: catalogid, page: (Parameters.productPage || Parameters.page), pageSize: (Parameters.pageSize || 12)});
                         return sdkOrderCloud.Me.ListProducts(parameters);
                     } else {
                         return null;

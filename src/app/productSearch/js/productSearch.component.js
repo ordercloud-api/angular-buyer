@@ -22,7 +22,8 @@ function ProductSearchComponentController($state, sdkOrderCloud, catalogid) {
             catalogID: catalogid,
             search: vm.searchTerm,
             page: 1,
-            pageSize: vm.maxProducts || 5
+            pageSize: vm.maxProducts || 5,
+            depth: 'all'
         };
         return sdkOrderCloud.Me.ListProducts(parameters)
             .then(function(data) {

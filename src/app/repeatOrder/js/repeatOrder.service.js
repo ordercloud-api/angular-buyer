@@ -32,7 +32,8 @@ function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler,
             var options = {
                 catalogID: catalogid,
                 page: 1,
-                pageSize: 100
+                pageSize: 100,
+                depth: 'all'
             };  
             sdkOrderCloud.Me.ListProducts(options)
                 .then(function(data) {
