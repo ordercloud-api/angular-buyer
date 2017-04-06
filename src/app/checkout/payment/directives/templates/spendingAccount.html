@@ -1,6 +1,6 @@
 <!--Single Spending Account Payment View-->
 <div ng-form="OCPaymentSpendingAccount" cg-busy="updatingSpendingAccountPayment">
-	<div class="panel panel-default" ng-repeat="spendingAccount in spendingAccounts" ng-if="payment.SpendingAccountID == spendingAccount.ID || (showPaymentOptions && (!excludedSpendingAccounts || excludedSpendingAccounts.indexOf(spendingAccount.ID) == -1))">
+	<div class="panel panel-default" ng-class="{'panel-primary': payment.SpendingAccountID == spendingAccount.ID}" ng-repeat="spendingAccount in spendingAccounts" ng-if="(payment.ID && payment.Editing) && payment.SpendingAccountID == spendingAccount.ID || (showPaymentOptions && (!excludedSpendingAccounts || excludedSpendingAccounts.indexOf(spendingAccount.ID) == -1))">
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-xs-6">
@@ -24,6 +24,23 @@
 				<div class="col-xs-2 text-right">
 					<a href="" ng-click="changePayment()" ng-if="!showPaymentOptions">Change</a>
 					<a href="" ng-click="updatePayment(this)" ng-if="showPaymentOptions">Select</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default" ng-if="payment.SpendingAccountID && !payment.Editing">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-6">
+					<h4>Spending Account</h4>
+					<b>{{payment.SpendingAccount.Name}}</b><br>
+					<span>{{payment.SpendingAccount.Balance | currency}}</span>
+				</div>
+				<div class="col-xs-4">
+					<h3 class="text-success pull-right">{{payment.Amount | currency}}</h4>
+				</div>
+				<div class="col-xs-2">
+					<button type="button" class="btn btn-default pull-right" ng-if="!payment.Editing" ng-click="payment.Editing = true">Edit</button>
 				</div>
 			</div>
 		</div>

@@ -1,8 +1,10 @@
 <!--Single Credit Card Payment View-->
 <div ng-form="OCPaymentCreditCard" cg-busy="updatingCreditCardPayment">
-	<label>Credit Card <!--{{checkoutPayment.creditCardDisplayLimit}}--></label>
-	<a href="" class="pull-right" ng-click="createCreditCard(this)"><i class="fa fa-plus-circle"></i> Create Credit Card</a>
-	<div class="panel panel-default" ng-repeat="creditCard in creditCards" ng-if="payment.CreditCardID == creditCard.ID || (showPaymentOptions && (!excludedCreditCards || excludedCreditCards.indexOf(creditCard.ID) == -1))">
+	<div ng-if="!payment.ID || payment.Editing">
+		<label >Credit Card <!--{{checkoutPayment.creditCardDisplayLimit}}--></label>
+		<a href="" class="pull-right" ng-click="createCreditCard(this)"><i class="fa fa-plus-circle"></i> Create Credit Card</a>
+	</div>
+	<div class="panel panel-default" ng-class="{'panel-primary': creditCard.ID == payment.CreditCardID}" ng-repeat="creditCard in creditCards" ng-if="(payment.ID && payment.Editing) && payment.CreditCardID == creditCard.ID || (showPaymentOptions && (!excludedCreditCards || excludedCreditCards.indexOf(creditCard.ID) == -1))">
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-xs-2 col-sm-1 text-center">
@@ -16,6 +18,31 @@
 				<div class="col-xs-4 col-sm-3 text-right">
 					<a href="" ng-click="changePayment()" ng-if="!showPaymentOptions">Change</a>
 					<a href="" ng-click="updatePayment(this)" ng-if="showPaymentOptions">Select</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default" ng-if="payment.CreditCardID && !payment.Editing">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-6">
+					<h4>Credit Card</h4>
+					<div class="row">
+						<div class="col-xs-2">
+							<i class="fa fa-2x {{payment.CreditCard.CardType | faCreditCard}}"></i>
+						</div>
+						<div class="col-xs-6">
+							<b>{{payment.CreditCard.CardholderName}}</b> <br ng-if="payment.CreditCard.CardholderName">
+							<span class="text-muted">{{'XXXX-XXXX-XXXX-' + payment.CreditCard.PartialAccountNumber}}</span><br>
+							<small class="text-muted">Expires On: {{payment.CreditCard.ExpirationDate | date:'MM/yy'}}</small>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-4">
+					<h3 class="text-success pull-right">{{payment.Amount | currency}}</h4>
+				</div>
+				<div class="col-xs-2">
+					<button type="button" class="btn btn-default pull-right" ng-if="!payment.Editing" ng-click="payment.Editing = true">Edit</button>
 				</div>
 			</div>
 		</div>

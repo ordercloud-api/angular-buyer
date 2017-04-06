@@ -16,30 +16,44 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 		sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
 				if (data.Items.length) {
-					//TODO: Buyer Users currently cannot patch a payment - we may need to refactor
-					sdkOrderCloud.Payments.Patch('outgoing', $scope.order.ID, data.Items[0].ID, {
-						Type: 'CreditCard',
-						xp: {
-							PONumber: null
-						},
-						SpendingAccountID: null,
-						Amount: null
-					}).then(function(data) {
-						$scope.payment = data;
-						if (!$scope.payment.SpendingAccountID) $scope.showPaymentOptions = true;
-					});
+					$scope.payment = data.Items[0];
+					$scope.showPaymentOptions = false;
+					getCreditCards();
 				} else {
-					sdkOrderCloud.Payments.Create('outgoing', $scope.order.ID, {Type: 'CreditCard'})
-						.then(function(data) {
-							$scope.payment = data;
-							$scope.showPaymentOptions = true;
-						});
+					var payment = {
+						Type: CheckoutConfig.AvailablePaymentMethods[0],
+						DateCreated: new Date().toISOString(),
+						CreditCardID: null,
+						SpendingAccountID: null,
+						Description: null,
+						Amount: $scope.order.Total,
+						Accepted: false,
+						xp: {}
+					};
+					$scope.payment = payment;
+					getCreditCards();
 				}
 			});
 	} else {
 		delete $scope.payment.SpendingAccountID;
 		if ($scope.payment.xp && $scope.payment.xp.PONumber) $scope.payment.xp.PONumber = null;
-		if (!$scope.payment.CreditCardID) $scope.showPaymentOptions = true;
+		getCreditCards();
+	}
+
+	function getCreditCards() {
+		var creditCardListOptions = {
+			page: 1,
+			pageSize: 100
+		};
+		sdkOrderCloud.Me.ListCreditCards(creditCardListOptions)
+			.then(function(data) {
+				$scope.creditCards = data.Items;
+				if ($scope.payment.CreditCardID) {
+					$scope.payment.CreditCard = _.findWhere($scope.creditCards, {ID: $scope.payment.CreditCardID});
+				} else {
+					$scope.showPaymentOptions = true;
+				}
+			});
 	}
 
 	$scope.changePayment = function() {
@@ -47,28 +61,21 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 	};
 
 	$scope.$watch('payment', function(n,o) {
-		if (n && !n.CreditCardID) {
-			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', false);
+		if (n && !n.CreditCardID || n.Editing) {
+			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', false);
 		} else {
-			$scope.OCPaymentCreditCard.$setValidity('CreditCard_Not_Set', true);
+			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
 
 		}
+
+		if (n.CreditCardID) n.CreditCard = _.findWhere($scope.creditCards, {ID: $scope.payment.CreditCardID});
+		$scope.showPaymentOptions = n.Editing;
+		if (n.SpendingAccountID) delete n.SpendingAccountID;
+		if (n.xp && n.xp.PONumber) delete n.xp.PONumber;
 	}, true);
 
 	$scope.updatePayment = function(scope) {
-		var oldSelection = angular.copy($scope.payment.CreditCardID);
 		$scope.payment.CreditCardID = scope.creditCard.ID;
-		//TODO: Buyer Users currently cannot patch a payment - we may need to refactor
-		$scope.updatingCreditCardPayment = sdkOrderCloud.Payments.Patch('outgoing', $scope.order.ID, $scope.payment.ID, $scope.payment)
-			.then(function() {
-				$scope.showPaymentOptions = false;
-				toastr.success('Using ' + $filter('humanize')(scope.creditCard.CardType) + ' ending in ' + scope.creditCard.PartialAccountNumber,'Credit Card Payment');
-				$rootScope.$broadcast('OC:PaymentsUpdated');
-			})
-			.catch(function(ex) {
-				$scope.payment.CreditCardID = oldSelection;
-				$exceptionHandler(ex);
-			});
 	};
 
 	$scope.createCreditCard = function() {

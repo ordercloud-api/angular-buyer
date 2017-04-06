@@ -3,45 +3,49 @@ angular.module('orderCloud')
 ;
 
 function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, sdkOrderCloud) {
-	var spendingAccountListOptions = {
-		page: 1,
-		pageSize: 100,
-		filters: {RedemptionCode: '!*', AllowAsPaymentMethod: true}
-	};
-	sdkOrderCloud.Me.ListSpendingAccounts(spendingAccountListOptions)
-		.then(function(data) {
-			$scope.spendingAccounts = data.Items;
-		});
-
 	if (!$scope.payment) {
 		sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
 				if (data.Items.length) {
-					//TODO: Buyer Users currently cannot patch a payment - we may need to refactor
-					sdkOrderCloud.Payments.Patch('outgoing', $scope.order.ID, data.Items[0].ID, {
-						Type: 'SpendingAccount',
-						xp: {
-							PONumber:null
-						},
-						CreditCardID:null,
-						SpendingAccountID:null,
-						Amount:null
-					}).then(function(data) {
-						$scope.payment = data;
-						if (!$scope.payment.SpendingAccountID) $scope.showPaymentOptions = true;
-					});
+					$scope.payment = data.Items[0];
+					$scope.showPaymentOptions = false;
+					getSpendingAccounts();
 				} else {
-					sdkOrderCloud.Payments.Create('outgoing', $scope.order.ID, {Type: 'SpendingAccount'})
-						.then(function(data) {
-							$scope.payment = data;
-							$scope.showPaymentOptions = true;
-						});
+					var payment = {
+						Type: 'SpendingAccount',
+						DateCreated: new Date().toISOString(),
+						CreditCardID: null,
+						SpendingAccountID: null,
+						Description: null,
+						Amount: $scope.order.Total,
+						Accepted: false,
+						xp: {}
+					};
+					$scope.payment = payment;
+					getSpendingAccounts();
 				}
 			});
 	} else {
 		delete $scope.payment.CreditCardID;
 		if ($scope.payment.xp && $scope.payment.xp.PONumber) $scope.payment.xp.PONumber = null;
-		if (!$scope.payment.SpendingAccountID) $scope.showPaymentOptions = true;
+		getSpendingAccounts();
+	}
+
+	function getSpendingAccounts() {
+		var spendingAccountListOptions = {
+			page: 1,
+			pageSize: 100,
+			filters: {RedemptionCode: '!*', AllowAsPaymentMethod: true}
+		};
+		sdkOrderCloud.Me.ListSpendingAccounts(spendingAccountListOptions)
+			.then(function(data) {
+				$scope.spendingAccounts = data.Items;
+				if ($scope.payment.SpendingAccountID) {
+					$scope.payment.SpendingAccount = _.findWhere($scope.spendingAccounts, {ID: $scope.payment.SpendingAccountID});
+				} else {
+					$scope.showPaymentOptions = true;
+				}
+			});
 	}
 
 	$scope.changePayment = function() {
@@ -49,26 +53,19 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 	};
 
 	$scope.updatePayment = function(scope) {
-		var oldSelection = angular.copy($scope.payment.SpendingAccountID);
 		$scope.payment.SpendingAccountID = scope.spendingAccount.ID;
-		//TODO: Buyer Users currently cannot patch a payment - we may need to refactor
-		$scope.updatingSpendingAccountPayment = sdkOrderCloud.Payments.Patch('outgoing', $scope.order.ID, $scope.payment.ID, $scope.payment)
-			.then(function() {
-				$scope.showPaymentOptions = false;
-				toastr.success('Using ' + scope.spendingAccount.Name,'Spending Account Payment');
-				$rootScope.$broadcast('OC:PaymentsUpdated');
-			})
-			.catch(function(ex) {
-				$scope.payment.SpendingAccountID = oldSelection;
-				$exceptionHandler(ex);
-			});
 	};
 
 	$scope.$watch('payment', function(n,o) {
-		if (n && !n.SpendingAccountID) {
-			$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccount_Not_Set', false);
+		if (n && !n.SpendingAccountID || n.Editing) {
+			$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', false);
 		} else {
-			$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccount_Not_Set', true);
+			$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', true);
 		}
+
+		if (n.SpendingAccountID) n.SpendingAccount = _.findWhere($scope.spendingAccounts, {ID: $scope.payment.SpendingAccountID});
+		$scope.showPaymentOptions = n.Editing;
+		if (n.CreditCardID) delete n.CreditCardID;
+		if (n.xp && n.xp.PONumber) delete n.xp.PONumber;
 	}, true);
 }
