@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('PaymentCreditCardCtrl', PaymentCreditCardController)
 ;
 
-function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, sdkOrderCloud, ocMyCreditCards) {
+function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, sdkOrderCloud, ocMyCreditCards, ocCheckoutPaymentService) {
 	var creditCardListOptions = {
 		page: 1,
 		pageSize: 100
@@ -56,8 +56,13 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 			});
 	}
 
-	$scope.changePayment = function() {
-		$scope.showPaymentOptions = true;
+	$scope.changePaymentAccount = function() {
+		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+			.then(function(payment) {
+				$scope.payment = payment;
+				$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
+				$rootScope.$broadcast('OCPaymentUpdated', payment);
+			});
 	};
 
 	$scope.$watch('payment', function(n,o) {
@@ -73,10 +78,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 		if (n.SpendingAccountID) delete n.SpendingAccountID;
 		if (n.xp && n.xp.PONumber) delete n.xp.PONumber;
 	}, true);
-
-	$scope.updatePayment = function(scope) {
-		$scope.payment.CreditCardID = scope.creditCard.ID;
-	};
 
 	$scope.createCreditCard = function() {
 		ocMyCreditCards.Create()

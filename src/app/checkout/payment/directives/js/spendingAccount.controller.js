@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('PaymentSpendingAccountCtrl', PaymentSpendingAccountController)
 ;
 
-function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, sdkOrderCloud) {
+function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, sdkOrderCloud, ocCheckoutPaymentService) {
 	if (!$scope.payment) {
 		sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
@@ -48,12 +48,13 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 			});
 	}
 
-	$scope.changePayment = function() {
-		$scope.showPaymentOptions = true;
-	};
-
-	$scope.updatePayment = function(scope) {
-		$scope.payment.SpendingAccountID = scope.spendingAccount.ID;
+	$scope.changePaymentAccount = function() {
+		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+			.then(function(payment) {
+				$scope.payment = payment;
+				$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', true);
+				$rootScope.$broadcast('OCPaymentUpdated', payment);
+			});
 	};
 
 	$scope.$watch('payment', function(n,o) {

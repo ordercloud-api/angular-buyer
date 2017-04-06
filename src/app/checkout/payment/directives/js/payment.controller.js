@@ -44,7 +44,11 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 		$scope.payment.Type = $scope.methods[0];
 	}
 
-	$scope.savePayment = function(payment, object) {
+	$rootScope.$on('OCPaymentUpdated', function(event, payment) {
+		$scope.payment = payment;
+	});
+
+	$scope.savePayment = function(payment) {
 		if (payment.ID) {
 			sdkOrderCloud.Payments.Delete('outgoing', $scope.order.ID, payment.ID)
 				.then(function() {
@@ -60,15 +64,14 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 				.then(function(data) {
 					data.Editing = false;
 					$scope.OCPayment.$setValidity('ValidPayment', true);
-					if (data.SpendingAccountID) data.SpendingAccount = object;
-					if (data.CreditCardID) data.CreditCard = object;
 					$scope.payment = data;
 				});
 		}
 	};
 
+
 	$scope.paymentValid = function(payment) {
-		if (!payment || payment.Amount != $scope.order.Total) return false; //TODO: refactor for multiple payments
+		if (!payment || payment.Editing || payment.Amount != $scope.order.Total) return false; //TODO: refactor for multiple payments
 
 		var valid = false;
 		

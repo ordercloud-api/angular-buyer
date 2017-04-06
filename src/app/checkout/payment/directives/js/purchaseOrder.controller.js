@@ -30,4 +30,12 @@ function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, t
 		$scope.payment.CreditCardID = null;
 		$scope.payment.SpendingAccountID = null;
 	}
+
+	$scope.$watch('payment', function(n,o) {
+		if (n.Editing) {
+			$scope.OCPaymentPurchaseOrder.$setValidity('PurchaseOrderNotSaved', false);
+		} else {
+			$scope.OCPaymentPurchaseOrder.$setValidity('PurchaseOrderNotSaved', true);
+		}
+	}, true);
 }
