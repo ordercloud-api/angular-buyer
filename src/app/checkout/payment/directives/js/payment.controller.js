@@ -17,7 +17,6 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 								SpendingAccountID: null,
 								Description: null,
 								Amount: $scope.order.Total,
-								Accepted: false,
 								xp: {}
 							};
 							$scope.payment = payment;
@@ -34,7 +33,6 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 						SpendingAccountID: null,
 						Description: null,
 						Amount: $scope.order.Total,
-						Accepted: false,
 						xp: {}
 					};
 					$scope.payment = payment;
@@ -60,6 +58,7 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 		}
 
 		function createPayment(newPayment) {
+			if (angular.isDefined(newPayment.Accepted)) delete newPayment.Accepted;
 			sdkOrderCloud.Payments.Create('outgoing', $scope.order.ID, newPayment)
 				.then(function(data) {
 					data.Editing = false;

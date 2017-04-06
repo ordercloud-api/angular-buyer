@@ -27,7 +27,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 						SpendingAccountID: null,
 						Description: null,
 						Amount: $scope.order.Total,
-						Accepted: false,
 						xp: {}
 					};
 					$scope.payment = payment;

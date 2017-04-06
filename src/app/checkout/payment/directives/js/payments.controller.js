@@ -35,7 +35,6 @@ function PaymentsController($rootScope, $scope, $exceptionHandler, toastr, sdkOr
 			SpendingAccountID: null,
 			Description: null,
 			Amount: paymentTotal,
-			Accepted: false,
 			xp: {}
 		};
 		$scope.payments.Items.push(payment);
