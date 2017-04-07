@@ -20,10 +20,11 @@
         <!--START CATEGORY TREE-->
         <aside class="col-md-3 visible-md visible-lg">
             <div class="panel panel-default" hl-sticky anchor="top" offset-top="70" stick-limit="true" media-query="min-width: 992px">
-                <div class="panel-heading">
+                <div class="panel-heading" ng-if="productBrowse.treeConfig.treeData.length">
                     <b class="panel-title">Categories</b>
                 </div>
                 <treecontrol class="oc-tree"
+                             ng-if="productBrowse.treeConfig.treeData.length"
                              tree-model="productBrowse.treeConfig.treeData"
                              options="productBrowse.treeConfig.treeOptions"
                              selected-node="productBrowse.treeConfig.selectedNode"
