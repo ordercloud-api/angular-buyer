@@ -2,12 +2,8 @@ angular.module('orderCloud')
     .controller('ProductSearchModalCtrl', ProductSearchModalController)
 ;
 
-function ProductSearchModalController($uibModalInstance, $timeout, $scope, sdkOrderCloud, catalogid) {
+function ProductSearchModalController($uibModalInstance, $scope, sdkOrderCloud, catalogid) {
     var vm = this;
-
-    $timeout(function() {
-        $('#ProductSearchInput').focus();
-    }, 300);
 
     vm.getSearchResults = function() {
         var parameters = {
