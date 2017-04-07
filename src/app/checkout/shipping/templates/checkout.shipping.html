@@ -12,7 +12,7 @@
                         <p ng-bind-html="checkout.shippingAddress | address:'full'"></p>
                     </div>
                 </div>
-                <div class="well text-center" ng-if="!checkout.shippingAddress">
+                <div class="no-matches" ng-if="!checkout.shippingAddress">
                     You currently do not have a shipping address selected. <br />
                     <a href="" ng-click="checkoutShipping.changeShippingAddress(base.currentOrder)">Select one now</a>
                 </div>
