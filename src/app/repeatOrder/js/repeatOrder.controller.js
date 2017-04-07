@@ -2,11 +2,11 @@ angular.module('orderCloud')
     .controller('RepeatOrderCtrl', RepeatOrderCtrl)
 ;
 
-function RepeatOrderCtrl(toastr, ocRepeatOrder, $uibModal) {
+function RepeatOrderCtrl($log, ocRepeatOrder, $uibModal) {
     var vm = this;
 
     vm.$onInit = function() {
-        if (vm.orderid === 'undefined') toastr.error('repeat order component is not configured correctly. orderid is a required attribute', 'Error');
+        if (vm.orderid === 'undefined') $log.error('Repeat order error: repeat order component is not configured correctly. orderid is a required attribute');
     };
 
     vm.openReorderModal = function(){

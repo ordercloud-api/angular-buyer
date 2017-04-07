@@ -15,7 +15,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, sdkOr
     function createAddress(order) {
         ocMyAddresses.Create()
             .then(function(address) {
-                toastr.success('Address Created', 'Success');
+                toastr.success(address.AddressName + ' was created.');
                 order.ShippingAddressID = address.ID;
                 vm.saveShipAddress(order);
             });
@@ -30,7 +30,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, sdkOr
                     order.ShippingAddressID = address.ID;
                     vm.saveShipAddress(order);
                 }
-            })
+            });
     }
 
     function saveShipAddress(order) {

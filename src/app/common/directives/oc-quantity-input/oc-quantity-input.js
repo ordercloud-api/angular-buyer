@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocQuantityInput', OCQuantityInput)
 ;
 
-function OCQuantityInput($rootScope, toastr, sdkOrderCloud) {
+function OCQuantityInput($log, $rootScope, toastr, sdkOrderCloud) {
     return {
         scope: {
             product: '=',
@@ -16,10 +16,10 @@ function OCQuantityInput($rootScope, toastr, sdkOrderCloud) {
         link: function (scope) {
             if (scope.product) {
                 scope.item = scope.product;
-                scope.content = "product"
+                scope.content = 'product';
             } else if (scope.lineitem) {
                 scope.item = scope.lineitem;
-                scope.content = "lineitem";
+                scope.content = 'lineitem';
                 scope.updateQuantity = function () {
                     if (scope.item.Quantity > 0) {
                         sdkOrderCloud.LineItems.Patch('outgoing', scope.order.ID, scope.item.ID, {
@@ -29,16 +29,15 @@ function OCQuantityInput($rootScope, toastr, sdkOrderCloud) {
                                 data.Product = scope.lineitem.Product;
                                 scope.item = data;
                                 scope.lineitem = data;
-                                if (typeof scope.onUpdate === "function") scope.onUpdate(scope.lineitem);
-                                toastr.success('Quantity Updated');
+                                if (typeof scope.onUpdate === 'function') scope.onUpdate(scope.lineitem);
+                                toastr.success(data.Product.Name + ' quantity updated to ' + data.Quantity);
                                 $rootScope.$broadcast('OC:UpdateOrder', scope.order.ID, 'Calculating Order Total');
                             });
                     }
-                }
+                };
             } else {
-                toastr.error('Please input either a product or lineitem attribute in the directive', 'Error');
-                console.error('Please input either a product or lineitem attribute in the quantityInput directive ');
+                $log.error('oc-quantity-input error: ocQuantityInput requires either a product or lineitem attribute in order to work properly.');
             }
         }
-    }
+    };
 }

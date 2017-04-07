@@ -11,7 +11,7 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, 
     vm.createCreditCard = function(){
         ocMyCreditCards.Create()
         .then(function(data) {
-            toastr.success('Credit Card Created', 'Success');
+            toastr.success('Credit card ending in ' + data.PartialAccountNumber + ' was saved.');
             vm.personalCreditCards.Items.push(data);
         });
     };
@@ -19,7 +19,7 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, 
     vm.edit = function(scope){
         ocMyCreditCards.Edit(scope.creditCard)
             .then(function(data){
-                toastr.success('Credit Card Updated', 'Success');
+            toastr.success('Credit card ending in ' + data.PartialAccountNumber + ' was updated.');
                 vm.personalCreditCards.Items[scope.$index] = data;
             });
     };
@@ -33,7 +33,7 @@ function MyPaymentsController($q, $state, toastr, $exceptionHandler, ocConfirm, 
             .then(function(){
                 vm.loading[scope.$index] = ocAuthNet.DeleteCreditCard(scope.creditCard)
                     .then(function(){
-                        toastr.success('Credit Card Deleted', 'Success');
+                        toastr.success('Credit card ending in ' + scope.creditCard.PartialAccountNumber + ' was deleted.');
                         vm.personalCreditCards.Items.splice(scope.$index, 1);
                     })
                     .catch(function(error) {

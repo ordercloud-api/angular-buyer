@@ -80,7 +80,7 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloud, sdkOrde
                     $state.go('home');
                 })
                 .catch(function () {
-                    toastr.error('Your token has expired, please log in again.');
+                    toastr.error('Your session has expired, please log in again.');
                     _logout();
                 });
         } else {

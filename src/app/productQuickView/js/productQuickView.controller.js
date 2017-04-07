@@ -8,7 +8,7 @@ function ProductQuickViewController(toastr, $uibModalInstance, SelectedProduct, 
 	vm.addToCart = function() {
 		ocLineItems.AddItem(CurrentOrder, vm.item)
 			.then(function(){
-				toastr.success('Product added to cart', 'Success');
+                toastr.success('Product successfully added to your cart.');
 				$uibModalInstance.close();
 			});
 	};

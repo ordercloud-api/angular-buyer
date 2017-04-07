@@ -12,7 +12,7 @@ function CartController($rootScope, $state, toastr, sdkOrderCloud, LineItemsList
             .then(function () {
                 $rootScope.$broadcast('OC:UpdateOrder', order.ID);
                 vm.lineItems.Items.splice(scope.$index, 1);
-                toastr.success('Line Item Removed');
+                toastr.success(scope.lineItem.Product.Name + ' was removed from your shopping cart.');
             });
     };
 
@@ -33,7 +33,7 @@ function CartController($rootScope, $state, toastr, sdkOrderCloud, LineItemsList
             .then(function() {
                 sdkOrderCloud.Orders.Delete('outgoing', order.ID)
                     .then(function(){
-                        $state.go("home",{}, {reload:'base'})
+                        $state.go('home', {}, {reload:'base'});
                     });
             });
     };

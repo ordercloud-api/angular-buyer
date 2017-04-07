@@ -8,7 +8,7 @@
         Shopping Cart
     </h3>
     <hr>
-    <div class="well text-center" ng-if="!cart.lineItems.Items.length">You do not have any items in your cart.</div>
+    <div class="no-matches" ng-if="!cart.lineItems.Items.length">You do not have any items in your cart.</div>
     <div class="row" ng-if="cart.lineItems.Items.length">
         <aside class="col-md-4 col-md-push-8">
             <div class="panel panel-default" hl-sticky anchor="top" offset-top="70" media-query="min-width: 992px" cg-busy="base.orderLoading">

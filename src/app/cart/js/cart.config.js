@@ -11,7 +11,7 @@ function CartConfig($stateProvider) {
             controller: 'CartCtrl',
             controllerAs: 'cart',
             data: {
-                pageTitle: "Shopping Cart"
+                pageTitle: 'Shopping Cart'
             },
             resolve: {
                 LineItemsList: function($q, $state, toastr, sdkOrderCloud, ocLineItems, CurrentOrder) {
@@ -29,7 +29,7 @@ function CartConfig($stateProvider) {
                             }
                         })
                         .catch(function() {
-                            toastr.error('Your order does not contain any line items.', 'Error');
+                            toastr.warning('Your order does not contain any line items.');
                             dfd.reject();
                         });
                     return dfd.promise;

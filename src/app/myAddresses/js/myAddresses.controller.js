@@ -8,7 +8,7 @@ function MyAddressesController(toastr, sdkOrderCloud, ocConfirm, ocMyAddresses, 
     vm.create = function() {
         ocMyAddresses.Create()
             .then(function(data) {
-                toastr.success('Address Created', 'Success');
+                toastr.success(data.AddressName + ' was created.');
                 vm.list.Items.push(data);
             });
     };
@@ -16,7 +16,7 @@ function MyAddressesController(toastr, sdkOrderCloud, ocConfirm, ocMyAddresses, 
     vm.edit = function(scope){
         ocMyAddresses.Edit(scope.address)
             .then(function(data) {
-                toastr.success('Address Saved', 'Success');
+                toastr.success(data.AddressName + ' was saved.');
                 vm.list.Items[scope.$index] = data;
             });
     };
@@ -30,9 +30,9 @@ function MyAddressesController(toastr, sdkOrderCloud, ocConfirm, ocMyAddresses, 
             .then(function() {
                 vm.loading[scope.$index] = sdkOrderCloud.Me.DeleteAddress(scope.address.ID)
                     .then(function() {
-                        toastr.success('Address Deleted', 'Success');
+                        toastr.success(scope.AddressName + ' was deleted.');
                         vm.list.Items.splice(scope.$index, 1);
-                    })
+                    });
             })
             .catch(function() {
 

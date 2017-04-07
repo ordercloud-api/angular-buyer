@@ -25,7 +25,7 @@ function CheckoutReviewConfig($stateProvider) {
 							}
 						})
 						.catch(function() {
-							toastr.error('Your order does not contain any line items.', 'Error');
+							toastr.warning('Your order does not contain any line items.');
 							dfd.reject();
 						});
 					return dfd.promise;

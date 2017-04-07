@@ -8,7 +8,7 @@
             <hr>
             <a href="" class="pull-right" ng-click="checkoutPayment.createAddress(base.currentOrder)"><i class="fa fa-plus-circle"></i> Create Address</a>
             <h4>Billing Address</h4>
-            <div class="well text-center" ng-if="!checkout.billingAddress">
+            <div class="no-matches" ng-if="!checkout.billingAddress">
                 You currently do not have a billing address selected. <br />
                 <a href="" ng-click="checkoutPayment.changeBillingAddress(base.currentOrder)">Select one now</a>
             </div>
