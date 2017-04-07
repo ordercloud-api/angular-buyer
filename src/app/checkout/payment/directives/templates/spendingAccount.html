@@ -1,0 +1,27 @@
+<!--Single Spending Account Payment View-->
+<div ng-form="OCPaymentSpendingAccount" cg-busy="updatingSpendingAccountPayment">
+	<div class="no-matches" ng-if="!payment.SpendingAccountID && spendingAccounts.length">
+		You have not selected a spending account. <a ng-click="changePaymentAccount()">Select one now.</a>
+	</div>
+	<div class="panel panel-default" ng-if="payment.SpendingAccountID">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-6">
+					<h4>Spending Account</h4>
+					<b>{{payment.SpendingAccount.Name}}</b><br>
+					<span>{{payment.SpendingAccount.Balance | currency}}</span>
+				</div>
+				<div class="col-xs-3">
+					<h3 class="text-success pull-right">{{payment.Amount | currency}}</h4>
+				</div>
+				<div class="col-xs-3">
+					<button style="margin-bottom: 10px;" type="button" class="btn btn-default pull-right" ng-click="changePaymentAccount()">Change Account</button>
+					<button type="button" class="btn btn-default pull-right" ng-click="payment.Editing = true">Edit Payment</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="no-matches" ng-if="!spendingAccounts.length">
+		You do not have any spending accounts available.
+	</div>
+</div>

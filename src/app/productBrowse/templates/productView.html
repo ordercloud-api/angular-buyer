@@ -1,0 +1,61 @@
+<!--START FILTERS-->
+<div class="form-group">
+    <form class="form-inline pull-right">
+        <fieldset class="form-group">
+            <label for="SortSelect">Sort By:</label>
+            <div style="display:inline-table" ng-class="{'input-group':productView.sortSelection}">
+                <select id="SortSelect" class="form-control" ng-model="productView.sortSelection"
+                        ng-change="productView.updateSort()">
+                    <option value="" ng-show="productView.sortSelection">None</option>
+                    <option value="ID">ID</option>
+                    <option value="Name">Name</option>
+                </select>
+                <div ng-if="productView.sortSelection" class="input-group-btn">
+                    <button class="btn btn-default" ng-click="productView.reverseSort()">
+                        <i class="fa" ng-class="{
+                        'fa-sort-alpha-asc': productView.sortSelection == 'Name' && productView.parameters.sortBy == 'Name',
+                        'fa-sort-alpha-desc': productView.sortSelection == 'Name' && productView.parameters.sortBy == '!Name',
+                        'fa-sort-numeric-asc': productView.sortSelection == 'ID' && productView.parameters.sortBy == 'ID',
+                        'fa-sort-numeric-desc': productView.sortSelection == 'ID' && productView.parameters.sortBy == '!ID'
+                        }"></i>
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    <!--END FILTERS-->
+    <h5 class="pull-left"><b>{{(application.$ocMedia('min-width:768px') ? productView.list.Meta.ItemRange[0] : '1') + ' - ' +  productView.list.Meta.ItemRange[1] + ' of ' + productView.list.Meta.TotalCount + ' results'}}</b></h5>
+    <div class="clearfix"></div>
+</div>
+
+
+<!--START PRODUCTS LIST-->
+<div ng-init="productBrowse.treeConfig.initBreadcrumbs(productView.parameters.categoryid)">
+    <div class="no-matches" ng-if="!productView.list.Items.length">
+        <b>No products found.</b>
+    </div>
+    <div ng-if="productView.list.Items.length">
+        <div class="row l-product-grid">
+            <div class=" col-xs-6 col-md-4 col-lg-3 l-product-grid__item"
+                 ng-repeat="product in productView.list.Items"
+                 ng-include="'common/templates/card.product.html'">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Pagination-->
+<div class="text-center" ng-if="application.$ocMedia('min-width:768px') && productView.list.Meta.TotalPages > 1">
+    <uib-pagination boundary-links="productView.list.Meta.TotalPages > 5"
+                    max-size="5" total-items="productView.list.Meta.TotalCount"
+                    items-per-page="productView.list.Meta.PageSize"
+                    ng-model="productView.list.Meta.Page"
+                    ng-change="productView.pageChanged()"></uib-pagination>
+</div>
+<button type="button"
+        ng-if="application.$ocMedia('max-width:767px')"
+        class="btn btn-default btn-block btn-lg"
+        ng-show="productView.list.Meta.Page < productView.list.Meta.TotalPages"
+        ng-click="productView.loadMore()">Load More
+</button>
+<!--END PRODUCTS LIST-->

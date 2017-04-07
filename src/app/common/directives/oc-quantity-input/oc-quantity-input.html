@@ -5,19 +5,19 @@
                name="itemQuantity"
                type="number"
                ng-required="true"
-               ng-if="!item.StandardPriceSchedule.RestrictedQuantity"
+               ng-if="!item.PriceSchedule.RestrictedQuantity"
                class="form-control text-center"
-               ng-min="{{item.StandardPriceSchedule.MinQuantity}}"
-               ng-max="{{item.StandardPriceSchedule.MaxQuantity}}"
+               ng-min="{{item.PriceSchedule.MinQuantity}}"
+               ng-max="{{item.PriceSchedule.MaxQuantity}}"
                ng-model="item.Quantity"
                placeholder="Quantity">
         <select id="itemQuantity"
                 name="itemQuantity"
                 ng-required="true"
-                ng-if="item.StandardPriceSchedule.RestrictedQuantity"
+                ng-if="item.PriceSchedule.RestrictedQuantity"
                 class="form-control text-center"
                 ng-model="item.Quantity"
-                ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.StandardPriceSchedule.PriceBreaks"></select>
+                ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.PriceSchedule.PriceBreaks"></select>
         <small class="help-block" ng-if="item.QuantityMultiplier > 1">
             {{'Quantity multiplier x ' + item.QuantityMultiplier + (item.Quantity ? (' (' + (item.Quantity * item.QuantityMultiplier) + ')') : '')}}
         </small>
@@ -28,10 +28,10 @@
                name="itemQuantity"
                type="number"
                ng-required="true"
-               ng-if="!item.Product.StandardPriceSchedule.RestrictedQuantity"
+               ng-if="!item.Product.PriceSchedule.RestrictedQuantity"
                class="form-control text-center"
-               ng-min="{{item.Product.StandardPriceSchedule.MinQuantity}}"
-               ng-max="{{item.Product.StandardPriceSchedule.MaxQuantity}}"
+               ng-min="{{item.Product.PriceSchedule.MinQuantity}}"
+               ng-max="{{item.Product.PriceSchedule.MaxQuantity}}"
                ng-model="item.Quantity"
                ng-model-options="{ debounce: 1000 }"
                ng-change="updateQuantity()"
@@ -39,11 +39,11 @@
         <select id="itemQuantity"
                 name="itemQuantity"
                 ng-required="true"
-                ng-if="item.Product.StandardPriceSchedule.RestrictedQuantity"
+                ng-if="item.Product.PriceSchedule.RestrictedQuantity"
                 class="form-control"
                 ng-model="item.Quantity"
                 ng-change="updateQuantity()"
-                ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.Product.StandardPriceSchedule.PriceBreaks"></select>
+                ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.Product.PriceSchedule.PriceBreaks"></select>
         <small class="help-block" ng-if="item.Product.QuantityMultiplier > 1">
             {{'x ' + item.Product.QuantityMultiplier + (item.Quantity ? (' (' + (item.Quantity * item.Product.QuantityMultiplier) + ')') : '')}}
         </small>

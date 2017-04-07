@@ -44,7 +44,8 @@
     "angular-busy2": "^5.2.0",
     "jasny-bootstrap": "3.1.3",
     "angular-payments": "*",
-    "bootswatch": "^3.3.7"
+    "bootswatch": "^3.3.7",
+    "ordercloud-javascript-sdk": "v1.0.43-staging-prerelease"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.0"
