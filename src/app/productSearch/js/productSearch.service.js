@@ -14,7 +14,7 @@ function OrderCloudProductSearchService($uibModal) {
             controller: 'ProductSearchModalCtrl',
             controllerAs: '$ctrl',
             size: '-full-screen c-productsearch-modal'
-        }).result
+        }).result;
     }
 
     return service;

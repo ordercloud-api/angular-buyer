@@ -10,8 +10,8 @@
 				<oc-payment order="order" payment="payment" methods="methods" payment-index="$index" exclude-options="excludeOptions"></oc-payment>
 			</div>
 			<div class="col-xs-2 col-sm-1 text-right" ng-if="payments.Items.length > 1">
-				<button type="button" class="btn btn-default" ng-click="removePayment(this)" uib-tooltip="Remove Payment" tooltip-placement="left">
-					<i class="fa fa-trash-o text-danger"></i>
+				<button type="button" class="btn btn-danger" ng-click="removePayment(this)" uib-tooltip="Remove Payment" tooltip-placement="left">
+					<i class="fa fa-trash-o"></i>
 					<span class="sr-only">Remove Payment</span>
 				</button>
 			</div>

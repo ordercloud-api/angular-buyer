@@ -9,7 +9,8 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
             model: '=',
             extensions: '@',
             invalidExtension: '@',
-            patch: '&'
+            patch: '&',
+            uploadText: '='
         },
         restrict: 'E',
         templateUrl: 'common/directives/oc-file-upload/oc-file-upload.html',
@@ -17,7 +18,7 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
         link: link
     };
 
-    function link(scope, element, attrs) {
+    function link(scope, element, attrs, formCtrl) {
         var file_input = $parse('file');
         var el = element;
         scope.invalidExtension = false;
@@ -27,7 +28,8 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
         };
 
         scope.remove = function() {
-            delete scope.model.xp.image.URL;
+            scope.invalidExtension = false;
+            if (scope.model.xp && scope.model.xp.image) delete scope.model.xp.image;
         };
 
         function afterSelection(file, fileName) {
@@ -46,7 +48,7 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
         };
         if (scope.extensions) {
             var items = _.map(scope.extensions.split(','), function(ext) {
-                return ext.replace(/ /g ,'').replace(/\./g, '').toLowerCase();
+                return ext.replace(/ /g, '').replace(/\./g, '').toLowerCase();
             });
             angular.forEach(items, function(item) {
                 if (item.indexOf('/') > -1) {
@@ -74,6 +76,7 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
                         valid = (allowed.Extensions.indexOf(ext) != -1 || allowed.Types.indexOf(event.target.files[0].type.split('/')[0]) > -1);
                     }
                     if (valid) {
+                        scope.invalidExtension = false;
                         scope.$apply(function() {
                             ocFileReader.ReadAsDataUrl(event.target.files[0], scope)
                                 .then(function() {
@@ -88,8 +91,7 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
                             var input;
                             event.target.files[0] = null;
                             el.find('input').replaceWith(input = el.find('input').clone(true));
-                            if (!scope.model.xp.image) scope.model.xp.image = {};
-                            scope.model.xp.image.URL = null;
+                            if (scope.model.xp && scope.model.xp.image) scope.model.xp.image = null;
                         });
                     }
                     break;
