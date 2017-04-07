@@ -35,7 +35,7 @@
           <li ui-sref-active="active"><a ui-sref="myAddresses">Personal Addresses</a></li>
           <li ui-sref-active="active"><a ui-sref="myPayments">Payment Methods</a></li>
           <li ui-sref-active="active"><a ui-sref="favoriteProducts">Favorite Products</a></li>
-          <li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}"><a ui-sref="orders">Orders</a></li>
+          <li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}"><a ui-sref="orders({tab: 'history'})">Orders</a></li>
           <li class="divider"></li>
           <li><a ng-click="application.logout()">Log out</a></li>
         </ul>

@@ -1,14 +1,13 @@
 <article>
     <h3>
         <div class="pull-right">
-            <button ng-if="cart.lineItems.Items.length" ng-click="cart.cancelOrder(base.currentOrder)" class="btn btn-default"><span class="text-danger">Cancel Order</span>
-            </button>
+            <button ng-if="cart.lineItems.Items.length" ng-click="cart.cancelOrder(base.currentOrder)" class="btn btn-danger">Cancel Order</button>
             <button ui-sref="productBrowse.products" class="btn btn-default">Continue Shopping</button>
         </div>
         Shopping Cart
     </h3>
     <hr>
-    <div class="well text-center" ng-if="!cart.lineItems.Items.length">You do not have any items in your cart.</div>
+    <div class="no-matches" ng-if="!cart.lineItems.Items.length">You do not have any items in your cart.</div>
     <div class="row" ng-if="cart.lineItems.Items.length">
         <aside class="col-md-4 col-md-push-8">
             <div class="panel panel-default" hl-sticky anchor="top" offset-top="70" media-query="min-width: 992px" cg-busy="base.orderLoading">

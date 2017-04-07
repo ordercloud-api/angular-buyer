@@ -38,7 +38,7 @@ function FavoriteOrderController(toastr, sdkOrderCloud){
         sdkOrderCloud.Me.Patch({xp: {FavoriteOrders: existingList}})
             .then(function(){
                 vm.isFavorited = true;
-                toastr.success('Order added to your favorites', 'Success');
+                toastr.success('Saved to your favorite orders.');
             });
     }
 
@@ -48,7 +48,7 @@ function FavoriteOrderController(toastr, sdkOrderCloud){
             .then(function(){
                 vm.isFavorited = false;
                 vm.currentUser.xp.FavoriteOrders = updatedList;
-                toastr.success('Order removed from your favorites', 'Success');
+                toastr.success('Removed from your favorite orders');
             });
     }
 }

@@ -51,7 +51,7 @@ function FavoriteProductController($scope, sdkOrderCloud, toastr){
             .then(function(data){
                 vm.hasFavorites = data.xp && data.xp.FavoriteProducts;
                 vm.isFavorited = true;
-                toastr.success($scope.product.Name + ' was added to your favorites');
+                toastr.success($scope.product.Name + ' was added to your favorite products.');
             });
     }
 
@@ -61,7 +61,7 @@ function FavoriteProductController($scope, sdkOrderCloud, toastr){
             .then(function(){
                 vm.isFavorited = false;
                 $scope.currentUser.xp.FavoriteProducts = updatedList;
-                toastr.success($scope.product.Name + ' was removed from your favorites');
+                toastr.success($scope.product.Name + ' was removed from your favorite products.');
             });
     }
 

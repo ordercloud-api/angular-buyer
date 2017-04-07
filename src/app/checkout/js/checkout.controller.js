@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('CheckoutCtrl', CheckoutController)
 ;
 
-function CheckoutController($state, $rootScope, toastr, sdkOrderCloud, OrderShipAddress, CurrentPromotions, OrderBillingAddress, CheckoutConfig) {
+function CheckoutController($exceptionHandler, $state, $rootScope, toastr, sdkOrderCloud, OrderShipAddress, CurrentPromotions, OrderBillingAddress, CheckoutConfig) {
     var vm = this;
     vm.shippingAddress = OrderShipAddress;
     vm.billingAddress = OrderBillingAddress;
@@ -13,10 +13,11 @@ function CheckoutController($state, $rootScope, toastr, sdkOrderCloud, OrderShip
         sdkOrderCloud.Orders.Submit('outgoing', order.ID)
             .then(function(order) {
                 $state.go('confirmation', {orderid:order.ID}, {reload:'base'});
-                toastr.success('Your order has been submitted', 'Success');
+                toastr.success('Your order was successfully submitted.');
             })
             .catch(function(ex) {
-                toastr.error('Your order did not submit successfully.', 'Error');
+                toastr.error('Something went wrong with your order submission.', 'Error');
+                $exceptionHandler(ex);
             });
     };
 
@@ -38,7 +39,7 @@ function CheckoutController($state, $rootScope, toastr, sdkOrderCloud, OrderShip
         sdkOrderCloud.Orders.RemovePromotion('outgoing', order.ID, promotion.Code)
             .then(function() {
                 $rootScope.$broadcast('OC:UpdatePromotions', order.ID);
-            })
+            });
     };
 
     $rootScope.$on('OC:UpdatePromotions', function(event, orderid) {
@@ -50,6 +51,6 @@ function CheckoutController($state, $rootScope, toastr, sdkOrderCloud, OrderShip
                     vm.promotions = data;
                 }
                 $rootScope.$broadcast('OC:UpdateOrder', orderid);
-            })
+            });
     });
 }

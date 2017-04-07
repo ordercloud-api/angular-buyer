@@ -75,7 +75,7 @@ function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler,
         $q.all(queue)
             .then(function(){
                 dfd.resolve();
-                toastr.success('Product(s) Add to Cart', 'Success');
+                toastr.success('Products successfully add to your cart.');
             })
             .catch(function(error){
                 $exceptionHandler(error);

@@ -46,7 +46,7 @@ function ApprovalModalController(OrderID, Intent, $exceptionHandler, $uibModalIn
     function submit(){
         return sdkOrderCloud.Orders[vm.intent]('outgoing', vm.orderid, {comments: vm.comments})
             .then(function(){
-                toastr.success('Order ' + vm.intent + 'd');
+                toastr.success('Order ' + vm.intent.toLowerCase() + 'd');
                 $uibModalInstance.close();
             })
             .catch(function(ex){
