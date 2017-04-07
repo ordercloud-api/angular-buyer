@@ -5,10 +5,9 @@ angular.module('orderCloud')
 function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters, ocOrders, OrderList, Parameters) {
     var vm = this;
     vm.list = OrderList;
+    if (Parameters.fromDate) Parameters.fromDate = new Date(Parameters.fromDate);
+    if (Parameters.toDate) Parameters.toDate = new Date(Parameters.toDate);
     vm.parameters = Parameters;
-    //need this here to display in uib-datepicker (as date obj) but short date (string) in url
-    vm.fromDate = Parameters.fromDate;
-    vm.toDate = Parameters.toDate;
 
     vm.orderStatuses = [
         {Value: 'Open', Name: 'Open'},
@@ -27,8 +26,6 @@ function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters
     */
     vm.filter = filter; //Reload the state with new parameters
     vm.today = Date.now();
-    vm.clearFrom = clearFrom; //clears from parameters and resets page
-    vm.clearTo = clearTo; //clears to parameter and resets page
     vm.search = search; //Reload the state with new search parameter & reset the 
     vm.clearSearch = clearSearch; //Clear the search parameter, reload the state & reset the page
     vm.updateSort = updateSort;  //Conditionally set, reverse, remove the sortBy parameter & reload the state
@@ -36,7 +33,6 @@ function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters
     vm.pageChanged = pageChanged; //Reload the state with the incremented page parameter
     vm.loadMore = loadMore; //Load the next page of results with all of the same parameters, used on mobile
 
-    vm.formatDate = formatDate;
     vm.selectTab = selectTab;
     vm.goToOrder = goToOrder;
 
@@ -54,26 +50,7 @@ function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters
     }
 
     function filter(resetPage) {
-        formatDate();
         $state.go('.', ocParameters.Create(vm.parameters, resetPage));
-    }
-
-    function clearFrom(){
-        vm.parameters.from = null;
-        vm.fromDate = null;
-        vm.filter(true);
-    }
-
-    function clearTo(){
-        vm.parameters.to = null;
-        vm.toDate = null;
-        vm.filter(true);
-    }
-
-    function formatDate(){
-        //formats date as string to display in url
-        if(vm.fromDate) vm.parameters.from = $filter('date')(angular.copy(vm.fromDate), 'MM-dd-yyyy');
-        if(vm.toDate) vm.parameters.to = $filter('date')(angular.copy(vm.toDate), 'MM-dd-yyyy');
     }
     
     function search() {
@@ -81,6 +58,7 @@ function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters
     }
     
     function clearSearch() {
+        vm.searchResults = false;
         vm.parameters.search = null;
         vm.filter(true);
     }
