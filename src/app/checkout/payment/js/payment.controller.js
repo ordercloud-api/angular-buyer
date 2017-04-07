@@ -10,7 +10,7 @@ function CheckoutPaymentController($exceptionHandler, $rootScope, toastr, sdkOrd
     function createAddress(order){
         return ocMyAddresses.Create()
             .then(function(address) {
-                toastr.success('Address Created', 'Success');
+                toastr.success(address.AddressName + ' was created.');
                 order.BillingAddressID = address.ID;
                 saveBillingAddress(order);
             });

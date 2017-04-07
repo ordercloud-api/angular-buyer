@@ -8,7 +8,7 @@ function AddPromotionComponentController($exceptionHandler, $rootScope, sdkOrder
             .then(function(promo) {
                 $rootScope.$broadcast('OC:UpdatePromotions', orderID);
                 $rootScope.$broadcast('OC:UpdateOrder', orderID);
-                toastr.success('Promo code '+ promo.Code + ' added!', 'Success');
+                toastr.success('Promo code '+ promo.Code + ' successfully added.');
             })
             .catch(function(err) {
                 $exceptionHandler(err);

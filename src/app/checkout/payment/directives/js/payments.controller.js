@@ -4,7 +4,7 @@ angular.module('orderCloud')
 
 //TODO: Refactor for multiple payments without Payments.Patch
 
-function PaymentsController($rootScope, $scope, $exceptionHandler, toastr, sdkOrderCloud, ocCheckoutPaymentService, CheckoutConfig) {
+function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toastr, sdkOrderCloud, ocCheckoutPaymentService, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 
 	sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
@@ -48,7 +48,7 @@ function PaymentsController($rootScope, $scope, $exceptionHandler, toastr, sdkOr
 			.then(function(){
 				$scope.payments.Items.splice(scope.$index, 1);
 				calculateMaxTotal();
-				return toastr.success('Payment Removed');
+				return toastr.success('Payment removed.');
 			});
 	};
 
@@ -57,7 +57,7 @@ function PaymentsController($rootScope, $scope, $exceptionHandler, toastr, sdkOr
 		//TODO: Buyer Users currently cannot patch a payment - we need to refactor for multiple payments
 		sdkOrderCloud.Payments.Patch('outgoing', $scope.order.ID, scope.payment.ID, scope.payment)
 			.then(function(data) {
-				toastr.success('Payment Amount Updated');
+				toastr.success('Payment amount updated to ' + $filter('currency')(scope.payment.Amount));
 				calculateMaxTotal();
 			})
 			.catch(function(ex) {
