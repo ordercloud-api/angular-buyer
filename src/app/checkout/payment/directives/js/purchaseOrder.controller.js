@@ -16,7 +16,8 @@ function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, t
 						SpendingAccountID: null,
 						Description: null,
 						Amount: $scope.order.Total,
-						xp: {}
+						xp: {},
+						Editing: true
 					};
 					$scope.payment = payment;
 				}

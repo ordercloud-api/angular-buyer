@@ -6,7 +6,7 @@
     <form class="c-typeahead__form" name="OrderCloudProductSearch" id="OrderCloudProductSearch" autocomplete="off" autocorrect="off" ng-submit="$ctrl.onHardEnter($ctrl.searchTerm)">
         <fieldset class="form-group">
             <label for="ProductSearchInput" class="sr-only">Search Products</label>
-            <input type="text" id="ProductSearchInput" class="form-control" ng-model="$ctrl.searchTerm"
+            <input type="text" autofocus id="ProductSearchInput" class="form-control" ng-model="$ctrl.searchTerm"
                 uib-typeahead="product as product.Name for product in $ctrl.getSearchResults()" typeahead-append-to="'.c-typeahead__results'"
                 typeahead-on-select="$ctrl.onSelect($item.ID)" typeahead-focus-first="false" typeahead-wait-ms="300" typeahead-no-results="noResults"
                 typeahead-loading="loading" typeahead-template-url="productSearch/templates/productSearch.typeahead.html"

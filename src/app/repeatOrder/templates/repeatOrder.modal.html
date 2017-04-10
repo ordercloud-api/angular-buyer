@@ -14,20 +14,22 @@
             <div class="alert alert-warning">
                 <strong>Warning</strong> The following line items are not available for reorder, clicking add to cart will <strong>only</strong> add valid line items.
             </div>
-            <table class="table table-striped table-bordered">
-                <thead class="thead-inverse">
-                <tr>
-                    <th>Product ID</th>
-                    <th>Quantity</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="li in repeatModal.invalidLI track by $index">
-                    <td>{{li.ProductID}}</td>
-                    <td>{{li.Quantity}}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="panel panel-default table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-inverse">
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Quantity</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="li in repeatModal.invalidLI track by $index">
+                        <td>{{li.ProductID}}</td>
+                        <td>{{li.Quantity}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

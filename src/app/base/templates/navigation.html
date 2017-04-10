@@ -37,7 +37,7 @@
                 <a ui-sref="favoriteProducts">Favorite Products</a>
               </li>
               <li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}">
-                <a ui-sref="orders">Orders</a>
+                <a ui-sref="orders({tab: 'history'})">Orders</a>
               </li>
               <li class="divider"></li>
               <li>

@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocOrders', ocOrdersService)
 ;
 
-function ocOrdersService(sdkOrderCloud){
+function ocOrdersService($filter, sdkOrderCloud){
     var service = {
         List: _list
     };
@@ -13,31 +13,26 @@ function ocOrdersService(sdkOrderCloud){
         //exclude unsubmitted orders from list
         //parameters.filters = {Status: '!Unsubmitted'};  //TODO: Uncomment this line when API ! is fixed
 
-        //set outgoing params to iso8601 format as expected by api
-        //set returning params to date object as expected by uib-datepicker
-        if(parameters.from) {
-            var fromDateObj = new Date(parameters.from);
-            Parameters.fromDate = fromDateObj;
-            parameters.from = (fromDateObj).toISOString();
-        }
-        if(parameters.to) {
-            var toDateObj = new Date(parameters.to);
-            Parameters.toDate = toDateObj;
-            parameters.to = (toDateObj).toISOString();
+        function convertToDate(toDate) {
+            var result = new Date(toDate);
+            result = result.setDate(result.getDate() + 1);
+            return $filter('date')(result, 'MM-dd-yyyy');
         }
 
-        // DateSubmitted calculated with from/to parameters
-        if(parameters.from && parameters.to) {
-            parameters.filters.DateSubmitted = [('>' + parameters.from), ('<' + parameters.to)];
-        } else if(parameters.from && !parameters.to) {
-            parameters.filters.DateSubmitted = [('>' + parameters.from)];
-        } else if (!parameters.from && parameters.to) {
-            parameters.filters.DateSubmitted = [('<' + parameters.to)];
+        if (parameters.fromDate && parameters.toDate) {
+            parameters.filters.DateSubmitted = [('>' + parameters.fromDate), ('<' + convertToDate(parameters.toDate))];
+        } else if(parameters.fromDate && !parameters.toDate) {
+            parameters.filters.DateSubmitted = [('>' + parameters.fromDate)];
+        } else if (!parameters.fromDate && parameters.toDate) {
+            parameters.filters.DateSubmitted = [('<' + convertToDate(parameters.toDate))];
         }
 
         if(parameters.tab === 'favorites') {
-            if(CurrentUser.xp && CurrentUser.xp.FavoriteOrders) {
+            if (CurrentUser.xp && CurrentUser.xp.FavoriteOrders) {
                 angular.extend(parameters.filters, {ID: CurrentUser.xp.FavoriteOrders.join('|')});
+            }
+            else {
+                angular.extend(parameters.filters, {ID: ''});
             }
         }
 
