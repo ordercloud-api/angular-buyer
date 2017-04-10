@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocAuthNet', AuthorizeNet)
 ;
 
-function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
+function AuthorizeNet( $q, $resource, OrderCloudSDK, apiurl, ocCreditCardUtility) {
     return {
         'CreateCreditCard': _createCreateCard,
         'UpdateCreditCard': _updateCreditCard,
@@ -14,7 +14,7 @@ function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
     function _createCreateCard(creditCard, buyerID) {
         var ExpirationDate = ocCreditCardUtility.ExpirationDateFormat(creditCard.ExpirationMonth, creditCard.ExpirationYear);
         return _makeApiCall('POST', {
-            'buyerID' : buyerID ? buyerID : OrderCloud.BuyerID.Get(),
+            'buyerID' : buyerID,
             'TransactionType' : 'createCreditCard',
             'CardDetails' : {
                 'CardholderName' : creditCard.CardholderName,
@@ -29,7 +29,7 @@ function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
     function _updateCreditCard(creditCard, buyerID) {
         var ExpirationDate = ocCreditCardUtility.ExpirationDateFormat(creditCard.ExpirationMonth, creditCard.ExpirationYear);
         return _makeApiCall('POST', {
-            'buyerID' : buyerID ? buyerID : OrderCloud.BuyerID.Get(),
+            'buyerID' : buyerID,
             'TransactionType' : 'updateCreditCard',
             'CardDetails' : {
                 'CreditCardID' : creditCard.ID,
@@ -43,7 +43,7 @@ function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
     }
     function _deleteCreditCard(creditCard, buyerID) {
         return _makeApiCall('POST', {
-            'buyerID': buyerID ? buyerID : OrderCloud.BuyerID.Get(),
+            'buyerID': buyerID,
             'TransactionType': 'deleteCreditCard',
             'CardDetails': {
                 'CreditCardID': creditCard.ID
@@ -58,7 +58,7 @@ function AuthorizeNet( $q, $resource, OrderCloud, apiurl, ocCreditCardUtility) {
             callApi: {
                 method: method,
                 headers: {
-                    'Authorization': 'Bearer ' + OrderCloud.Auth.ReadToken()
+                    'Authorization': 'Bearer ' + OrderCloudSDK.GetToken()
                 }
             }
         }).callApi(requestBody).$promise

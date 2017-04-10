@@ -1,0 +1,52 @@
+<div ng-form="OC_Checkout_Payment" novalidate>
+    <div class="row">
+        <div class="col-md-8">
+            <div>
+                <h4>Payment</h4>
+                <oc-payment order="base.currentOrder"></oc-payment>
+            </div>
+            <hr>
+            <a href="" class="pull-right" ng-click="checkoutPayment.createAddress(base.currentOrder)"><i class="fa fa-plus-circle"></i> Create Address</a>
+            <h4>Billing Address</h4>
+            <div class="no-matches" ng-if="!checkout.billingAddress">
+                You currently do not have a billing address selected. <br />
+                <a href="" ng-click="checkoutPayment.changeBillingAddress(base.currentOrder)">Select one now</a>
+            </div>
+            <div class="panel panel-default" ng-if="checkout.billingAddress">
+                <div class="panel-body">
+                    <div class="pull-right">
+                        <a href="" ng-click="checkoutPayment.changeBillingAddress(base.currentOrder)">Change</a>
+                    </div>
+                    <p ng-bind-html="checkout.billingAddress | address:'full'"></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default" hl-sticky anchor="top" offset-top="70" media-query="min-width: 992px">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Order Summary
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <ng-pluralize count="base.currentOrder.LineItemCount" when="{
+							'1': 'Checking Out With 1 Item',
+							'other': 'Checking Out With {} Items'
+						}"></ng-pluralize>
+                    </p>
+                    <h5>Subtotal: <span class="pull-right">{{base.currentOrder.Subtotal | currency}}</span></h5>
+                    <h5 ng-if="base.currentOrder.ShippingCost" class="text-muted">Estimated Shipping: <span class="pull-right"> + {{base.currentOrder.ShippingCost | currency}}</span></h5>
+                    <h5 ng-repeat="promotion in checkout.promotions" class="text-danger">
+                        {{promotion.Code}}
+                        <span class="pull-right">- {{promotion.Amount | currency}}</span></h5>
+                    <hr>
+                    <h4>Estimated Total: <b class="pull-right text-primary">{{base.currentOrder.Total | currency}}</b></h4>
+                </div>
+                <div class="panel-footer">
+                    <button type="button" class="btn btn-primary form-control" ng-disabled="OC_Checkout_Payment.$invalid" ui-sref="checkout.review">Review Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
