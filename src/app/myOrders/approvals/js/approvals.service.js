@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocApprovals', ocApprovals)
 ;
 
-function ocApprovals($q, $uibModal, $state, sdkOrderCloud){
+function ocApprovals($q, $uibModal, $state, OrderCloudSDK){
     var service = {
         List: _list,
         UpdateApprovalStatus: _updateApprovalStatus
@@ -16,9 +16,9 @@ function ocApprovals($q, $uibModal, $state, sdkOrderCloud){
             pageSize: pageSize,
             sortBy: 'Status'
         };
-        sdkOrderCloud.Orders.ListApprovals('outgoing', orderID, options)
+        OrderCloudSDK.Orders.ListApprovals('outgoing', orderID, options)
             .then(function(data) {
-                getApprovingUserGroups(data)
+                getApprovingUserGroups(data);
             });
 
         function getApprovingUserGroups(data) {
@@ -28,7 +28,7 @@ function ocApprovals($q, $uibModal, $state, sdkOrderCloud){
                 pageSize: 100,
                 filters: {ID: userGroupIDs.join('|')}
             };
-            sdkOrderCloud.UserGroups.List(buyerID, options)
+            OrderCloudSDK.UserGroups.List(buyerID, options)
                 .then(function(userGroupList) {
                     _.each(data.Items, function(approval) {
                         approval.ApprovingUserGroup = _.findWhere(userGroupList.Items, {ID: approval.ApprovingGroupID});
@@ -47,7 +47,7 @@ function ocApprovals($q, $uibModal, $state, sdkOrderCloud){
                 pageSize: 100,
                 filters: {ID: userIDs.join('|')}
             };
-            sdkOrderCloud.Users.List(buyerID, options)
+            OrderCloudSDK.Users.List(buyerID, options)
                 .then(function(userList){
                     _.each(data.Items, function(approval){
                         if(approval.Status !== 'Pending') approval.ApprovingUser = _.findWhere(userList.Items, {ID: approval.ApproverID});
@@ -66,7 +66,7 @@ function ocApprovals($q, $uibModal, $state, sdkOrderCloud){
                 pageSize: 100,
                 filters: {ID: approvalRuleIDs.join('|')}
             };
-            sdkOrderCloud.ApprovalRules.List(buyerID, options)
+            OrderCloudSDK.ApprovalRules.List(buyerID, options)
                 .then(function(approvalRuleData) {
                     angular.forEach(data.Items, function(approval) {
                         approval.ApprovalRule = _.findWhere(approvalRuleData.Items, {ID: approval.ApprovalRuleID});

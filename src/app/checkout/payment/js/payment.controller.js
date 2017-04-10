@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('CheckoutPaymentCtrl', CheckoutPaymentController)
 ;
 
-function CheckoutPaymentController($exceptionHandler, $rootScope, toastr, sdkOrderCloud, ocAddressSelect, ocMyAddresses) {
+function CheckoutPaymentController($exceptionHandler, $rootScope, toastr, OrderCloudSDK, ocAddressSelect, ocMyAddresses) {
 	var vm = this;
     vm.createAddress = createAddress;
     vm.changeBillingAddress = changeBillingAddress;
@@ -30,7 +30,7 @@ function CheckoutPaymentController($exceptionHandler, $rootScope, toastr, sdkOrd
 
     function saveBillingAddress(order) {
         if (order && order.BillingAddressID) {
-            sdkOrderCloud.Orders.Patch('outgoing', order.ID, {BillingAddressID: order.BillingAddressID})
+            OrderCloudSDK.Orders.Patch('outgoing', order.ID, {BillingAddressID: order.BillingAddressID})
                 .then(function(updatedOrder) {
                     $rootScope.$broadcast('OC:OrderBillAddressUpdated', updatedOrder);
                 })

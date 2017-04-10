@@ -13,10 +13,10 @@ function CheckoutConfig($urlRouterProvider, $stateProvider) {
 			controller: 'CheckoutCtrl',
 			controllerAs: 'checkout',
 			resolve: {
-                OrderShipAddress: function($q, sdkOrderCloud, CurrentOrder){
+                OrderShipAddress: function($q, OrderCloudSDK, CurrentOrder){
                     var deferred = $q.defer();
                     if (CurrentOrder.ShippingAddressID) {
-                        sdkOrderCloud.Me.GetAddress(CurrentOrder.ShippingAddressID)
+                        OrderCloudSDK.Me.GetAddress(CurrentOrder.ShippingAddressID)
                             .then(function(address) {
                                 deferred.resolve(address);
                             })
@@ -30,14 +30,14 @@ function CheckoutConfig($urlRouterProvider, $stateProvider) {
 
                     return deferred.promise;
                 },
-                CurrentPromotions: function(CurrentOrder, sdkOrderCloud) {
-                    return sdkOrderCloud.Orders.ListPromotions('outgoing', CurrentOrder.ID);
+                CurrentPromotions: function(CurrentOrder, OrderCloudSDK) {
+                    return OrderCloudSDK.Orders.ListPromotions('outgoing', CurrentOrder.ID);
                 },
-                OrderBillingAddress: function($q, sdkOrderCloud, CurrentOrder){
+                OrderBillingAddress: function($q, OrderCloudSDK, CurrentOrder){
                     var deferred = $q.defer();
 
                     if (CurrentOrder.BillingAddressID) {
-                        sdkOrderCloud.Me.GetAddress(CurrentOrder.BillingAddressID)
+                        OrderCloudSDK.Me.GetAddress(CurrentOrder.BillingAddressID)
                             .then(function(address) {
                                 deferred.resolve(address);
                             })

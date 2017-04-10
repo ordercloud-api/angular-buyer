@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocOrders', ocOrdersService)
 ;
 
-function ocOrdersService($filter, sdkOrderCloud){
+function ocOrdersService($filter, OrderCloudSDK){
     var service = {
         List: _list
     };
@@ -43,9 +43,9 @@ function ocOrdersService($filter, sdkOrderCloud){
         parameters.pageSize = parameters.pageSize ? parameters.pageSize : 12;
 
         if (parameters.tab == 'approvals') {
-            return sdkOrderCloud.Me.ListApprovableOrders(parameters);
+            return OrderCloudSDK.Me.ListApprovableOrders(parameters);
         } else {
-            return sdkOrderCloud.Me.ListOrders(parameters);
+            return OrderCloudSDK.Me.ListOrders(parameters);
         }
     }
 

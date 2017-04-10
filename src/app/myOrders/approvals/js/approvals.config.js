@@ -16,12 +16,12 @@ function ApprovalsConfig($stateProvider){
                 OrderApprovals: function($stateParams, ocApprovals) {
                     return ocApprovals.List($stateParams.orderid, $stateParams.buyerid, 1, 100);
                 },
-                CanApprove: function(CurrentUser, $stateParams, sdkOrderCloud){
+                CanApprove: function(CurrentUser, $stateParams, OrderCloudSDK){
                     var parameters = {
                         page: 1,
                         pageSize: 100
                     };
-                    return sdkOrderCloud.Orders.ListEligibleApprovers('outgoing', $stateParams.orderid, parameters)
+                    return OrderCloudSDK.Orders.ListEligibleApprovers('outgoing', $stateParams.orderid, parameters)
                         .then(function(userList){
                             var userIDs = _.pluck(userList.Items, 'ID');
                             return userIDs.indexOf(CurrentUser.ID) > -1;

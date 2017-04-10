@@ -11,28 +11,28 @@ function CheckoutConfirmationConfig($stateProvider) {
 			controller: 'CheckoutConfirmationCtrl',
 			controllerAs: 'checkoutConfirmation',
 			resolve: {
-				SubmittedOrder: function($stateParams, sdkOrderCloud) {
-					return sdkOrderCloud.Orders.Get('outgoing', $stateParams.orderid);
+				SubmittedOrder: function($stateParams, OrderCloudSDK) {
+					return OrderCloudSDK.Orders.Get('outgoing', $stateParams.orderid);
 				},
-				OrderShipAddress: function(SubmittedOrder, sdkOrderCloud){
-					return sdkOrderCloud.Me.GetAddress(SubmittedOrder.ShippingAddressID);
+				OrderShipAddress: function(SubmittedOrder, OrderCloudSDK){
+					return OrderCloudSDK.Me.GetAddress(SubmittedOrder.ShippingAddressID);
 				},
-				OrderPromotions: function(SubmittedOrder, sdkOrderCloud) {
-					return sdkOrderCloud.Orders.ListPromotions('outgoing', SubmittedOrder.ID);
+				OrderPromotions: function(SubmittedOrder, OrderCloudSDK) {
+					return OrderCloudSDK.Orders.ListPromotions('outgoing', SubmittedOrder.ID);
 				},
-				OrderBillingAddress: function(SubmittedOrder, sdkOrderCloud){
-					return sdkOrderCloud.Me.GetAddress(SubmittedOrder.BillingAddressID);
+				OrderBillingAddress: function(SubmittedOrder, OrderCloudSDK){
+					return OrderCloudSDK.Me.GetAddress(SubmittedOrder.BillingAddressID);
 				},
-				OrderPayments: function($q, SubmittedOrder, sdkOrderCloud) {
+				OrderPayments: function($q, SubmittedOrder, OrderCloudSDK) {
 					var deferred = $q.defer();
-					sdkOrderCloud.Payments.List('outgoing', SubmittedOrder.ID)
+					OrderCloudSDK.Payments.List('outgoing', SubmittedOrder.ID)
 						.then(function(data) {
 							var queue = [];
 							angular.forEach(data.Items, function(payment, index) {
 								if (payment.Type === 'CreditCard' && payment.CreditCardID) {
 									queue.push((function() {
 										var d = $q.defer();
-										sdkOrderCloud.Me.GetCreditCard(payment.CreditCardID)
+										OrderCloudSDK.Me.GetCreditCard(payment.CreditCardID)
 											.then(function(cc) {
 												data.Items[index].Details = cc;
 												d.resolve();
@@ -42,7 +42,7 @@ function CheckoutConfirmationConfig($stateProvider) {
 								} else if (payment.Type === 'SpendingAccount' && payment.SpendingAccountID) {
 									queue.push((function() {
 										var d = $q.defer();
-										sdkOrderCloud.Me.GetSpendingAccount(payment.SpendingAccountID)
+										OrderCloudSDK.Me.GetSpendingAccount(payment.SpendingAccountID)
 											.then(function(cc) {
 												data.Items[index].Details = cc;
 												d.resolve();
@@ -54,14 +54,14 @@ function CheckoutConfirmationConfig($stateProvider) {
 							$q.all(queue)
 								.then(function() {
 									deferred.resolve(data);
-								})
+								});
 						});
 
 					return deferred.promise;
 				},
-				LineItemsList: function($q, $state, toastr, ocLineItems, SubmittedOrder, sdkOrderCloud) {
+				LineItemsList: function($q, $state, toastr, ocLineItems, SubmittedOrder, OrderCloudSDK) {
 					var dfd = $q.defer();
-					sdkOrderCloud.LineItems.List('outgoing', SubmittedOrder.ID, {pageSize: 100})
+					OrderCloudSDK.LineItems.List('outgoing', SubmittedOrder.ID, {pageSize: 100})
 						.then(function(data) {
 							ocLineItems.GetProductInfo(data.Items)
 								.then(function() {

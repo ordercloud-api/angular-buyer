@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('LoginCtrl', LoginController)
 ;
 
-function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, sdkOrderCloud, LoginService, ocRolesService, buyerid, clientid, scope) {
+function LoginController($state, $stateParams, $exceptionHandler, OrderCloudSDK, LoginService, ocRolesService, buyerid, clientid, scope) {
     var vm = this;
     vm.credentials = {
         Username: null,
@@ -16,11 +16,10 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, sd
     vm.rememberStatus = false;
 
     vm.submit = function() {
-        vm.loading = sdkOrderCloud.Auth.Login(vm.credentials.Username, vm.credentials.Password, clientid, scope)
+        vm.loading = OrderCloudSDK.Auth.Login(vm.credentials.Username, vm.credentials.Password, clientid, scope)
             .then(function(data) {
-                sdkOrderCloud.SetToken(data.access_token);
-                OrderCloud.Auth.SetToken(data.access_token); //TODO: remove this line after refactor is complete
-                if (vm.rememberStatus) sdkOrderCloud.SetRefreshToken(data['refresh_token']);
+                OrderCloudSDK.SetToken(data.access_token);
+                if (vm.rememberStatus) OrderCloudSDK.SetRefreshToken(data['refresh_token']);
                 var roles = ocRolesService.Set(data.access_token);
                 if (roles.length == 1 && roles[0] == 'PasswordReset') {
                     vm.token = data.access_token;
@@ -46,17 +45,17 @@ function LoginController($state, $stateParams, $exceptionHandler, OrderCloud, sd
     };
 
     vm.resetPasswordByToken = function() {
-        vm.loading = sdkOrderCloud.Me.ResetPasswordByToken({NewPassword:vm.credentials.NewPassword})
+        vm.loading = OrderCloudSDK.Me.ResetPasswordByToken({NewPassword:vm.credentials.NewPassword})
             .then(function(data) {
                 vm.setForm('resetSuccess');
                 vm.credentials = {
                     Username:null,
                     Password:null
-                }
+                };
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);
-            })
+            });
     };
 
     vm.resetPassword = function() {

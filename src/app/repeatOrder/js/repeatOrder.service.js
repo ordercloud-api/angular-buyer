@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocRepeatOrder', OrderCloudRepeatOrderService)
 ;
 
-function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler, sdkOrderCloud, ocLineItems, catalogid) {
+function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler, OrderCloudSDK, ocLineItems, catalogid) {
     return {
         GetValidLineItems: getValidLineItems,
         AddLineItemsToCart: addLineItemsToCart
@@ -35,7 +35,7 @@ function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler,
                 pageSize: 100,
                 depth: 'all'
             };  
-            sdkOrderCloud.Me.ListProducts(options)
+            OrderCloudSDK.Me.ListProducts(options)
                 .then(function(data) {
                     var productList = data;
                     if (data.Meta.TotalPages > data.Meta.Page) {
@@ -43,7 +43,7 @@ function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler,
                         while (page < data.Meta.TotalPages) {
                             page++;
                             options.page = page;
-                            queue.push(sdkOrderCloud.Me.ListProducts(options));
+                            queue.push(OrderCloudSDK.Me.ListProducts(options));
                         }
                     }
                     $q.all(queue)
@@ -70,7 +70,7 @@ function OrderCloudRepeatOrderService($q, $rootScope, toastr, $exceptionHandler,
                 Quantity: li.Quantity,
                 Specs: li.Specs
             };
-            queue.push(sdkOrderCloud.LineItems.Create('outgoing', orderID, lineItemToAdd));
+            queue.push(OrderCloudSDK.LineItems.Create('outgoing', orderID, lineItemToAdd));
         });
         $q.all(queue)
             .then(function(){

@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('CheckoutShippingCtrl', CheckoutShippingController)
 ;
 
-function CheckoutShippingController($exceptionHandler, $rootScope, toastr, sdkOrderCloud, ocMyAddresses, ocAddressSelect, ocShippingRates, CheckoutConfig) {
+function CheckoutShippingController($exceptionHandler, $rootScope, toastr, OrderCloudSDK, ocMyAddresses, ocAddressSelect, ocShippingRates, CheckoutConfig) {
     var vm = this;
     vm.createAddress = createAddress;
     vm.changeShippingAddress = changeShippingAddress;
@@ -35,7 +35,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, sdkOr
 
     function saveShipAddress(order) {
         if (order && order.ShippingAddressID) {
-            sdkOrderCloud.Orders.Patch('outgoing', order.ID, {ShippingAddressID: order.ShippingAddressID})
+            OrderCloudSDK.Orders.Patch('outgoing', order.ID, {ShippingAddressID: order.ShippingAddressID})
                 .then(function(updatedOrder) {
                     $rootScope.$broadcast('OC:OrderShipAddressUpdated', updatedOrder);
                     vm.getShippingRates(order);

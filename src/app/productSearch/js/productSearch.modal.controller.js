@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductSearchModalCtrl', ProductSearchModalController)
 ;
 
-function ProductSearchModalController($uibModalInstance, $scope, sdkOrderCloud, catalogid) {
+function ProductSearchModalController($uibModalInstance, $scope, OrderCloudSDK, catalogid) {
     var vm = this;
 
     vm.getSearchResults = function() {
@@ -13,7 +13,7 @@ function ProductSearchModalController($uibModalInstance, $scope, sdkOrderCloud, 
             pageSize: vm.maxProducts || 5,
             depth: 'all'
         };
-        return sdkOrderCloud.Me.ListProducts(parameters)
+        return OrderCloudSDK.Me.ListProducts(parameters)
             .then(function(data) {
                 return data.Items;
             });

@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocShippingRates', OrderCloudShippingRatesService)
 ;
 
-function OrderCloudShippingRatesService($q, $resource, sdkOrderCloud, apiurl, buyerid) {
+function OrderCloudShippingRatesService($q, $resource, OrderCloudSDK, apiurl, buyerid) {
     var service = {
         GetRates: _getRates,
         GetLineItemRates: _getLineItemRates,
@@ -22,7 +22,7 @@ function OrderCloudShippingRatesService($q, $resource, sdkOrderCloud, apiurl, bu
             OrderID: order.ID
         };
 
-        $resource(shippingRatesURL, {}, {getrates: {method: 'POST', headers: {'Authorization': 'Bearer ' + sdkOrderCloud.GetToken()}}}).getrates(request).$promise
+        $resource(shippingRatesURL, {}, {getrates: {method: 'POST', headers: {'Authorization': 'Bearer ' + OrderCloudSDK.GetToken()}}}).getrates(request).$promise
             .then(function(data) {
                 deferred.resolve(data.ResponseBody.Shipments);
             })
@@ -42,7 +42,7 @@ function OrderCloudShippingRatesService($q, $resource, sdkOrderCloud, apiurl, bu
             OrderID: order.ID
         };
 
-        $resource(shippingRatesURL, {}, {getlineitemrates: {method: 'POST', headers: {'Authorization': 'Bearer ' + sdkOrderCloud.GetToken()}}}).getlineitemrates(request).$promise
+        $resource(shippingRatesURL, {}, {getlineitemrates: {method: 'POST', headers: {'Authorization': 'Bearer ' + OrderCloudSDK.GetToken()}}}).getlineitemrates(request).$promise
             .then(function(data) {
                 deferred.resolve(data.ResponseBody.Shipments);
             })
@@ -63,7 +63,7 @@ function OrderCloudShippingRatesService($q, $resource, sdkOrderCloud, apiurl, bu
             ShippingCost: cost
         };
 
-        $resource(shippingRatesURL, {}, {setshippingcost: {method: 'POST', headers: {'Authorization': 'Bearer ' + sdkOrderCloud.GetToken()}}}).setshippingcost(request).$promise
+        $resource(shippingRatesURL, {}, {setshippingcost: {method: 'POST', headers: {'Authorization': 'Bearer ' + OrderCloudSDK.GetToken()}}}).setshippingcost(request).$promise
             .then(function(data) {
                 deferred.resolve(data.ResponseBody);
             })
@@ -91,7 +91,7 @@ function OrderCloudShippingRatesService($q, $resource, sdkOrderCloud, apiurl, bu
             }
         });
 
-        sdkOrderCloud.Orders.Patch('outgoing', order.ID, {xp: xpPatch})
+        OrderCloudSDK.Orders.Patch('outgoing', order.ID, {xp: xpPatch})
             .then(function() {
                 updateShippingCost();
             })

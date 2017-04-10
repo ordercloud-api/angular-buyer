@@ -2,10 +2,10 @@ angular.module('orderCloud')
 	.controller('PaymentCtrl', PaymentController)
 ;
 
-function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentService, CheckoutConfig) {
+function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPaymentService, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 	if (!$scope.payment) {
-		sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
+		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
 				if (ocCheckoutPaymentService.PaymentsExceedTotal(data, $scope.order.Total)) {
 					ocCheckoutPaymentService.RemoveAllPayments(data, $scope.order)
@@ -49,7 +49,7 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 
 	$scope.savePayment = function(payment) {
 		if (payment.ID) {
-			sdkOrderCloud.Payments.Delete('outgoing', $scope.order.ID, payment.ID)
+			OrderCloudSDK.Payments.Delete('outgoing', $scope.order.ID, payment.ID)
 				.then(function() {
 					delete payment.ID;
 					createPayment(payment);
@@ -60,7 +60,7 @@ function PaymentController($scope, $rootScope, sdkOrderCloud, ocCheckoutPaymentS
 
 		function createPayment(newPayment) {
 			if (angular.isDefined(newPayment.Accepted)) delete newPayment.Accepted;
-			sdkOrderCloud.Payments.Create('outgoing', $scope.order.ID, newPayment)
+			OrderCloudSDK.Payments.Create('outgoing', $scope.order.ID, newPayment)
 				.then(function(data) {
 					data.Editing = false;
 					$scope.OCPayment.$setValidity('ValidPayment', true);
