@@ -14,17 +14,16 @@
         <li ng-class="{active: application.$state.is('orderDetail')}">
             <a href="" ui-sref="orderDetail"><i class="fa fa-cube"></i> <span>Details</span></a>
         </li>
-        <!--TODO: bring these back in as they become available-->
-        <!--<li ui-sref-active="active">
+        <li ui-sref-active="active">
             <a href="" ui-sref=".payments"><i class="fa fa-dollar"></i> Payments</a>
         </li>
         <li ui-sref-active="active">
             <a href="" ui-sref=".shipments"><i class="fa fa-truck"></i> Shipments</a>
-        </li>-->
-        <!-- TODO: these roles seem incorrect in the api - fix when this is adjusted there -->
-        <li ui-sref-active="active" oc-if-roles="['ApprovalRuleAdmin', 'AddressReader']">
-            <a href="" ui-sref=".approvals"><i class="fa fa-check-square-o"></i> Approvals</a>
         </li>
+        <!-- TODO: these roles seem incorrect in the api - fix when this is adjusted there -->
+        <!--<li ui-sref-active="active" oc-if-roles="['ApprovalRuleAdmin', 'AddressReader']">
+            <a href="" ui-sref=".approvals"><i class="fa fa-check-square-o"></i> Approvals</a>
+        </li>-->
     </ul>
     <br>
     <div ui-view cg-busy="application.stateLoading('orderDetail')">

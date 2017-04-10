@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('MyAddressesCtrl', MyAddressesController)
 ;
 
-function MyAddressesController(toastr, sdkOrderCloud, ocConfirm, ocMyAddresses, AddressList) {
+function MyAddressesController(toastr, OrderCloudSDK, ocConfirm, ocMyAddresses, AddressList) {
     var vm = this;
     vm.list = AddressList;
     vm.create = function() {
@@ -28,7 +28,7 @@ function MyAddressesController(toastr, sdkOrderCloud, ocConfirm, ocMyAddresses, 
                 confirmText: 'Delete address',
                 type: 'delete'})
             .then(function() {
-                vm.loading[scope.$index] = sdkOrderCloud.Me.DeleteAddress(scope.address.ID)
+                vm.loading[scope.$index] = OrderCloudSDK.Me.DeleteAddress(scope.address.ID)
                     .then(function() {
                         toastr.success(scope.AddressName + ' was deleted.');
                         vm.list.Items.splice(scope.$index, 1);

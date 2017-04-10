@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocQuantityInput', OCQuantityInput)
 ;
 
-function OCQuantityInput($log, $rootScope, toastr, sdkOrderCloud) {
+function OCQuantityInput($log, $rootScope, toastr, OrderCloudSDK) {
     return {
         scope: {
             product: '=',
@@ -22,7 +22,7 @@ function OCQuantityInput($log, $rootScope, toastr, sdkOrderCloud) {
                 scope.content = 'lineitem';
                 scope.updateQuantity = function () {
                     if (scope.item.Quantity > 0) {
-                        sdkOrderCloud.LineItems.Patch('outgoing', scope.order.ID, scope.item.ID, {
+                        OrderCloudSDK.LineItems.Patch('outgoing', scope.order.ID, scope.item.ID, {
                                 Quantity: scope.item.Quantity
                             })
                             .then(function (data) {

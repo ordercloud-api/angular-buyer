@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocCheckoutPaymentService', OrderCloudCheckoutPaymentService)
 ;
 
-function OrderCloudCheckoutPaymentService($q, $uibModal, sdkOrderCloud) {
+function OrderCloudCheckoutPaymentService($q, $uibModal, OrderCloudSDK) {
     var service = {
         PaymentsExceedTotal: _paymentsExceedTotal,
         RemoveAllPayments: _removeAllPayments,
@@ -24,7 +24,7 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, sdkOrderCloud) {
 
         var queue = [];
         angular.forEach(payments.Items, function(payment) {
-            queue.push(sdkOrderCloud.Payments.Delete('outgoing', order.ID, payment.ID));
+            queue.push(OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID));
         });
 
         $q.all(queue).then(function() {
@@ -41,13 +41,13 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, sdkOrderCloud) {
             controllerAs: 'selectPaymentAccount',
             size: 'md',
             resolve: {
-                Accounts: function(sdkOrderCloud) {
+                Accounts: function(OrderCloudSDK) {
                     var options = {page: 1, pageSize: 100};
                     if (payment.Type == 'SpendingAccount') {
                         options.filters = {RedemptionCode: '!*', AllowAsPaymentMethod: true};
-		                return sdkOrderCloud.Me.ListSpendingAccounts(options);
+		                return OrderCloudSDK.Me.ListSpendingAccounts(options);
                     } else {
-                        return sdkOrderCloud.Me.ListCreditCards(options);
+                        return OrderCloudSDK.Me.ListCreditCards(options);
                     }
                 },
                 Payment: function() {
@@ -64,7 +64,7 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, sdkOrderCloud) {
         var df = $q.defer();
 
         if (payment.ID) {
-			sdkOrderCloud.Payments.Delete('outgoing', order.ID, payment.ID)
+			OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID)
 				.then(function() {
 					delete payment.ID;
 					createPayment(payment);
@@ -75,7 +75,7 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, sdkOrderCloud) {
 
 		function createPayment(newPayment) {
             if (angular.isDefined(newPayment.Accepted)) delete newPayment.Accepted;
-			sdkOrderCloud.Payments.Create('outgoing', order.ID, newPayment)
+			OrderCloudSDK.Payments.Create('outgoing', order.ID, newPayment)
 				.then(function(data) {
 					if (data.SpendingAccountID) data.SpendingAccount = account;
 					if (data.CreditCardID) data.CreditCard = account;

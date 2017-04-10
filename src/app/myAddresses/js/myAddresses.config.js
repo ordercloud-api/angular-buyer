@@ -11,14 +11,14 @@ function MyAddressesConfig($stateProvider) {
             controller: 'MyAddressesCtrl',
             controllerAs: 'myAddresses',
             data: {
-                pageTitle: "Personal Addresses"
+                pageTitle: 'Personal Addresses'
             },
             resolve: {
-                AddressList: function(sdkOrderCloud) {
+                AddressList: function(OrderCloudSDK) {
                     var options = {
                         filters: {Editable: true}
                     };
-                    return sdkOrderCloud.Me.ListAddresses(options);
+                    return OrderCloudSDK.Me.ListAddresses(options);
                 }
             }
         });

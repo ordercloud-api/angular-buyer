@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('CreateAddressModalCtrl', CreateAddressModalController)
 ;
 
-function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, sdkOrderCloud, ocGeography) {
+function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, OrderCloudSDK, ocGeography) {
     var vm = this;
     vm.countries = ocGeography.Countries;
     vm.states = ocGeography.States;
@@ -22,7 +22,7 @@ function CreateAddressModalController($q, $exceptionHandler, $uibModalInstance, 
         vm.loading = {
             message:'Creating Address'
         };
-        vm.loading.promise = sdkOrderCloud.Me.CreateAddress(vm.address)
+        vm.loading.promise = OrderCloudSDK.Me.CreateAddress(vm.address)
             .then(function(address) {
                 $uibModalInstance.close(address);
             })

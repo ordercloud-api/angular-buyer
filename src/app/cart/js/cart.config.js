@@ -14,9 +14,9 @@ function CartConfig($stateProvider) {
                 pageTitle: 'Shopping Cart'
             },
             resolve: {
-                LineItemsList: function($q, $state, toastr, sdkOrderCloud, ocLineItems, CurrentOrder) {
+                LineItemsList: function($q, $state, toastr, OrderCloudSDK, ocLineItems, CurrentOrder) {
                     var dfd = $q.defer();
-                    sdkOrderCloud.LineItems.List('outgoing', CurrentOrder.ID)
+                    OrderCloudSDK.LineItems.List('outgoing', CurrentOrder.ID)
                         .then(function(data) {
                             if (!data.Items.length) {
                                 dfd.resolve(data);
@@ -34,8 +34,8 @@ function CartConfig($stateProvider) {
                         });
                     return dfd.promise;
                 },
-                CurrentPromotions: function(CurrentOrder, sdkOrderCloud) {
-                    return sdkOrderCloud.Orders.ListPromotions('outgoing', CurrentOrder.ID);
+                CurrentPromotions: function(CurrentOrder, OrderCloudSDK) {
+                    return OrderCloudSDK.Orders.ListPromotions('outgoing', CurrentOrder.ID);
                 }
             }
         });

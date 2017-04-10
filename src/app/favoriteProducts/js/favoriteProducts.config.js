@@ -11,16 +11,16 @@ function FavoriteProductsConfig($stateProvider){
             controller: 'FavoriteProductsCtrl',
             controllerAs: 'favoriteProducts',
             data: {
-                pageTitle: "Favorite Products"
+                pageTitle: 'Favorite Products'
             },
             resolve: {
                 Parameters: function ($stateParams, ocParameters) {
                     return ocParameters.Get($stateParams);
                 },
-                FavoriteProducts: function(sdkOrderCloud, Parameters, CurrentUser){
+                FavoriteProducts: function(OrderCloudSDK, Parameters, CurrentUser){
                     if (CurrentUser.xp && CurrentUser.xp.FavoriteProducts.length) {
                         var parameters = angular.extend(Parameters, {pageSize: Parameters.pageSize || 6, filters: {ID: CurrentUser.xp.FavoriteProducts.join('|')}});
-                        return sdkOrderCloud.Me.ListProducts(parameters);
+                        return OrderCloudSDK.Me.ListProducts(parameters);
                     } else {
                         return null;
                     }

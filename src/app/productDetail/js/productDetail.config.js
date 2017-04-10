@@ -11,8 +11,8 @@ function ProductDetailConfig($stateProvider) {
             controller: 'ProductDetailCtrl',
             controllerAs: 'productDetail',
             resolve: {
-                Product: function ($stateParams, sdkOrderCloud, catalogid) {
-                    return sdkOrderCloud.Me.GetProduct(catalogid, $stateParams.productid);
+                Product: function ($stateParams, OrderCloudSDK, catalogid) {
+                    return OrderCloudSDK.Me.GetProduct(catalogid, $stateParams.productid);
                 }
             }
         });

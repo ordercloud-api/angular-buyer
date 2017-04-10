@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductSearchCtrl', ProductSearchController)
 ;
 
-function ProductSearchController($state, sdkOrderCloud, ocParameters, Parameters, ProductList) {
+function ProductSearchController($state, OrderCloudSDK, ocParameters, Parameters, ProductList) {
     var vm = this;
     vm.list = ProductList;
     vm.parameters = Parameters;
@@ -39,8 +39,8 @@ function ProductSearchController($state, sdkOrderCloud, ocParameters, Parameters
     };
 
     vm.loadMore = function() {
-        var parameters = angular.extend(Parameters, {page:vm.list.Meta.Page + 1})
-        return sdkOrderCloud.Me.ListProducts(parameters)
+        var parameters = angular.extend(Parameters, {page:vm.list.Meta.Page + 1});
+        return OrderCloudSDK.Me.ListProducts(parameters)
             .then(function(data) {
                 vm.list.Items = vm.list.Items.concat(data.Items);
                 vm.list.Meta = data.Meta;

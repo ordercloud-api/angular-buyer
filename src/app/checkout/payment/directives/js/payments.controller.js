@@ -4,10 +4,10 @@ angular.module('orderCloud')
 
 //TODO: Refactor for multiple payments without Payments.Patch
 
-function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toastr, sdkOrderCloud, ocCheckoutPaymentService, CheckoutConfig) {
+function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 
-	sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
+	OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 		.then(function(data) {
 			if (!data.Items.length) {
 				$scope.payments = {Items: []};
@@ -44,7 +44,7 @@ function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toas
 	$scope.removePayment = function(scope) {
 		// TODO: when api bug EX-1053 is fixed refactor this to simply delete the payment
 
-		return sdkOrderCloud.Payments.Delete('outgoing', $scope.order.ID, scope.payment.ID)
+		return OrderCloudSDK.Payments.Delete('outgoing', $scope.order.ID, scope.payment.ID)
 			.then(function(){
 				$scope.payments.Items.splice(scope.$index, 1);
 				calculateMaxTotal();
@@ -55,7 +55,7 @@ function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toas
 	$scope.updatePaymentAmount = function(scope) {
 		if (scope.payment.Amount > scope.payment.MaxAmount || !scope.payment.Amount) return;
 		//TODO: Buyer Users currently cannot patch a payment - we need to refactor for multiple payments
-		sdkOrderCloud.Payments.Patch('outgoing', $scope.order.ID, scope.payment.ID, scope.payment)
+		OrderCloudSDK.Payments.Patch('outgoing', $scope.order.ID, scope.payment.ID, scope.payment)
 			.then(function(data) {
 				toastr.success('Payment amount updated to ' + $filter('currency')(scope.payment.Amount));
 				calculateMaxTotal();

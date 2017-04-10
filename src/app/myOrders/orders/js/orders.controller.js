@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('OrdersCtrl', OrdersController)
 ;
 
-function OrdersController($state, $filter, $ocMedia, sdkOrderCloud, ocParameters, ocOrders, OrderList, Parameters) {
+function OrdersController($state, $filter, $ocMedia, OrderCloudSDK, ocParameters, ocOrders, OrderList, Parameters) {
     var vm = this;
     vm.list = OrderList;
     if (Parameters.fromDate) Parameters.fromDate = new Date(Parameters.fromDate);

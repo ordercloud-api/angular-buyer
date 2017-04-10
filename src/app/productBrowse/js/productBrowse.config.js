@@ -19,14 +19,14 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
                 Parameters: function ($stateParams, ocParameters) {
                     return ocParameters.Get($stateParams);
                 },
-                CategoryList: function(sdkOrderCloud, catalogid) {
+                CategoryList: function(OrderCloudSDK, catalogid) {
                     var parameters = {
                         depth: 'all',
                         catalogID: catalogid,
                         page: 1,
                         pageSize: 100
                     };
-                    return sdkOrderCloud.Me.ListCategories(parameters);
+                    return OrderCloudSDK.Me.ListCategories(parameters);
                 },
                 CategoryTree: function(CategoryList) {
                     var result = [];
@@ -58,14 +58,14 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
                 Parameters: function ($stateParams, ocParameters) {
                     return ocParameters.Get($stateParams);
                 },
-                ProductList: function(sdkOrderCloud, CurrentUser, Parameters, catalogid) {
+                ProductList: function(OrderCloudSDK, CurrentUser, Parameters, catalogid) {
                     if (Parameters.favorites && CurrentUser.xp.FavoriteProducts) {
                         Parameters.filters ? angular.extend(Parameters.filters, Parameters.filters, {ID:CurrentUser.xp.FavoriteProducts.join('|')}) : Parameters.filters = {ID:CurrentUser.xp.FavoriteProducts.join('|')};
                     } else if (Parameters.filters) {
                         delete Parameters.filters.ID;
                     }
                     var parameters = angular.extend(Parameters, {catalogID: catalogid, categoryID: Parameters.categoryid, depth: 'all'});
-                    return sdkOrderCloud.Me.ListProducts(parameters);
+                    return OrderCloudSDK.Me.ListProducts(parameters);
                 }
             }
         });

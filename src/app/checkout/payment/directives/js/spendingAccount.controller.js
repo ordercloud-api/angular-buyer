@@ -2,9 +2,9 @@ angular.module('orderCloud')
 	.controller('PaymentSpendingAccountCtrl', PaymentSpendingAccountController)
 ;
 
-function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, sdkOrderCloud, ocCheckoutPaymentService) {
+function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService) {
 	if (!$scope.payment) {
-		sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
+		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
 				if (data.Items.length) {
 					$scope.payment = data.Items[0];
@@ -36,7 +36,7 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 			pageSize: 100,
 			filters: {RedemptionCode: '!*', AllowAsPaymentMethod: true}
 		};
-		sdkOrderCloud.Me.ListSpendingAccounts(spendingAccountListOptions)
+		OrderCloudSDK.Me.ListSpendingAccounts(spendingAccountListOptions)
 			.then(function(data) {
 				$scope.spendingAccounts = data.Items;
 				if ($scope.payment.SpendingAccountID) {
@@ -56,7 +56,7 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 			});
 	};
 
-	$scope.$watch('payment', function(n,o) {
+	$scope.$watch('payment', function(n, o) {
 		if (n && !n.SpendingAccountID || n.Editing) {
 			$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', false);
 		} else {

@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocSpecForm', OrderCloudSpecFormDirective)
 ;
 
-function OrderCloudSpecFormDirective(sdkOrderCloud, catalogid) {
+function OrderCloudSpecFormDirective(OrderCloudSDK, catalogid) {
     return {
         scope: {
             product: '='
@@ -15,7 +15,7 @@ function OrderCloudSpecFormDirective(sdkOrderCloud, catalogid) {
                     page: 1,
                     pageSize: 100
                 };
-                sdkOrderCloud.Me.ListSpecs(catalogid, scope.product.ID, options)
+                OrderCloudSDK.Me.ListSpecs(catalogid, scope.product.ID, options)
                     .then(function(data){
                         //go through specs array if there is a default value, set the specValue = default value
                         angular.forEach(data.Items, function(obj, key){
@@ -27,5 +27,5 @@ function OrderCloudSpecFormDirective(sdkOrderCloud, catalogid) {
                 return null;
             }
         }
-    }
+    };
 }

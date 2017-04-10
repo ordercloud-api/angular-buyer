@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('BaseCtrl', BaseController)
 ;
 
-function BaseController($rootScope, $state, sdkOrderCloud, ocProductSearch, CurrentUser, CurrentOrder) {
+function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, CurrentUser, CurrentOrder) {
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
@@ -22,7 +22,7 @@ function BaseController($rootScope, $state, sdkOrderCloud, ocProductSearch, Curr
         vm.orderLoading = {
             message: message
         };
-        vm.orderLoading.promise = sdkOrderCloud.Orders.Get('outgoing', OrderID)
+        vm.orderLoading.promise = OrderCloudSDK.Orders.Get('outgoing', OrderID)
             .then(function(data) {
                 vm.currentOrder = data;
             });

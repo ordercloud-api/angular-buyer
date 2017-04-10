@@ -3,7 +3,7 @@ angular.module('orderCloud')
     .provider('ocRoles', OrderCloudRolesProvider)
 ;
 
-function OrderCloudRolesService($window, sdkOrderCloud) {
+function OrderCloudRolesService($window, OrderCloudSDK) {
     var service = {
         Set: _set,
         Get: _get,
@@ -54,7 +54,7 @@ function OrderCloudRolesService($window, sdkOrderCloud) {
 
     //Returns local service variable or obtains roles again from token
     function _get() {
-        return roles || _set(sdkOrderCloud.GetToken());
+        return roles || _set(OrderCloudSDK.GetToken());
     }
 
     //Removes local service variable
@@ -89,16 +89,16 @@ function OrderCloudRolesProvider() {
                  GetRoleGroups: function() {
                     return roleGroups;
                  }
-             }
+             };
         },
         AddRoleGroup: function(roleGroup) {
-             if (!roleGroup.Name) throw "ocRoles: RoleGroup must have a Name value";
-             if (!roleGroup.Roles || !roleGroup.Roles.length) throw "ocRoles: RoleGroup must have Roles";
-             if (!angular.isArray(roleGroup.Roles)) throw "ocRoles: RoleGroup Roles must be an array";
-             if (!roleGroup.Type || ['All', 'Any'].indexOf(roleGroup.Type) == -1) throw "ocRoles: RoleGroup Type must be 'All' or 'Any'";
+             if (!roleGroup.Name) throw 'ocRoles: RoleGroup must have a Name value';
+             if (!roleGroup.Roles || !roleGroup.Roles.length) throw 'ocRoles: RoleGroup must have Roles';
+             if (!angular.isArray(roleGroup.Roles)) throw 'ocRoles: RoleGroup Roles must be an array';
+             if (!roleGroup.Type || ['All', 'Any'].indexOf(roleGroup.Type) == -1) throw 'ocRoles: RoleGroup Type must be \'All\' or \'Any\'';
 
              roleGroups[roleGroup.Name] = roleGroup;
         }
-    }
+    };
 
 }
