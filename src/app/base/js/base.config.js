@@ -17,24 +17,23 @@ function BaseConfig($stateProvider) {
             }
         },
         resolve: {
-            CurrentUser: function($q, $state, OrderCloud, sdkOrderCloud, buyerid) {
-                return sdkOrderCloud.Me.Get()
+            CurrentUser: function($q, $state, OrderCloudSDK) {
+                return OrderCloudSDK.Me.Get()
                     .then(function(data) {
-                        OrderCloud.BuyerID.Set(buyerid); //TODO: remove this line after refactor is complete
                         return data;
                     })
                     .catch(function(ex) {
                         $state.go('login');
-                    })
+                    });
             },
-            ExistingOrder: function($q, sdkOrderCloud, CurrentUser) {
+            ExistingOrder: function($q, OrderCloudSDK, CurrentUser) {
                 var options = {
                     page: 1,
                     pageSize: 1,
                     sortBy: '!DateCreated',
                     filters: {Status: 'Unsubmitted'}
                 };
-                return sdkOrderCloud.Me.ListOrders(options)
+                return OrderCloudSDK.Me.ListOrders(options)
                     .then(function(data) {
                         return data.Items[0];
                     });
@@ -46,8 +45,8 @@ function BaseConfig($stateProvider) {
                     return ExistingOrder;
                 }
             },
-            AnonymousUser: function($q, sdkOrderCloud, CurrentUser) {
-                CurrentUser.Anonymous = angular.isDefined(JSON.parse(atob(sdkOrderCloud.GetToken().split('.')[1])).orderid);
+            AnonymousUser: function($q, OrderCloudSDK, CurrentUser) {
+                CurrentUser.Anonymous = angular.isDefined(JSON.parse(atob(OrderCloudSDK.GetToken().split('.')[1])).orderid);
             }
         }
     });

@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('FavoriteProductsCtrl', FavoriteProductsController)
 ;
 
-function FavoriteProductsController(ocParameters, sdkOrderCloud, $state, $ocMedia, Parameters, CurrentUser, FavoriteProducts){
+function FavoriteProductsController(ocParameters, OrderCloudSDK, $state, $ocMedia, Parameters, CurrentUser, FavoriteProducts){
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.list = FavoriteProducts;
@@ -58,7 +58,7 @@ function FavoriteProductsController(ocParameters, sdkOrderCloud, $state, $ocMedi
     //load the next page of results with all the same parameters
     vm.loadMore = function() {
         var parameters = angular.extend(Parameters, {page:vm.list.Meta.Page + 1});
-        return sdkOrderCloud.Me.ListProducts(parameters)
+        return OrderCloudSDK.Me.ListProducts(parameters)
             .then(function(data) {
                 vm.list.Items = vm.list.Items.concat(data.Items);
                 vm.list.Meta = data.Meta;

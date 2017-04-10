@@ -17,8 +17,8 @@ function OrderDetailConfig($stateProvider){
                 SelectedOrder: function($stateParams, ocOrderDetails){
                     return ocOrderDetails.Get($stateParams.orderid);
                 },
-                OrderLineItems: function($stateParams, sdkOrderCloud){
-                    return sdkOrderCloud.LineItems.List('outgoing', $stateParams.orderid);
+                OrderLineItems: function($stateParams, OrderCloudSDK){
+                    return OrderCloudSDK.LineItems.List('outgoing', $stateParams.orderid);
                 }
             }
         });

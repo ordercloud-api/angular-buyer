@@ -14,7 +14,7 @@ function OrderCloudProductSearchComponent() {
     };
 }
 
-function ProductSearchComponentController($state, sdkOrderCloud, catalogid) {
+function ProductSearchComponentController($state, OrderCloudSDK, catalogid) {
     var vm = this;
 
     vm.getSearchResults = function() {
@@ -25,7 +25,7 @@ function ProductSearchComponentController($state, sdkOrderCloud, catalogid) {
             pageSize: vm.maxProducts || 5,
             depth: 'all'
         };
-        return sdkOrderCloud.Me.ListProducts(parameters)
+        return OrderCloudSDK.Me.ListProducts(parameters)
             .then(function(data) {
                 return data.Items;
             });

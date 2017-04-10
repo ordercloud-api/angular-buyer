@@ -1,7 +1,7 @@
 angular.module('orderCloud')
 	.controller('ChangePasswordModalCtrl', ChangePasswordModalController);
 
-function ChangePasswordModalController($exceptionHandler, sdkOrderCloud, $uibModalInstance, CurrentUser, clientid, scope) {
+function ChangePasswordModalController($exceptionHandler, OrderCloudSDK, $uibModalInstance, CurrentUser, clientid, scope) {
 	var vm = this;
 	vm.currentUser = CurrentUser;
 
@@ -11,9 +11,9 @@ function ChangePasswordModalController($exceptionHandler, sdkOrderCloud, $uibMod
 			Password: vm.currentUser.CurrentPassword
 		};
 
-		return vm.loading = sdkOrderCloud.Auth.Login(checkPasswordCredentials.Username, checkPasswordCredentials.Password, clientid, scope)
+		return vm.loading = OrderCloudSDK.Auth.Login(checkPasswordCredentials.Username, checkPasswordCredentials.Password, clientid, scope)
 			.then(function () {
-				return sdkOrderCloud.Me.ResetPasswordByToken({
+				return OrderCloudSDK.Me.ResetPasswordByToken({
 						NewPassword: vm.currentUser.NewPassword
 					})
 					.then(function () {

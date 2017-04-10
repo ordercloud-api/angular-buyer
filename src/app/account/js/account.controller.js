@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('AccountCtrl', AccountController)
 ;
 
-function AccountController($exceptionHandler, $uibModal, toastr, sdkOrderCloud, ocAccount, CurrentUser){
+function AccountController($exceptionHandler, $uibModal, toastr, OrderCloudSDK, ocAccount, CurrentUser){
 	var vm = this;
 	vm.profile = angular.copy(CurrentUser);
 	vm.currentUser = CurrentUser;
@@ -14,7 +14,7 @@ function AccountController($exceptionHandler, $uibModal, toastr, sdkOrderCloud, 
 	vm.updateProfile = function () {
 		ocAccount.ConfirmPassword(vm.currentUser)
 			.then(function () {
-				vm.profileUpdateLoading = sdkOrderCloud.Me.Patch(_.pick(vm.profile, ['FirstName', 'LastName', 'Email', 'Phone']))
+				vm.profileUpdateLoading = OrderCloudSDK.Me.Patch(_.pick(vm.profile, ['FirstName', 'LastName', 'Email', 'Phone']))
 					.then(function (updatedUser) {
 						vm.profile = angular.copy(updatedUser);
 						vm.currentUser = updatedUser;
@@ -27,7 +27,7 @@ function AccountController($exceptionHandler, $uibModal, toastr, sdkOrderCloud, 
 	vm.updateUsername = function () {
 		ocAccount.ConfirmPassword(vm.currentUser)
 			.then(function () {
-				vm.profileUpdateLoading = sdkOrderCloud.Me.Patch(_.pick(vm.profile, 'Username'))
+				vm.profileUpdateLoading = OrderCloudSDK.Me.Patch(_.pick(vm.profile, 'Username'))
 					.then(function (updatedUser) {
 						vm.profile = angular.copy(updatedUser);
 						vm.currentUser = updatedUser;

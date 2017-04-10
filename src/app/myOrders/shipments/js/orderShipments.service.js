@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocOrderShipments', OrderCloudOrderShipmentsService)
 ;
 
-function OrderCloudOrderShipmentsService($q, sdkOrderCloud) {
+function OrderCloudOrderShipmentsService($q, OrderCloudSDK) {
     var service = {
         List: _list
     };
@@ -15,7 +15,7 @@ function OrderCloudOrderShipmentsService($q, sdkOrderCloud) {
             page: page,
             pageSize: pageSize
         };
-        sdkOrderCloud.Me.ListShipments(options)
+        OrderCloudSDK.Me.ListShipments(options)
             .then(function(data) {
                 df.resolve(data);
                 //TODO: Add this back if Shopper is able to list shipment items
@@ -29,7 +29,7 @@ function OrderCloudOrderShipmentsService($q, sdkOrderCloud) {
                 queue.push((function() {
                     var d = $q.defer();
 
-                    sdkOrderCloud.Shipments.ListItems(shipment.ID)
+                    OrderCloudSDK.Shipments.ListItems(shipment.ID)
                         .then(function(shipmentItems) {
                             shipment.Items = shipmentItems.Items;
                             d.resolve();
@@ -51,7 +51,7 @@ function OrderCloudOrderShipmentsService($q, sdkOrderCloud) {
                 pageSize: 100,
                 filters: {ID: lineItemIDs.join('|')}
             };
-            sdkOrderCloud.LineItems.List('incoming', orderID, options)
+            OrderCloudSDK.LineItems.List('incoming', orderID, options)
                 .then(function(lineItemData) {
                     angular.forEach(data.Items, function(shipment) {
                         angular.forEach(shipment.Items, function(shipmentItem) {

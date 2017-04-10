@@ -16,7 +16,7 @@ function OrderCloudFavoriteOrderComponent() {
     return component;
 }
 
-function FavoriteOrderController(toastr, sdkOrderCloud){
+function FavoriteOrderController(toastr, OrderCloudSDK){
     var vm = this;
     vm.$onInit = function(){
         vm.hasFavorites = !!vm.currentUser && !!vm.currentUser.xp && !!vm.currentUser.xp.FavoriteOrders;
@@ -35,7 +35,7 @@ function FavoriteOrderController(toastr, sdkOrderCloud){
 
     function addOrder(existingList) {
         existingList.push(vm.order.ID);
-        sdkOrderCloud.Me.Patch({xp: {FavoriteOrders: existingList}})
+        OrderCloudSDK.Me.Patch({xp: {FavoriteOrders: existingList}})
             .then(function(){
                 vm.isFavorited = true;
                 toastr.success('Saved to your favorite orders.');
@@ -44,7 +44,7 @@ function FavoriteOrderController(toastr, sdkOrderCloud){
 
     function removeOrder(){
         var updatedList = _.without(vm.currentUser.xp.FavoriteOrders, vm.order.ID);
-        sdkOrderCloud.Me.Patch({xp: {FavoriteOrders: updatedList}})
+        OrderCloudSDK.Me.Patch({xp: {FavoriteOrders: updatedList}})
             .then(function(){
                 vm.isFavorited = false;
                 vm.currentUser.xp.FavoriteOrders = updatedList;

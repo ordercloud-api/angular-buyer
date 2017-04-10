@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductViewCtrl', ProductViewController)
 ;
 
-function ProductViewController($state, $ocMedia, ocParameters, sdkOrderCloud, CurrentOrder, ProductList, CategoryList, Parameters){
+function ProductViewController($state, $ocMedia, ocParameters, OrderCloudSDK, CurrentOrder, ProductList, CategoryList, Parameters){
     var vm = this;
     vm.parameters = Parameters;
     vm.categories = CategoryList;
@@ -58,7 +58,7 @@ function ProductViewController($state, $ocMedia, ocParameters, sdkOrderCloud, Cu
     //load the next page of results with all the same parameters
     vm.loadMore = function() {
         var parameters = angular.extend(Parameters, {page: vm.list.Meta.Page + 1});
-        return sdkOrderCloud.Me.ListProducts(parameters)
+        return OrderCloudSDK.Me.ListProducts(parameters)
             .then(function(data) {
                 vm.list.Items = vm.list.Items.concat(data.Items);
                 vm.list.Meta = data.Meta;

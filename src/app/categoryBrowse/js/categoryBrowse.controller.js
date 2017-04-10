@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('CategoryBrowseCtrl', CategoryBrowseController)
 ;
 
-function CategoryBrowseController($state, sdkOrderCloud, ocParameters, CategoryList, ProductList, Parameters, SelectedCategory) {
+function CategoryBrowseController($state, OrderCloudSDK, ocParameters, CategoryList, ProductList, Parameters, SelectedCategory) {
     var vm = this;
     vm.categoryList = CategoryList;
     vm.productList = ProductList;
@@ -29,7 +29,7 @@ function CategoryBrowseController($state, sdkOrderCloud, ocParameters, CategoryL
 
     vm.loadMoreCategories = function() {
         var parameters = angular.extend(Parameters, {page:vm.categoryList.Meta.Page + 1});
-        return sdkOrderCloud.Me.ListCategories(parameters)
+        return OrderCloudSDK.Me.ListCategories(parameters)
             .then(function(data) {
                 vm.categoryList.Items = vm.categoryList.Items.concat(data.Items);
                 vm.categoryList.Meta = data.Meta;
@@ -43,7 +43,7 @@ function CategoryBrowseController($state, sdkOrderCloud, ocParameters, CategoryL
 
     vm.loadMoreProducts = function() {
         var parameters = angular.extend(Parameters, {page:vm.productList.Meta.Page + 1});
-        return sdkOrderCloud.Me.ListProducts(parameters)
+        return OrderCloudSDK.Me.ListProducts(parameters)
             .then(function(data) {
                 vm.productList.Items = vm.productList.Items.concat(data.Items);
                 vm.productList.Meta = data.Meta;

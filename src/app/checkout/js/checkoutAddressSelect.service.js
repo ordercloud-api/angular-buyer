@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocAddressSelect', OrderCloudAddressSelectService)
 ;
 
-function OrderCloudAddressSelectService($uibModal, sdkOrderCloud) {
+function OrderCloudAddressSelectService($uibModal, OrderCloudSDK) {
     var service = {
         Open: _open
     };
@@ -15,7 +15,7 @@ function OrderCloudAddressSelectService($uibModal, sdkOrderCloud) {
             backdrop: 'static',
             size: 'md',
             resolve: {
-                Addresses: function(sdkOrderCloud) {
+                Addresses: function(OrderCloudSDK) {
                     var options = {
                         page: 1,
                         pageSize: 100
@@ -27,7 +27,7 @@ function OrderCloudAddressSelectService($uibModal, sdkOrderCloud) {
                         options.filters = {Billing: true};
                     }
 
-                    return sdkOrderCloud.Me.ListAddresses(options);
+                    return OrderCloudSDK.Me.ListAddresses(options);
                 }
             }
         }).result;

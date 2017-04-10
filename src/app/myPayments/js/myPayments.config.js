@@ -11,26 +11,26 @@ function MyPaymentsConfig($stateProvider) {
             controller: 'MyPaymentsCtrl',
             controllerAs: 'myPayments',
             data: {
-                pageTitle: "Payment Methods"
+                pageTitle: 'Payment Methods'
             },
             resolve: {
-                UserCreditCards: function(sdkOrderCloud) {
+                UserCreditCards: function(OrderCloudSDK) {
                     var options = {
                         filters: {Editable: true}
                     };
-                    return sdkOrderCloud.Me.ListCreditCards(options);
+                    return OrderCloudSDK.Me.ListCreditCards(options);
                 },
-                UserSpendingAccounts: function(sdkOrderCloud) {
+                UserSpendingAccounts: function(OrderCloudSDK) {
                     var options = {
                         filters: {RedemptionCode: '!*'}
                     };
-                   return sdkOrderCloud.Me.ListSpendingAccounts(options);
+                   return OrderCloudSDK.Me.ListSpendingAccounts(options);
                 },
-                GiftCards: function(sdkOrderCloud) {
+                GiftCards: function(OrderCloudSDK) {
                     var options = {
                         filters: {RedemptionCode: '*'}
                     };
-                    return sdkOrderCloud.Me.ListSpendingAccounts(options);
+                    return OrderCloudSDK.Me.ListSpendingAccounts(options);
                 }
             }
         });

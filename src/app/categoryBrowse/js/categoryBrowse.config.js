@@ -14,21 +14,21 @@ function CategoryBrowseConfig($stateProvider, catalogid){
                 Parameters: function($stateParams, ocParameters) {
                     return ocParameters.Get($stateParams);
                 },
-                CategoryList: function(sdkOrderCloud, Parameters, catalogid) {
+                CategoryList: function(OrderCloudSDK, Parameters, catalogid) {
                     if(Parameters.categoryID) { Parameters.filters ? Parameters.filters.ParentID = Parameters.categoryID : Parameters.filters = {ParentID:Parameters.categoryID}; } 
                     var parameters = angular.extend(Parameters, {depth: 1, page: (Parameters.categoryPage || Parameters.page), pageSize: (Parameters.pageSize || 12), catalogID: catalogid});
-                    return sdkOrderCloud.Me.ListCategories(parameters);
+                    return OrderCloudSDK.Me.ListCategories(parameters);
                 },
-                ProductList: function(sdkOrderCloud, Parameters, catalogid) {
+                ProductList: function(OrderCloudSDK, Parameters, catalogid) {
                     if(Parameters && Parameters.filters && Parameters.filters.ParentID) {
                         delete Parameters.filters.ParentID;
                         var parameters = angular.extend(Parameters, {depth: 'all', catalogID: catalogid, page: (Parameters.productPage || Parameters.page), pageSize: (Parameters.pageSize || 12)});
-                        return sdkOrderCloud.Me.ListProducts(parameters);
+                        return OrderCloudSDK.Me.ListProducts(parameters);
                     } else {
                         return null;
                     }
                 },
-                SelectedCategory: function(sdkOrderCloud, Parameters){
+                SelectedCategory: function(OrderCloudSDK, Parameters){
                     if(Parameters.categoryID){
                         var parameters = {
                             page: 1,
@@ -36,7 +36,7 @@ function CategoryBrowseConfig($stateProvider, catalogid){
                             depth: 'all',
                             filters: {ID: Parameters.categoryID}
                         };
-                        return sdkOrderCloud.Me.ListCategories(parameters)
+                        return OrderCloudSDK.Me.ListCategories(parameters)
                             .then(function(data){
                                 return data.Items[0];
                             });

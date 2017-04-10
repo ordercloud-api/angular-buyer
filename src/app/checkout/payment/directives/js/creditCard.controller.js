@@ -2,18 +2,18 @@ angular.module('orderCloud')
 	.controller('PaymentCreditCardCtrl', PaymentCreditCardController)
 ;
 
-function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, sdkOrderCloud, ocMyCreditCards, ocCheckoutPaymentService) {
+function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPaymentService) {
 	var creditCardListOptions = {
 		page: 1,
 		pageSize: 100
 	};
-	sdkOrderCloud.Me.ListCreditCards(creditCardListOptions)
+	OrderCloudSDK.Me.ListCreditCards(creditCardListOptions)
 		.then(function(data) {
 			$scope.creditCards = data.Items;
 		});
 
 	if (!$scope.payment) {
-		sdkOrderCloud.Payments.List('outgoing', $scope.order.ID)
+		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
 				if (data.Items.length) {
 					$scope.payment = data.Items[0];
@@ -44,7 +44,7 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 			page: 1,
 			pageSize: 100
 		};
-		sdkOrderCloud.Me.ListCreditCards(creditCardListOptions)
+		OrderCloudSDK.Me.ListCreditCards(creditCardListOptions)
 			.then(function(data) {
 				$scope.creditCards = data.Items;
 				if ($scope.payment.CreditCardID) {

@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocNewOrder', OrderCloudNewOrderService)
 ;
 
-function OrderCloudNewOrderService($q, sdkOrderCloud) {
+function OrderCloudNewOrderService($q, OrderCloudSDK) {
     var service = {
         Create: _create
     };
@@ -17,7 +17,7 @@ function OrderCloudNewOrderService($q, sdkOrderCloud) {
             pageSize: 100,
             filters: {Shipping: true}
         };
-        sdkOrderCloud.Me.ListAddresses(options)
+        OrderCloudSDK.Me.ListAddresses(options)
             .then(function(shippingAddresses) {
                 if (shippingAddresses.Items.length) order.ShippingAddressID = shippingAddresses.Items[0].ID;
                 setBillingAddress();
@@ -30,7 +30,7 @@ function OrderCloudNewOrderService($q, sdkOrderCloud) {
                 pageSize: 100,
                 filters: {Billing: true}
             };
-            sdkOrderCloud.Me.ListAddresses(options)
+            OrderCloudSDK.Me.ListAddresses(options)
                 .then(function(billingAddresses) {
                     if (billingAddresses.Items.length) order.BillingAddressID = billingAddresses.Items[0].ID;
                     createOrder();
@@ -38,7 +38,7 @@ function OrderCloudNewOrderService($q, sdkOrderCloud) {
         }
 
         function createOrder() {
-            sdkOrderCloud.Orders.Create('outgoing', order)
+            OrderCloudSDK.Orders.Create('outgoing', order)
                 .then(function(order) {
                     deferred.resolve(order);
                 });
