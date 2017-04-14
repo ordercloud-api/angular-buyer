@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocOrderPayments', OrderCloudOrderPaymentsService)
 ;
 
-function OrderCloudOrderPaymentsService($q, sdkOrderCloud) {
+function OrderCloudOrderPaymentsService($q, OrderCloudSDK) {
     var service = {
         List: _list
     };
@@ -14,7 +14,7 @@ function OrderCloudOrderPaymentsService($q, sdkOrderCloud) {
             page: page,
             pageSize: pageSize
         };
-        sdkOrderCloud.Payments.List('outgoing', orderID, options)
+        OrderCloudSDK.Payments.List('outgoing', orderID, options)
             .then(function(data) {
                 getPaymentDetails(data);
             });
@@ -28,7 +28,7 @@ function OrderCloudOrderPaymentsService($q, sdkOrderCloud) {
                     payment.Details = null;
 
                     if (payment.Type == 'SpendingAccount') {
-                        sdkOrderCloud.Me.GetSpendingAccount(payment.SpendingAccountID)
+                        OrderCloudSDK.Me.GetSpendingAccount(payment.SpendingAccountID)
                             .then(function(spendingAccount) {
                                 payment.Details = spendingAccount;
                                 d.resolve();
@@ -38,7 +38,7 @@ function OrderCloudOrderPaymentsService($q, sdkOrderCloud) {
                             });
                     }
                     else if (payment.Type == 'CreditCard') {
-                        sdkOrderCloud.Me.GetCreditCard(payment.CreditCardID)
+                        OrderCloudSDK.Me.GetCreditCard(payment.CreditCardID)
                             .then(function(creditCard) {
                                 payment.Details = creditCard;
                                 d.resolve();
