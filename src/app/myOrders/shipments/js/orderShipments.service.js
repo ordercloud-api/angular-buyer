@@ -7,8 +7,10 @@ function OrderCloudOrderShipmentsService($q, OrderCloudSDK) {
         List: _list
     };
 
-    function _list(orderID, page, pageSize) {
+    function _list(orderID, page, pageSize, OrderLineItems) {
         var df = $q.defer();
+
+        console.log(OrderLineItems);
 
         var options = {
             orderID: orderID,
@@ -17,9 +19,7 @@ function OrderCloudOrderShipmentsService($q, OrderCloudSDK) {
         };
         OrderCloudSDK.Me.ListShipments(options)
             .then(function(data) {
-                df.resolve(data);
-                //TODO: Add this back if Shopper is able to list shipment items
-                //getShipmentItems(data);
+                getShipmentItems(data);
             });
 
         function getShipmentItems(data) {
@@ -29,7 +29,7 @@ function OrderCloudOrderShipmentsService($q, OrderCloudSDK) {
                 queue.push((function() {
                     var d = $q.defer();
 
-                    OrderCloudSDK.Shipments.ListItems(shipment.ID)
+                    OrderCloudSDK.Me.ListShipmentItems(shipment.ID)
                         .then(function(shipmentItems) {
                             shipment.Items = shipmentItems.Items;
                             d.resolve();
@@ -45,22 +45,13 @@ function OrderCloudOrderShipmentsService($q, OrderCloudSDK) {
         }
 
         function getLineItems(data) {
-            var lineItemIDs = _.uniq(_.flatten(_.map(data.Items, function(shipment) { return _.pluck(shipment.Items, 'LineItemID');})));
-            var options = {
-                page: 1,
-                pageSize: 100,
-                filters: {ID: lineItemIDs.join('|')}
-            };
-            OrderCloudSDK.LineItems.List('incoming', orderID, options)
-                .then(function(lineItemData) {
-                    angular.forEach(data.Items, function(shipment) {
-                        angular.forEach(shipment.Items, function(shipmentItem) {
-                            shipmentItem.LineItem = _.findWhere(lineItemData.Items, {ID: shipmentItem.LineItemID});
-                        });
-                    });
-
-                    analyzeShippingAddresses(data);
+            angular.forEach(data.Items, function(shipment) {
+                angular.forEach(shipment.Items, function(shipmentItem) {
+                    shipmentItem.LineItem = _.findWhere(OrderLineItems.Items, {ID: shipmentItem.LineItemID});
                 });
+            });
+
+            analyzeShippingAddresses(data);
         }
 
         function analyzeShippingAddresses(data) {

@@ -39,8 +39,11 @@
                 <br>
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        <b>Shipper: </b> {{orderShipments.selectedShipment.Shipper}} <br>
-                        <b>Tracking Number: </b> {{orderShipments.selectedShipment.TrackingNumber}} <br>
+                        <b>Shipper: </b> {{orderShipments.selectedShipment.Shipper}} <span>{{orderShipments.selectedShipment.Shipper | ocShipperTrackingSupported}}</span><br>
+                        <b>Tracking Number: </b> 
+                            <span ng-if="!(orderShipments.selectedShipment.Shipper | ocShipperTrackingSupported)">{{orderShipments.selectedShipment.TrackingNumber}}</span>
+                            <a ng-if="(orderShipments.selectedShipment.Shipper | ocShipperTrackingSupported)" href="{{orderShipments.selectedShipment.TrackingNumber | ocShipmentTracking:orderShipments.selectedShipment.Shipper}}" target="_blank">{{orderShipments.selectedShipment.TrackingNumber}}</a>
+                            <br>
                         <b>Date Shipped: </b> {{orderShipments.selectedShipment.DateShipped | date:'shortDate'}} <br>
                         <b>Date Delivered: </b> {{orderShipments.selectedShipment.DateDelivered | date:'shortDate'}} <br>
                         <b>Cost: </b> {{orderShipments.selectedShipment.Cost | currency}}

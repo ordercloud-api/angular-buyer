@@ -13,8 +13,8 @@ function OrderShipmentsConfig($stateProvider) {
                 pageTitle: 'Order Shipments'
             },
             resolve: {
-                OrderShipments: function($stateParams, ocOrderShipments) {
-                    return ocOrderShipments.List($stateParams.orderid);
+                OrderShipments: function($stateParams, ocOrderShipments, OrderLineItems) {
+                    return ocOrderShipments.List($stateParams.orderid, 1, 100, OrderLineItems);
                 }
             }
         })
