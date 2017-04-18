@@ -1,4 +1,100 @@
-<header class="c-header c-header--fixed-top">
-    <nav ui-view="nav"></nav>
+<!--TODO: is it necessary to have nav in separate file?-->
+<!--<header>
+    <div ui-view="nav"></div>
+</header>-->
+<!--Navmenu is used on smaller viewports-->
+<nav class="navmenu navmenu-default navmenu-fixed-left offcanvas c-mobile-nav">
+    <a class="navmenu-brand" ui-sref="home">{{application.name}}</a>
+    <ul class="nav navmenu-nav">
+        <li>
+            <a ui-sref="productBrowse.products({page:'', favorites:'', sortBy:'', categoryid:''})">Product Browse</a>
+        </li>
+        <li>
+            <a ui-sref="categoryBrowse({page:'', sortBy:'', categoryID:''})">Category Browse</a>
+        </li>
+        <li uib-dropdown ng-if="!base.currentUser.Anonymous">
+            <a uib-dropdown-toggle role="button">Account <span class="caret"></a>
+            <ul class="dropdown-menu navmenu-nav" uib-dropdown-menu role="menu">
+                <li>
+                    <a ui-sref="account">My Account</a>
+                </li>
+                <li class="divider"></li>
+                <li ui-sref-active="active">
+                    <a ui-sref="myAddresses">Personal Addresses</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="myPayments">Payment Methods</a>
+                </li>
+                <li ui-sref-active="active">
+                    <a ui-sref="favoriteProducts">Favorite Products</a>
+                </li>
+                <li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}">
+                    <a ui-sref="orders({tab: 'history'})">Orders</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                    <a ng-click="application.logout()">Log out</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<header>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" ui-sref="home">{{application.name}}</a>
+            </div>
+            <ul class="nav navbar-nav c-desktop-nav">
+                <li>
+                <a ui-sref="productBrowse.products({page:'', favorites:'', sortBy:'', categoryid:''})">Product Browse</a>
+                </li>
+                <li>
+                <a ui-sref="categoryBrowse({page:'', sortBy:'', categoryID:''})">Category Browse</a>
+                </li>
+            </ul>
+            <ordercloud-product-search class="navbar-form navbar-left c-desktop-nav"></ordercloud-product-search>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="c-mobile-nav">
+                    <a href="" ng-click="base.mobileSearch()"><i class="fa fa-search"></i></a>
+                </li>
+                <li>
+                    <a ui-sref="cart"><i class="fa fa-shopping-cart"></i> <span class="sr-only">Shopping Cart</span> <span class="badge" ng-bind="base.currentOrder.LineItemCount"></span></a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right c-desktop-nav" ng-if="!base.currentUser.Anonymous">
+                <li class="c-desktop-nav" uib-dropdown>
+                    <a uib-dropdown-toggle role="button">Account <span class="caret"></span></a>
+                    <ul class="dropdown-menu-right" uib-dropdown-menu>
+                        <li>
+                            <a ui-sref="account">My Account</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="myAddresses">Personal Addresses</a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="myPayments">Payment Methods</a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="favoriteProducts">Favorite Products</a>
+                        </li>
+                        <li ng-class="{active: application.$state.includes('orders') || application.$state.includes('orderDetails')}">
+                            <a ui-sref="orders({tab: 'history'})">Orders</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a ng-click="application.logout()">Log out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </header>
 <main ui-view class="container" cg-busy="application.stateLoading('base')"></main>

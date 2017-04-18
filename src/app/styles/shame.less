@@ -42,3 +42,34 @@ li a,
   color:@text-muted;
   text-align:center;
 }
+
+// Overriding default bootstrap navbar behavior - we aren't using the default nav collapse UX
+.navbar-header,
+.navbar-nav > li {
+  float: left;
+}
+.navbar-left {
+  float: left;
+  float: left !important;
+}
+.navbar-right {
+  float: right;
+  float: right !important;
+  margin-right: -15px;
+}
+.navbar-toggle {
+  float: left;
+  margin-left: @navbar-padding-horizontal;
+}
+// Hiding/showing specific nav elements on smaller viewports
+// TODO: refactor these classes
+.c-mobile-nav {
+  @media (min-width: @grid-float-breakpoint-max) {
+    display: none!important;
+  }  
+}
+.c-desktop-nav {
+  @media (max-width: @grid-float-breakpoint-max) {
+    display: none!important;
+  }
+}
