@@ -1,0 +1,3 @@
+<a href tabindex="-1" ng-attr-title="{{match.label}}">
+    <span ng-bind-html="'<b>' + (match.model.Name | uibTypeaheadHighlight:query) + '</b>' + '<br/><small>' + (match.model.ID | uibTypeaheadHighlight:query) + '</small>'"></span>
+</a>
