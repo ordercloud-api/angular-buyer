@@ -43,7 +43,7 @@ li a,
   text-align:center;
 }
 
-// Overriding default bootstrap behavior - we aren't using the default nav collapse UX
+// Overriding default bootstrap navbar behavior - we aren't using the default nav collapse UX
 .navbar-header,
 .navbar-nav > li {
   float: left;
@@ -61,10 +61,15 @@ li a,
   float: left;
   margin-left: @navbar-padding-horizontal;
 }
-// Hiding certain nav elements on smaller viewports
-// TODO: refactor this class and its functionality
+// Hiding/showing specific nav elements on smaller viewports
+// TODO: refactor these classes
+.c-mobile-nav {
+  @media (min-width: @grid-float-breakpoint-max) {
+    display: none!important;
+  }  
+}
 .c-desktop-nav {
   @media (max-width: @grid-float-breakpoint-max) {
-    display: none;
+    display: none!important;
   }
 }

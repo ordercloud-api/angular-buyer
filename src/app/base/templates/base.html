@@ -1,8 +1,9 @@
+<!--TODO: is it necessary to have nav in separate file?-->
 <!--<header>
     <div ui-view="nav"></div>
 </header>-->
 <!--Navmenu is used on smaller viewports-->
-<nav class="navmenu navmenu-default navmenu-fixed-left offcanvas">
+<nav class="navmenu navmenu-default navmenu-fixed-left offcanvas c-mobile-nav">
     <a class="navmenu-brand" ui-sref="home">{{application.name}}</a>
     <ul class="nav navmenu-nav">
         <li>
@@ -57,10 +58,11 @@
                 <a ui-sref="categoryBrowse({page:'', sortBy:'', categoryID:''})">Category Browse</a>
                 </li>
             </ul>
-            <form class="navbar-form navbar-left c-desktop-nav">
-                <ordercloud-product-search></ordercloud-product-search>
-            </form>
+            <ordercloud-product-search class="navbar-form navbar-left c-desktop-nav"></ordercloud-product-search>
             <ul class="nav navbar-nav navbar-right">
+                <li class="c-mobile-nav">
+                    <a href="" ng-click="base.mobileSearch()"><i class="fa fa-search"></i></a>
+                </li>
                 <li>
                     <a ui-sref="cart"><i class="fa fa-shopping-cart"></i> <span class="sr-only">Shopping Cart</span> <span class="badge" ng-bind="base.currentOrder.LineItemCount"></span></a>
                 </li>
