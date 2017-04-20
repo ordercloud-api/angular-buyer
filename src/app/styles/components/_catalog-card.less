@@ -1,19 +1,19 @@
-.c-product-card {
-    @media (min-width: @screen-sm-min) {
-    // add flex display to product card wrapper
-    // flex the product card to fill the grid item element
+@media (min-width: @screen-sm-min) {
+    .c-product-card {
+        // add flex display to product card wrapper
+        // flex the product card to fill the grid item element
         .oc-flex-layout.vertical;
         .oc-flex-layout.flex-auto;
-        &__body {
+        .c-product-card__body {
             .oc-flex-layout.vertical;
             .oc-flex-layout.flex-auto;
         }
-        // flex the descrip to push icons to bottom of card
-        &__descrip {
+        .c-product-card__name {
             .oc-flex-layout.flex-auto;
         }
     }
 }
+
 .c-category-card {
     // add flex display to category card wrapper
     @media (min-width: @screen-sm-min) {
