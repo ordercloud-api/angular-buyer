@@ -1,26 +1,17 @@
 .l-product-grid {
     // use flexbox for layout on small+ screens
     // add flex display to product grid wrapper
-    margin-left: -5px;
-    margin-right: -5px;
-    @media (min-width: @screen-sm-min) {
+    margin-left: -@grid-gutter-width/6;
+    margin-right: -@grid-gutter-width/6;    
+}
+@media (max-width: @screen-xs-max) {
+    .l-product-grid {
         .oc-flex-layout.horizontal;
         .oc-flex-layout.wrap;
-        // flex each item within the grid wrapper
-        &__item {
-            .oc-flex-layout.vertical;
-            padding-left: @grid-gutter-width/6;
-            padding-right: @grid-gutter-width/6;
-        }
-    }
-    @media (max-width: @screen-xs-max){
         .thumbnail {
             border: none;
         }
-        .oc-flex-layout.horizontal;
-        .oc-flex-layout.wrap;
-        // flex each item within the grid wrapper
-        &__item {
+        .l-product-grid__item {
             .oc-flex-layout.vertical;
             padding-left: 2px;
             padding-right: 2px;
@@ -29,19 +20,29 @@
             }
             h4{
                 font-size: 12px;
-            }
+            }            
         }
     }
 }
-.l-category-grid {
-    // use flexbox for layout on small+ screens
-    // add flex display to product grid wrapper
-    @media (min-width: @screen-sm-min) {
+@media (min-width: @screen-sm-min) {
+    .l-product-grid {
         .oc-flex-layout.horizontal;
         .oc-flex-layout.wrap;
         // flex each item within the grid wrapper
-        &__item {
+        .l-product-grid__item {
             .oc-flex-layout.vertical;
-        }
+            padding-left: @grid-gutter-width/6;
+            padding-right: @grid-gutter-width/6;            
+        }        
+    }
+    .l-category-grid {
+        // use flexbox for layout on small+ screens
+        // add flex display to product grid wrapper
+        .oc-flex-layout.horizontal;
+        .oc-flex-layout.wrap;
+        // flex each item within the grid wrapper
+        .l-category-grid__item {
+            .oc-flex-layout.vertical;
+        } 
     }
 }
