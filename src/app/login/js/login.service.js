@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('LoginService', LoginService)
 ;
 
-function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRolesService, clientid, buyerid, anonymous, scope) {
+function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, clientid, buyerid, anonymous, scope) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -63,7 +63,6 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRo
         angular.forEach($cookies.getAll(), function(val, key) {
             $cookies.remove(key);
         });
-        ocRolesService.Remove();
         $state.go(anonymous ? 'home' : 'login', {}, {reload: true});
     }
 
