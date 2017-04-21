@@ -6,7 +6,7 @@ angular.module('orderCloud')
     .directive('button', OrderCloudReadonlyRolesButton)
 ;
 
-function OrderCloudReadonlyRoles(ocRoles, ocRolesService) {
+function OrderCloudReadonlyRoles($ocRoles, ocRoles) {
     var directive = {
         restrict: 'A',
         controller: function($scope, $attrs, $element) {
@@ -14,7 +14,7 @@ function OrderCloudReadonlyRoles(ocRoles, ocRolesService) {
             vm.Authorized = true;
 
             var attrValue = $attrs.ocReadonlyRoles;
-            var roleGroups = ocRoles.GetRoleGroups();
+            var roleGroups = $ocRoles.GetRoleGroups();
 
             if (attrValue && !/[^a-z]/i.test(attrValue)) {
                 if (roleGroups[attrValue]) {
@@ -40,7 +40,7 @@ function OrderCloudReadonlyRoles(ocRoles, ocRolesService) {
             }
 
             function analyzeRoles(requiredRoles, any) {
-                if (!ocRolesService.UserIsAuthorized(requiredRoles, any)) {
+                if (!ocRoles.UserIsAuthorized(requiredRoles, any)) {
                     vm.Authorized = false;
                     $element.addClass('oc-read-only')
                 } else {
