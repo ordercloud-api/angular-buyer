@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('AppCtrl', AppController)
 ;
 
-function AppController($rootScope, $state, $ocMedia, LoginService, appname, ocStateLoading, ocIsTouchDevice, ocRolesService, anonymous, toastr) {
+function AppController($rootScope, $state, $ocMedia, LoginService, appname, ocStateLoading, ocIsTouchDevice, ocRoles, anonymous, toastr) {
     var vm = this;
     vm.name = appname;
     vm.$state = $state;
@@ -10,7 +10,7 @@ function AppController($rootScope, $state, $ocMedia, LoginService, appname, ocSt
     vm.isTouchDevice = ocIsTouchDevice;
     vm.stateLoading = ocStateLoading.Watch;
     vm.logout = LoginService.Logout;
-    vm.userIsAuthorized = ocRolesService.UserIsAuthorized;
+    vm.userIsAuthorized = ocRoles.UserIsAuthorized;
 
     $rootScope.$on('OC:AccessForbidden', function(){
         return toastr.warning('You do not have permission to do this', 'Warning');
