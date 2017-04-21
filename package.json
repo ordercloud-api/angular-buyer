@@ -15,7 +15,7 @@
     "heroku-prebuild": "npm install bower gulp --save",
     "postinstall": "bower install && npm run build-all",
     "start": "node server.js",
-    "build-all": "gulp inject index --gulpfile ./heroku.gulpfile.js",
+    "build-all": "gulp --gulpfile ./heroku.gulpfile.js",
     "test": "gulp test:unit"
   },
   "repository": {

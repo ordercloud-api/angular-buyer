@@ -18,5 +18,5 @@ gulp.task('lib-js', ['clean:lib-js'], function() {
         .pipe(uglify())
         .pipe(concat('lib.js'))
         .pipe(rev())
-        .pipe(gulp.dest(config.compile + 'js'))
+        .pipe(gulp.dest(config.compile + 'js'));
 });
