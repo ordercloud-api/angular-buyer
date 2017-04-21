@@ -1,4 +1,4 @@
-fdescribe('Component: Base', function() {
+describe('Component: Base', function() {
     var q,
         scope,
         oc,
