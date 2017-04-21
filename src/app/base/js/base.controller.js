@@ -7,8 +7,10 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, Curr
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
 
-    vm.mobileSearch = function() {
-        ocProductSearch.Open()
+    vm.mobileSearch = mobileSearch;
+
+    function mobileSearch() {
+        return ocProductSearch.Open()
             .then(function(data) {
                 if (data.productID) {
                     $state.go('productDetail', {productid: data.productID});
@@ -16,7 +18,7 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, Curr
                     $state.go('productSearchResults', {searchTerm: data.searchTerm});
                 }
             });
-    };
+    }
 
     $rootScope.$on('OC:UpdateOrder', function(event, OrderID, message) {
         vm.orderLoading = {

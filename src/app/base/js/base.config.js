@@ -17,7 +17,7 @@ function BaseConfig($stateProvider) {
             }
         },
         resolve: {
-            CurrentUser: function($q, $state, OrderCloudSDK) {
+            CurrentUser: function($state, OrderCloudSDK) {
                 return OrderCloudSDK.Me.Get()
                     .then(function(data) {
                         return data;
