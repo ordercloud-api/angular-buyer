@@ -5,7 +5,6 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     lessImport = require('gulp-less-import'),
     sourcemaps = require('gulp-sourcemaps'),
-    filter = require('gulp-filter'),
     concatCss = require('gulp-concat-css'),
     mainBowerFiles = require('main-bower-files');
 

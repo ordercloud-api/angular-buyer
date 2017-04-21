@@ -59,16 +59,8 @@ function CheckoutConfirmationConfig($stateProvider) {
 
 					return deferred.promise;
 				},
-				LineItemsList: function($q, $state, toastr, ocLineItems, SubmittedOrder, OrderCloudSDK) {
-					var dfd = $q.defer();
-					OrderCloudSDK.LineItems.List('outgoing', SubmittedOrder.ID, {pageSize: 100})
-						.then(function(data) {
-							ocLineItems.GetProductInfo(data.Items)
-								.then(function() {
-									dfd.resolve(data);
-								});
-						});
-					return dfd.promise;
+				LineItemsList: function(SubmittedOrder, OrderCloudSDK) {
+					return OrderCloudSDK.LineItems.List('outgoing', SubmittedOrder.ID, {pageSize: 100});
 				}
 			}
 		});

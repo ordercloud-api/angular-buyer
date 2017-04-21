@@ -2,11 +2,10 @@ angular.module('orderCloud')
     .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK, catalogid) {
+function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
-        GetProductInfo: _getProductInfo,
         CustomShipping: _customShipping,
         UpdateShipping: _updateShipping,
         ListAll: _listAll
@@ -62,24 +61,6 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK, catalogid) {
         }
 
         return deferred.promise;
-    }
-
-    function _getProductInfo(LineItems) {
-        var li = LineItems.Items || LineItems;
-        var productIDs = _.uniq(_.pluck(li, 'ProductID'));
-        var dfd = $q.defer();
-        var queue = [];
-        angular.forEach(productIDs, function (productid) {
-            queue.push(OrderCloudSDK.Me.GetProduct(catalogid, productid));
-        });
-        $q.all(queue)
-            .then(function (results) {
-                angular.forEach(li, function (item) {
-                    item.Product = angular.copy(_.where(results, {ID: item.ProductID})[0]);
-                });
-                dfd.resolve(li);
-            });
-        return dfd.promise;
     }
 
     function _customShipping(Order, LineItem) {
