@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('LoginService', LoginService)
 ;
 
-function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRolesService, clientid, buyerid, anonymous, scope) {
+function LoginService($q, $window, $state, $cookies, defaultstate, OrderCloudSDK, ocRolesService, clientid, anonymous, scope) {
     return {
         SendVerificationCode: _sendVerificationCode,
         ResetPassword: _resetPassword,
@@ -71,13 +71,12 @@ function LoginService($q, $window, $state, $cookies, toastr, OrderCloudSDK, ocRo
         var availableRefreshToken = OrderCloudSDK.GetRefreshToken() || null;
 
         if (availableRefreshToken) {
-            OrderCloudSDK.Auth.RefreshToken(availableRefreshToken, clientid, scope)
+            return OrderCloudSDK.Auth.RefreshToken(availableRefreshToken, clientid, scope)
                 .then(function(data) {
                     OrderCloudSDK.SetToken(data.access_token);
-                    $state.go('home');
+                    return $state.go(defaultstate);
                 })
                 .catch(function () {
-                    toastr.error('Your session has expired, please log in again.');
                     _logout();
                 });
         } else {
