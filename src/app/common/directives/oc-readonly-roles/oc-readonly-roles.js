@@ -42,7 +42,7 @@ function OrderCloudReadonlyRoles($ocRoles, ocRoles) {
             function analyzeRoles(requiredRoles, any) {
                 if (!ocRoles.UserIsAuthorized(requiredRoles, any)) {
                     vm.Authorized = false;
-                    $element.addClass('oc-read-only')
+                    $element.addClass('oc-read-only');
                 } else {
                     $element.removeClass('oc-read-only');
                 }

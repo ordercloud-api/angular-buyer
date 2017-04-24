@@ -1,4 +1,5 @@
 var source = './src/',
+    moduleName = 'orderCloud',
     assets = 'assets/',
     build = './build/',
     bowerFiles = './bower_components/',
@@ -9,7 +10,15 @@ var source = './src/',
     gulp_dir = './gulp/',
     fs = require('fs');
 
+try {
+    var saasConfig = require(source + 'app/saas/gulp.config');
+} catch(ex) {
+    var saasConfig = {};
+}
+
 module.exports = {
+    moduleName: moduleName,
+    saas: saasConfig,
     bowerFiles: bowerFiles,
     npmFiles: npmFiles,
     src: source,
@@ -32,13 +41,24 @@ module.exports = {
     ],
     scripts: [
         source + 'app/**/*.js',
+        '!' + source + '**/saas/gulp.config.js',
+        '!' + source + '**/saas/app.constants.json',
+        '!' + source + '**/saas/documentDB/config.js',
+        '!' + source + '**/saas/documentDB/getConfiguration.js',
         '!' + source + '**/*.spec.js',
         '!' + source + '**/*.test.js'
     ],
     appFiles: [
+        build + '**/saas.module.js',
+        build + '**/saas/**/*.js',
+        build + '**/saas/oc-constants/oc-constants.js',
+        '!' + build + '**/saas/gulp.config.js',
+        '!' + build + '**/saas/app.constants.json',
+        '!' + build + '**/saas/documentDB/config.js',
+        '!' + build + '**/saas/documentDB/getConfiguration.js',
         build + '**/app.module.js',
-        build + '**/common/config/routing.js',
-        build + '**/common/config/*.js',
+        build + '**/common/config/routing/routing.js',
+        build + '**/common/config/**/*.js',
         build + '**/*s.config.js',
         build + '**/*.config.js',
         build + '**/app.run.js',
@@ -59,7 +79,7 @@ module.exports = {
     ngConstantSettings: {
         name: 'orderCloud',
         deps: false,
-        constants: getConstants()
+        constants: saasConfig.getConstants ? saasConfig.getConstants() : getConstants()
     },
     autoprefixerSettings: {
         browsers: ['last 2 versions'],

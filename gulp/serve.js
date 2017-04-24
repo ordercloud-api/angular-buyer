@@ -7,7 +7,7 @@
         styles = require('./build/styles'),
         cache = require('gulp-cached'),
         browserSync = require('browser-sync').create('oc-server'),
-        port = process.env.PORT || 7205;
+        port = process.env.PORT || 7215;
 
     function startBrowerSync () {
         if (browserSync.active) {
@@ -16,7 +16,7 @@
 
         browserSync.init({
             proxy: 'localhost:' + port,
-            port: 3000,
+            port: 3010,
             ghostMode: {
                 clicks: true,
                 forms: true,

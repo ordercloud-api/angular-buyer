@@ -3,7 +3,6 @@
         <img class="img-responsive" style="max-height:500px;" ng-src="{{model.xp.image.URL}}" alt="Product Image">
     </figure>
     <div>
-        <br ng-if="model.xp.image.URL && !invalidExtension">
         <button type="button" class="btn btn-default" ng-class="{'btn-block':!model.xp.image.URL}" ng-click="upload()">{{model.xp.image.URL  ? 'Replace file' : (uploadText || 'Upload an image')}}</button>
         <button type="button" class="btn btn-danger" ng-click="remove()" ng-if="model.xp.image.URL">
             <i class="fa fa-trash"></i>

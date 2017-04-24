@@ -21,13 +21,13 @@ angular.module('orderCloud')
  *
  * 4) RoleGroup alias can be configured ahead of time using the ocRolesProvider -- RoleGroups can be configured to compare for ANY or ALL provided roles
  * <div oc-if-roles="MyGroupOfRoles"></div>
- * 
- * 5) Object notation similar to that used in ocNavItems can also be used. This can include multiple Roles and/or RoleGroups
- * <div oc-if-roles="{Items:['BuyerRoles', 'CatalogRoles'], Any:false}"></div>
  */
 
 function OrderCloudIfRoles(ocRoles, $ocRoles) {
     var directive = {
+        scope: {
+            ocIfRoles: '@'
+        },
         multiElement: true,
         restrict: 'A',
         priority: 599, //ngIf has priority 600 and terminal: true -- therefore, this directive is ignored if ngIf removes element
@@ -35,24 +35,22 @@ function OrderCloudIfRoles(ocRoles, $ocRoles) {
     };
 
     function link(scope, element, attr) {
-        //Use attr.ocIfRoles to avoid need for isolated scope
-        var attrValue = attr.ocIfRoles;
         var roleGroups = $ocRoles.GetRoleGroups();
-        var ocIfRolesObj = scope.$eval(attrValue);
+        var ocIfRolesObj = scope.$eval(scope.ocIfRoles);
         if (typeof ocIfRolesObj == 'object') {
             analyzeRoles(ocIfRolesObj.Items, ocIfRolesObj.Any);
-        } else if (attrValue && !/[^a-z]/i.test(attrValue)) {
-            if (roleGroups[attrValue]) {
+        } else if (scope.ocIfRoles && !/[^a-z]/i.test(scope.ocIfRoles)) {
+            if (roleGroups[scope.ocIfRoles]) {
                 //single string role group
-                var roleGroup = roleGroups[attrValue];
+                var roleGroup = roleGroups[scope.ocIfRoles];
                 analyzeRoles(roleGroup.Roles, roleGroup.Type === 'Any');
             } else {
                 //single string role
-                analyzeRoles([attrValue]);
+                analyzeRoles([scope.ocIfRoles]);
             }
-        } else if (attrValue.split(' || ').length > 1) {
+        } else if (scope.ocIfRoles.split(' || ').length > 1) {
             //pipe delimited string values
-            analyzeRoles(attrValue.split(' || '), true);
+            analyzeRoles(scope.ocIfRoles.split(' || '), true);
         } else {
             scope.$watch('ocIfRoles', function ocIfWatchAction(value) {
                 if (angular.isArray(value) && value.length && (typeof value[0] == 'string')) {
