@@ -32,7 +32,7 @@ constant. You can see how we are referencing the `AppCtrl` via the controllerAs 
 ```html
 //dynamic application title
 
-<title ng-bind="application.$state.current.data.pageTitle + (application.$state.current.data.pageTitle ? ' | ' : '') + application.name">
+<title ng-bind="application.$state.current.data.pageTitle + (application.$state.current.data.pageTitle ? ' | ' : '') + application.name()">
     OrderCloud
 </title>
 ```
