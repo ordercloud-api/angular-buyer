@@ -1,10 +1,15 @@
 angular.module('orderCloud')
-    .factory('ocStateLoading', function($rootScope, $ocMedia, $exceptionHandler, defaultstate, $q) {
+    .factory('ocStateLoading', function($rootScope, $ocMedia, $exceptionHandler, $injector, $q) {
         var stateLoading = {};
         var service = {
             Init: _init,
-            Watch: _watch
+            Watch: _watch,
+            DefaultState: _defaultState
         };
+
+        function _defaultState() {
+            return $injector.get('defaultstate');
+        }
 
         function _init() {
             $rootScope.$on('$stateChangeStart', function(e, toState) {
@@ -18,7 +23,7 @@ angular.module('orderCloud')
             });
 
             $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-                if (toState.name == defaultstate) event.preventDefault(); //prevent infinite loop when error occurs on default state (otherwise in Routing config)
+                if (toState.name == _defaultState()) event.preventDefault(); //prevent infinite loop when error occurs on default state (otherwise in Routing config)
                 error.data ? $exceptionHandler(error) : $exceptionHandler({message:error});
                 _end();
             });
@@ -40,4 +45,3 @@ angular.module('orderCloud')
 
     })
 ;
-
