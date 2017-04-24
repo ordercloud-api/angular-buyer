@@ -15,6 +15,7 @@
       "MeAddressAdmin", 
       "MeCreditCardAdmin", 
       "Shopper", 
-      "PasswordReset"
+      "PasswordReset",
+      "BuyerImpersonation"
     ]
 }
