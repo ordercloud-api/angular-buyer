@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
     config = require('../../gulp.config'),
-    del = require('del'),
     rev = require('gulp-rev'),
     concatCss = require('gulp-concat-css'),
     filter = require('gulp-filter'),
@@ -10,11 +9,9 @@ var gulp = require('gulp'),
     mainBowerFiles = require('main-bower-files'),
     csso = require('gulp-csso');
 
-gulp.task('clean:app-css', function() {
-    return del(config.compile + '**/*.css');
-});
+gulp.task('app-css', [], config.saas.styles ? config.saas.styles.libCss : AppCssFunction);
 
-gulp.task('app-css', ['clean:app-css'], function() {
+function AppCssFunction() {
     var lessFilter = filter('**/*.less', {restore: true}),
         cssFilter = filter('**/*.css');
 
@@ -44,4 +41,4 @@ gulp.task('app-css', ['clean:app-css'], function() {
         .pipe(csso())
         .pipe(rev())
         .pipe(gulp.dest(config.compile + config.appCss));
-});
+}

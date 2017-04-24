@@ -6,6 +6,11 @@ var express = require('express'),
     app = express(),
     port = process.env.PORT || 451;
 
+if (config.saas.getAppConfig) {
+    app.use(cookieParser());
+    app.use(config.saas.getAppConfig());
+}
+
 switch(env) {
     case 'production':
         console.log('*** PROD ***');
