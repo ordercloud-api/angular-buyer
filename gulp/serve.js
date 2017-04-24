@@ -16,7 +16,7 @@
 
         browserSync.init({
             proxy: 'localhost:' + port,
-            port: 3000,
+            port: 3010,
             ghostMode: {
                 clicks: true,
                 forms: true,
