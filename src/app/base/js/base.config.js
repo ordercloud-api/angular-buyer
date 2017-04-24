@@ -18,13 +18,7 @@ function BaseConfig($stateProvider) {
         },
         resolve: {
             CurrentUser: function($state, OrderCloudSDK) {
-                return OrderCloudSDK.Me.Get()
-                    .then(function(data) {
-                        return data;
-                    })
-                    .catch(function(ex) {
-                        $state.go('login');
-                    });
+                return OrderCloudSDK.Me.Get();
             },
             ExistingOrder: function($q, OrderCloudSDK, CurrentUser) {
                 var options = {
