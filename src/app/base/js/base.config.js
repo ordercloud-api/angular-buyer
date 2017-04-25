@@ -17,10 +17,10 @@ function BaseConfig($stateProvider) {
             }
         },
         resolve: {
-            CurrentUser: function($state, OrderCloudSDK) {
+            CurrentUser: function(OrderCloudSDK) {
                 return OrderCloudSDK.Me.Get();
             },
-            ExistingOrder: function($q, OrderCloudSDK, CurrentUser) {
+            ExistingOrder: function(OrderCloudSDK, CurrentUser) {
                 var options = {
                     page: 1,
                     pageSize: 1,
@@ -39,7 +39,7 @@ function BaseConfig($stateProvider) {
                     return ExistingOrder;
                 }
             },
-            AnonymousUser: function($q, OrderCloudSDK, CurrentUser) {
+            AnonymousUser: function(OrderCloudSDK, CurrentUser) {
                 CurrentUser.Anonymous = angular.isDefined(JSON.parse(atob(OrderCloudSDK.GetToken().split('.')[1])).orderid);
             }
         }

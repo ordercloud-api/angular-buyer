@@ -10,68 +10,56 @@ describe('Runtime', function() {
 
         inject(function(_ocStateLoading_) {
             ocStateLoading = _ocStateLoading_;
-        })
+        });
     });
 
-    it ('should initialize the ocStateLoading service', function() {
+    it('should initialize the ocStateLoading service', function() {
         expect(ocStateLoading.Init).toHaveBeenCalled();
     });
 });
 
 describe('Application', function() {
-    var q,
-        scope,
-        oc,
-        stateLoading;
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(module('ui.router'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, ocStateLoading) {
-        q = $q;
-        scope = $rootScope.$new();
-        oc = OrderCloud;
+    var stateLoading;
+    beforeEach(inject(function(ocStateLoading) {
         stateLoading = ocStateLoading;
     }));
 
     describe('Controller: AppCtrl', function(){
-        var appController, stateSvc, ocMedia, loginFactory, applicationName, isTouchDevice, rolesService;
-        beforeEach(inject(function($controller, $state, $ocMedia, LoginService, appname, ocIsTouchDevice, ocRolesService) {
-            stateSvc = $state;
+        var appController, ocMedia, ocAppNameService, isTouchDevice, ocRolesService;
+        beforeEach(inject(function($controller, $ocMedia, ocAppName, ocIsTouchDevice, ocRoles) {
             ocMedia = $ocMedia;
-            loginFactory = LoginService;
-            applicationName = appname;
+            ocAppNameService = ocAppName;
             isTouchDevice = ocIsTouchDevice;
-            rolesService = ocRolesService;
+            ocRolesService = ocRoles;
             appController = $controller('AppCtrl', {
-                $state: stateSvc,
+                $state: state,
                 $ocMedia: ocMedia,
-                LoginService: loginFactory,
-                appname: applicationName,
+                ocAppName: ocAppNameService,
                 ocStateLoading: stateLoading,
                 ocIsTouchDevice: isTouchDevice,
-                ocRolesService: rolesService
-            })
+                ocRoles: ocRolesService
+            });
         }));
-        it ('should set vm.name to appname', function() {
-            expect(appController.name).toEqual(applicationName);
+        it('should set vm.name to ocAppName.Watch', function() {
+            expect(appController.name).toEqual(ocAppNameService.Watch);
         });
-        it ('should set vm.$state to $state', function() {
-            expect(appController.$state).toEqual(stateSvc);
+        it('should set vm.$state to $state', function() {
+            expect(appController.$state).toEqual(state);
         });
-        it ('should set vm.$ocMedia to $ocMedia', function() {
+        it('should set vm.$ocMedia to $ocMedia', function() {
             expect(appController.$ocMedia).toEqual(ocMedia);
         });
-        it ('should set vm.isTouchDevice to ocIsTouchDevice', function() {
+        it('should set vm.isTouchDevice to ocIsTouchDevice', function() {
             expect(appController.isTouchDevice).toEqual(isTouchDevice);
         });
-        it ('should set vm.stateLoading to ocStateLoading', function() {
+        it('should set vm.stateLoading to ocStateLoading', function() {
             expect(appController.stateLoading).toEqual(stateLoading.Watch);
         });
-        it ('should set vm.logout to LoginService.Logout', function() {
-            expect(appController.logout).toEqual(loginFactory.Logout);
+        it('should set vm.logout to OrderCloudSDK.Auth.Logout', function() {
+            expect(appController.logout).toEqual(oc.Auth.Logout);
         });
-        it ('should set vm.userIsAuthorized to ocRolesService.UserIsAuthorized', function() {
-            expect(appController.userIsAuthorized).toEqual(rolesService.UserIsAuthorized);
+        it('should set vm.userIsAuthorized to ocRoles.UserIsAuthorized', function() {
+            expect(appController.userIsAuthorized).toEqual(ocRolesService.UserIsAuthorized);
         });
     });
 });

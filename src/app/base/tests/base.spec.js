@@ -1,20 +1,6 @@
 describe('Component: Base', function() {
-    var q,
-        scope,
-        oc,
-        buyerid = "BUYERID",
-        state,
-        productSearch,
-        injector;
-    beforeEach(module('orderCloud'));
-    beforeEach(module('ordercloud-angular-sdk'));
-    beforeEach(module('ui.router'));
-    beforeEach(inject(function($q, $rootScope, $state, OrderCloudSDK, ocProductSearch, $injector) {
-        q = $q;
-        scope = $rootScope.$new();
-        oc = OrderCloudSDK;
-        state = $state;
-        injector = $injector;
+    var productSearch;
+    beforeEach(inject(function(ocProductSearch) {
         productSearch = ocProductSearch;
     }));
     describe('State: Base', function() {
@@ -22,15 +8,15 @@ describe('Component: Base', function() {
         beforeEach(function() {
             base = state.get('base');
         });
-        it('should resolve CurrentUser - get current user', function() {
+        it('should resolve CurrentUser', function() {
             var user = q.defer();
-            user.resolve('TEST USER');
+            user.resolve(mock.User);
             spyOn(oc.Me, 'Get').and.returnValue(user.promise);
-            injector.invoke(base.resolve.CurrentUser, scope, {$q:q, $state:state, OrderCloud:oc, buyerid:buyerid});
+            injector.invoke(base.resolve.CurrentUser, scope, {$q:q, $state:state, OrderCloud:oc, buyerid:mock.Buyer.ID});
             expect(oc.Me.Get).toHaveBeenCalled();
             scope.$digest();
         });
-        it('resolve ExistingOrder - attempt to get existing order', function() {
+        it('should resolve ExistingOrder', function() {
             var orderList = q.defer();
             orderList.resolve({Items:['TEST ORDER']});
             spyOn(oc.Me, 'ListOrders').and.returnValue(orderList.promise);
@@ -44,61 +30,49 @@ describe('Component: Base', function() {
             };
             expect(oc.Me.ListOrders).toHaveBeenCalledWith(options);
         });
-        it('resolve CurrentOrder - if ExistingOrder is defined, return it, else create a new order', inject(function(ocNewOrder) {
-            var newOrder = ocNewOrder,
-                existingOrder, //undefined existing order
+        it('should resolve CurrentOrder - if ExistingOrder is undefined create a new order', inject(function(ocNewOrder) {
+            var existingOrder, //undefined existing order
                 currentUser = injector.invoke(base.resolve.CurrentUser);
-            spyOn(newOrder, 'Create');
-            injector.invoke(base.resolve.CurrentOrder, scope, {ExistingOrder: existingOrder, NewOrder: newOrder, CurrentUser: currentUser});
-            expect(newOrder.Create).toHaveBeenCalledWith({});
+            spyOn(ocNewOrder, 'Create');
+            injector.invoke(base.resolve.CurrentOrder, scope, {ExistingOrder: existingOrder, NewOrder: ocNewOrder, CurrentUser: currentUser});
+            expect(ocNewOrder.Create).toHaveBeenCalledWith({});
         }));
     });
 
     describe('Controller: BaseCtrl', function(){
-        var baseCtrl,
-            fake_user = {
-                Username: 'notarealusername',
-                Password: 'notarealpassword'
-            },
-            fake_order = {
-                ID: 'fakeorder'
-            };
+        var baseCtrl;
         beforeEach(inject(function($controller) {
             baseCtrl = $controller('BaseCtrl', {
-                CurrentUser: fake_user,
-                CurrentOrder: fake_order
+                CurrentUser: mock.User,
+                CurrentOrder: mock.Order
             });
         }));
         it('should initialize the current user and order into its scope', function() {
-            expect(baseCtrl.currentUser).toBe(fake_user);
-            expect(baseCtrl.currentOrder).toBe(fake_order);
+            expect(baseCtrl.currentUser).toBe(mock.User);
+            expect(baseCtrl.currentOrder).toBe(mock.Order);
         });
 
         describe('mobileSearch', function(){
-            var productID,
-            searchTerm
             beforeEach(function(){
-                productID = 'mockProductID';
-                searchTerm = 'mockSearchTerm';
                 spyOn(state, 'go');
             });
             it('should go to productDetail if ocProductSearch returns a productID', function(){
                 var d = q.defer();
-                d.resolve({productID: productID});
+                d.resolve({productID: mock.Product.ID});
                 spyOn(productSearch, 'Open').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
                 expect(productSearch.Open).toHaveBeenCalled();
-                expect(state.go).toHaveBeenCalledWith('productDetail', {productid: productID});
+                expect(state.go).toHaveBeenCalledWith('productDetail', {productid: mock.Product.ID});
             });
             it('should go to productSearchResults if ocProductSearch doesnt return a productID', function(){
                 var d = q.defer();
-                d.resolve({searchTerm: searchTerm});
+                d.resolve({searchTerm: mock.Params.Search});
                 spyOn(productSearch, 'Open').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
                 expect(productSearch.Open).toHaveBeenCalled();
-                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: searchTerm});
+                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: mock.Params.Search});
             });
         });
     });
