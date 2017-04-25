@@ -67,12 +67,12 @@ describe('Component: Base', function() {
             });
             it('should go to productSearchResults if ocProductSearch doesnt return a productID', function(){
                 var d = q.defer();
-                d.resolve({searchTerm: mock.Params.Search});
+                d.resolve({searchTerm: 'SEARCHTERM'});
                 spyOn(productSearch, 'Open').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
                 expect(productSearch.Open).toHaveBeenCalled();
-                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: mock.Params.Search});
+                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: 'SEARCHTERM'});
             });
         });
     });
