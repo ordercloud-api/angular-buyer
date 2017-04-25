@@ -1,4 +1,4 @@
-fdescribe('Component: Account', function() {
+describe('Component: Account', function() {
     var ocAccountService,
         uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
     beforeEach(inject(function(ocAccount) {

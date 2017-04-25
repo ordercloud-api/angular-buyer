@@ -1,4 +1,5 @@
 var q,
+    rootScope,
     scope,
     state,
     injector,
@@ -13,6 +14,7 @@ beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName) {
     q = $q;
     scope = $rootScope.$new();
+    rootScope = $rootScope;
     state = $state;
     injector = $injector;
     toastrService = toastr;
@@ -55,6 +57,9 @@ function _mockData() {
         },
         Order: {
             ID: 'ORDER_ID'
+        },
+        Promotion: {
+            Code:'Discount10'
         }
     }
 }
