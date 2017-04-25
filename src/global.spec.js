@@ -11,6 +11,7 @@ var q,
     ocAppNameService,
     ocConfirmService,
     ocParametersService,
+    ocRolesService,
     dummyPromise,
     mock = _mockData();
 beforeEach(module('orderCloud', function($provide) {
@@ -18,11 +19,10 @@ beforeEach(module('orderCloud', function($provide) {
         'Init': jasmine.createSpy()
     });
     $provide.value('CurrentOrder', mock.Order);
-    $provide.value('catalogid', mock.Catalog.ID);
     $provide.value('Parameters', mock.Parameters)
 }));
 beforeEach(module('ordercloud-angular-sdk'));
-beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm, ocParameters, Parameters, CurrentOrder) {
+beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -34,17 +34,23 @@ beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler,
     ocAppNameService = ocAppName;
     ocConfirmService = ocConfirm;
     ocParametersService = ocParameters;
+    ocRolesService = ocRoles;
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
     var defer = $q.defer();
-    defer.resolve('DUMMY_RESPONSE');
+    defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
 }));
 
 function _mockData() {
     return {
-        ClientID: 'XXXXXXXX-XXXX-XXXX-XXXXXXXXXXXX',
-        Scope: ['DUMMY_SCOPE'],
+        OauthResponse: {
+            access_token: 'FAKE_ACCESS_TOKEN',
+            refresh_token: 'FAKE_REFRESH_TOKEN'
+        },
+        DefaultState: 'DEFAULT_STATE',
+        ClientID: 'FAKE_CLIENT_ID',
+        Scope: ['FAKE_SCOPE'],
         Parameters: {
             search: null,
             page: null,
