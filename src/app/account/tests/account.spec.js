@@ -59,8 +59,7 @@ describe('Component: Account', function() {
 
     describe('Controller: AccountCtrl', function() {
         var accountCtrl,
-            updatedUser = mock.User;
-        updatedUser.ID = 'UPDATED';
+            updatedUser = angular.extend(mock.User, {ID: 'UPDATED'});
         beforeEach(inject(function ($controller) {
             spyOn(ocAccountService, 'ConfirmPassword').and.returnValue(dummyPromise);
             accountCtrl = $controller('AccountCtrl', {
@@ -122,8 +121,7 @@ describe('Component: Account', function() {
 
     describe('Controller: ChangePasswordModalCtrl', function () {
         var changePasswordModalCtrl;
-        var currentUser = mock.User;
-        currentUser.CurrentPassword = "USER_CURRENTPASSWORD";
+        var currentUser = angular.extend(mock.User, {CurrentPassword: 'USER_CURRENTPASSWORD'});
         beforeEach(inject(function($controller) {
             changePasswordModalCtrl = $controller('ChangePasswordModalCtrl', {
                 CurrentUser: currentUser,

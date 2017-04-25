@@ -1,12 +1,7 @@
 describe('Component: addPromotion', function(){
     var addPromotionCtrl;
     beforeEach(inject(function($componentController){
-        addPromotionCtrl = $componentController('ocAddPromotion', {
-            $scope: scope,
-            $rootScope: rootScope,
-            OrderCloud: oc,
-            toastr: toastrService
-        });
+        addPromotionCtrl = $componentController('ocAddPromotion');
     }));
     describe('submit', function(){
         beforeEach(function(){

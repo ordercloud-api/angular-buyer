@@ -44,9 +44,7 @@ describe('Component: Category Browse', function(){
                     Items : [mock.Product, mock.Product],
                     Meta : mock.Meta
                 },
-                Parameters: parametersResolve,
-                SelectedCategory: mock.Category,
-                ocParameters: ocParametersService
+                SelectedCategory: mock.Category
             });
             spyOn(state, 'go');
             spyOn(ocParametersService, 'Create');

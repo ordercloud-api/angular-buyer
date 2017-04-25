@@ -1,46 +1,32 @@
 describe('Component: Cart', function() {
-    var currentOrder,
-        lineItemsList,
-        promoList;
-    beforeEach(inject(function(CurrentOrder) {
-        currentOrder = CurrentOrder;
-        lineItemsList = {
-            Items : [mock.LineItem, mock.LineItem],
-            Meta : mock.Meta
-        };
-        promoList = {
-            Items : [mock.Promotion, mock.Promotion],
-            Meta : mock.Meta
-        }
-    }));
-
     describe('State: Cart', function() {
         var cartState;
         beforeEach(function() {
             cartState = state.get('cart');
-
-            var liDefer = q.defer();
-            liDefer.resolve(lineItemsList);
-
-            var promoDefer = q.defer();
-            promoDefer.resolve(promoList);
-
-            spyOn(oc.LineItems, 'List').and.returnValue(liDefer.promise);
-            spyOn(oc.Orders, 'ListPromotions').and.returnValue(promoDefer.promise);
+            spyOn(oc.LineItems, 'List');
+            spyOn(oc.Orders, 'ListPromotions');
         });
-        it('should call LineItems.List', inject(function($injector){
-            $injector.invoke(cartState.resolve.LineItemsList);
+        it('should call LineItems.List', function(){
+            injector.invoke(cartState.resolve.LineItemsList);
             expect(oc.LineItems.List).toHaveBeenCalledWith('outgoing', currentOrder.ID);
-        }));
-        it('should call Orders.ListPromotions', inject(function($injector){
-            $injector.invoke(cartState.resolve.CurrentPromotions);
+        });
+        it('should call Orders.ListPromotions', function(){
+            injector.invoke(cartState.resolve.CurrentPromotions);
             scope.$digest();
             expect(oc.Orders.ListPromotions).toHaveBeenCalledWith('outgoing', currentOrder.ID);
-        }));
+        });
     });
 
     describe('Controller : CartController', function() {
-        var cartController;
+        var cartController,
+            lineItemsList = {
+                Items : [mock.LineItem, mock.LineItem],
+                Meta : mock.Meta
+            },
+            promoList = {
+                Items : [mock.Promotion, mock.Promotion],
+                Meta : mock.Meta
+            }
         beforeEach(inject(function($controller) {
             cartController = $controller('CartCtrl', {
                 CurrentPromotions: promoList,

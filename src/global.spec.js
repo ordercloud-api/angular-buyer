@@ -7,6 +7,7 @@ var q,
     toastrService,
     oc,
     parametersResolve,
+    currentOrder,
     ocAppNameService,
     ocConfirmService,
     ocParametersService,
@@ -21,7 +22,7 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('Parameters', mock.Parameters)
 }));
 beforeEach(module('ordercloud-angular-sdk'));
-beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm, ocParameters, Parameters) {
+beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm, ocParameters, Parameters, CurrentOrder) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -34,6 +35,7 @@ beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler,
     ocConfirmService = ocConfirm;
     ocParametersService = ocParameters;
     parametersResolve = Parameters;
+    currentOrder = CurrentOrder;
     var defer = $q.defer();
     defer.resolve('DUMMY_RESPONSE');
     dummyPromise = defer.promise;
