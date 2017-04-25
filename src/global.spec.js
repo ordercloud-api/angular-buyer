@@ -7,15 +7,17 @@ var q,
     toastrService,
     oc,
     ocAppNameService,
+    ocConfirmService,
     dummyPromise,
     mock = _mockData();
 beforeEach(module('orderCloud', function($provide) {
     $provide.value('ocStateLoading', {
         'Init': jasmine.createSpy()
     });
+    $provide.value('CurrentOrder', mock.Order);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
-beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName) {
+beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -25,6 +27,7 @@ beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler,
     oc = OrderCloudSDK;
     exceptionHandler = $exceptionHandler;
     ocAppNameService = ocAppName;
+    ocConfirmService = ocConfirm;
     var defer = $q.defer();
     defer.resolve('DUMMY_RESPONSE');
     dummyPromise = defer.promise;
@@ -38,6 +41,13 @@ function _mockData() {
             Search: 'SEARCH',
             Page: 1,
             PageSize: 20
+        },
+        Meta: {
+            Page: 1,
+            PageSize: 20,
+            TotalCount:29,
+            TotalPages: 3,
+            ItemRange : [1,2]
         },
         Buyer: {
             ID: 'BUYER_ID',
@@ -60,7 +70,20 @@ function _mockData() {
             ID: 'PRODUCT_ID'
         },
         Order: {
-            ID: 'ORDER_ID'
+            ID: 'ORDER_ID',
+            Type: "ORDER_TYPE",
+            FromUserID: "ORDER_FROM_USER_ID",
+            BillingAddressID: "ORDER_BILLING_ADDRESS_ID",
+            ShippingAddressID: "ORDER_SHIPPING_ADDRESS_ID",
+            SpendingAccountID: null,
+            Comments: null,
+            PaymentMethod: null,
+            CreditCardID: null,
+            ShippingCost: null,
+            TaxCost: null
+        },
+        LineItem: {
+            ID: 'LINEITEM_ID'
         },
         Promotion: {
             Code:'Discount10'
