@@ -1,17 +1,8 @@
 describe('Runtime', function() {
     var ocStateLoading;
-
-    beforeEach(function() {
-        module('orderCloud', function($provide) {
-            $provide.value('ocStateLoading', {
-                'Init': jasmine.createSpy()
-            });
-        });
-
-        inject(function(_ocStateLoading_) {
-            ocStateLoading = _ocStateLoading_;
-        });
-    });
+    beforeEach(inject(function(_ocStateLoading_) {
+        ocStateLoading = _ocStateLoading_;
+    }));
 
     it('should initialize the ocStateLoading service', function() {
         expect(ocStateLoading.Init).toHaveBeenCalled();

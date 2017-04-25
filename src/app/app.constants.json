@@ -1,13 +1,13 @@
 {
   "appname": "Angular Buyer",
-  "clientid": "AEFFD7B0-C7A4-4E68-AB31-15B454964A7B",
-  "buyerid": "EXO-1E",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "buyerid": "XXXX",
   "anonymous": false,
-  "catalogid": "EXO-1E",
+  "catalogid": "XXXX",
   "environment": "staging",
   "defaultstate": "home",
   "html5mode": false,
-  "bootswatchtheme": "flatly",
+  "bootswatchtheme": null,
   "scope": [
       "BuyerReader", 
       "MeAdmin", 

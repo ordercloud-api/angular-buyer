@@ -9,7 +9,11 @@ var q,
     ocAppNameService,
     dummyPromise,
     mock = _mockData();
-beforeEach(module('orderCloud'));
+beforeEach(module('orderCloud', function($provide) {
+    $provide.value('ocStateLoading', {
+        'Init': jasmine.createSpy()
+    });
+}));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName) {
     q = $q;
