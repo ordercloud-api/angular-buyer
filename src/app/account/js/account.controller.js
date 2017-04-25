@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('AccountCtrl', AccountController)
 ;
 
-function AccountController($exceptionHandler, $uibModal, toastr, OrderCloudSDK, ocAccount, CurrentUser){
+function AccountController($exceptionHandler, toastr, OrderCloudSDK, ocAccount, CurrentUser){
 	var vm = this;
 	vm.profile = angular.copy(CurrentUser);
 	vm.currentUser = CurrentUser;
