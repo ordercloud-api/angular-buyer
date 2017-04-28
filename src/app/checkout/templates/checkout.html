@@ -1,0 +1,18 @@
+<form name="OC_Checkout">
+    <ul class="nav nav-pills">
+        <li role="presentation">
+            <a href="" ui-sref="cart">Cart</a>
+        </li>
+        <li role="presentation" ng-class="{active:application.$state.is('checkout.shipping')}">
+            <a href="" ui-sref=".shipping">Shipping</a>
+        </li>
+        <li role="presentation" ng-class="{active:application.$state.is('checkout.payment')}">
+            <a href="" ui-sref=".payment" ng-disabled="application.$state.is('checkout.shipping')">Payment</a>
+        </li>
+        <li role="presentation" ng-class="{active:application.$state.is('checkout.review')}">
+            <a href="" disabled>Review</a>
+        </li>
+    </ul>
+    <hr>
+    <div ui-view  cg-busy="application.stateLoading('checkout')"></div>
+</form>

@@ -1,0 +1,40 @@
+<form name="OrderCloudProductSearch" class="c-productsearch c-typeahead" ng-submit="$ctrl.onHardEnter($ctrl.searchTerm)" pretty-submit>
+    <!-- Search Input -->
+    <div class="input-group">
+        <input type="search"
+            class="form-control"
+            placeholder="Search Products..."
+            ng-model="$ctrl.searchTerm"
+            uib-typeahead="product as product.Name for product in $ctrl.getSearchResults()"
+            disable-validation-message
+            typeahead-on-select="$ctrl.onSelect($item.ID)"
+            typeahead-focus-first="false"
+            typeahead-wait-ms="300"
+            typeahead-no-results="noResults"
+            typeahead-loading="loading"
+            typeahead-append-to="'.c-typeahead__results'"
+            typeahead-popup-template-url="productSearch/templates/product-search-popup.html"
+            typeahead-template-url="productSearch/templates/product-search-match.html"
+        />
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="submit" value="Search"><i class="fa fa-search"></i></button>
+        </span>
+    </div>
+    <!-- Typeahead Results -->
+    <div class="c-typeahead__results">
+        <div class="c-typeahead__results--empty" ng-if="$ctrl.searchTerm && noResults">
+            <span>No matches found</span>
+        </div>
+        <div class="c-typeahead__results--loading" ng-if="loading">
+            <div class="indicator-container">
+                <div class="indicator">
+                    <div class="animation">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

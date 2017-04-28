@@ -1,11 +1,12 @@
 {
   "appname": "Cosmetics-Buyer",
-  "scope": "FullAccess",
+  "scope": ["FullAccess"],
   "clientid": "6C086A9F-6252-40F6-8AD4-6234A099E49F",
   "buyerid": "salonbuyer",
   "catalogid": "salonbuyer",
-  "environment": "prod",
+  "environment": "staging",
   "defaultstate": "home",
+    "html5mode": false,
   "anonymous": false,
   "bootswatchtheme": "yeti"
 }

@@ -8,6 +8,6 @@ var gulp = require('gulp'),
 
 gulp.task('serve-build', ['inject'], function() {
     serve(true /*isDev*/);
-    if (argv.debug) {
-    }
+    // if (argv.debug) {
+    // }
 });

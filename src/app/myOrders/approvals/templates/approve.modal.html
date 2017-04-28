@@ -1,0 +1,17 @@
+<form name="updateApprovalStatusForm" ng-submit="approvalModal.submit()" cg-busy="approvalModal.loading">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="approvalModal.cancel()"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">{{approvalModal.intent}} Order</h3>
+    </div>
+    <div class="modal-body">
+        <fieldset class="form-group">
+            <label for="ApprovalComments" class="col-sm-3 control-label">Comment</label>
+            <div class="col-sm-9">
+                <textarea rows="4" id="ProductDescription" placeholder="(Optional)" class="form-control" ng-model="approvalModal.comments"></textarea>
+            </div>
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-block" ng-disabled="updateApprovalStatusForm.$invalid">Save</button>
+    </div>
+</form>

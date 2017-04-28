@@ -1,0 +1,135 @@
+<article ui-view>
+    <header class="l-page-header">
+        <h3 class="l-page-header__title">
+            Orders
+        </h3>
+        <nav>
+            <ul class="nav nav-tabs aveda-nav-tabs">
+                <li role="presentation" ng-class="{active: orders.parameters.tab == 'history'}"><a ng-click="orders.selectTab('history')">Order History</a></li>
+                <li role="presentation" ng-class="{active: orders.parameters.tab == 'approvals'}"><a ng-click="orders.selectTab('approvals')">Awaiting Approval</a></li>
+                <li role="presentation" ng-class="{active: orders.parameters.tab == 'favorites'}"><a ng-click="orders.selectTab('favorites')">Favorite Orders</a></li>
+            </ul>
+        </nav>
+    </header>
+    <br>
+
+    <!--====== SEARCH ======-->
+    <form name="OrdersSearchForm" pretty-submit>
+        <fieldset class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                </span>
+                <input type="search" ng-change="orders.search()" ng-model-options="{debounce:1000}" placeholder="Search orders..." ng-model="orders.parameters.search" class="form-control">
+                <span ng-if="orders.searchResults" class="input-group-btn">
+                    <button class="btn btn-default" type="button" aria-label="Clear Search" ng-click="orders.clearSearch()"><i class="fa fa-times"></i> <span class="hidden-xs">Clear Search</span></button>
+                </span>
+            </div>
+        </fieldset>
+    </form>
+    <!--====== FILTERS ======-->
+    <form name="OrdersFiltersForm">
+        <div class="row">
+            <div class="col-sm-4 form-group">
+                <label for="Status">Status</label>
+                <select id="Status" class="form-control" ng-model="orders.parameters.status" ng-options="status.Value as status.Name for status in orders.orderStatuses" ng-change="orders.filter(true)">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="FromDate">From Date</label>
+                <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.parameters.fromDate" ng-blur="orders.filter(true)">
+                <input id="FromDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.parameters.fromDate" uib-datepicker-popup datepicker-options="{maxDate:orders.parameters.toDate}" is-open="fromDate.open" ng-change="orders.filter(true)" ng-click="fromDate.open = !fromDate.open">
+            </div>
+            <div class="col-sm-4 form-group">
+                <label for="ToDate">To Date</label>
+                <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.parameters.toDate" ng-blur="orders.filter(true)">
+                <input id="ToDate" type="text" class="form-control" ng-model="orders.parameters.toDate" uib-datepicker-popup datepicker-options="{minDate:orders.parameters.fromDate, maxDate: orders.today}" is-open="toDate.open" ng-change="orders.filter(true)" ng-click="toDate.open = !toDate.open">
+            </div>
+        </div>
+    </form>
+
+    <!--====== LIST ======-->
+    <div cg-busy="orders.searchLoading">
+        <div class="no-matches" ng-if="!orders.list.Items.length">
+            <span ng-if="!orders.parameters.tab || orders.parameters.tab == 'history'">
+                <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders'}}</b>
+            </span>
+            <span ng-if="orders.parameters.tab == 'approvals'">
+                <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders awaiting your approval'}}</b>
+            </span>
+            <span ng-if="orders.parameters.tab == 'favorites'">
+                <b>{{orders.filtersApplied || orders.searchResults ? 'No matches found' : 'No orders have been favorited'}}</b>
+            </span>
+        </div>
+        <div ng-if="orders.list.Items.length">
+            <div class="text-right">
+                <p>{{(application.$ocMedia('min-width:768px') ? orders.list.Meta.ItemRange[0] : '1') + ' - ' +
+                    orders.list.Meta.ItemRange[1] + ' of ' + orders.list.Meta.TotalCount + ' results'}}</p>
+            </div>
+            <div class="panel panel-default table-responsive">
+                <table class="table table-striped table-bordered l-order-table">
+                    <colgroup>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th ng-click="orders.updateSort('ID')">
+                                ID
+                                <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'ID'"></i>
+                                <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!ID'"></i>
+                            </th>
+                            <th ng-click="orders.updateSort('Status')">
+                                Status
+                                <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'Status'"></i>
+                                <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!Status'"></i>
+                            </th>
+                            <th ng-click="orders.updateSort('DateSubmitted')">
+                                Submitted
+                                <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'DateSubmitted'"></i>
+                                <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!DateSubmitted'"></i>
+                            </th>
+                            <th>
+                                Submitted By
+                            </th>
+                            <th ng-click="orders.updateSort('Subtotal')">
+                                Subtotal
+                                <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'Subtotal'"></i>
+                                <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!Subtotal'"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="order in orders.list.Items">
+                            <td><a ng-click="orders.goToOrder(order)">{{order.ID}}</a></td>
+                            <td>{{order.Status | humanize}}</td>
+                            <td>{{(order.DateSubmitted || order.DateCreated) | date:'short'}}</td>
+                            <td>{{order.FromUser.FirstName + ' ' + order.FromUser.LastName}}</td>
+                            <td>{{order.Subtotal | currency}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ul uib-pagination
+                class="pagination-sm pull-right hidden-xs"
+                ng-if="orders.list.Meta.TotalPages > 1"
+                total-items="orders.list.Meta.TotalCount"
+                items-per-page="orders.list.Meta.PageSize"
+                max-size="5"
+                boundary-links="orders.list.Meta.TotalPages > 5"
+                ng-model="orders.list.Meta.Page"
+                ng-change="orders.pageChanged()">
+            </ul>
+            <button type="button"
+                    class="btn btn-default btn-block btn-lg visible-xs"
+                    ng-show="orders.list.Meta.Page < orders.list.Meta.TotalPages"
+                    ng-click="orders.loadMore()">Load More</button>
+        </div>
+    </div>
+
+</article>

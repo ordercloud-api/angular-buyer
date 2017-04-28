@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Search</h4>
+</div>
+<div class="modal-body">
+    <form class="c-typeahead__form" name="OrderCloudProductSearch" id="OrderCloudProductSearch" autocomplete="off" autocorrect="off" ng-submit="$ctrl.onHardEnter($ctrl.searchTerm)">
+        
+        <!-- Typeahead Result Template -->
+        <script type="text/ng-template" id="oc-product-search-result.html">
+            <a href tabindex="-1" ng-attr-title="{{match.label}}">
+                <span ng-bind-html="'<b>' + (match.model.Name | uibTypeaheadHighlight:query) + '</b>' + '<br/><small>' + (match.model.ID | uibTypeaheadHighlight:query) + '</small>'"></span>
+            </a>
+        </script>
+        
+        <fieldset class="form-group">
+            <label for="ProductSearchInput" class="sr-only">Search Products</label>
+            <input type="text" autofocus id="ProductSearchInput" class="form-control" ng-model="$ctrl.searchTerm"
+                uib-typeahead="product as product.Name for product in $ctrl.getSearchResults()" typeahead-append-to="'.c-typeahead__results'"
+                typeahead-on-select="$ctrl.onSelect($item.ID)" typeahead-focus-first="false" typeahead-wait-ms="300" typeahead-no-results="noResults"
+                typeahead-loading="loading" typeahead-template-url="oc-product-search-result.html"
+            />
+        </fieldset>
+        <button class="sr-only" type="submit" value="Search"></button>
+    </form>
+    <div class="c-typeahead__results">
+        <div class="c-typeahead__results--empty" ng-if="$ctrl.searchTerm && noResults">
+            <span>No matches found</span>
+        </div>
+        <div class="c-typeahead__results--loading" ng-if="loading">
+            <div class="indicator-container">
+                <div class="indicator">
+                    <div class="animation">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

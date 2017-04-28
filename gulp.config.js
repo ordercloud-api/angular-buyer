@@ -1,4 +1,5 @@
 var source = './src/',
+    moduleName = 'orderCloud',
     assets = 'assets/',
     build = './build/',
     bowerFiles = './bower_components/',
@@ -9,7 +10,15 @@ var source = './src/',
     gulp_dir = './gulp/',
     fs = require('fs');
 
+try {
+    var saasConfig = require(source + 'app/saas/gulp.config');
+} catch(ex) {
+    var saasConfig = {};
+}
+
 module.exports = {
+    moduleName: moduleName,
+    saas: saasConfig,
     bowerFiles: bowerFiles,
     npmFiles: npmFiles,
     src: source,
@@ -32,12 +41,26 @@ module.exports = {
     ],
     scripts: [
         source + 'app/**/*.js',
+        '!' + source + '**/saas/gulp.config.js',
+        '!' + source + '**/saas/app.constants.json',
+        '!' + source + '**/saas/documentDB/config.js',
+        '!' + source + '**/saas/documentDB/getConfiguration.js',
         '!' + source + '**/*.spec.js',
         '!' + source + '**/*.test.js'
     ],
     appFiles: [
+        build + '**/saas.module.js',
+        build + '**/saas/**/*.js',
+        build + '**/saas/oc-constants/oc-constants.js',
+        '!' + build + '**/saas/gulp.config.js',
+        '!' + build + '**/saas/app.constants.json',
+        '!' + build + '**/saas/documentDB/config.js',
+        '!' + build + '**/saas/documentDB/getConfiguration.js',
         build + '**/app.module.js',
-        build + '**/app.config.js',
+        build + '**/common/config/routing/routing.js',
+        build + '**/common/config/**/*.js',
+        build + '**/*s.config.js',
+        build + '**/*.config.js',
         build + '**/app.run.js',
         build + '**/app.controller.js',
         build + '**/*.js',
@@ -56,7 +79,7 @@ module.exports = {
     ngConstantSettings: {
         name: 'orderCloud',
         deps: false,
-        constants: getConstants()
+        constants: saasConfig.getConstants ? saasConfig.getConstants() : getConstants()
     },
     autoprefixerSettings: {
         browsers: ['last 2 versions'],
@@ -73,19 +96,19 @@ function getConstants() {
     var environment = process.env.environment || constants.environment;
     switch (environment) {
         case 'local':
-            result.authurl = 'http://core.four51.com:11629/oauth/token';
+            result.authurl = 'http://core.four51.com:11629';
             result.apiurl = 'http://core.four51.com:9002';
             break;
-        case 'test':
-            result.authurl = 'https://testauth.ordercloud.io/oauth/token';
-            result.apiurl = 'https://testapi.ordercloud.io';
-            break;
         case 'qa':
-            result.authurl = 'https://qaauth.ordercloud.io/oauth/token';
+            result.authurl = 'https://qaauth.ordercloud.io';
             result.apiurl = 'https://qaapi.ordercloud.io';
             break;
+        case 'staging':
+            result.authurl = 'https://stagingauth.ordercloud.io';
+            result.apiurl = 'https://stagingapi.ordercloud.io';
+            break;
         default:
-            result.authurl = 'https://auth.ordercloud.io/oauth/token';
+            result.authurl = 'https://auth.ordercloud.io';
             result.apiurl = 'https://api.ordercloud.io';
             break;
     }
@@ -101,6 +124,8 @@ function getConstants() {
     if (process.env.appname) result.appname = process.env.appname;
     if (process.env.scope) result.scope = process.env.scope;
     if (process.env.ocscope) result.ocscope = process.env.ocscope;
+    if (process.env.html5mode) result.html5mode = process.env.html5mode;
+    if (process.env.bootswatchtheme) result.bootswatchtheme = process.env.bootswatchtheme;
     if (process.env.buyerid) result.buyerid = process.env.buyerid;
     if (process.env.catalogid) result.catalogid = process.env.catalogid;
     return result;

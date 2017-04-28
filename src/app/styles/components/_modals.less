@@ -1,5 +1,9 @@
 //full screen modal
 .modal-dialog {
+    &.modal-confirm {
+        width:350px;
+        margin: 10px auto;
+    }
     &.modal--full-screen {
         margin: 0;
         width: 100%;
@@ -8,6 +12,21 @@
             border: none;
             padding: 0;
             height: 100vh;
+            overflow-y:auto;
+        }
+    }
+}
+
+@media(min-width:@screen-md-min) {
+    .modal.fade .modal-dialog, .modal.in .modal-dialog {
+        transform: none !important; //prevent uibModal animation from sliding in on desktop (keep the fade in though)
+    }
+}
+
+.oc-read-only {
+    .modal-title {
+        > .text-muted {
+            display:none;
         }
     }
 }

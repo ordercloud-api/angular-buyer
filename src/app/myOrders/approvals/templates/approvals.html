@@ -1,0 +1,112 @@
+<div cg-busy="application.stateLoading('approvals')">
+    <!--====== PAYMENT LIST ======-->
+    <div ng-if="orderApprovals.list.Items.length">
+        <div class="panel panel-default table-responsive" ng-if="(orderApprovals.list.Items | filter:{Status:'Pending'}).length">
+            <div class="panel-heading">Pending Approvals</div>
+            <table class="table table-bordered l-approval-pending-table">
+                <colgroup>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>Approving User Group</th>
+                    <th>Approval Rule Name</th>
+                    <th>Approval Rule Description</th>
+                    <th ng-if="orderApprovals.canApprove"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Pending'}">
+                    <td>{{approval.ApprovingUserGroup.Name}}</td>
+                    <td>{{approval.ApprovalRule.Name}}</td>
+                    <td ng-bind-html="approval.ApprovalRule.Description" style="white-space: pre-wrap">{{orderApprovals.canApprove}}</td>
+                    <th ng-if="orderApprovals.canApprove">
+                        <button class="btn btn-sm btn-primary btn-block" ng-click="orderApprovals.updateApprovalStatus('Approve')">Approve</button>
+                        <button class="btn btn-sm btn-danger btn-block" ng-click="orderApprovals.updateApprovalStatus('Decline')">Decline</button>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default table-responsive" ng-if="(orderApprovals.list.Items | filter:{Status:'Approved'}).length">
+            <div class="panel-heading"><span class="text-success">Approved</span></div>
+            <table class="table table-bordered l-approval-approved-table">
+                <colgroup>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Approving User</th>
+                        <th>Date Approved</th>
+                        <th>Comments</th>
+                        <th>Approval Rule Name</th>
+                        <th>Approval Rule Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Approved'}">
+                        <td>{{approval.ApprovingUser.FirstName + ' ' + approval.ApprovingUser.LastName}}</td>
+                        <td>{{approval.DateCompleted | date:'short'}}</td>
+                        <td>{{approval.Comments}}</td>
+                        <td>{{approval.ApprovalRule.Name}}</td>
+                        <td style="white-space: pre-wrap" ng-bind-html="approval.ApprovalRule.Description"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default table-responsive" ng-if="(orderApprovals.list.Items | filter:{Status:'Declined'}).length">
+            <div class="panel-heading text-danger"><span class="text-success">Declined</span></div>
+            <table class="table table-bordered l-approval-declined-table">
+                <colgroup>
+                    <col>
+                    <col>
+                    <col>
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Declining User</th>
+                        <th>Date Declined</th>
+                        <th>Comments</th>
+                        <th>Approval Rule Name</th>
+                        <th>Approval Rule Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Declined'}">
+                        <td>{{approval.ApprovingUser.FirstName + ' ' + approval.ApprovingUser.LastName}}</td>
+                        <td>{{approval.DateCompleted | date:'short'}}</td>
+                        <td>{{approval.Comments}}</td>
+                        <td>{{approval.ApprovalRule.Name}}</td>
+                        <td style="white-space: pre-wrap" ng-bind-html="approval.ApprovalRule.Description"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div ng-if="!orderApprovals.list.Items.length" class="no-matches">
+        This order does not have any approvals. <br>
+    </div>
+
+    <!--====== Approvals PAGINATION ======-->
+    <ul uib-pagination
+        class="pagination-sm pull-right hidden-xs"
+        ng-if="orderApprovals.list.Meta.TotalPages > 1"
+        total-items="orderApprovals.list.Meta.TotalCount"
+        items-per-page="orderApprovals.list.Meta.PageSize"
+        max-size="5"
+        boundary-links="orderApprovals.list.Meta.TotalPages > 5"
+        ng-model="orderApprovals.list.Meta.Page"
+        ng-change="orderApprovals.pageChanged()">
+    </ul>
+    <button type="button"
+            class="btn btn-default btn-block btn-lg visible-xs"
+            ng-show="orderApprovals.list.Meta.Page < orderApprovals.list.Meta.TotalPages"
+            ng-click="orderApprovals.loadMore()">Load More</button>
+</div>

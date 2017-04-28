@@ -62,16 +62,26 @@ describe('Component: FavoriteProducts', function(){
                 OrderCloud: oc,
                 toastr: toaster
             });
-
+            var defer = q.defer();
+            defer.resolve();
+            spyOn(oc.Me, 'Patch').and.returnValue(defer.promise);
         }));
+
+        describe('checkHasFavorites', function(){
+            it('should call the Me Patch when no favoriteProducts xp', function(){
+                scope.currentUser = {};
+                favoriteProductCtrl.checkHasFavorites();
+                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: []}});
+
+            });
+        });
+
         describe('toggleFavoriteProduct', function(){
             beforeEach(function(){
-                var defer = q.defer();
-                defer.resolve();
-                spyOn(oc.Me, 'Patch').and.returnValue(defer.promise);
                 spyOn(_, 'without').and.returnValue('updatedList');
                 spyOn(toaster, 'success');
             });
+
             it('should call the Me Patch method when deleting a product', function(){
                 var updatedList = 'updatedList';
                 favoriteProductCtrl.hasFavorites = true;
@@ -80,7 +90,7 @@ describe('Component: FavoriteProducts', function(){
                 expect(_.without).toHaveBeenCalled();
                 expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: updatedList}});
             });
-            it('should call the Me Patch method when removing a product', function(){
+            it('should call the Me Patch method when adding a product', function(){
                 var existingList = ['favoriteProduct', 'productID'];
                 favoriteProductCtrl.hasFavorites = true;
                 favoriteProductCtrl.isFavorited = false;

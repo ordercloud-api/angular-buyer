@@ -1,0 +1,104 @@
+<main class="login" ng-switch="login.form" cg-busy="login.loading">
+
+    <!--LOGIN FORM-->
+    <div ng-switch-when="login">
+        <div class="panel panel-default">
+            <form class="panel-body" name="LoginForm" ng-submit="login.submit()" pretty-submit>
+                <h3 class="text-center">Buyer Login</h3>
+                <div class="form-group">
+                    <label for="Username" class="sr-only">Username</label>
+                    <input id="Username" type="text" class="form-control" placeholder="Username" autocapitalize="off" autocorrect="off" autocomplete="off" ng-model="login.credentials.Username" ng-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="Password" class="sr-only">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" id="Password" ng-model="login.credentials.Password" ng-required="true" />
+                </div>
+
+                <div class="form-group text-center">
+                    <div class="checkbox">
+                        <label for="Remember">
+                            <input type="checkbox" id="Remember" ng-model="login.rememberStatus">
+                            Remember Me
+                        </label>
+                    </div>
+                </div>
+                <button id="submit_login" type="submit" class="btn btn-primary btn-block" ng-disabled="LoginForm.$invalid">Submit</button>
+
+            </form>
+        </div>
+        <div class="text-center">
+            <a id="forgot_password" ng-click="login.setForm('forgot')">Forgot Password?</a>
+        </div>
+    </div>
+
+    <!--FORGOT PASSWORD-->
+    <div ng-switch-when="forgot">
+        <div class="panel panel-default">
+            <form class="panel-body" name="ForgotPasswordForm" ng-submit="login.forgotPassword()">
+                <h3 class="text-center">Forgot Password</h3>
+                <div class="form-group">
+                    <label for="Email" class="sr-only">Email</label>
+                    <input type="text" class="form-control" id="Email" placeholder="Email Address" ng-model="login.credentials.Email" ng-required="true" />
+                </div>
+                <button type="submit" id="email_submit" class="btn btn-primary btn-block" ng-disabled="ForgotPasswordForm.$invalid">Submit</button>
+            </form>
+        </div>
+        <div class="text-center">
+            <a id="back_to_login" ng-click="login.setForm('login')">Back to Login</a>
+        </div>
+    </div>
+
+    <!--RESET PASSWORD-->
+    <div ng-switch-when="reset">
+        <div class="panel panel-default">
+            <form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPassword()" >
+                <h3 class="text-center">Reset Password</h3>
+                <div class="form-group">
+                    <label for="ResetUsername" class="sr-only">Username</label>
+                    <input type="text" class="form-control" id="ResetUsername" placeholder="Username" ng-model="login.credentials.ResetUsername" ng-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="NewPassword" class="sr-only">New Password</label>
+                    <input type="password" class="form-control" id="NewPassword" placeholder="New Password" ng-model="login.credentials.NewPassword" ng-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
+                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
+                </div>
+                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="ResetPasswordForm.$invalid || login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!--RESET PASSWORD BY TOKEN-->
+    <div ng-switch-when="resetByToken">
+        <div class="panel panel-default">
+            <form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPasswordByToken()" >
+                <h3 class="text-center">Reset Password</h3>
+                <div class="alert alert-info">
+                    Due to a change in how we store password information, <br>as of <b>TBD</b> you must reset your password. <br> You can use the same password as before. 
+                </div>
+                <div class="form-group">
+                    <label for="NewPassword" class="sr-only">New Password</label>
+                    <input type="password" class="form-control" id="NewPassword" name="NewPassword" placeholder="New Password" ng-model="login.credentials.NewPassword" ng-required="true" autofocus/>
+                </div>
+                <div class="form-group">
+                    <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
+                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
+                </div>
+                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="ResetPasswordForm.$invalid || login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div ng-switch-when="verificationCodeSuccess">
+        <div class="alert alert-success text-center" id="forgot_message">Forgot password email has been sent. <br> Please check your email in order to reset your password.</div>
+    </div>
+
+    <div ng-switch-when="resetSuccess">
+        <div class="alert alert-success text-center">Your password has been reset.</div>
+        <div class="text-center">
+            <a id="back_to_login2" ng-click="login.setForm('login')">Back to Login</a>
+        </div>
+    </div>
+</main>
