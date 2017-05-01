@@ -31,4 +31,4 @@ Styling for the Product Browse and Product Card components is located in the fol
 `styles/components/_product-browse.less`  
 `styles/layout/_catalog-grid.less`  
 
-Flexbox is used on the Product List to set equal heights on the Product Cards. This creates a layout, and will also prevent float issues caused by the lack of a clearing element between rows.
+Flexbox is used on the Product List to set equal heights on the Product Cards. This creates a uniform layout, and will also prevent float issues caused by the lack of a clearing element between rows.
