@@ -9,10 +9,10 @@ theme/
 ```
 ___
 ## `_bootswatch.less`
-derp
+This file contains `LESS` that is needed to override or enhance bootstrap defaults. 
 
 ## `_orderly.less`
-derp
+Similar to a glob file, `_orderly.less` is used only to import other files within the theme.
 
 ## `_variables.less`
-derp
+This file contains theme-specific variables.

@@ -28,7 +28,7 @@ When page-specific styles are needed then those styles should be kept in this di
 The Angular Buyer application is built for theming. Theme specific styles should be put in this folder. For more information, please refer to our [LESS theming documentation](theme/README.md).
 
 ## `utils/`
-This folder contains all the LESS mixins and variables available for styling the application. As a general rule, nothing in this folder should compile to actual CSS.
+This folder contains all the `LESS` mixins and variables available for styling the application. As a general rule, nothing in this folder should compile to actual CSS.
 
 ## `main.less`
 Each of the directories above contains a `glob.less` file that imports all of the LESS files within that directory. The `main.less` file imports all of those globs along with `shame.less`.
