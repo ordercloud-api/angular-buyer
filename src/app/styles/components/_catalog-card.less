@@ -1,16 +1,14 @@
-@media (min-width: @screen-sm-min) {
-    .c-product-card {
-        // add flex display to product card wrapper
-        // flex the product card to fill the grid item element
+.c-product-card {
+    // add flex display to product card wrapper
+    // flex the product card to fill the grid item element
+    .oc-flex-layout.vertical;
+    .oc-flex-layout.flex-auto;
+    .c-product-card__body {
         .oc-flex-layout.vertical;
         .oc-flex-layout.flex-auto;
-        .c-product-card__body {
-            .oc-flex-layout.vertical;
-            .oc-flex-layout.flex-auto;
-        }
-        .c-product-card__name {
-            .oc-flex-layout.flex-auto;
-        }
+    }
+    .c-product-card__name {
+        .oc-flex-layout.flex-auto;
     }
 }
 
@@ -19,5 +17,5 @@
     @media (min-width: @screen-sm-min) {
         .oc-flex-layout.vertical;
         .oc-flex-layout.flex-auto;   
-    }         
+    }
 }
