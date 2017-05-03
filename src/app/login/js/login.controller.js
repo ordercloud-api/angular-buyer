@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .controller('LoginCtrl', LoginController);
 
-function LoginController($window, $state, $stateParams, $exceptionHandler, ocRoles, OrderCloudSDK, scope, clientid) {
+function LoginController($window, $state, $stateParams, $exceptionHandler, ocRoles, OrderCloudSDK, scope, clientid, defaultstate) {
     var vm = this;
     vm.credentials = {
         Username: null,
@@ -23,7 +23,7 @@ function LoginController($window, $state, $stateParams, $exceptionHandler, ocRol
                     vm.token = data.access_token;
                     vm.form = 'resetByToken';
                 } else {
-                    $state.go('home');
+                    $state.go(defaultstate);
                 }
             })
             .catch(function (ex) {

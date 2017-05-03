@@ -1,7 +1,7 @@
 angular.module('orderCloud')
 	.controller('ConfirmPasswordModalCtrl', ConfirmPasswordModalController);
 
-function ConfirmPasswordModalController($exceptionHandler, $uibModalInstance, CurrentUser, $cookies, OrderCloudSDK, appname, clientid, scope) {
+function ConfirmPasswordModalController($exceptionHandler, $uibModalInstance, CurrentUser, $cookies, OrderCloudSDK, ocAppName, clientid, scope) {
 	var vm = this;
 
 	vm.submit = function () {
@@ -14,7 +14,7 @@ function ConfirmPasswordModalController($exceptionHandler, $uibModalInstance, Cu
 			.then(function () {
 				var expiresIn = new Date();
 				expiresIn.setMinutes(expiresIn.getMinutes() + 20);
-				$cookies.put('oc_has_confirmed.' + appname, true, {
+				$cookies.put('oc_has_confirmed.' + ocAppName.Watch(), true, {
 					expires: expiresIn
 				});
 				$uibModalInstance.close();

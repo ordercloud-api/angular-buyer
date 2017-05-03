@@ -16,15 +16,18 @@ angular.module('orderCloud')
         $qProvider.errorOnUnhandledRejections(false); //Stop .catch validation from angular v1.6.0
         function handler($delegate, $injector) { //Catch all for unhandled errors
             return function(ex, cause) {
-                //TODO: this was changed to include the below if statement on 2/7/2017 - this change could cause unknown issues
-                if (ex) {
-                    $delegate(ex, cause);
-                    var message = (ex.response && ex.response.body && ex.response.body.Errors && ex.response.body.Errors.length) ? 
-                        ex.response.body.Errors[0].Message : 
-                        ex.message;
-
-                    $injector.get('toastr').error(message, 'Error');
+                var message = '';
+                if(ex && ex.response && ex.response.body && ex.response.body.Errors && ex.response.body.Errors.length) {
+                    message = ex.response.body.Errors[0].Message;
+                } else if(ex && ex.response && ex.response.body && ex.response.body['error_description']) {
+                    message = ex.response.body['error_description'];
+                } else if(ex.message) {
+                    message = ex.message;
+                } else {
+                    message = 'An error occurred';
                 }
+                $delegate(ex, cause);
+                $injector.get('toastr').error(message, 'Error');
             };
         }
     })

@@ -1,223 +1,197 @@
 describe('Component: Account', function() {
-    var scope,
-        q,
-        account,
-        accountFactory,
-        uibModalInstance;
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, AccountService) {
-        q = $q;
-        scope = $rootScope.$new();
-        account = {
-            ID: "TestAccount123456789",
-            Username: "TestAccount",
-            Password: "Fails345",
-            FirstName: "Test",
-            LastName: "Test",
-            Email: "test@test.com",
-            TermsAccepted: true,
-            Active: true
-        };
-        accountFactory = AccountService;
+    var ocAccountService,
         uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
+    beforeEach(inject(function(ocAccount) {
+        ocAccountService = ocAccount;
     }));
 
-    describe('Factory: AccountService', function() {
-        var oc;
-        beforeEach(inject(function(OrderCloud) {
-            oc = OrderCloud;
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(oc.Auth, 'GetToken').and.returnValue(defer.promise);
-            spyOn(oc.Me, 'Update').and.returnValue(defer.promise);
-        }));
-
-        describe('Update', function() {
-            var uibModal,
-                currentProfile = {
-                    ID: 'FAKEID',
-                    Username: 'FAKEUSERNAME'
-                },
-                newProfile = {
-                    Username: 'FAKENEWPROFILE'
-                };
-            beforeEach(inject(function($uibModal) {
-                uibModal = $uibModal;
-            }));
-            it ('should open a uibModal, confirm their password, and update the user', function() {
-                var defer = q.defer();
-                defer.resolve('FAKEPASSWORD');
-                spyOn(uibModal, 'open').and.returnValue({result: defer.promise});
-                accountFactory.Update(currentProfile, newProfile);
-                expect(uibModal.open).toHaveBeenCalled();
-                scope.$digest();
-                expect(oc.Auth.GetToken).toHaveBeenCalledWith({Username: 'FAKEUSERNAME', Password: 'FAKEPASSWORD'});
-                expect(oc.Me.Update).toHaveBeenCalledWith(newProfile);
-            })
-        });
-
-        describe('ChangePassword', function() {
-            var currentUser = {
-                ID: 'FAKEID',
-                Username: 'FAKEUSERNAME',
-                CurrentPassword: 'FAKECURRENTPASSWORD',
-                NewPassword: 'FAKENEWPASSWORD'
-            };
-            it ('should check their password and update the user', function() {
-                accountFactory.ChangePassword(currentUser);
-                expect(oc.Auth.GetToken).toHaveBeenCalledWith({Username:currentUser.Username, Password:currentUser.CurrentPassword});
-                scope.$digest();
-                currentUser.Password = currentUser.NewPassword;
-                expect(oc.Me.Update).toHaveBeenCalledWith(currentUser);
-            })
-        });
-    });
-
-    describe('Controller: AccountInfoCtrl', function() {
-        var accountInfoCtrl,
-            uibModal,
-            actualOptions;
-        beforeEach(inject(function ($uibModal, $controller) {
-            accountInfoCtrl = $controller('AccountInfoCtrl', {
-                CurrentUser: {},
-                Profile: {}
-            });
+    describe('Service: ocAccount', function() {
+        var cookiesService, uibModal;
+        beforeEach(inject(function($cookies, $uibModal) {
+            cookiesService = $cookies;
             uibModal = $uibModal;
-            accountInfoCtrl.editInfoModalOptions = {
-                animation: true,
-                templateUrl: 'account/templates/accountSettings.modal.tpl.html',
-                controller: 'AccountEditModalCtrl',
-                controllerAs: 'accountEditModal',
-                backdrop: 'static',
-                size: 'md',
-                resolve: {
-                    Profile: jasmine.any(Function),
-                    CurrentUser: jasmine.any(Function)
-                }
-            };
-            accountInfoCtrl.changePasswordModalOptions = {
-                animation: true,
-                templateUrl: 'account/templates/changePassword.modal.tpl.html',
-                controller: 'ChangePasswordModalCtrl',
-                controllerAs: 'changePasswordModal',
-                backdrop:'static',
-                size: 'md',
-                resolve: {
-                    CurrentUser: jasmine.any(Function)
-                }
-            };
         }));
-        describe('editInfo', function() {
-            it('should call the $uibModal open with editInfo modal', function() {
-                spyOn(uibModal, 'open').and.callFake(function(options) {
-                    actualOptions = options;
-                    return uibModalInstance;
+
+        describe('Method: ConfirmPassword', function() {
+            it ('should check $cookies for oc_has_confirmed', function() {
+                spyOn(cookiesService, 'get').and.callThrough();
+                ocAccountService.ConfirmPassword();
+                expect(cookiesService.get).toHaveBeenCalledWith('oc_has_confirmed.' + ocAppNameService.Watch())
+            })
+            it ('should not open the ConfirmPassword uibmodal if oc_has_confirmed is true', function() {
+                spyOn(uibModal, 'open').and.callThrough();
+                spyOn(cookiesService, 'get').and.returnValue(true);
+                ocAccountService.ConfirmPassword();
+                expect(uibModal.open).not.toHaveBeenCalled();
+            })
+            it ('should open the ConfirmPassword uibmodal if oc_has_confirmed is undefined', function() {
+                spyOn(uibModal, 'open').and.callThrough();
+                spyOn(cookiesService, 'get').and.returnValue(undefined);
+                ocAccountService.ConfirmPassword();
+                expect(uibModal.open).toHaveBeenCalledWith({
+                    templateUrl: 'account/templates/confirmPassword.modal.html',
+                    controller: 'ConfirmPasswordModalCtrl',
+                    controllerAs: 'confirmPasswordModal',
+                    size: 'confirm',
+                    resolve: {
+                        CurrentUser: jasmine.any(Function)
+                    }
                 });
-                accountInfoCtrl.editInfo();
-                expect(uibModal.open).toHaveBeenCalledWith(accountInfoCtrl.editInfoModalOptions);
-            });
-        });
-        describe('changePassword', function() {
-            it('should call the $uibModal open with changePassword modal', function() {
-                spyOn(uibModal, 'open').and.callFake(function(options) {
-                    actualOptions = options;
-                    return uibModalInstance;
+            })
+        })
+
+        describe('Method: ChangePassword', function() {
+            it ('should open the ChangePassword uibModal', function() {
+                spyOn(uibModal, 'open').and.callThrough();
+                ocAccountService.ChangePassword();
+                expect(uibModal.open).toHaveBeenCalledWith({
+                    templateUrl: 'account/templates/changePassword.modal.html',
+                    controller: 'ChangePasswordModalCtrl',
+                    controllerAs: 'changePasswordModal',
+                    size: 'confirm',
+                    resolve: {
+                        CurrentUser: jasmine.any(Function)
+                    }
                 });
-                accountInfoCtrl.changePassword();
-                expect(uibModal.open).toHaveBeenCalledWith(accountInfoCtrl.changePasswordModalOptions);
-            });
+            })
         });
     });
 
-    describe('Controller: AccountEditModalCtrl', function() {
-       var accountEditModalCtrl, currentProfile;
-        beforeEach(inject(function($state, $controller) {
-           accountEditModalCtrl = $controller('AccountEditModalCtrl', {
-               $uibModalInstance: uibModalInstance,
-               CurrentUser: {},
-               Profile: {}
-           });
+    describe('Controller: AccountCtrl', function() {
+        var accountCtrl,
+            updatedUser = angular.extend(mock.User, {ID: 'UPDATED'});
+        beforeEach(inject(function ($controller) {
+            spyOn(ocAccountService, 'ConfirmPassword').and.returnValue(dummyPromise);
+            accountCtrl = $controller('AccountCtrl', {
+                CurrentUser: mock.User
+            });
         }));
-        describe('update', function() {
-            beforeEach(inject(function() {
-                currentProfile = {};
-                accountEditModalCtrl.Profile = {};
+        it ('should set vm.profile to CurrentUser', function() {
+            expect(accountCtrl.profile).toEqual(mock.User);
+        })
+        it ('should set vm.currentUser to CurrentUser', function() {
+            expect(accountCtrl.currentUser).toEqual(mock.User);
+        })
+        describe('vm.updateProfile', function() {
+            beforeEach(function() {
                 var defer = q.defer();
-                defer.resolve();
-                spyOn(accountFactory, 'Update').and.returnValue(defer.promise);
-                accountEditModalCtrl.update();
-            }));
-            it('should call the Accounts Update method', inject(function() {
-                expect(accountFactory.Update).toHaveBeenCalledWith(currentProfile, accountEditModalCtrl.Profile);
-            }));
-        });
-        describe('submit', function() {
-            it('should close the modal', function() {
-                accountEditModalCtrl.submit();
-                expect(uibModalInstance.close).toHaveBeenCalled();
-            });
-        });
-        describe('cancel', function() {
-            it('should dismiss the modal', function() {
-                accountEditModalCtrl.cancel();
-                expect(uibModalInstance.dismiss).toHaveBeenCalled();
-            });
-        });
+                defer.resolve(updatedUser);
+                spyOn(oc.Me, 'Patch').and.returnValue(defer.promise);
+                accountCtrl.updateProfile();
+                scope.$digest();
+            })
+            it ('should call ocAccount.ConfirmPassword()', function() {
+                expect(ocAccountService.ConfirmPassword).toHaveBeenCalledWith(mock.User);
+            })
+            it ('should update FirstName, LastName, Email, and Phone when the password check passes', function() {
+                expect(oc.Me.Patch).toHaveBeenCalledWith(_.pick(accountCtrl.profile, ['FirstName', 'LastName', 'Email', 'Phone']));
+            })
+            it ('should update the view model', function() {
+                expect(accountCtrl.profile).toEqual(updatedUser);
+                expect(accountCtrl.currentUser).toEqual(updatedUser);
+            })
+        })
+        describe('vm.updateUsername', function() {
+            beforeEach(function() {
+                var defer = q.defer();
+                defer.resolve(updatedUser);
+                spyOn(oc.Me, 'Patch').and.returnValue(defer.promise);
+                accountCtrl.updateUsername();
+                scope.$digest();
+            })
+            it ('should call ocAccount.ConfirmPassword()', function() {
+                expect(ocAccountService.ConfirmPassword).toHaveBeenCalledWith(mock.User);
+            })
+            it ('should update FirstName, LastName, Email, and Phone when the password check passes', function() {
+                expect(oc.Me.Patch).toHaveBeenCalledWith(_.pick(accountCtrl.profile, ['Username']));
+            })
+            it ('should update the view model', function() {
+                expect(accountCtrl.profile).toEqual(updatedUser);
+                expect(accountCtrl.currentUser).toEqual(updatedUser);
+            })
+        })
+        describe('vm.changePassword', function() {
+            it('should call ocAccount.ChangePassword()', function() {
+                spyOn(ocAccountService, 'ChangePassword').and.returnValue(dummyPromise);
+                accountCtrl.changePassword();
+                expect(ocAccountService.ChangePassword).toHaveBeenCalledWith(mock.User);
+            })
+        })
     });
 
     describe('Controller: ChangePasswordModalCtrl', function () {
         var changePasswordModalCtrl;
-        beforeEach(inject(function($state, $controller) {
+        var currentUser = angular.extend(mock.User, {CurrentPassword: 'USER_CURRENTPASSWORD'});
+        beforeEach(inject(function($controller) {
             changePasswordModalCtrl = $controller('ChangePasswordModalCtrl', {
-                $scope: scope,
-                CurrentUser: {},
-                $uibModalInstance: uibModalInstance
+                CurrentUser: currentUser,
+                $uibModalInstance: uibModalInstance,
+                clientid: mock.ClientID,
+                scope: mock.Scope
             });
-            spyOn($state, 'go').and.returnValue(true);
         }));
-        describe('changePassword', function() {
-            beforeEach(inject(function() {
-                changePasswordModalCtrl.currentUser = account;
-                var defer = q.defer();
-                defer.resolve(account);
-                spyOn(accountFactory, 'ChangePassword').and.returnValue(defer.promise);
-                changePasswordModalCtrl.changePassword();
-            }));
-            it ('should call the Accounts ChangePassword method', inject(function() {
-                expect(accountFactory.ChangePassword).toHaveBeenCalledWith(changePasswordModalCtrl.currentUser);
-            }));
-        });
-        describe('submit', function() {
-            it('should close the modal', function() {
+        it ('should set vm.currentUser to CurrentUser', function() {
+            expect(changePasswordModalCtrl.currentUser).toEqual(currentUser);
+        })
+        describe('vm.submit', function() {
+            beforeEach(function() {
+                spyOn(oc.Auth, 'Login').and.returnValue(dummyPromise);
+                spyOn(oc.Me, 'ResetPasswordByToken').and.returnValue(dummyPromise);
                 changePasswordModalCtrl.submit();
+                scope.$digest();
+            })
+            it('should attempt to log the user in', function() {
+                expect(oc.Auth.Login).toHaveBeenCalledWith(changePasswordModalCtrl.currentUser.Username, changePasswordModalCtrl.currentUser.CurrentPassword, mock.ClientID, mock.Scope)
+            })
+            it('should call OrderCloudSDK.Me.ResetPasswordByToken()', function() {
+                expect(oc.Me.ResetPasswordByToken).toHaveBeenCalledWith({NewPassword:changePasswordModalCtrl.currentUser.NewPassword})
+            })
+            it('should close the modal', function() {
                 expect(uibModalInstance.close).toHaveBeenCalled();
             });
         });
-        describe('cancel', function() {
+        describe('vm.cancel', function() {
             it('should dismiss the modal', function(){
                 changePasswordModalCtrl.cancel();
                 expect(uibModalInstance.dismiss).toHaveBeenCalled();
             });
         });
     });
-    describe('Controller: ConfirmPasswordCtrl', function () {
-        var confirmPasswordCtrl;
-        beforeEach(inject(function($controller) {
-            confirmPasswordCtrl = $controller('ConfirmPasswordCtrl', {
+    describe('Controller: ConfirmPasswordModalCtrl', function () {
+        var confirmPasswordModalCtrl, cookiesService;
+        beforeEach(inject(function($controller, $cookies) {
+            cookiesService = $cookies;
+            confirmPasswordModalCtrl = $controller('ConfirmPasswordModalCtrl', {
                 $uibModalInstance: uibModalInstance,
-                password: 'fakepassword'
+                CurrentUser: mock.User,
+                clientid: mock.ClientID,
+                scope: mock.Scope,
+                $cookies: cookiesService
             });
+            confirmPasswordModalCtrl.password = mock.User.Password;
         }));
-        describe('submit', function() {
-            it('should close the modal after confirming password', function() {
-                confirmPasswordCtrl.submit();
-                expect(uibModalInstance.close).toHaveBeenCalledWith(confirmPasswordCtrl.password);
+        describe('vm.submit', function() {
+            beforeEach(function() {
+                spyOn(oc.Auth, 'Login').and.returnValue(dummyPromise);
+                spyOn(cookiesService, 'put').and.callThrough;
+                confirmPasswordModalCtrl.submit();
+                scope.$digest();
+            })
+            it('should attempt to log the user in', function() {
+                expect(oc.Auth.Login).toHaveBeenCalledWith(mock.User.Username, confirmPasswordModalCtrl.password, mock.ClientID, mock.Scope)
+            })
+            it('should store the oc_has_confirmed cookie if successful', function() {
+                expect(cookiesService.put).toHaveBeenCalledWith('oc_has_confirmed.' + ocAppNameService.Watch(), true, {
+					expires: jasmine.any(Date)
+				})
+            })
+            it('should close the modal', function() {
+                expect(uibModalInstance.close).toHaveBeenCalled();
             });
         });
-        describe('cancel', function() {
-            it('should dismiss the modal', function() {
-                confirmPasswordCtrl.cancel();
+        describe('vm.cancel', function() {
+            it('should dismiss the modal', function(){
+                confirmPasswordModalCtrl.cancel();
                 expect(uibModalInstance.dismiss).toHaveBeenCalled();
             });
         });
