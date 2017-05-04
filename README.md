@@ -1,6 +1,6 @@
-| master | development |
+<!--| master | development |
 | --- | --- |
-| [![Build Status](https://travis-ci.org/ordercloud-api/angular-buyer.svg?branch=master)](https://travis-ci.org/ordercloud-api/angular-buyer) | [![Build Status](https://travis-ci.org/ordercloud-api/angular-buyer.svg?branch=development)](https://travis-ci.org/ordercloud-api/angular-buyer) |
+| [![Build Status](https://travis-ci.org/ordercloud-api/angular-buyer.svg?branch=master)](https://travis-ci.org/ordercloud-api/angular-buyer) | [![Build Status](https://travis-ci.org/ordercloud-api/angular-buyer.svg?branch=development)](https://travis-ci.org/ordercloud-api/angular-buyer) |-->
 
 # OrderCloud Angular Buyer
 An open-source starter application for custom OrderCloud buyer applications built on AngularJS. Ideally, solution
