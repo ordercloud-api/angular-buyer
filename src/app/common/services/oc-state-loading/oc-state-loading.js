@@ -12,9 +12,10 @@ angular.module('orderCloud')
         }
 
         function _init() {
-            $rootScope.$on('$stateChangeStart', function(e, toState) {
-                var parent = toState.parent || toState.name.split('.')[0];
-                stateLoading[parent] = $q.defer();
+            $rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState) {
+                var toParent = toState.parent || toState.name.split('.')[0];
+                var fromParent = fromState.parent || fromState.name.split('.')[0];
+                stateLoading[fromParent === toParent ? toParent : 'base'] = $q.defer();
             });
 
             $rootScope.$on('$stateChangeSuccess', function() {
