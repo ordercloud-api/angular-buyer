@@ -16,11 +16,15 @@
     <fieldset class="form-group" ng-if="productCard.product.SpecCount > 0">
         <button type="button" class="btn btn-block btn-primary" ui-sref="productDetail({productid: productCard.product.ID})">Product Details</button>
     </fieldset>
-    <form ng-if="!(productCard.product.SpecCount > 0)" name="OCProductForm" class="c-product-card__add-to-cart" ng-submit="productCard.addToCart(OCProductForm)"
+
+    <form name="OCProductForm" class="c-product-card__add-to-cart-btn" prevent-click>
+        <oc-add-to-cart product="productCard.product" order="productCard.currentOrder"></oc-add-to-cart>
+    </form>    
+    <!--<form ng-if="!(productCard.product.SpecCount > 0)" name="OCProductForm" class="c-product-card__add-to-cart" ng-submit="productCard.addToCart(OCProductForm)"
           prevent-click="">
         <oc-quantity-input product="productCard.product"></oc-quantity-input>
         <fieldset class="form-group c-product-card__add-to-cart-btn">
             <button type="submit" class="btn btn-block btn-primary">Add to Cart</button>
         </fieldset>
-    </form>
+    </form>-->
 </div>

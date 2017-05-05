@@ -1,0 +1,17 @@
+<div id="ocAddToCart" class="c-qty-input" cg-busy="loading">
+    <!--Input Group-->
+    <fieldset class="form-group">
+        <div class="input-group">
+            <input id="productQuantityInput" name="productQuantity" type="number" ng-required="true" ng-if="!product.PriceSchedule.RestrictedQuantity"
+                class="form-control text-center" min="0" min-err-type="quantityInput" max="{{product.PriceSchedule.MaxQuantity}}"
+                ng-model="product.Quantity" ng-model-options="{ debounce: 1000 }" placeholder="Quantity" ng-change="updateQuantity(product.Quantity)">
+            <select id="productQuantity" ng-change="updateQuantity(product.Quantity)" name="productQuantity" ng-required="true" ng-if="product.PriceSchedule.RestrictedQuantity"
+                class="form-control text-center" ng-model="product.Quantity" ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in product.PriceSchedule.PriceBreaks">
+            </select>
+        </div>
+    </fieldset>
+    <!--Add to Cart Btn-->
+    <fieldset class="form-group c-product-card__add-to-cart-btn">
+        <button ng-click="addToCart()" class="btn btn-block btn-primary">Add to Cart</button>
+    </fieldset>
+</div>
