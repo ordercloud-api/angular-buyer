@@ -92,7 +92,7 @@
 	<div class="row c-line-item" ng-repeat="lineItem in checkoutConfirmation.lineItems.Items track by $index">
 		<div class="col-xs-3 col-sm-2">
 			<div class="thumbnail c-line-item__img">
-				<img class="img-responsive" ng-src="{{lineItem.xp.image.URL || 'http://placehold.it/100x100?text=' + lineItem.Product.Name}}"
+				<img class="img-responsive" ng-src="{{lineItem.Product.xp.image.URL || 'http://placehold.it/100x100?text=' + lineItem.Product.Name}}"
 					 alt="{{lineItem.Product.xp.image.Name || 'Product Image'}}">
 			</div>
 		</div>
