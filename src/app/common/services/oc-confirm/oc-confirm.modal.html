@@ -1,0 +1,13 @@
+<div class="modal-body">
+	<div ng-class="{'text-center':confirmModal.type == 'delete'}" ng-bind-html="confirmModal.message"></div>
+	<div class="text-center" ng-if="confirmModal.type == 'delete'">
+		<br>
+		<span class="text-danger">This action cannot be undone.</span>
+	</div>
+</div>
+<div class="modal-footer">
+	<div class="text-center">
+		<button type="button" class="btn btn-default" ng-click="confirmModal.cancel()">{{confirmModal.cancelText || 'Cancel'}}</button>
+		<button type="button" class="btn btn-primary" ng-class="{'btn-danger': confirmModal.type == 'delete'}" ng-click="confirmModal.confirm()">{{confirmModal.confirmText || 'Okay'}}</button>
+	</div>
+</div>

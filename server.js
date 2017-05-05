@@ -2,9 +2,16 @@
 var config = require('./gulp.config');
 
 var express = require('express'),
+    cookieParser = require('cookie-parser'),
     env = process.env.NODE_ENV = process.env.NODE_ENV || 'dev',
     app = express(),
     port = process.env.PORT || 451;
+
+if (config.saas.getAppConfig) {
+    app.use(cookieParser());
+    app.use(config.saas.getAppConfig());
+    app.use('/assets/styles', config.saas.styles.serverLess());
+}
 
 switch(env) {
     case 'production':

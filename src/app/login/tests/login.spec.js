@@ -1,146 +1,35 @@
 describe('Component: Login', function() {
-    var scope,
-        q,
-        loginFactory,
-        oc,
-        credentials = {
-            Username: 'notarealusername',
-            Password: 'notarealpassword'
-        };
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, LoginService) {
-        q = $q;
-        scope = $rootScope.$new();
-        loginFactory = LoginService;
-        oc = OrderCloud;
-    }));
-
-    describe('Factory: LoginService', function() {
-        var client_id;
-        beforeEach(inject(function(clientid) {
-            client_id = clientid;
-        }));
-        describe('SendVerificationCode', function() {
-            var passwordResetRequest;
-            beforeEach(inject(function($window) {
-                var email = 'test@test.com';
-                passwordResetRequest = {
-                    Email: email,
-                    ClientID: client_id,
-                    URL: encodeURIComponent($window.location.href) + '{0}'
-                };
-                var deferred = q.defer();
-                deferred.resolve(true);
-                spyOn(oc.PasswordResets, 'SendVerificationCode').and.returnValue(deferred.promise);
-                loginFactory.SendVerificationCode(email);
-            }));
-            it ('should call the SendVerificationCode method of PasswordResets with the reset request object', function(){
-                expect(oc.PasswordResets.SendVerificationCode).toHaveBeenCalledWith(passwordResetRequest);
-            });
-        });
-
-        describe('Logout', function() {
-            var cookies,
-                state;
-            beforeEach(inject(function($cookies, $state) {
-                var cookieResponse = {
-                    'a':'1',
-                    'b':'2'
-                };
-                cookies = $cookies;
-                state = $state;
-                var dfd = q.defer();
-                dfd.resolve();
-                spyOn(cookies, 'getAll').and.returnValue(cookieResponse);
-                spyOn(cookies, 'remove').and.callThrough();
-                spyOn(state, 'go').and.returnValue(dfd.promise);
-            }));
-
-            it('should remove all of the cookies', function() {
-                loginFactory.Logout();
-                expect(cookies.getAll).toHaveBeenCalled();
-                expect(cookies.remove).toHaveBeenCalledWith('a');
-                expect(cookies.remove).toHaveBeenCalledWith('b');
-            });
-
-            it('should redirect to home/login state', function() {
-                loginFactory.Logout();
-                expect(state.go).toHaveBeenCalled();
-            })
-        });
-
-        describe('ResetPassword', function() {
-            var creds = {
-                ResetUsername: credentials.Username,
-                NewPassword: credentials.Password,
-                ConfirmPassword: credentials.Password
-            };
-            beforeEach(inject(function() {
-                var deferred = q.defer();
-                deferred.resolve(true);
-                spyOn(oc.PasswordResets, 'ResetPassword').and.returnValue(deferred.promise);
-                loginFactory.ResetPassword(creds, 'code');
-            }));
-            it ('should call the ResetPassword method of the PasswordResets Service with a code and credentials', function() {
-                expect(oc.PasswordResets.ResetPassword).toHaveBeenCalledWith('code', {ClientID: client_id, Username: creds.ResetUsername, Password: creds.NewPassword});
-            });
-        });
-
-        describe('RememberMe', function(){
-            beforeEach(function(){
-                var deferred = q.defer();
-                deferred.resolve({access_token:'ACCESS_TOKEN'});
-                spyOn(oc.Refresh, 'GetToken').and.returnValue(deferred.promise);
-
-                var dfd = q.defer();
-                dfd.resolve();
-                spyOn(oc.BuyerID, 'Set').and.returnValue(dfd.promise);
-                spyOn(oc.Auth, 'SetToken').and.returnValue(dfd.promise);
-
-            });
-
-            it('should find the refresh token, refresh the access token, and store the new access token in cookies', function(){
-                spyOn(oc.Refresh, 'ReadToken').and.returnValue('REFRESH_TOKEN');
-                loginFactory.RememberMe();
-
-                expect(oc.Refresh.ReadToken).toHaveBeenCalled();
-                expect(oc.Refresh.GetToken).toHaveBeenCalledWith('REFRESH_TOKEN');
-                scope.$digest();
-                expect(oc.BuyerID.Set).toHaveBeenCalled();
-                expect(oc.Auth.SetToken).toHaveBeenCalledWith('ACCESS_TOKEN');
-            });
-
-            it('should not attempt to refresh users who do not have a refresh token', function() {
-                spyOn(oc.Refresh, 'ReadToken').and.returnValue(null);
-                loginFactory.RememberMe();
-                expect(oc.Refresh.ReadToken).toHaveBeenCalled();
-                expect(oc.Refresh.GetToken).not.toHaveBeenCalled();
-            })
-
-        });
-    });
-
     describe('Controller: LoginCtrl', function() {
-        var loginCtrl,
-            fakeToken = 'XXXX-XXXX-XXXX';
-        beforeEach(inject(function($controller, $state) {
-            spyOn($state, 'go').and.returnValue(true);
-            var dfd = q.defer();
-            dfd.resolve({access_token: fakeToken});
-            spyOn(oc.Auth, 'GetToken').and.returnValue(dfd.promise);
-            spyOn(oc.Auth, 'SetToken').and.returnValue(dfd.promise);
+        var loginCtrl;
+        beforeEach(inject(function($controller) {
+            spyOn(state, 'go').and.callThrough();
+            spyOn(oc, 'SetToken').and.callThrough();
+            spyOn(oc, 'SetRefreshToken').and.callThrough();
+            var loginDefer = q.defer();
+            loginDefer.resolve(mock.OauthResponse);
+            spyOn(oc.Auth, 'Login').and.returnValue(loginDefer.promise);
             loginCtrl = $controller('LoginCtrl', {
-                $scope: scope,
-                LoginService: loginFactory,
-                oc: oc
+                clientid: mock.ClientID,
+                scope: mock.Scope,
+                defaultstate: mock.DefaultState,
+                ocRoles: { //overwrite ocRoles.Set() to return mock.Scope
+                    Set: function() {
+                        return mock.Scope;
+                    }
+                }
             });
         }));
 
         describe('form', function() {
-            it ('should initialize to login', function() {
+            it ('should initialize to login if there is not a token $stateParam', function() {
                 expect(loginCtrl.form).toBe('login');
             });
+            it ('should initialize to reset if token $stateParam exists', inject(function($controller) {
+                var altLoginCtrl = $controller('LoginCtrl', {
+                    $stateParams: {token:mock.OauthResponse.access_token}
+                })
+                expect(altLoginCtrl.form).toBe('reset');
+            }));
         });
 
         describe('setForm', function() {
@@ -152,19 +41,26 @@ describe('Component: Login', function() {
 
         describe('submit', function() {
             beforeEach(function() {
-                loginCtrl.credentials = credentials;
+                loginCtrl.credentials = {Username: mock.User.Username, Password:mock.User.Password};
                 loginCtrl.submit();
+            });
+            it ('should call OrderCloud.Auth.Login with credentials', function() {
                 scope.$digest();
+                expect(oc.Auth.Login).toHaveBeenCalledWith(mock.User.Username, mock.User.Password, mock.ClientID, mock.Scope);
             });
-            it ('should call the GetToken method from the Auth Service with credentials', function() {
-                expect(oc.Auth.GetToken).toHaveBeenCalledWith(credentials);
+            it ('should call OrderCloud.SetToken()', function() {
+                scope.$digest();
+                expect(oc.SetToken).toHaveBeenCalledWith(mock.OauthResponse.access_token);
             });
-            it ('should call the SetToken method from the Auth Service', function() {
-                expect(oc.Auth.SetToken).toHaveBeenCalledWith(fakeToken);
+            it ('should call OrderCloud.RefreshToken() if vm.rememberStatus is true', function() {
+                loginCtrl.rememberStatus = true;
+                scope.$digest();
+                expect(oc.SetRefreshToken).toHaveBeenCalledWith(mock.OauthResponse.refresh_token);
             });
-            it ('should enter the home state', inject(function($state) {
-                expect($state.go).toHaveBeenCalledWith('home');
-            }));
+            it ('should enter the default state', function() {
+                scope.$digest();
+                expect(state.go).toHaveBeenCalledWith(mock.DefaultState);
+            });
         });
 
         describe('forgotPassword', function() {

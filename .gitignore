@@ -7,3 +7,6 @@ bower_components/
 errorShots/
 .idea
 plato/
+.publish/
+.vscode/
+/src/app/saas/themes/lib.less

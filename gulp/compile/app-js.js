@@ -7,7 +7,6 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     filter = require('gulp-filter'),
     templateCache = require('gulp-angular-templatecache'),
-    htmlmin = require('gulp-htmlmin'),
     uglify = require('gulp-uglify'),
     fileSort = require('gulp-angular-filesort'),
     wrapper = require('gulp-wrapper');
@@ -31,7 +30,6 @@ gulp.task('app-js', ['clean:app-js'], function() {
         .pipe(ngConstant(config.ngConstantSettings))
         .pipe(jsonFilter.restore)
         .pipe(htmlFilter)
-        //.pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(templateCache(config.templateCacheSettings))
         .pipe(htmlFilter.restore)
         .pipe(jsFilter)
@@ -44,5 +42,5 @@ gulp.task('app-js', ['clean:app-js'], function() {
         .pipe(concat('app.controller.js'))
         .pipe(rev())
         .pipe(uglify({mangle:false})) //turning off mangle to fix the compile error
-        .pipe(gulp.dest(config.compile + 'js/'))
+        .pipe(gulp.dest(config.compile + 'js/'));
 });

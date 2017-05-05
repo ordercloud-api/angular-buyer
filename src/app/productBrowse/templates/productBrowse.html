@@ -1,0 +1,52 @@
+<article>
+    <ol class="breadcrumb">
+        <li>
+            <a href="" ui-sref="productBrowse.products({categoryid:category.ID})">All Products</a>
+        </li>
+        <li ng-repeat="crumb in productBrowse.breadcrumb">
+            <a href="" ui-sref="productBrowse.products({categoryid:crumb.ID})">{{crumb.Name}}</a>
+        </li>
+    </ol>
+    <div class="row">
+        <!--TODO: Waiting for EX-980 to be complete for the catalog select directory-->
+        <!--<ordercloud-select-catalog></ordercloud-select-catalog>-->
+
+        <div class="category-modal" ng-if="application.$ocMedia('max-width:991px')" style="padding-bottom: 10px;">
+            <a class="btn btn-block btn-default" ng-click="productBrowse.openCategoryModal()">
+                {{breadcrumb[0].Name || "Category Select"}}  <i class="fa fa-angle-down"></i>
+            </a>
+        </div>
+
+        <!--START CATEGORY TREE-->
+        <aside class="col-md-3 visible-md visible-lg">
+            <div class="panel panel-default">
+                <div class="panel-heading" ng-if="productBrowse.treeConfig.treeData.length">
+                    <b class="panel-title">Categories</b>
+                </div>
+                <treecontrol class="oc-tree"
+                             ng-if="productBrowse.treeConfig.treeData.length"
+                             tree-model="productBrowse.treeConfig.treeData"
+                             options="productBrowse.treeConfig.treeOptions"
+                             selected-node="productBrowse.treeConfig.selectedNode"
+                             expanded-nodes="productBrowse.treeConfig.expandedNodes"
+                             on-selection="productBrowse.treeConfig.selectNode(node)">
+                    {{node.Name}}
+                </treecontrol>
+                <div class="panel-heading">
+                    <b class="panel-title">Refine By</b>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <span ng-click="productBrowse.toggleFavorites()">
+                            <i class="fa" ng-class="{'fa-heart-o text-muted': !productBrowse.parameters.favorites, 'fa-heart text-danger': productBrowse.parameters.favorites}"></i> My Favorites
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <!--END CATEGORY TREE-->
+
+        <!--PRODUCT LIST VIEW-->
+        <div class="col-md-9" cg-busy="application.stateLoading('productBrowse')" ui-view></div>
+    </div>
+</article>

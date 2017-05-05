@@ -1,0 +1,16 @@
+.c-logo-display {
+  text-align:center;
+  &.c-logo-display__login {
+    padding:@grid-gutter-width/2 0 @grid-gutter-width;
+  }
+  &.c-logo-display__nav {
+    padding: 2px @navbar-padding-horizontal;
+    img {
+      max-height:@navbar-height - 5px;
+      max-width:100%;
+    }
+    @media(max-width:@screen-xs-max) {
+      max-width:100px;
+    }
+  }
+}

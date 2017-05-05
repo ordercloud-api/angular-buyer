@@ -1,0 +1,47 @@
+@icon-navmenu-width: 100px;
+
+//If you want to use the icon-navmenu, you will have to change the padding-left:@navmenu-width
+//to padding-left:@icon-navmenu-width in _scaffolding.less
+
+.l-icon-navmenu {
+  width:@icon-navmenu-width;
+  .navmenu-brand {
+    text-align:center;
+  }
+  li {
+    > a {
+      height:@icon-navmenu-width - 25px;
+      display:flex;
+      align-content:center;
+      justify-content:center;
+      flex-flow:column nowrap;
+      font-size:@font-size-base * 0.7;
+      text-align:center;
+      line-height:@line-height-base * 0.8;
+      > * {
+        flex: 0;
+      }
+      .fa {
+        padding-bottom:5px;
+        font-size:2em;
+        width:100%;
+      }
+    }
+  }
+  &.navmenu-inverse {
+    li {
+      border-bottom:1px solid @navbar-inverse-border;
+      i.fa {
+        color: @navmenu-inverse-brand-color;
+      }
+    }
+  }
+  &.navmenu-default {
+    li {
+      border-bottom:1px solid @navbar-default-border;
+      i.fa {
+        color: @navmenu-default-brand-color;
+      }
+    }
+  }
+}

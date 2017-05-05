@@ -5,6 +5,12 @@
     // display results
     .dropdown-menu {
       right: 0;
+      // Boostrap override
+      > li {
+        > a {
+          white-space: normal;
+        }
+      }
     }
     // display empty and loading modifier states in a dropdown UI to match typeahead results
     &--empty,
