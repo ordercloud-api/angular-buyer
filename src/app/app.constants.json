@@ -4,7 +4,7 @@
   "buyerid": "XXXX",
   "anonymous": false,
   "catalogid": "XXXX",
-  "environment": "staging",
+  "environment": "prod",
   "defaultstate": "home",
   "html5mode": false,
   "bootswatchtheme": null,
