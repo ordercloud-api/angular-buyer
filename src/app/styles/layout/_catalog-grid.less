@@ -1,24 +1,18 @@
 .l-product-grid {
-    // use flexbox for layout on small+ screens
-    // add flex display to product grid wrapper
-    @media (min-width: @screen-sm-min) {
-        .oc-flex-layout.horizontal;
-        .oc-flex-layout.wrap;
-        // flex each item within the grid wrapper
-        &__item {
-            .oc-flex-layout.vertical;
-        }
-    }
+    margin-left: -@grid-gutter-width/6;
+    margin-right: -@grid-gutter-width/6;    
+    .oc-flex-layout.horizontal;
+    .oc-flex-layout.wrap;
+    .l-product-grid__item {
+        .oc-flex-layout.vertical;
+        padding-left: @grid-gutter-width/6;
+        padding-right: @grid-gutter-width/6;            
+    }        
 }
 .l-category-grid {
-    // use flexbox for layout on small+ screens
-    // add flex display to product grid wrapper
-    @media (min-width: @screen-sm-min) {
-        .oc-flex-layout.horizontal;
-        .oc-flex-layout.wrap;
-        // flex each item within the grid wrapper
-        &__item {
-            .oc-flex-layout.vertical;
-        }
-    }
+    .oc-flex-layout.horizontal;
+    .oc-flex-layout.wrap;
+    .l-category-grid__item {
+        .oc-flex-layout.vertical;
+    } 
 }

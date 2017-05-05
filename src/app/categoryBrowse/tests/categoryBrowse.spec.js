@@ -1,112 +1,80 @@
 describe('Component: Category Browse', function(){
-    var scope,
-        q,
-        oc,
-        state,
-        _ocParameters,
-        mockProductList,
-        categoryList
-        ;
-    beforeEach(module(function($provide) {
-        $provide.value('Parameters', {categoryPage: null, productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID:null});
-    }));
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($rootScope, $q, OrderCloud, ocParameters, $state){
-        scope = $rootScope.$new();
-        q = $q;
-        oc = OrderCloud;
-        state = $state;
-        _ocParameters = ocParameters;
-        categoryList = ['category1', 'category2'];
-        mockProductList = {
-            Items:['product1', 'product2'],
-            Meta:{
-                ItemRange:[1, 3],
-                TotalCount: 50
-            }
-        };
-    }));
-
     describe('State: categoryBrowse', function(){
-        var state;
-        beforeEach(inject(function($state){
-            state = $state.get('categoryBrowse');
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(_ocParameters, 'Get');
+        var browseState;
+        beforeEach(function(){
+            browseState = state.get('categoryBrowse');
+            spyOn(ocParametersService, 'Get');
             spyOn(oc.Me, 'ListCategories');
             spyOn(oc.Me, 'ListProducts');
-        }));
-        it('should resolve Parameters', inject(function($injector){
-            $injector.invoke(state.resolve.Parameters);
-            expect(_ocParameters.Get).toHaveBeenCalled();
-        }));
-        it('should resolve CategoryList', inject(function($injector){
-            $injector.invoke(state.resolve.CategoryList);
+        });
+        it('should resolve Parameters', function(){
+            injector.invoke(browseState.resolve.Parameters);
+            expect(ocParametersService.Get).toHaveBeenCalled();
+        });
+        it('should resolve CategoryList', function(){
+            injector.invoke(browseState.resolve.CategoryList);
             expect(oc.Me.ListCategories).toHaveBeenCalled();
-        }));
-        it('CategoryList resolve should return subcategories of categoryID', inject(function($injector, Parameters){
-            Parameters.categoryID = '12';
-            $injector.invoke(state.resolve.CategoryList);
-            expect(oc.Me.ListCategories).toHaveBeenCalledWith(null, null, 12, null, null, {ParentID:'12'}, 1);
-        }));
-        it('should resolve ProductList', inject(function($injector, Parameters){
-            Parameters.filters = {ParentID:'12'};
-            $injector.invoke(state.resolve.ProductList);
-            expect(oc.Me.ListProducts).toHaveBeenCalled();
-        }));
-        it('ProductList should not return products when there is no ParentID filter', inject(function($injector){
+        });
+        it('should return subcategories of Parameters.categoryID', function(){
+            parametersResolve.categoryID = mock.Category.ID;
+            injector.invoke(browseState.resolve.CategoryList);
+            expect(oc.Me.ListCategories).toHaveBeenCalledWith(parametersResolve);
+        });
+        it('should resolve ProductList', function(){
+            parametersResolve.filters = {ParentID:mock.Category.ID};
+            injector.invoke(browseState.resolve.ProductList);
+            expect(oc.Me.ListProducts).toHaveBeenCalledWith(parametersResolve);
+        });
+        it('ProductList should not return products when there is no ParentID filter', function(){
             //we don't want to return products on the top category level
-            $injector.invoke(state.resolve.ProductList);
+            injector.invoke(browseState.resolve.ProductList);
             expect(oc.Me.ListProducts).not.toHaveBeenCalled();
-        }));
+        });
     });
 
     describe('Controller: CategoryBrowseController', function(){
         var categoryBrowseCtrl;
-        beforeEach(inject(function($state, $controller, Parameters){
-            var state = $state;
-            var selectedCategory = 'category1';
+        beforeEach(inject(function($controller){
             categoryBrowseCtrl = $controller('CategoryBrowseCtrl', {
-                $scope: scope,
-                $state: state,
-                ocParameters: _ocParameters,
-                CategoryList: categoryList,
-                ProductList: mockProductList,
-                Parameters: Parameters,
-                SelectedCategory: selectedCategory
+                CategoryList: {
+                    Items : [mock.Category, mock.Category],
+                    Meta : mock.Meta
+                },
+                ProductList: {
+                    Items : [mock.Product, mock.Product],
+                    Meta : mock.Meta
+                },
+                SelectedCategory: mock.Category
             });
             spyOn(state, 'go');
-            spyOn(_ocParameters, 'Create');
+            spyOn(ocParametersService, 'Create');
         }));
-        describe('filter', function(){
+        describe('vm.filter', function(){
             it('should reload state and call ocParameters.Create with any parameters', function(){
-                categoryBrowseCtrl.parameters = {pageSize: 1};
                 categoryBrowseCtrl.filter(true);
                 expect(state.go).toHaveBeenCalled();
-                expect(_ocParameters.Create).toHaveBeenCalledWith({pageSize:1}, true);
+                expect(ocParametersService.Create).toHaveBeenCalledWith(mock.Parameters, true);
             });
         });
-        describe('updateCategoryList', function(){
+        describe('vm.updateCategoryList', function(){
             it('should reload state with new category ID parameter', function(){
-                categoryBrowseCtrl.updateCategoryList('newCategoryID');
+                categoryBrowseCtrl.updateCategoryList(mock.Category.ID);
                 expect(state.go).toHaveBeenCalled();
-                expect(_ocParameters.Create).toHaveBeenCalledWith({categoryPage: null, productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID:'newCategoryID'}, true);
+                expect(ocParametersService.Create).toHaveBeenCalledWith(angular.extend(parametersResolve, {categoryID:mock.Category.ID}), true);
             });
         });
-        describe('changeCategoryPage', function(){
+        describe('vm.changeCategoryPage', function(){
             it('should reload state with the new categoryPage', function(){
-                categoryBrowseCtrl.changeCategoryPage('newCategoryPage');
+                categoryBrowseCtrl.changeCategoryPage(1);
                 expect(state.go).toHaveBeenCalled();
-                expect(_ocParameters.Create).toHaveBeenCalledWith({categoryPage: 'newCategoryPage', productPage: null,  pageSize: null, sortBy: null, filters: null, categoryID: null}, false);
+                expect(ocParametersService.Create).toHaveBeenCalledWith(angular.extend(parametersResolve, {categoryPage:1}), false);
             });
         });
-        describe('changeProductPage', function(){
+        describe('vm.changeProductPage', function(){
             it('should reload state with the new productPage', function(){
-                categoryBrowseCtrl.changeProductPage('newProductPage', function(){
+                categoryBrowseCtrl.changeProductPage(1, function(){
                 expect(state.go).toHaveBeenCalled();
-                expect(_ocParameters.Create).toHaveBeenCalledWith({categoryPage: null, productPage: 'newProductPage',  pageSize: null, sortBy: null, filters: null, categoryID: null}, false);
+                expect(ocParametersService.Create).toHaveBeenCalledWith(angular.extend(parametersResolve, {productPage:1}), false);
                 });
             });
         });

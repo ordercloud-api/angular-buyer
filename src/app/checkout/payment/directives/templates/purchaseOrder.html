@@ -1,0 +1,23 @@
+<!--Single Purchase Order Payment View-->
+<div ng-form="OCPaymentPurchaseOrder">
+	<fieldset class="form-group" ng-if="!payment.ID || payment.Editing">
+		<label for="poNumber">PO Number</label>
+		<input id="poNumber" class="form-control" type="text" ng-model="payment.xp.PONumber" placeholder="(Optional)"/>
+	</fieldset>
+	<div class="panel panel-default" ng-if="payment.ID && !payment.Editing">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-6">
+					<h4>Purchase Order</h4>
+					<span><b>PO Number:</b> {{payment.xp.PONumber}}</span>
+				</div>
+				<div class="col-xs-4">
+					<h3 class="text-success pull-right">{{payment.Amount | currency}}</h4>
+				</div>
+				<div class="col-xs-2">
+					<button type="button" class="btn btn-default pull-right" ng-if="!payment.Editing" ng-click="payment.Editing = true">Edit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

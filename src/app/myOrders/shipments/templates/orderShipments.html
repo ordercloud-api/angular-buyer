@@ -1,0 +1,95 @@
+<div cg-busy="application.stateLoading('shipments')">
+    <div ng-if="!orderShipments.list.Items.length" class="no-matches">
+        This order does not have any shipments. <br>
+    </div>
+    <div class="row" ng-if="orderShipments.list.Items.length">
+        <div class="col-sm-5">
+            <br>
+            <ul class="list-group">
+                <li class="list-group-item" ng-class="{'active': shipment.ID == orderShipments.selectedShipment.ID}" ng-repeat="shipment in orderShipments.list.Items" ng-click="orderShipments.selectShipment(shipment)">
+                    <b>{{shipment.ID}}</b>
+                </li>
+            </ul>
+            <!--====== SHIPMENT PAGINATION ======-->
+            <ul uib-pagination
+                class="pagination-sm pull-right hidden-xs"
+                ng-if="orderShipments.list.Meta.TotalPages > 1"
+                total-items="orderShipments.list.Meta.TotalCount"
+                items-per-page="orderShipments.list.Meta.PageSize"
+                max-size="5"
+                boundary-links="orderShipments.list.Meta.TotalPages > 5"
+                ng-model="orderShipments.list.Meta.Page"
+                ng-change="orderShipments.pageChanged()">
+            </ul>
+            <button type="button"
+                    class="btn btn-default btn-block btn-lg visible-xs"
+                    ng-show="orderShipments.list.Meta.Page < orderShipments.list.Meta.TotalPages"
+                    ng-click="orderShipments.loadMore()">Load More</button>
+        </div>
+        <div class="col-sm-7">
+            <div ng-if="!orderShipments.selectedShipment" class="well text-center">
+                Select a shipment to view details
+            </div>
+            <div ng-if="orderShipments.selectedShipment">
+                <header>
+                    <h3>
+                        {{orderShipments.selectedShipment.ID}}
+                    </h3>
+                </header>
+                <br>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <b>Shipper: </b> {{orderShipments.selectedShipment.Shipper}} <span>{{orderShipments.selectedShipment.Shipper | ocShipperTrackingSupported}}</span><br>
+                        <b>Tracking Number: </b> 
+                            <span ng-if="!(orderShipments.selectedShipment.Shipper | ocShipperTrackingSupported)">{{orderShipments.selectedShipment.TrackingNumber}}</span>
+                            <a ng-if="(orderShipments.selectedShipment.Shipper | ocShipperTrackingSupported)" href="{{orderShipments.selectedShipment.TrackingNumber | ocShipmentTracking:orderShipments.selectedShipment.Shipper}}" target="_blank">{{orderShipments.selectedShipment.TrackingNumber}}</a>
+                            <br>
+                        <b>Date Shipped: </b> {{orderShipments.selectedShipment.DateShipped | date:'shortDate'}} <br>
+                        <b>Date Delivered: </b> {{orderShipments.selectedShipment.DateDelivered | date:'shortDate'}} <br>
+                        <b>Cost: </b> {{orderShipments.selectedShipment.Cost | currency}}
+                    </div>
+                </div>
+                <div class="panel panel-default" ng-if="orderShipments.selectedShipment.ShippingAddress">
+                    <div class="panel-body">
+                        <h4>Shipping Address</h4>
+                        <div ng-bind-html="orderShipments.selectedShipment.ShippingAddress | address:'full'"></div>
+                    </div>
+                </div>
+                <div ng-if="orderShipments.selectedShipment.Items.length">
+                    <div class="panel panel-default table-responsive">
+                        <table class="table table-bordered l-shipmentitem-table">
+                            <colgroup>
+                                <col>
+                                <col>
+                                <col>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th><span class="hidden-xs">Quantity </span>Shipped</th>
+                                <th>Product</th>
+                                <th>Line Item ID</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat-start="item in orderShipments.selectedShipment.Items" ng-if="item.OrderID == orderShipments.orderID">
+                                <td ng-click="orderShipments.editShipmentItem(item)">{{item.QuantityShipped + ' of ' + item.LineItem.Quantity}}</td>
+                                <td rowspan="{{orderShipments.selectedShipment.ShippingAddress ? 1 : 2}}">
+                                    {{item.LineItem.Product.Name}} <small class="text-muted">({{item.LineItem.Product.ID}})</small>
+                                </td>
+                                <td>{{item.LineItem.ID}}</td>
+                            </tr>
+                            <tr ng-repeat-end ng-if="!orderShipments.selectedShipment.ShippingAddress">
+                                <td colspan="2">{{item.LineItem.ShippingAddress | address:'fullOneLine'}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- TODO: Add this back if Shopper is able to list shipment items -->
+                <!--<div ng-if="!orderShipments.selectedShipment.Items.length" class="no-matches">
+                    This shipment does not have any items. <br>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

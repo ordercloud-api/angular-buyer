@@ -146,7 +146,7 @@ describe('Component: myPayments', function() {
                 myPaymentCtrl.delete({$index:0, creditCard:mockCreditCard});
             });
             it('should call the delete credit card function, then  call Authorize.Net service , then reload the state and display success toaster', function(){
-                expect(confirm.Confirm).toHaveBeenCalledWith("Are you sure you want to delete this Credit Card?");
+                expect(confirm.Confirm).toHaveBeenCalled();
                 scope.$digest();
 
                 expect(authNet.DeleteCreditCard).toHaveBeenCalled();

@@ -19,6 +19,7 @@ module.exports = function(config) {
     files: [].concat(
       mainBowerFiles({filter: '**/*.js'}),
       'bower_components/angular-mocks/angular-mocks.js',
+      'src/global.spec.js',
       'build/**/app.module.js',
       'build/**/app.*.js',
       'build/**/*.js',
@@ -31,7 +32,7 @@ module.exports = function(config) {
     // list of files to exclude
     exclude: [
       'build/**/*.test.js',
-      '../Components/**/*.test.js',
+      '../Components/**/*.test.js'
     ],
 
 
@@ -83,10 +84,10 @@ module.exports = function(config) {
         //stripPrefix: 'src/app/',
         cacheIdFromPath: function(filepath) {
           filepath = filepath.replace('src/app', '');
-          filepath = filepath.replace((path.join(__dirname, '../Components/').replace(/\\/g,"/")), '');
+          filepath = filepath.replace((path.join(__dirname, '../Components/').replace(/\\/g, '/')), '');
           return filepath;
         },
         moduleName: 'orderCloud'
     }
   });
-}
+};

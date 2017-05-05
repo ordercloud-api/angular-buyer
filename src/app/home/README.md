@@ -10,7 +10,7 @@ src/
   |  |  |  |- home.less
   |  |  |  |- variables.less
   |  |  |- templates/
-  |  |  |  |- home.tpl.html
+  |  |  |  |- home.html
   |  |  |- home.js
   |  |  |- home.spec.js
 ```
@@ -58,7 +58,7 @@ title (see the app.js controller).
     views: {
       'main': {
         controller: 'HomeCtrl',
-        templateUrl: 'home/home.tpl.html'
+        templateUrl: 'home/home.html'
       }
     },
     data:{pageTitle: 'Home'}

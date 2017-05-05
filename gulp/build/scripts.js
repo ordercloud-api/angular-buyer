@@ -2,8 +2,6 @@ var gulp = require('gulp'),
     config = require('../../gulp.config'),
     cache = require('gulp-cached'),
     del = require('del'),
-    filter = require('gulp-filter'),
-    inject = require('gulp-inject'),
     wrapper = require('gulp-wrapper'),
     beautify = require('gulp-beautify'),
     ngAnnotate = require('gulp-ng-annotate');
@@ -37,4 +35,10 @@ gulp.task('rebuild-scripts', function() {
         .pipe(wrapper(config.wrapper))
         .pipe(beautify({indentSize: config.indentSize}))
         .pipe(gulp.dest(config.build + 'app/'));
+});
+
+gulp.task('scripts-watch', ['rebuild-scripts'], function(done) {
+    var browserSync = require('browser-sync').get('oc-server');
+    browserSync.reload();
+    done();
 });

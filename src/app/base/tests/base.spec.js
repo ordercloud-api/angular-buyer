@@ -1,71 +1,79 @@
 describe('Component: Base', function() {
-    var q,
-        scope,
-        oc,
-        buyerid = "BUYERID",
-        state,
-        injector;
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(module('ui.router'));
-    beforeEach(inject(function($q, $rootScope, $state, OrderCloud, $injector) {
-        q = $q;
-        scope = $rootScope.$new();
-        oc = OrderCloud;
-        state = $state;
-        injector = $injector;
+    var productSearch;
+    beforeEach(inject(function(ocProductSearch) {
+        productSearch = ocProductSearch;
     }));
     describe('State: Base', function() {
         var base;
         beforeEach(function() {
             base = state.get('base');
         });
-        it ('should attempt to get the current user and set the buyerid', function() {
+        it('should resolve CurrentUser', function() {
             var user = q.defer();
-            user.resolve('TEST USER');
+            user.resolve(mock.User);
             spyOn(oc.Me, 'Get').and.returnValue(user.promise);
-            spyOn(oc.BuyerID, 'Set').and.callThrough();
-            injector.invoke(base.resolve.CurrentUser, scope, {$q:q, $state:state, OrderCloud:oc, buyerid:buyerid});
+            injector.invoke(base.resolve.CurrentUser, scope, {$q:q, $state:state, OrderCloud:oc, buyerid:mock.Buyer.ID});
             expect(oc.Me.Get).toHaveBeenCalled();
             scope.$digest();
-            expect(oc.BuyerID.Set).toHaveBeenCalledWith('BUYERID');
         });
-        it ('should search for an existing unsubmitted order', function() {
+        it('should resolve ExistingOrder', function() {
             var orderList = q.defer();
             orderList.resolve({Items:['TEST ORDER']});
-            spyOn(oc.Me, 'ListOutgoingOrders').and.returnValue(orderList.promise);
+            spyOn(oc.Me, 'ListOrders').and.returnValue(orderList.promise);
             var currentUser = injector.invoke(base.resolve.CurrentUser);
             injector.invoke(base.resolve.ExistingOrder, scope, {$q:q, OrderCloud:oc, CurrentUser:currentUser});
-            expect(oc.Me.ListOutgoingOrders).toHaveBeenCalledWith(null, 1, 1, null, "!DateCreated", {Status: "Unsubmitted"});
+            var options = {
+                page: 1,
+                pageSize: 1,
+                sortBy: '!DateCreated',
+                filters: {Status: 'Unsubmitted'}
+            };
+            expect(oc.Me.ListOrders).toHaveBeenCalledWith(options);
         });
-        it ('should create a new order if there is not an existing unsubmitted order', inject(function(NewOrder) {
-            var newOrder = NewOrder,
-                existingOrder, //undefined existing order
+        it('should resolve CurrentOrder - if ExistingOrder is undefined create a new order', inject(function(ocNewOrder) {
+            var existingOrder, //undefined existing order
                 currentUser = injector.invoke(base.resolve.CurrentUser);
-            spyOn(newOrder, 'Create');
-            injector.invoke(base.resolve.CurrentOrder, scope, {ExistingOrder: existingOrder, NewOrder: newOrder, CurrentUser: currentUser});
-            expect(newOrder.Create).toHaveBeenCalledWith({});
-        }))
+            spyOn(ocNewOrder, 'Create');
+            injector.invoke(base.resolve.CurrentOrder, scope, {ExistingOrder: existingOrder, NewOrder: ocNewOrder, CurrentUser: currentUser});
+            expect(ocNewOrder.Create).toHaveBeenCalledWith({});
+        }));
     });
 
     describe('Controller: BaseCtrl', function(){
-        var baseCtrl,
-            fake_user = {
-                Username: 'notarealusername',
-                Password: 'notarealpassword'
-            },
-            fake_order = {
-                ID: 'fakeorder'
-            };
+        var baseCtrl;
         beforeEach(inject(function($controller) {
             baseCtrl = $controller('BaseCtrl', {
-                CurrentUser: fake_user,
-                CurrentOrder: fake_order
+                CurrentUser: mock.User,
+                CurrentOrder: mock.Order
             });
         }));
-        it ('should initialize the current user and order into its scope', function() {
-            expect(baseCtrl.currentUser).toBe(fake_user);
-            expect(baseCtrl.currentOrder).toBe(fake_order);
+        it('should initialize the current user and order into its scope', function() {
+            expect(baseCtrl.currentUser).toBe(mock.User);
+            expect(baseCtrl.currentOrder).toBe(mock.Order);
+        });
+
+        describe('mobileSearch', function(){
+            beforeEach(function(){
+                spyOn(state, 'go');
+            });
+            it('should go to productDetail if ocProductSearch returns a productID', function(){
+                var d = q.defer();
+                d.resolve({productID: mock.Product.ID});
+                spyOn(productSearch, 'Open').and.returnValue(d.promise);
+                baseCtrl.mobileSearch();
+                scope.$digest();
+                expect(productSearch.Open).toHaveBeenCalled();
+                expect(state.go).toHaveBeenCalledWith('productDetail', {productid: mock.Product.ID});
+            });
+            it('should go to productSearchResults if ocProductSearch doesnt return a productID', function(){
+                var d = q.defer();
+                d.resolve({searchTerm: 'SEARCHTERM'});
+                spyOn(productSearch, 'Open').and.returnValue(d.promise);
+                baseCtrl.mobileSearch();
+                scope.$digest();
+                expect(productSearch.Open).toHaveBeenCalled();
+                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: 'SEARCHTERM'});
+            });
         });
     });
 });

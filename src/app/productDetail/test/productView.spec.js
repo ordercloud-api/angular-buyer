@@ -21,7 +21,7 @@ describe('Component: ProductDetail', function(){
             "ID": "MockProductID123",
             "Name": "MockProductName",
             "Description": "mockDescription",
-            "StandardPriceSchedule": {
+            "PriceSchedule": {
                 "PriceBreaks" : [
                     {
                         "Quantity": 2,
@@ -95,7 +95,7 @@ describe('Component: ProductDetail', function(){
                 var possibleQuantities= [2];
                 for(var i = 0; i <possibleQuantities.length; i++){
                     productDetailCtrl.findPrice(possibleQuantities[i]);
-                    expect(productDetailCtrl.finalPriceBreak.Price).toBe( mockProduct.StandardPriceSchedule.PriceBreaks[i].Price );
+                    expect(productDetailCtrl.finalPriceBreak.Price).toBe( mockProduct.PriceSchedule.PriceBreaks[i].Price );
                 }
 
             })

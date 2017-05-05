@@ -1,0 +1,66 @@
+<div ng-form="OC_Checkout_Shipping" ng-init="checkoutShipping.initShippingRates(base.currentOrder)">
+    <div class="row">
+        <div class="col-md-8">
+            <div cg-busy="{promise:checkoutShipping.shippersLoading, message:'Loading Shipping Rates'}">
+                <a href="" class="pull-right" ng-click="checkoutShipping.createAddress(base.currentOrder)"><i class="fa fa-plus-circle"></i> New Address</a>
+                <h4>Delivery Address</h4>
+                <div class="panel panel-default" ng-if="checkout.shippingAddress">
+                    <div class="panel-body">
+                        <div class="pull-right">
+                            <a href="" ng-click="checkoutShipping.changeShippingAddress(base.currentOrder)">Change</a>
+                        </div>
+                        <p ng-bind-html="checkout.shippingAddress | address:'full'"></p>
+                    </div>
+                </div>
+                <div class="no-matches" ng-if="!checkout.shippingAddress">
+                    You currently do not have a shipping address selected. <br />
+                    <a href="" ng-click="checkoutShipping.changeShippingAddress(base.currentOrder)">Select one now</a>
+                </div>
+                <div ng-if="checkoutShipping.shippingRates.Rates.length">
+                    <hr>
+                    <h4>Shipping Method</h4>
+                    <form name="OCShippingRates">
+                        <fieldset class="form-group" ng-repeat="shipment in checkoutShipping.shippingRates">
+                            <label for="{{'Shipper' + $index}}" ng-if="checkoutShipping.shippingRates.length > 1">Shipment {{$index + 1}} ({{shipment.LineItemIDs.length}} Line Items)</label>
+                            <select id="{{'Shipper' + $index}}" class="form-control"
+                                    ng-model="shipment.SelectedShipper"
+                                    ng-options="shipper as (shipper.Description + ' (' + (shipper.Price | currency) + ')') for shipper in shipment.Rates"
+                                    ng-change="checkoutShipping.shipperSelected(base.currentOrder)"
+                                    required>
+                            </select>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default" hl-sticky anchor="top" offset-top="70" media-query="min-width: 992px">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Order Summary
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <ng-pluralize count="base.currentOrder.LineItemCount" when="{
+							'1': 'Checking Out With 1 Item',
+							'other': 'Checking Out With {} Items'
+						}"></ng-pluralize>
+                    </p>
+                    <h5>Subtotal: <span class="pull-right">{{base.currentOrder.Subtotal | currency}}</span></h5>
+                    <h5 ng-if="base.currentOrder.ShippingCost" class="text-muted">Estimated Shipping: <span class="pull-right"> + {{base.currentOrder.ShippingCost | currency}}</span></h5>
+                    <hr ng-if="checkout.promotions.length">
+                    <h5 ng-repeat="promotion in checkout.promotions" class="text-danger">
+                        {{promotion.Code}}
+                        <a href="" ng-click="checkout.removePromotion(base.currentOrder, promotion)">remove</a>
+                        <span class="pull-right">- {{promotion.Amount | currency}}</span></h5>
+                    <hr>
+                    <h4>Estimated Total: <b class="pull-right text-primary">{{base.currentOrder.Total | currency}}</b></h4>
+                </div>
+                <div class="panel-footer">
+                    <button type="button" class="btn btn-primary form-control" ng-disabled="!checkout.shippingAddress || checkoutShipping.shippersAreLoading || OC_Checkout_Shipping.$invalid" ui-sref="checkout.payment">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,11 +1,17 @@
 .login {
+  display:flex;
+  align-items:center;
+  justify-content:center;
   position:fixed;
   left:0;
   right:0;
-  bottom:0;
+  bottom:20%;
   top:0;
-  .panel {
-    max-width:300px;
-    margin:0 auto;
+  > div {
+    min-width:300px;
+    flex:0 0 auto;
+  }
+  h3 {
+    margin-bottom:@grid-gutter-width;
   }
 }

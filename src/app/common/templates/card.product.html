@@ -1,0 +1,14 @@
+<div class="thumbnail c-product-card" ui-sref="productDetail({productid: product.ID})">
+    <img class="img-responsive c-product-card__img" ng-src="{{product.xp.image.URL || 'http://placehold.it/300x300'}}">
+    <div class="caption c-product-card__body">
+        <div class="c-product-card__info clearfix">
+            <span class="pull-left c-product-card__id" ng-if="product.Name">{{product.ID | limitTo: 8}}{{product.ID.length > 8 ? '...' : ''}}</span>
+            <span class="pull-right c-product-card__price"><b class="text-primary">{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</b> <small class="text-muted">x {{product.PriceSchedule.PriceBreaks[0].Quantity}}</small></span>
+        </div>
+        <h4 class="c-product-card__name" ng-class="">{{product.Name || product.ID}}</h4>
+        <div class="text-right c-product-card__icons hidden-xs" oc-prevent-click>
+            <ordercloud-product-quick-view product="product" current-order="base.currentOrder"></ordercloud-product-quick-view>
+            <ordercloud-favorite-product product="product" current-user="base.currentUser"></ordercloud-favorite-product>
+        </div>
+    </div>
+</div>

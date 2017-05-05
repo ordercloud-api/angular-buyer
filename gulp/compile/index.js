@@ -1,7 +1,8 @@
 var gulp = require('gulp'),
     config = require('../../gulp.config'),
     del = require('del'),
-    inject = require('gulp-inject');
+    inject = require('gulp-inject'),
+    replace = require('gulp-replace-task');
 
 gulp.task('clean-index', function() {
     return del(config.compile + '**/*.html');
@@ -25,6 +26,18 @@ gulp.task('index', ['clean-index', 'app-js', 'lib-js', 'app-css', 'fonts', 'imag
             empty: true,
             ignorePath: config.compile.replace('./', '').replace('/', ''),
             addRootSlash: false
+        }))
+        .pipe(replace({
+            patterns: [
+                {
+                    match:'appModule',
+                    replacement: config.saas.moduleName || config.moduleName
+                },
+                {
+                    match:'conditionalStylesRef',
+                    replacement: config.saas.moduleName ? '<link rel="stylesheet" type="text/css" href="assets/styles/styles.css">' : ''
+                }
+            ]
         }))
         .pipe(gulp.dest(config.compile));
 });

@@ -1,0 +1,54 @@
+<form name="selectPaymentAccountModalForm">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" ng-click="selectPaymentAccount.cancel()"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">New Address</h3>
+    </div>
+    <div class="modal-body" ng-if="selectPaymentAccount.payment.Type == 'SpendingAccount'">
+        <div class="panel panel-default" ng-class="{'panel-primary': selectPaymentAccount.payment.SpendingAccountID == spendingAccount.ID}" ng-repeat="spendingAccount in selectPaymentAccount.accounts.Items"">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <b>{{spendingAccount.Name}}</b>
+                        <div class="text-muted">
+                            <small ng-if="spendingAccount.StartDate && spendingAccount.EndDate">
+                                Lifetime: {{spendingAccount.StartDate | date:'shortDate'}} - {{spendingAccount.EndDate | date :'shortDate'}}
+                            </small>
+                            <small ng-if="spendingAccount.StartDate && !spendingAccount.EndDate">
+                                Made Available On: {{spendingAccount.StartDate | date:'shortDate'}}
+                            </small>
+                            <small ng-if="!spendingAccount.StartDate && spendingAccount.EndDate">
+                                Expires On: {{spendingAccount.EndDate | date :'shortDate'}}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <!--TODO: remove the inline style here-->
+                        <p style="margin:0;" class="lead text-primary" ng-if="spendingAccount.Balance">{{spendingAccount.Balance | currency}}</p>
+                    </div>
+                    <div class="col-xs-2 text-right">
+                        <a ng-click="selectPaymentAccount.submit(spendingAccount)">Select</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-body" ng-if="selectPaymentAccount.payment.Type == 'CreditCard'">
+        <div class="panel panel-default" ng-class="{'panel-primary': creditCard.ID == selectPaymentAccount.payment.CreditCardID}" ng-repeat="creditCard in selectPaymentAccount.accounts.Items">
+		<div class="panel-body">
+			<div class="row">
+				<div class="col-xs-2 col-sm-1 text-center">
+					<i class="fa fa-2x {{creditCard.CardType | faCreditCard}}"></i>
+				</div>
+				<div class="col-xs-6 col-sm-8">
+					<b>{{creditCard.CardholderName}}</b> <br ng-if="creditCard.CardholderName">
+					<span class="text-muted">{{'XXXX-XXXX-XXXX-' + creditCard.PartialAccountNumber}}</span><br>
+					<small class="text-muted">Expires On: {{creditCard.ExpirationDate | date:'MM/yy'}}</small>
+				</div>
+				<div class="col-xs-4 col-sm-3 text-right">
+					<a ng-click="selectPaymentAccount.submit(creditCard)"">Select</a>
+				</div>
+			</div>
+		</div>
+	</div>
+    </div>
+</form>
