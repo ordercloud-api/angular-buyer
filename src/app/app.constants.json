@@ -6,7 +6,7 @@
   "catalogid": "XXXX",
   "environment": "prod",
   "defaultstate": "home",
-  "html5mode": false,
+  "html5mode": true,
   "bootswatchtheme": null,
   "scope": [
       "BuyerReader", 
