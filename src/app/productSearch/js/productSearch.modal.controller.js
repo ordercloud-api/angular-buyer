@@ -29,6 +29,6 @@ function ProductSearchModalController($uibModalInstance, $scope, OrderCloudSDK, 
     };
 
     vm.onHardEnter = function(searchTerm) {
-        $uibModalInstance.close({searchTerm: searchTerm});
+        $uibModalInstance.close({search: searchTerm});
     };
 }
