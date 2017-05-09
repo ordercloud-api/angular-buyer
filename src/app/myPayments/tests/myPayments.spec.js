@@ -109,9 +109,9 @@ describe('Component: myPayments', function() {
         });
         describe('Edit a Credit Card', function(){
             beforeEach(function(){
-                var df = q.defer();
-                df.resolve("EDITED_CREDIT_CARD");
-                spyOn(myPaymentCCModal, 'Edit').and.returnValue(df.promise);
+                var defer = q.defer();
+                defer.resolve("EDITED_CREDIT_CARD");
+                spyOn(myPaymentCCModal, 'Edit').and.returnValue(defer.promise);
                 myPaymentCtrl.edit({$index: 0, creditCard:mockCreditCard});
             });
             it('should call the edit credit card modal then replace the old credit card in the array', function(){
@@ -121,7 +121,20 @@ describe('Component: myPayments', function() {
                 expect(myPaymentCtrl.personalCreditCards).toEqual({Items:["EDITED_CREDIT_CARD"]});
             })
         });
-        /*TODO: Write unit test for Delete Credit Card*/
+        describe('Delete a Credit Card', function() {
+            beforeEach(function() {
+                var defer = q.defer();
+                defer.resolve("DELETED_CREDIT_CARD");
+                spyOn(ocConfirmService, 'Confirm').and.returnValue(defer.promise);
+                spyOn(authNet, 'DeleteCreditCard');
+                myPaymentCtrl.delete({$index: 0, creditCard:mockCreditCard})
+            });
+            it('should call the ocConfirm, then delete the credit card', function() {
+                expect(ocConfirmService.Confirm).toHaveBeenCalled();
+                scope.$digest();
+                expect(authNet.DeleteCreditCard).toHaveBeenCalledWith(mockCreditCard);
+            })
+        })
     });
 });
 
