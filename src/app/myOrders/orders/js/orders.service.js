@@ -37,7 +37,10 @@ function ocOrdersService($filter, OrderCloudSDK){
         }
 
         if(parameters.status){
-            angular.extend(parameters.filters, {Status: parameters.status});
+            angular.extend(parameters.filters, {status: parameters.status});
+        } else {
+            //TODO: replace with "!Unsubmitted" when ! operator is fixed in API EX-1166
+            angular.extend(parameters.filters, {status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'};
         }
 
         parameters.pageSize = parameters.pageSize ? parameters.pageSize : 12;
