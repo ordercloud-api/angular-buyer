@@ -10,8 +10,8 @@ function ocOrdersService($filter, OrderCloudSDK){
     function _list(Parameters, CurrentUser){
         var parameters = angular.copy(Parameters);
 
-        //exclude unsubmitted orders from list
-        //parameters.filters = {Status: '!Unsubmitted'};  //TODO: Uncomment this line when API ! is fixed
+        //exclude unsubmitted orders from list - //TODO: replace below with {status: '!Unsubmitted'} when EX-1166 is resolved
+        parameters.filters = {status: 'Open|AwaitingApproval|Completed|Canceled|Declined'};
 
         function convertToDate(toDate) {
             var result = new Date(toDate);
@@ -37,7 +37,7 @@ function ocOrdersService($filter, OrderCloudSDK){
         }
 
         if(parameters.status){
-            angular.extend(parameters.filters, {Status: parameters.status});
+            angular.extend(parameters.filters, {status: parameters.status});
         }
 
         parameters.pageSize = parameters.pageSize ? parameters.pageSize : 12;
