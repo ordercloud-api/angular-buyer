@@ -78,8 +78,7 @@ describe('Component: Product Search', function(){
     });
     describe('Component Directive: ordercloudProductSearch', function(){
         var productSearchComponentCtrl,
-            catalogID
-            ;
+            catalogID;
         beforeEach(inject(function($componentController, catalogid){
             catalogID = catalogid;
             productSearchComponentCtrl = $componentController('ordercloudProductSearch', {
