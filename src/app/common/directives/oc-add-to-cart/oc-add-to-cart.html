@@ -1,17 +1,20 @@
 <div id="ocAddToCart" class="c-qty-input" cg-busy="loading">
     <!--Input Group-->
-    <fieldset class="form-group">
-        <div class="input-group">
-            <input id="productQuantityInput" name="productQuantity" type="number" ng-required="true" ng-if="!product.PriceSchedule.RestrictedQuantity"
+    <div class="form-group">
+        <div class="input-group input-group-sm" id="addtocart-qty">
+            <span class="input-group-addon">Qty</span>
+            <!--Input if no qty restriction-->
+            <input aria-describedby="addtocart-qty" id="productQuantityInput" name="productQuantity" type="number" ng-required="true" ng-if="!product.PriceSchedule.RestrictedQuantity"
                 class="form-control text-center" min="0" min-err-type="quantityInput" max="{{product.PriceSchedule.MaxQuantity}}"
                 ng-model="product.Quantity" ng-model-options="{ debounce: 1000 }" placeholder="Quantity" ng-change="updateQuantity(product.Quantity)">
-            <select id="productQuantity" ng-change="updateQuantity(product.Quantity)" name="productQuantity" ng-required="true" ng-if="product.PriceSchedule.RestrictedQuantity"
+            <!--Select if qty restriction-->
+            <select aria-describedby="addtocart-qty" id="productQuantity" ng-change="updateQuantity(product.Quantity)" name="productQuantity" ng-required="true" ng-if="product.PriceSchedule.RestrictedQuantity"
                 class="form-control text-center" ng-model="product.Quantity" ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in product.PriceSchedule.PriceBreaks">
             </select>
         </div>
-    </fieldset>
+    </div>
     <!--Add to Cart Btn-->
-    <fieldset class="form-group c-product-card__add-to-cart-btn">
-        <button ng-click="addToCart()" class="btn btn-block btn-primary">Add to Cart</button>
-    </fieldset>
+    <div class="form-group">
+        <button ng-click="addToCart()" class="btn btn-sm btn-block btn-primary">Add to Cart</button>
+    </div>
 </div>

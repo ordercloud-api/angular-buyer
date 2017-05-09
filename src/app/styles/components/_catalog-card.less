@@ -25,6 +25,7 @@
 .c-product-card {
     // add flex display to product card wrapper
     // flex the product card to fill the grid item element
+    margin-bottom: @grid-gutter-width/2;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
@@ -34,8 +35,9 @@
         flex: 1 1 auto;
     }
     .c-product-card__name {
-        flex: 1 1 auto;
+        // flex: 1 1 auto;
         word-wrap: break-word;
+        margin-bottom: 0;
     }
 }
 
