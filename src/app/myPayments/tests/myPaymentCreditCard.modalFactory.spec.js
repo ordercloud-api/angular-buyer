@@ -1,42 +1,26 @@
 describe('Component: myPayments', function() {
-    var scope,
-        q,
-        oc,
-        uibModalInstance
-        ;
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($rootScope, $q, OrderCloud) {
-        scope = $rootScope.$new();
-        q = $q;
-        oc = OrderCloud;
-
-    }));
+    var uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
     describe('Factory: MyPaymentCreditCardModal', function() {
         var uibModal,
-            creditCardModal,
+            myPaymentCCModal,
             createModalOptions,
             editModalOptions,
             actualOptions;
-        beforeEach(inject(function($uibModal, MyPaymentCreditCardModal) {
+        beforeEach(inject(function($uibModal, ocMyCreditCards) {
             uibModal = $uibModal;
-            creditCardModal = MyPaymentCreditCardModal;
-            uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
+            myPaymentCCModal = ocMyCreditCards;
             createModalOptions = {
-                templateUrl: 'myPayments/templates/myPaymentsCreditCard.create.modal.tpl.html',
+                templateUrl: 'myPayments/templates/myPaymentsCreditCard.create.modal.html',
                 controller: 'CreateCreditCardModalCtrl',
                 controllerAs: 'createCreditCard',
                 size: 'md'
             };
             editModalOptions = {
-                templateUrl: 'myPayments/templates/myPaymentsCreditCard.edit.modal.tpl.html',
+                templateUrl: 'myPayments/templates/myPaymentsCreditCard.edit.modal.html',
                 controller: 'EditCreditCardModalCtrl',
                 controllerAs: 'editCreditCard',
                 size: 'md',
                 resolve: {
-                    //we dont care what gets returned here because functions can't be 
-                    //compared anyway. We do however mock a function that captures the  options
-                    //passed in and verify they are the same, in the test.
                     SelectedCreditCard: jasmine.any(Function)
                 }
             };
@@ -44,7 +28,7 @@ describe('Component: myPayments', function() {
         describe('Create', function() {
             it('should call $uibModal open with create modal template/controller', function() {
                 spyOn(uibModal, 'open').and.returnValue(uibModalInstance);
-                creditCardModal.Create();
+                myPaymentCCModal.Create();
                 expect(uibModal.open).toHaveBeenCalledWith(createModalOptions);
             });
         });
@@ -54,7 +38,7 @@ describe('Component: myPayments', function() {
                     actualOptions = options;
                     return uibModalInstance;
                 });
-                creditCardModal.Edit('addressToEdit');
+                myPaymentCCModal.Edit('addressToEdit');
                 expect(uibModal.open).toHaveBeenCalledWith(editModalOptions);
                 expect(actualOptions.resolve.SelectedCreditCard()).toEqual('addressToEdit');
             });
@@ -65,19 +49,17 @@ describe('Component: myPayments', function() {
             authNet,
             data
             ;
-        beforeEach(inject(function($controller, $exceptionHandler, ocAuthNet, ocCreditCardUtility){
+        beforeEach(inject(function($controller, ocAuthNet, ocCreditCardUtility){
             authNet = ocAuthNet;
             data = { ResponseBody : {}};
             CreateCreditCardModalCtrl = $controller('CreateCreditCardModalCtrl', {
-                $q : q,
-                $exceptionHandler: $exceptionHandler,
                 $uibModalInstance: uibModalInstance,
                 ocCreditCardUtility: ocCreditCardUtility,
                 ocAuthNet : authNet
             });
             var defer = q.defer();
-             defer.resolve(data);
-             spyOn(authNet, 'CreateCreditCard').and.returnValue(defer.promise);
+            defer.resolve(data);
+            spyOn(authNet, 'CreateCreditCard').and.returnValue(defer.promise);
         }));
         describe('cancel', function(){
             it('should dismiss the modal', function(){
@@ -99,10 +81,12 @@ describe('Component: myPayments', function() {
         var EditCreditCardModalCtrl,
             authNet,
             mockCCResolve,
-            ccUtility
+            ccUtility,
+            data
             ;
 
-        beforeEach(inject(function($controller, $exceptionHandler,ocCreditCardUtility, ocAuthNet ){
+        beforeEach(inject(function($controller, ocCreditCardUtility, ocAuthNet ){
+            data = { ResponseBody : {}};
             mockCCResolve = {
                 CardType: "Visa",
                 CardholderName: "Test Card",
@@ -117,18 +101,18 @@ describe('Component: myPayments', function() {
             };
             ccUtility = ocCreditCardUtility;
             authNet = ocAuthNet;
-            exceptionHandler = $exceptionHandler;
+            //exceptionHandler = $exceptionHandler;
 
             EditCreditCardModalCtrl = $controller('EditCreditCardModalCtrl', {
                 $q: q,
-                $exceptionHandler: exceptionHandler,
+                //$exceptionHandler: exceptionHandler,
                 $uibModalInstance: uibModalInstance,
                 ocAuthNet: authNet,
                 ocCreditCardUtility: ccUtility,
                 SelectedCreditCard: mockCCResolve
             });
             var defer = q.defer();
-            defer.resolve({});
+            defer.resolve(data);
             spyOn(authNet, 'UpdateCreditCard').and.returnValue(defer.promise);
         }));
         describe('cancel', function(){
@@ -142,7 +126,7 @@ describe('Component: myPayments', function() {
                 EditCreditCardModalCtrl.submit();
                 expect(authNet.UpdateCreditCard).toHaveBeenCalledWith(mockCCResolve);
                 scope.$digest();
-                expect(uibModalInstance.close).toHaveBeenCalledWith({});
+                expect(uibModalInstance.close).toHaveBeenCalledWith(data.ResponseBody);
             });
         });
 
