@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('FavoriteProductCtrl', FavoriteProductController)
 ;
 
-function FavoriteProductController($scope, OrderCloudSDK, toastr){
+function FavoriteProductController($scope, OrderCloudSDK, toastr, $exceptionHandler){
     var vm = this;
     vm.checkHasFavorites = checkHasFavorites;
     vm.toggleFavoriteProduct = toggleFavoriteProduct;
@@ -15,12 +15,12 @@ function FavoriteProductController($scope, OrderCloudSDK, toastr){
     function toggleFavoriteProduct(){
         if (vm.hasFavorites){
             if (vm.isFavorited){
-                removeProduct();
+                vm.removeProduct();
             } else {
-                addProduct($scope.currentUser.xp.FavoriteProducts);
+                vm.addProduct($scope.currentUser.xp.FavoriteProducts);
             }
         } else {
-            addProduct([]);
+            vm.addProduct([]);
         }
     }
 
@@ -32,22 +32,22 @@ function FavoriteProductController($scope, OrderCloudSDK, toastr){
             if($scope.currentUser && $scope.currentUser.xp){
                 $scope.currentUser.xp.FavoriteProducts = [];
             }else{
-                $scope.currentUser.xp ={};
+                $scope.currentUser.xp = {};
                 $scope.currentUser.xp.FavoriteProducts = [];
             }
-            OrderCloudSDK.Me.Patch({xp:$scope.currentUser.xp})
+            return OrderCloudSDK.Me.Patch({xp:$scope.currentUser.xp})
                 .then(function(){
                     vm.hasFavorites = true;
                 })
                 .catch(function(ex){
-                    console.log(ex);
+                    $exceptionHandler(ex);
                 });
         }
     }
 
     function addProduct(existingList){
         existingList.push($scope.product.ID);
-        OrderCloudSDK.Me.Patch({xp: {FavoriteProducts: existingList}})
+        return OrderCloudSDK.Me.Patch({xp: {FavoriteProducts: existingList}})
             .then(function(data){
                 vm.hasFavorites = data.xp && data.xp.FavoriteProducts;
                 vm.isFavorited = true;
@@ -57,7 +57,7 @@ function FavoriteProductController($scope, OrderCloudSDK, toastr){
 
     function removeProduct(){
         var updatedList = _.without($scope.currentUser.xp.FavoriteProducts, $scope.product.ID);
-        OrderCloudSDK.Me.Patch({xp: {FavoriteProducts: updatedList}})
+        return OrderCloudSDK.Me.Patch({xp: {FavoriteProducts: updatedList}})
             .then(function(){
                 vm.isFavorited = false;
                 $scope.currentUser.xp.FavoriteProducts = updatedList;
