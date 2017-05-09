@@ -98,7 +98,6 @@ describe('Component: myPayments', function() {
                 var df = q.defer();
                 df.resolve("NEW_CREDIT_CARD");
                 spyOn(myPaymentCCModal, 'Create').and.returnValue(df.promise);
-                // spyOn(oc.Payments, 'List').and.returnValue(df.promise);
                 myPaymentCtrl.createCreditCard();
             });
             it('should call the create credit card modal and add the new credit card to the view model', function(){
@@ -122,6 +121,7 @@ describe('Component: myPayments', function() {
                 expect(myPaymentCtrl.personalCreditCards).toEqual({Items:["EDITED_CREDIT_CARD"]});
             })
         });
+        /*TODO: Write unit test for Delete Credit Card*/
     });
 });
 

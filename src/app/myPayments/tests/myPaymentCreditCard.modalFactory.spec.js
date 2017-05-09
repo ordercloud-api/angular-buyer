@@ -101,11 +101,9 @@ describe('Component: myPayments', function() {
             };
             ccUtility = ocCreditCardUtility;
             authNet = ocAuthNet;
-            //exceptionHandler = $exceptionHandler;
 
             EditCreditCardModalCtrl = $controller('EditCreditCardModalCtrl', {
                 $q: q,
-                //$exceptionHandler: exceptionHandler,
                 $uibModalInstance: uibModalInstance,
                 ocAuthNet: authNet,
                 ocCreditCardUtility: ccUtility,
