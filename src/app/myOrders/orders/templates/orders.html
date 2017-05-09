@@ -102,6 +102,7 @@
                                 <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'Subtotal'"></i>
                                 <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!Subtotal'"></i>
                             </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,6 +112,7 @@
                             <td>{{(order.DateSubmitted || order.DateCreated) | date:'short'}}</td>
                             <td>{{order.FromUser.FirstName + ' ' + order.FromUser.LastName}}</td>
                             <td>{{order.Subtotal | currency}}</td>
+                            <td class="text-center"><ordercloud-favorite-order current-user="base.currentUser" order="order"></ordercloud-favorite-order></td>
                         </tr>
                     </tbody>
                 </table>
