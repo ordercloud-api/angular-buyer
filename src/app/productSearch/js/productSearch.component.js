@@ -39,7 +39,7 @@ function ProductSearchComponentController($state, OrderCloudSDK, catalogid) {
 
     vm.onHardEnter = function(searchTerm) {
         $state.go('productSearchResults', {
-            searchTerm: searchTerm
+            search: searchTerm
         });
     };
 }
