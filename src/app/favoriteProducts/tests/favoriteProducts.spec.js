@@ -1,102 +1,210 @@
 describe('Component: FavoriteProducts', function(){
-    var q,
-        oc,
-        scope,
-        ocParams,
-        parameters,
-        favoriteProducts,
-        currentUser,
-        toaster,
-        product;
-
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(module(function($provide) {
-        $provide.value('Parameters', {search:null, page: null, pageSize: null, searchOn: null, sortBy: null, userID: null, userGroupID: null, level: null, buyerID: null});
-        $provide.value('FavoriteProducts', []);
-        $provide.value('CurrentUser', {xp: {FavoriteProducts: ['favoriteProduct']}});
-    }));
-    beforeEach(inject(function($q, OrderCloud, $rootScope, Parameters, ocParameters, CurrentUser, FavoriteProducts, toastr){
-        q = $q;
-        oc = OrderCloud;
-        scope = $rootScope.$new();
-        parameters = Parameters;
-        ocParams = ocParameters;
-        favoriteProducts = FavoriteProducts;
-        currentUser = CurrentUser;
-        toaster = toastr;
-        product = {
-            ID: 'productID'
-        };
-    }));
-
     describe('State: favoriteProducts', function(){
-        var state;
-        beforeEach(inject(function($state){
-            state = $state.get('favoriteProducts');
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(ocParams, 'Get').and.returnValue(null);
-            spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
+        var favoriteProductState;
+        beforeEach(inject(function(){
+            favoriteProductState = state.get('favoriteProducts');
+            spyOn(ocParametersService, 'Get');
+            spyOn(oc.Me, 'ListProducts');
         }));
-        it('should resolve Parameters', inject(function($injector){
-            $injector.invoke(state.resolve.Parameters);
-            expect(ocParams.Get).toHaveBeenCalled();
+        it('should resolve Parameters', inject(function(){
+            injector.invoke(favoriteProductState.resolve.Parameters);
+            expect(ocParametersService.Get).toHaveBeenCalled();
         }));
-        it('should resolve FavoriteProducts', inject(function(CurrentUser, $injector){
-            $injector.invoke(state.resolve.FavoriteProducts);
-            currentUser.xp = {favoriteProducts: 'favoriteProduct'};
-            expect(oc.Me.ListProducts).toHaveBeenCalledWith(parameters.search, parameters.page, parameters.pageSize || 6, parameters.searchOn, parameters.sortBy, {ID: currentUser.xp.favoriteProducts});
+        it('should resolve FavoriteProducts', inject(function(){
+            injector.invoke(favoriteProductState.resolve.FavoriteProducts);
+            var mockFilter = mock.User.xp.FavoriteProducts.join('|');
+            expect(mock.Parameters.filters.ID).toBe(mockFilter);
+            expect(oc.Me.ListProducts).toHaveBeenCalledWith(mock.Parameters);
         }));
     });
     describe('Controller: FavoriteProductCtrl', function(){
         var favoriteProductCtrl;
-        beforeEach(inject(function($state, $controller, CurrentUser){
-            scope ={};
-            scope.currentUser = CurrentUser;
-            scope.product = {
-                ID: 'productID'
-            };
-            favoriteProductCtrl = $controller('FavoriteProductCtrl', {
-                $scope: scope,
-                OrderCloud: oc,
-                toastr: toaster
-            });
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(oc.Me, 'Patch').and.returnValue(defer.promise);
+        beforeEach(inject(function($controller){
+            scope.currentUser = mock.User;
+            scope.product = mock.Product;
+            favoriteProductCtrl = $controller('FavoriteProductCtrl', {$scope: scope});
         }));
 
         describe('checkHasFavorites', function(){
-            it('should call the Me Patch when no favoriteProducts xp', function(){
-                scope.currentUser = {};
+            beforeEach(function(){
+                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
+            });
+            it('should set vm.hasFavorites to true if current user has favorite products', function(){
+                scope.currentUser.xp.FavoriteProducts = ['FavProduct1', 'FavProduct2'];
+                favoriteProductCtrl.checkHasFavorites();
+                expect(favoriteProductCtrl.hasFavorites).toBe(true);
+            });
+            it('should call Me.Patch to empty array when no favoriteProducts xp', function(){
+                delete scope.currentUser.xp.FavoriteProducts;
                 favoriteProductCtrl.checkHasFavorites();
                 expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: []}});
-
             });
         });
 
         describe('toggleFavoriteProduct', function(){
             beforeEach(function(){
-                spyOn(_, 'without').and.returnValue('updatedList');
-                spyOn(toaster, 'success');
+                spyOn(favoriteProductCtrl, 'addProduct');
+                spyOn(favoriteProductCtrl, 'removeProduct');
             });
-
-            it('should call the Me Patch method when deleting a product', function(){
-                var updatedList = 'updatedList';
+            it('if user has no favorites add product', function(){
+                favoriteProductCtrl.hasFavorites = false;
+                favoriteProductCtrl.toggleFavoriteProduct();
+                expect(favoriteProductCtrl.addProduct).toHaveBeenCalledWith([]);
+            });
+            it('if user has favorites and product is favorited, remove product', function(){
                 favoriteProductCtrl.hasFavorites = true;
                 favoriteProductCtrl.isFavorited = true;
                 favoriteProductCtrl.toggleFavoriteProduct();
-                expect(_.without).toHaveBeenCalled();
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: updatedList}});
+                expect(favoriteProductCtrl.removeProduct).toHaveBeenCalled();
             });
-            it('should call the Me Patch method when adding a product', function(){
-                var existingList = ['favoriteProduct', 'productID'];
+            it('if user has favorites and product is not favorited, add product', function(){
                 favoriteProductCtrl.hasFavorites = true;
                 favoriteProductCtrl.isFavorited = false;
                 favoriteProductCtrl.toggleFavoriteProduct();
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: existingList}});
+                expect(favoriteProductCtrl.addProduct).toHaveBeenCalledWith(mock.User.xp.FavoriteProducts);
             });
         });
+
+        describe('addProduct', function(){
+            beforeEach(function(){
+                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
+                spyOn(toastrService, 'success')                
+                favoriteProductCtrl.addProduct([]);
+            });
+            it('should add current product to users favorites', function(){
+                var mockPatch = {xp:{FavoriteProducts:[scope.product.ID]}};
+                expect(oc.Me.Patch).toHaveBeenCalledWith(mockPatch);
+            });
+            it('should call toastr to announce success', function(){
+                scope.$digest();
+                expect(toastrService.success).toHaveBeenCalledWith(scope.product.Name + ' was added to your favorite products.');
+            });
+            it('should visually display product is selected', function(){
+                scope.$digest();
+                expect(favoriteProductCtrl.isFavorited).toBe(true);
+            })
+        });
+
+        describe('removeProduct', function(){
+            beforeEach(function(){
+                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
+                spyOn(toastrService, 'success');
+                scope.currentUser.xp.FavoriteProducts = ['PRODUCT_ID'];
+                favoriteProductCtrl.removeProduct();
+            })
+            it('should remove current product from the users favorites', function(){
+                expect(oc.Me.Patch).toHaveBeenCalledWith({xp:{FavoriteProducts: []}});
+            })
+            it('should call toastr to announce success', function(){
+                scope.$digest();
+                expect(toastrService.success).toHaveBeenCalledWith(scope.product.Name + ' was removed from your favorite products.');
+            });
+            it('should visually display product is no longer selected', function(){
+                expect(favoriteProductCtrl.isFavorited).toBe(false);
+            });
+        });
+    });
+    describe('Controller: FavoriteProductsCtrl', function(){
+        var favoriteProductsCtrl,
+        products;
+        beforeEach(inject(function($controller){
+            scope.currentUser = mock.User;
+            favoriteProducts = {Items: [mock.Product], Meta: mock.Meta}
+            favoriteProductsCtrl = $controller('FavoriteProductsCtrl', {
+                CurrentUser: currentUser,
+                FavoriteProducts: favoriteProducts
+            });
+        }));
+        describe('filter', function(){
+            beforeEach(function(){
+                spyOn(state, 'go');
+                spyOn(ocParametersService, 'Create').and.callThrough();
+                favoriteProductsCtrl.filter(true);
+            })
+            it('should reload state with new parameters', function(){
+                expect(ocParametersService.Create).toHaveBeenCalledWith(parametersResolve, true);
+                var createdParams = ocParametersService.Create(parametersResolve, true);
+                expect(createdParams).toBeDefined();
+                expect(state.go).toHaveBeenCalledWith('.', createdParams);
+            })
+        });
+        describe('clearFilters', function(){
+            beforeEach(function(){
+                spyOn(favoriteProductsCtrl, 'filter');
+                favoriteProductsCtrl.clearFilters();
+            });
+            it('should call clear filters, reload state and reset page', function(){
+                expect(favoriteProductsCtrl.parameters.filters).toBeNull();
+                expect(favoriteProductsCtrl.filter).toHaveBeenCalledWith(true);
+            });
+        });
+        describe('updateSort', function(){
+            var mockVal = 'MOCK_VAL';
+            beforeEach(function(){
+                spyOn(favoriteProductsCtrl, 'filter');
+            });
+            it('if value passed in is equal to sortBy - set to !value', function(){
+                favoriteProductsCtrl.parameters.sortBy = mockVal;
+                favoriteProductsCtrl.updateSort(mockVal);
+
+                expect(favoriteProductsCtrl.parameters.sortBy).toBeDefined();
+                expect(favoriteProductsCtrl.parameters.sortBy).toBe('!' + mockVal);
+            });
+            it('if value passed in is equal to !sortBy - set to null', function(){
+                favoriteProductsCtrl.parameters.sortBy = '!' + mockVal;
+                favoriteProductsCtrl.updateSort(mockVal);
+
+                expect(favoriteProductsCtrl.parameters.sortBy).toBeDefined();
+                expect(favoriteProductsCtrl.parameters.sortBy).toBe(null);
+            });
+            it('if no value is passed in, set it to sortSelection', function(){
+                var mockSelection = 'SORT_SELECTION';
+                favoriteProductsCtrl.sortSelection = mockSelection;
+                favoriteProductsCtrl.updateSort();
+
+                expect(favoriteProductsCtrl.parameters.sortBy).toBeDefined();
+                expect(favoriteProductsCtrl.parameters.sortBy).toBe(mockSelection);
+            });
+            it('should reload state with new filters - same page', function(){
+                favoriteProductsCtrl.updateSort();
+                expect(favoriteProductsCtrl.filter).toHaveBeenCalledWith(false);
+            })
+        });
+        describe('reverseSort', function(){
+            var mockVal;
+            beforeEach(function(){
+                mockVal = 'MOCK_VALUE';
+                spyOn(favoriteProductsCtrl, 'filter');
+            })
+            it('should reverse sort - ascending to descending', function(){
+                favoriteProductsCtrl.parameters.sortBy = mockVal;
+                favoriteProductsCtrl.reverseSort();
+                expect(favoriteProductsCtrl.parameters.sortBy).toBe('!' + mockVal);
+            })
+            it('should reverse sort - descending to ascending', function(){
+                favoriteProductsCtrl.parameters.sortBy = '!' + mockVal;
+                favoriteProductsCtrl.reverseSort();
+                expect(favoriteProductsCtrl.parameters.sortBy).toBe(mockVal);
+            })
+            it('should reload state with new filters - same page', function(){
+                favoriteProductsCtrl.reverseSort();
+                expect(favoriteProductsCtrl.filter).toHaveBeenCalledWith(false);
+            })
+        });
+        describe('pageChanged', function(){
+            it('should reload state with page defined on Meta', function(){
+                spyOn(state, 'go');
+                favoriteProductsCtrl.pageChanged();
+                expect(state.go).toHaveBeenCalledWith('.', {page: favoriteProductsCtrl.list.Meta.Page});
+            })
+        })
+        describe('loadMore', function(){
+            it('should call oc.Me.ListProducts with incremented page parameter', function(){
+                spyOn(oc.Me, 'ListProducts').and.returnValue(dummyPromise);
+                favoriteProductsCtrl.loadMore();
+                favoriteProductsCtrl.parameters.page = favoriteProductsCtrl.list.Meta.Page + 1;
+                expect(oc.Me.ListProducts).toHaveBeenCalledWith(favoriteProductsCtrl.parameters)
+            })
+        })
     });
 });

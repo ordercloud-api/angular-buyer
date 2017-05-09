@@ -18,11 +18,14 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('ocStateLoading', {
         'Init': jasmine.createSpy()
     });
+    $provide.value('CurrentUser', mock.User);
     $provide.value('CurrentOrder', mock.Order);
     $provide.value('Parameters', mock.Parameters)
 }));
 beforeEach(module('ordercloud-angular-sdk'));
-beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder) {
+beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, 
+OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder,
+CurrentUser) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -37,6 +40,7 @@ beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler,
     ocRolesService = ocRoles;
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
+    currentUser = CurrentUser;
     var defer = $q.defer();
     defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
@@ -57,7 +61,7 @@ function _mockData() {
             pageSize: null,
             searchOn: null,
             sortBy: null,
-            filters: null,
+            filters: {},
             catalogID: null,
             categoryID: null,
             categoryPage: null,
@@ -88,10 +92,14 @@ function _mockData() {
             Email: "USER_EMAIL",
             Phone: "USER_PHONE",
             TermsAccepted: true,
-            Active: true
+            Active: true,
+            xp: {
+                FavoriteProducts: ['FavProd1', 'FavProd2']
+            }
         },
         Product: {
-            ID: 'PRODUCT_ID'
+            ID: 'PRODUCT_ID',
+            Name: 'PRODUCT_NAME'
         },
         Category: {
             ID: 'CATEGORY_ID'
