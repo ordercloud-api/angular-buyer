@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductSearchModalCtrl', ProductSearchModalController)
 ;
 
-function ProductSearchModalController($uibModalInstance, $scope, OrderCloudSDK, catalogid) {
+function ProductSearchModalController($uibModalInstance, OrderCloudSDK, catalogid) {
     var vm = this;
 
     vm.getSearchResults = function() {
