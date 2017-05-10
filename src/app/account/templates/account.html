@@ -22,7 +22,7 @@
 		<h3><i class="fa fa-cog"></i> My Account</h3>
 		<hr>
 		<form class="progressive" name="account.profileForm" autocomplete="off" novalidate ng-submit="account.updateProfile()" oc-readonly-roles="MeAdmin"
-		    pretty-submit>
+		    oc-pretty-submit>
 			<fieldset class="form-group row">
 				<div class="col-xs-6">
 					<label for="FirstName">First name</label>
@@ -46,7 +46,7 @@
 		</form>
 		<hr>
 		<form name="account.settingsForm" ng-submit="account.updateUsername()" autocomplete="off" novalidate oc-readonly-roles="MeAdmin"
-		    pretty-submit>
+		    oc-pretty-submit>
 			<fieldset class="form-group">
 				<label for="Username">Username</label>
 				<input id="Username" name="Username" ng-change="account.usernameChange()" type="text" class="form-control" ng-model="account.profile.Username" required>

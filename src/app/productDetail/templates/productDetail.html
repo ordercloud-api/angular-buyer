@@ -1,4 +1,4 @@
-<form name="OCProductForm" ng-submit="productDetail.addToCart()" id="product_view" autocomplete="off" novalidate>
+<form name="OCProductForm" ng-submit="productDetail.addToCart()" id="product_view" autocomplete="off" novalidate oc-pretty-submit>
     <h1>{{productDetail.item.Name || productDetail.item.ID}} <small ng-if="productDetail.item.Name">{{productDetail.item.ID}}</small>
         <ordercloud-favorite-product product="productDetail.item" current-user="base.currentUser"></ordercloud-favorite-product>
     </h1>

@@ -3,7 +3,7 @@
     <!--LOGIN FORM-->
     <div ng-switch-when="login">
         <div class="panel panel-default">
-            <form class="panel-body" name="LoginForm" ng-submit="login.submit()" pretty-submit>
+            <form class="panel-body" name="LoginForm" ng-submit="login.submit()" oc-pretty-submit>
                 <h3 class="text-center">Buyer Login</h3>
                 <div class="form-group">
                     <label for="Username" class="sr-only">Username</label>
@@ -22,7 +22,7 @@
                         </label>
                     </div>
                 </div>
-                <button id="submit_login" type="submit" class="btn btn-primary btn-block" ng-disabled="LoginForm.$invalid">Submit</button>
+                <button id="submit_login" type="submit" class="btn btn-primary btn-block">Submit</button>
 
             </form>
         </div>
@@ -34,13 +34,13 @@
     <!--FORGOT PASSWORD-->
     <div ng-switch-when="forgot">
         <div class="panel panel-default">
-            <form class="panel-body" name="ForgotPasswordForm" ng-submit="login.forgotPassword()">
+            <form class="panel-body" name="ForgotPasswordForm" ng-submit="login.forgotPassword()" oc-pretty-submit>
                 <h3 class="text-center">Forgot Password</h3>
                 <div class="form-group">
                     <label for="Email" class="sr-only">Email</label>
                     <input type="text" class="form-control" id="Email" placeholder="Email Address" ng-model="login.credentials.Email" ng-required="true" />
                 </div>
-                <button type="submit" id="email_submit" class="btn btn-primary btn-block" ng-disabled="ForgotPasswordForm.$invalid">Submit</button>
+                <button type="submit" id="email_submit" class="btn btn-primary btn-block">Submit</button>
             </form>
         </div>
         <div class="text-center">
@@ -51,7 +51,7 @@
     <!--RESET PASSWORD-->
     <div ng-switch-when="reset">
         <div class="panel panel-default">
-            <form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPassword()" >
+            <form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPassword()"  oc-pretty-submit>
                 <h3 class="text-center">Reset Password</h3>
                 <div class="form-group">
                     <label for="ResetUsername" class="sr-only">Username</label>
@@ -65,7 +65,7 @@
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
                     <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
                 </div>
-                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="ResetPasswordForm.$invalid || login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
             </form>
         </div>
     </div>
@@ -73,7 +73,7 @@
     <!--RESET PASSWORD BY TOKEN-->
     <div ng-switch-when="resetByToken">
         <div class="panel panel-default">
-            <form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPasswordByToken()" >
+            <form class="panel-body" name="ResetPasswordByTokenForm" ng-submit="login.resetPasswordByToken()" oc-pretty-submit>
                 <h3 class="text-center">Reset Password</h3>
                 <div class="alert alert-info">
                     Due to a change in how we store password information, <br>as of <b>May 4th</b> you must reset your password. <br> You can use the same password as before and you will only have to do this once.
@@ -86,7 +86,7 @@
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
                     <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
                 </div>
-                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="ResetPasswordForm.$invalid || login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
             </form>
         </div>
     </div>

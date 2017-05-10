@@ -1,9 +1,9 @@
 {
   "appname": "Angular Buyer",
-  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
-  "buyerid": "XXXX",
+  "clientid": "F567CE46-3C24-46BE-A9C9-327FABADEBB3",
+  "buyerid": "component_1",
   "anonymous": false,
-  "catalogid": "XXXX",
+  "catalogid": "component_1",
   "environment": "prod",
   "defaultstate": "home",
   "html5mode": true,
