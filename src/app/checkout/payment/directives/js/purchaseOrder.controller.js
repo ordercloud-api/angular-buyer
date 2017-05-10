@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('PaymentPurchaseOrderCtrl', PaymentPurchaseOrderController)
 ;
 
-function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK) {
+function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService) {
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
@@ -38,4 +38,13 @@ function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, t
 			$scope.OCPaymentPurchaseOrder.$setValidity('PurchaseOrderNotSaved', true);
 		}
 	}, true);
+
+	$scope.savePayment = function () {
+		ocCheckoutPaymentService.Save($scope.payment, $scope.order)
+			.then(function(payment) {
+				payment.Editing = false;
+				$scope.payment = payment;
+				$scope.OCPaymentPurchaseOrder.$setValidity('PurchaseOrderNotSaved', true);
+			});
+	};
 }

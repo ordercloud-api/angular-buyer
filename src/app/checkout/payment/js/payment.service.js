@@ -1,8 +1,7 @@
 angular.module('orderCloud')
-    .factory('ocCheckoutPaymentService', OrderCloudCheckoutPaymentService)
-;
+    .factory('ocCheckoutPaymentService', OrderCloudCheckoutPaymentService);
 
-function OrderCloudCheckoutPaymentService($q, $uibModal, OrderCloudSDK) {
+function OrderCloudCheckoutPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
     var service = {
         PaymentsExceedTotal: _paymentsExceedTotal,
         RemoveAllPayments: _removeAllPayments,
@@ -12,7 +11,7 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, OrderCloudSDK) {
 
     function _paymentsExceedTotal(payments, orderTotal) {
         var paymentTotal = 0;
-        angular.forEach(payments.Items, function(payment) {
+        angular.forEach(payments.Items, function (payment) {
             paymentTotal += payment.Amount;
         });
 
@@ -23,11 +22,11 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, OrderCloudSDK) {
         var deferred = $q.defer();
 
         var queue = [];
-        angular.forEach(payments.Items, function(payment) {
+        angular.forEach(payments.Items, function (payment) {
             queue.push(OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID));
         });
 
-        $q.all(queue).then(function() {
+        $q.all(queue).then(function () {
             deferred.resolve();
         });
 
@@ -41,19 +40,25 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, OrderCloudSDK) {
             controllerAs: 'selectPaymentAccount',
             size: 'md',
             resolve: {
-                Accounts: function(OrderCloudSDK) {
-                    var options = {page: 1, pageSize: 100};
-                    if (payment.Type == 'SpendingAccount') {
-                        options.filters = {RedemptionCode: '!*', AllowAsPaymentMethod: true};
-		                return OrderCloudSDK.Me.ListSpendingAccounts(options);
+                Accounts: function (OrderCloudSDK) {
+                    var options = {
+                        page: 1,
+                        pageSize: 100
+                    };
+                    if (payment.Type === 'SpendingAccount') {
+                        options.filters = {
+                            RedemptionCode: '!*',
+                            AllowAsPaymentMethod: true
+                        };
+                        return OrderCloudSDK.Me.ListSpendingAccounts(options);
                     } else {
                         return OrderCloudSDK.Me.ListCreditCards(options);
                     }
                 },
-                Payment: function() {
+                Payment: function () {
                     return payment;
                 },
-                Order: function() {
+                Order: function () {
                     return order;
                 }
             }
@@ -64,25 +69,25 @@ function OrderCloudCheckoutPaymentService($q, $uibModal, OrderCloudSDK) {
         var df = $q.defer();
 
         if (payment.ID) {
-			OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID)
-				.then(function() {
-					delete payment.ID;
-					createPayment(payment);
-				});
-		} else {
-			createPayment(payment);
-		}
+            OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID)
+                .then(function () {
+                    delete payment.ID;
+                    createPayment(payment);
+                });
+        } else {
+            createPayment(payment);
+        }
 
-		function createPayment(newPayment) {
+        function createPayment(newPayment) {
             if (angular.isDefined(newPayment.Accepted)) delete newPayment.Accepted;
-			OrderCloudSDK.Payments.Create('outgoing', order.ID, newPayment)
-				.then(function(data) {
-					if (data.SpendingAccountID) data.SpendingAccount = account;
-					if (data.CreditCardID) data.CreditCard = account;
-
+            OrderCloudSDK.Payments.Create('outgoing', order.ID, newPayment)
+                .then(function (data) {
+                    if (data.SpendingAccountID) data.SpendingAccount = account;
+                    if (data.CreditCardID) data.CreditCard = account;
+                    $rootScope.$broadcast('OCPaymentUpdated', data);
                     df.resolve(data);
-				});
-		}
+                });
+        }
 
         return df.promise;
     }
