@@ -1,11 +1,6 @@
 describe('Component: orderDetails', function() {
-    var _ocOrderDetails,
-        mockCurrentUser
-        ;
-    //beforeEach(module(function($provide) {
-    //    mockCurrentUser = 'CurrentUser123';
-    //    $provide.value('CurrentUser', mockCurrentUser);
-    //}));
+
+    var _ocOrderDetails;
     beforeEach(inject(function(ocOrderDetails) {
         _ocOrderDetails = ocOrderDetails;
     }));
@@ -88,11 +83,15 @@ describe('Component: orderDetails', function() {
             var direction = 'outgoing',
                 orderID;
             it('should get a specific order', function() {
+                var orderData = {FromCompanyID: 'mockBuyerID'};
                 var defer = q.defer();
-                defer.resolve();
+                defer.resolve(orderData);
                 spyOn(oc.Orders, 'Get').and.returnValue(defer.promise);
+                spyOn(oc.Buyers, 'Get');
                 _ocOrderDetails.Get();
                 expect(oc.Orders.Get).toHaveBeenCalledWith(direction, orderID);
+                scope.$digest();
+                expect(oc.Buyers.Get).toHaveBeenCalledWith(orderData.FromCompanyID);
             })
         })
     })
