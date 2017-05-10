@@ -46,7 +46,7 @@ function ocApprovals(OrderCloudSDK, $exceptionHandler, $uibModal, $state){
 
     function _updateApprovalStatus(orderID, intent){
         return $uibModal.open({
-            templateUrl: 'orders/orderApprovals/templates/approve.modal.html',
+            templateUrl: 'myOrders/approvals/templates/approve.modal.html',
             controller: 'ApprovalModalCtrl',
             controllerAs: 'approvalModal',
             size: 'md',
