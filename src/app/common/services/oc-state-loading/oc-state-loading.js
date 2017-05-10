@@ -1,5 +1,5 @@
 angular.module('orderCloud')
-    .factory('ocStateLoading', function($rootScope, $ocMedia, $exceptionHandler, $injector, $q) {
+    .factory('ocStateLoading', function($rootScope, $exceptionHandler, $injector, $q, OrderCloudSDK, ocRefreshToken) {
         var stateLoading = {};
         var service = {
             Init: _init,
@@ -16,6 +16,11 @@ angular.module('orderCloud')
                 var toParent = toState.parent || toState.name.split('.')[0];
                 var fromParent = fromState.parent || fromState.name.split('.')[0];
                 stateLoading[fromParent === toParent ? toParent : 'base'] = $q.defer();
+
+                if(toState.name !== 'login' && !OrderCloudSDK.GetToken()) {
+                    e.preventDefault();
+                    ocRefreshToken();
+                }
             });
 
             $rootScope.$on('$stateChangeSuccess', function() {

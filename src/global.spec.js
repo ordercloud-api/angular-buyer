@@ -122,6 +122,37 @@ function _mockData() {
         },
         Promotion: {
             Code:'Discount10'
+        },
+        CreditCard: {
+            "ID": "testCompanyACard",
+            "Editable": true,
+            "Token": null,
+            "DateCreated": "2016-12-07T17:49:28.73+00:00",
+            "CardType": "visa",
+            "PartialAccountNumber": "123",
+            "CardholderName": "CompanyA",
+            "ExpirationDate": "2016-02-20T00:00:00+00:00",
+            "xp": null
+        },
+        SpendingAcct: {
+            "ID": "1bXwQHDke0SF4LRPzCpDcQ",
+            "Name": "Gift Card Expires Next Month",
+            "Balance": 20,
+            "AllowAsPaymentMethod": true,
+            "RedemptionCode": null,
+            "StartDate": "2016-12-01T00:00:00+00:00",
+            "EndDate": "2017-02-02T00:00:00+00:00",
+            "xp": null
+        },
+        GiftCard: {
+            "ID": "1bXwQHDke0SF4LRPzCpDcQ",
+            "Name": "Gift Card Expires Next Month",
+            "Balance": 20,
+            "AllowAsPaymentMethod": true,
+            "RedemptionCode": "Hello",
+            "StartDate": "2016-12-01T00:00:00+00:00",
+            "EndDate": "2017-02-02T00:00:00+00:00",
+            "xp": null
         }
     }
 }
