@@ -27,7 +27,7 @@ function OrderCloudRefreshTokenService($rootScope, $state, toastr, OrderCloudSDK
         }
 
         function _logout() {
-            toastr.error('Your session has expired, please log in again.');
+            if(OrderCloudSDK.GetToken()) toastr.error('Your session has expired, please log in again.');
             OrderCloudSDK.Auth.Logout();
         }
     }
