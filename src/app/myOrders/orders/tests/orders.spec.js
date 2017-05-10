@@ -1,7 +1,6 @@
 describe('Component: orders', function() {
 
-    var _ocOrders,
-        mockParams;
+    var _ocOrders;
     beforeEach(inject(function(ocOrders) {
         _ocOrders = ocOrders;
     }));
