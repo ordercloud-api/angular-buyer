@@ -8,21 +8,24 @@ function OrderApprovalsController($stateParams, ocApprovals, OrderApprovals, Can
     vm.list = OrderApprovals;
     vm.canApprove = CanApprove;
 
-    vm.pageChanged = function() {
-        ocApprovals.List($stateParams.orderid, $stateParams.buyerid, vm.list.Meta.Page, vm.list.Meta.PageSize)
+    vm.pageChanged = pageChanged;
+    vm.loadMore = loadMore;
+
+    function pageChanged() {
+        return ocApprovals.List($stateParams.orderid, $stateParams.buyerid, vm.list.Meta.Page, vm.list.Meta.PageSize)
             .then(function(data) {
                 vm.list = data;
             });
-    };
+    }
 
-    vm.loadMore = function() {
+    function loadMore() {
         vm.list.Meta.Page++;
-        ocApprovals.List($stateParams.orderid, $stateParams.buyerid, vm.list.Meta.Page, vm.list.Meta.PageSize)
+        return ocApprovals.List($stateParams.orderid, $stateParams.buyerid, vm.list.Meta.Page, vm.list.Meta.PageSize)
             .then(function(data) {
                 vm.list.Items = vm.list.Items.concat(data.Items);
                 vm.list.Meta = data.Meta;
             });
-    };
+    }
 
     vm.updateApprovalStatus = function(intent){
         //intent is a string either 'Approve' or 'Decline'
