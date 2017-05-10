@@ -37,16 +37,20 @@ describe('Component: Payments', function() {
             spyOn(_ocOrderPayments, 'List');
         }));
         describe('vm.pageChanged', function() {
-            var page = orderPaymentsCtrl.List.Meta.Page;
-            var pageSize = orderPaymentsCtrl.List.Meta.PageSize;
-            orderPaymentsCtrl.pageChanged();
-            expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
+            it('should update the page on Meta', function(){
+                var page = orderPaymentsCtrl.List.Meta.Page;
+                var pageSize = orderPaymentsCtrl.List.Meta.PageSize;
+                orderPaymentsCtrl.pageChanged();
+                expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
+            });
         });
         describe('vm.loadMore', function() {
-            var page = orderPaymentsCtrl.List.Meta.Page;
-            var pageSize = orderPaymentsCtrl.List.Meta.PageSize + 1;
-            orderPaymentsCtrl.loadMore();
-            expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
+            it('should increase the pageSize on Meta', function() {
+                var page = orderPaymentsCtrl.List.Meta.Page;
+                var pageSize = orderPaymentsCtrl.List.Meta.PageSize + 1;
+                orderPaymentsCtrl.loadMore();
+                expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
+            });
         });
     });
 
@@ -62,9 +66,7 @@ describe('Component: Payments', function() {
                 var defer = q.defer();
                 defer.resolve({Items: [{Type: 'SpendingAccount', SpendingAccountID: 'testSA_ID'}]});
                 spyOn(oc.Payments, 'List').and.returnValue(defer.promise);
-
                 spyOn(oc.Me, 'GetSpendingAccount');
-                spyOn(oc.Me, 'GetCreditCard');
 
                 _ocOrderPayments.List();
             });
@@ -83,8 +85,6 @@ describe('Component: Payments', function() {
                 var defer = q.defer();
                 defer.resolve({Items: [{Type: 'CreditCard', CreditCardID: 'testCC_ID'}]});
                 spyOn(oc.Payments, 'List').and.returnValue(defer.promise);
-
-                spyOn(oc.Me, 'GetSpendingAccount');
                 spyOn(oc.Me, 'GetCreditCard');
 
                 _ocOrderPayments.List();
