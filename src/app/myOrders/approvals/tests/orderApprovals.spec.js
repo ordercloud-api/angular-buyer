@@ -191,6 +191,7 @@ describe('Component: orderApprovals', function() {
                 expect(oc.ApprovalRules.List).toHaveBeenCalledWith(buyerID, {page: 1, pageSize: 100, filters: {ID: ''}});
             })
         });
+
         describe('Method: UpdateApprovalStatus', function() {
             it('should open the modal to update the approval status', function() {
                 spyOn(uibModal, 'open').and.callThrough();
