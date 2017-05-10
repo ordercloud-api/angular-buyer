@@ -59,9 +59,7 @@ describe('Component: Product Quick View', function() {
 
         describe('addToCart', function() {
             beforeEach(function() {
-                var defer =  q.defer();
-                defer.resolve();
-                spyOn(lineItemHelpers, 'AddItem').and.returnValue(defer.promise);
+                spyOn(lineItemHelpers, 'AddItem').and.returnValue(dummyPromise);
                 spyOn(toastrService, 'success');
                 productQuickViewCtrl.addToCart();
             });
