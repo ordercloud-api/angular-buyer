@@ -89,9 +89,7 @@ describe('Component: Product Search', function(){
         }));
         describe('getSearchResults', function(){
             beforeEach(function(){
-                var defer = q.defer();
-                defer.resolve();
-                spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
+                spyOn(oc.Me, 'ListProducts').and.returnValue(dummyPromise);
             });
             it('should call Me.ListProducts with given search term and max products', function(){
                 mock.Parameters = {
@@ -162,9 +160,7 @@ describe('Component: Product Search', function(){
         }));
         describe('vm.getSearchResults', function() {
             beforeEach(function() {
-                var defer = q.defer();
-                defer.resolve();
-                spyOn(oc.Me, 'ListProducts').and.returnValue(defer.promise);
+                spyOn(oc.Me, 'ListProducts').and.returnValue(dummyPromise);
                 productSearchModalCtrl.getSearchResults();
             });
             it('should get a list of products relative to the search term', function() {
