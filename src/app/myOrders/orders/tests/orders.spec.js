@@ -1,4 +1,5 @@
 describe('Component: orders', function() {
+
     var _ocOrders,
         mockParams;
     beforeEach(inject(function(ocOrders) {
@@ -7,11 +8,9 @@ describe('Component: orders', function() {
 
     describe('State: orders', function() {
         var ordersState;
-        var parameters;
         var currentUser;
         beforeEach(inject(function(CurrentUser) {
             ordersState = state.get('orders');
-            parameters = Parameters;
             currentUser = CurrentUser;
             spyOn(ocParametersService, 'Get');
             spyOn(_ocOrders, 'List');
@@ -22,7 +21,7 @@ describe('Component: orders', function() {
         });
         it('should resolve OrderList', function() {
             injector.invoke(ordersState.resolve.OrderList);
-            expect(_ocOrders.List).toHaveBeenCalledWith(parameters, currentUser);
+            expect(_ocOrders.List).toHaveBeenCalledWith(mock.Parameters, currentUser);
         });
     });
 
@@ -33,24 +32,25 @@ describe('Component: orders', function() {
             ocMedia = $ocMedia;
             ordersCtrl = $controller('OrdersCtrl', {
                 $ocMedia: ocMedia,
-                OrderList: []
+                OrderList: {
+                    Items: ['Item1', 'Item2'],
+                    Meta: {
+                        Page: 1,
+                        PageSize: 12
+                    }
+                }
             });
-            mockParams = {
-                search: null,
-                sortBy: ''
-            };
             spyOn(ocParametersService, 'Create');
             spyOn(ordersCtrl, 'filter');
             spyOn(state, 'go');
-            ordersCtrl.OrderList = {Items: 'Item1', Meta: {Page: 1, PageSize: 12}};
         }));
 
         describe('vm.selectTab', function(){
             it('set tab and then call vm.filter to reload state', function(){
                 var mockTab = 'favorites';
-                mockParams.tab = mockTab;
+                mock.Parameters.tab = mockTab;
                 ordersCtrl.selectTab(mockTab);
-                expect(mockParams.tab).toBe(mockTab);
+                expect(mock.Parameters.tab).toBe(mockTab);
                 expect(ordersCtrl.filter).toHaveBeenCalledWith(true);
             });
         });
@@ -64,7 +64,7 @@ describe('Component: orders', function() {
         describe('vm.clearSearch', function(){
             it('should clear search parameters and then reload state', function(){
                 ordersCtrl.clearSearch();
-                expect(mockParams.search).toBeNull();
+                expect(mock.Parameters.search).toBeNull();
                 expect(ordersCtrl.filter).toHaveBeenCalledWith(true);
             });
         });
@@ -78,7 +78,7 @@ describe('Component: orders', function() {
         describe('vm.pageChanged', function(){
             it('should reload state with the new page', function(){
                 mock.Parameters.page = 'newPage';
-                ordersCtrl.pageChanged('newPage');
+                ordersCtrl.pageChanged();
                 expect(state.go).toHaveBeenCalled();
                 expect(ocParametersService.Create).toHaveBeenCalledWith(mock.Parameters, false);
             });
@@ -97,7 +97,7 @@ describe('Component: orders', function() {
                 ordersCtrl.loadMore();
             });
             it('should concatenate next page of results with current list items', function(){
-                expect(_ocOrders.List).toHaveBeenCalledWith(mockParams);
+                expect(_ocOrders.List).toHaveBeenCalledWith(mock.Parameters);
                 scope.$digest();
                 //use toEqual for comparing objects (does deep equality check)
                 expect(ordersCtrl.OrderList.Items).toEqual([{Name: 'FirstOrder'}, {Name:'SecondOrder'}, {Name:'ThirdOrder'}]);
