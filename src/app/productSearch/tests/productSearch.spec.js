@@ -155,7 +155,8 @@ describe('Component: Product Search', function(){
         beforeEach(inject(function($controller, catalogid) {
             catalogID = catalogid;
             productSearchModalCtrl = $controller('ProductSearchModalCtrl', {
-                $uibModalInstance: uibModalInstance
+                $uibModalInstance: uibModalInstance,
+                $scope: scope
             });
         }));
         describe('vm.getSearchResults', function() {
