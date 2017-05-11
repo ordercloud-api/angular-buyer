@@ -23,7 +23,13 @@ describe('Component: Payments', function() {
         var orderPaymentsCtrl;
         beforeEach(inject(function($controller) {
             orderPaymentsCtrl = $controller('OrderPaymentsCtrl', {
-                orderPayments : mock.Payments 
+                OrderPayments: {
+                    Items: ['mockPayment1', 'mockPayment2'],
+                    Meta: {
+                        Page: 1,
+                        PageSize: 100
+                    }
+                }
             });
             spyOn(_ocOrderPayments, 'List').and.returnValue(dummyPromise);
         }));
