@@ -109,7 +109,19 @@ function _mockData() {
         },
         Product: {
             ID: 'PRODUCT_ID',
-            Name: 'PRODUCT_NAME'
+            Name: 'PRODUCT_NAME',
+            PriceSchedule: {
+                PriceBreaks: [
+                    {
+                        Price: '$0.00',
+                        Quantity: 1
+                    },
+                    {
+                        Price: '$0.00',
+                        Quantity: 1
+                    }
+                ]
+            }
         },
         Category: {
             ID: 'CATEGORY_ID'
