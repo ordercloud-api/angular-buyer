@@ -1,7 +1,7 @@
 describe('Component: ProductBrowse', function () {
 
     var _ocProductBrowse;
-    beforeEach(inject(function(ocProductBrowse) {
+    beforeEach(inject(function (ocProductBrowse) {
         _ocProductBrowse = ocProductBrowse;
     }))
 
@@ -47,9 +47,9 @@ describe('Component: ProductBrowse', function () {
         });
     });
 
-    describe('Controller: ProductBrowseCtrl', function() {
+    describe('Controller: ProductBrowseCtrl', function () {
         var productBrowseCtrl;
-        beforeEach(inject(function($controller) {
+        beforeEach(inject(function ($controller) {
             productBrowseCtrl = $controller('ProductBrowseCtrl', {
                 CategoryList: {
                     Items: [],
@@ -63,24 +63,27 @@ describe('Component: ProductBrowse', function () {
             spyOn(state, 'go');
             spyOn(_ocProductBrowse, 'OpenCategoryModal').and.returnValue(dummyPromise);
         }));
-        describe('vm.toggleFavorites', function() {
-            it('should reload the state with new parameters', function() {
+        describe('vm.toggleFavorites', function () {
+            it('should reload the state with new parameters', function () {
                 mock.Parameters.favorites = true;
                 mock.Parameters.page = '';
                 productBrowseCtrl.toggleFavorites();
                 expect(state.go).toHaveBeenCalledWith('productBrowse.products', ocParametersService.Create(mock.Parameters));
             });
         });
-        describe('vm.openCategoryModal', function() {
-            it('should call the ocProductBrowse OpenCategoryModal service method', function() {
+        describe('vm.openCategoryModal', function () {
+            it('should call the ocProductBrowse OpenCategoryModal service method', function () {
                 var categoryID;
                 productBrowseCtrl.openCategoryModal();
                 expect(_ocProductBrowse.OpenCategoryModal).toHaveBeenCalledWith(productBrowseCtrl.treeConfig);
                 scope.$digest();
-                expect(state.go).toHaveBeenCalledWith('productBrowse.products', {categoryid: categoryID, page: ''});
+                expect(state.go).toHaveBeenCalledWith('productBrowse.products', {
+                    categoryid: categoryID,
+                    page: ''
+                });
             })
         })
-    }); 
+    });
 
     describe('Controller: ProductViewCtrl', function () {
         var productViewCtrl,
@@ -139,4 +142,55 @@ describe('Component: ProductBrowse', function () {
             });
         });
     });
+
+    describe('Factory: ocProductBrowse', function () {
+        var uibModal;
+        beforeEach(inject(function ($uibModal) {
+            uibModal = $uibModal;
+        }));
+        describe('Method: OpenCategoryModal', function () {
+            it('should open the modal for mobile category dropdown', function () {
+                var treeConfig = {};
+                var defer = q.defer();
+                defer.resolve(treeConfig);
+                spyOn(uibModal, 'open').and.returnValue(defer.promise);
+                _ocProductBrowse.OpenCategoryModal();
+                expect(uibModal.open).toHaveBeenCalledWith({
+                    animation: true,
+                    backdrop: 'static',
+                    templateUrl: 'productBrowse/templates/mobileCategory.modal.html',
+                    controller: 'MobileCategoryModalCtrl',
+                    controllerAs: 'mobileCategoryModal',
+                    size: '-full-screen',
+                    resolve: {
+                        TreeConfig: jasmine.any(Function)
+                    }
+                });
+            })
+        })
+    });
+
+    describe('Controller: MobileCategoryModalCtrl', function() {
+        var mobileCategoryModalCtrl,
+            uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss']);
+        beforeEach(inject(function($controller) {
+            mobileCategoryModalCtrl = $controller('MobileCategoryModalCtrl', {
+                $uibModalInstance: uibModalInstance,
+                TreeConfig: {}
+            });
+        }));
+        describe('vm.cancel', function() {
+            it('should dismiss the modal', function() {
+                mobileCategoryModalCtrl.cancel();
+                expect(uibModalInstance.dismiss).toHaveBeenCalled();
+            });
+        });
+        describe('vm.selectNode', function() {
+            it('should close themodal with the node (category id)', function() {
+                var node = {};
+                mobileCategoryModalCtrl.selectNode(node);
+                expect(uibModalInstance.close).toHaveBeenCalledWith(node);
+            })
+        });
+    })
 });
