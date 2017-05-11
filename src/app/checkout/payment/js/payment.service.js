@@ -1,5 +1,5 @@
 angular.module('orderCloud')
-    .factory('ocCheckoutPaymentService', OrderCloudCheckoutPaymentService);
+    .factory('ocCheckoutPayment', OrderCloudCheckoutPaymentService);
 
 function OrderCloudCheckoutPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
     var service = {

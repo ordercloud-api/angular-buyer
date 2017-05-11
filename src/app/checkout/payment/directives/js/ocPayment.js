@@ -1,13 +1,32 @@
 angular.module('orderCloud')
-	.controller('PaymentCtrl', PaymentController);
+	//Single Payment, Multiple Types
+	.directive('ocPayment', OrderCloudPaymentDirective)
+    .controller('PaymentCtrl', PaymentController)
+;
 
-function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPaymentService, CheckoutConfig) {
+function OrderCloudPaymentDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			methods: '=?',
+			payment: '=?',
+			paymentIndex: '=?',
+			excludeOptions: '=?'
+		},
+		templateUrl: 'checkout/payment/directives/templates/payment.html',
+		controller: 'PaymentCtrl',
+		controllerAs: 'ocPayment'
+	}
+}
+
+function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPayment, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function (data) {
-				if (ocCheckoutPaymentService.PaymentsExceedTotal(data, $scope.order.Total)) {
-					ocCheckoutPaymentService.RemoveAllPayments(data, $scope.order)
+				if (ocCheckoutPayment.PaymentsExceedTotal(data, $scope.order.Total)) {
+					ocCheckoutPayment.RemoveAllPayments(data, $scope.order)
 						.then(function (data) {
 							var payment = {
 								Type: CheckoutConfig.AvailablePaymentMethods[0],

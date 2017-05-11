@@ -1,8 +1,24 @@
 angular.module('orderCloud')
-	.controller('PaymentCreditCardCtrl', PaymentCreditCardController)
+	//Single Credit Card Payment
+	.directive('ocPaymentCc', OrderCloudPaymentCreditCardDirective)
+    .controller('PaymentCreditCardCtrl', PaymentCreditCardController)
 ;
 
-function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPaymentService) {
+function OrderCloudPaymentCreditCardDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			payment: '=?',
+			excludedCreditCards: '=?excludeOptions'
+		},
+		templateUrl: 'checkout/payment/directives/templates/creditCard.html',
+		controller: 'PaymentCreditCardCtrl',
+		controllerAs: 'paymentCC'
+	}
+}
+
+function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPayment) {
 	var creditCardListOptions = {
 		page: 1,
 		pageSize: 100
@@ -55,7 +71,7 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 	}
 
 	$scope.changePaymentAccount = function() {
-		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+		ocCheckoutPayment.SelectPaymentAccount($scope.payment, $scope.order)
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
