@@ -39,7 +39,6 @@ describe('Component: orders', function() {
                     }
                 }
             });
-            spyOn(ocParametersService, 'Create').and.returnValue(dummyPromise);
             spyOn(ordersCtrl, 'filter');
             spyOn(state, 'go');
         }));
