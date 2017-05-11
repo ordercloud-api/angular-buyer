@@ -25,7 +25,16 @@ describe('Component: Shipments', function() {
             mockLineItems;
         beforeEach(inject(function($controller) {
             orderShipmentsCtrl = $controller('OrderShipmentsCtrl', {
-                shipments: mock.Shipments,
+                OrderShipments: {
+                    Items: [
+                        {ID: 'testID1'},
+                        {ID: 'testID2'}
+                    ],
+                    Meta: {
+                        Page: 1,
+                        PageSize: 100
+                    }
+                },
                 orderID: mock.Order.ID
             });
             mockLineItems = mock.LineItems;
