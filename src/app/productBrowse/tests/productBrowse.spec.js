@@ -186,7 +186,7 @@ describe('Component: ProductBrowse', function () {
             });
         });
         describe('vm.selectNode', function() {
-            it('should close themodal with the node (category id)', function() {
+            it('should close the modal with the node (category id)', function() {
                 var node = {};
                 mobileCategoryModalCtrl.selectNode(node);
                 expect(uibModalInstance.close).toHaveBeenCalledWith(node);
