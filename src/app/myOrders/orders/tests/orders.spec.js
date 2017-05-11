@@ -1,133 +1,86 @@
 describe('Component: orders', function() {
-    var scope,
-        q,
-        oc,
-        _ocParameters,
-        _ocOrders,
-        mockParams,
-        currentUser,
-        state
-        ;
-    beforeEach(module(function($provide) {
-        mockParams = {search:null, page: null, pageSize: null, searchOn: null, sortBy: null, filters: null, from: null, to: null, favorites: null};
-        currentUser = {Name: 'mockUserName', ID: 'mockUser123'};
-        $provide.value('Parameters', mockParams);
-        $provide.value('CurrentUser', currentUser);
-    }));
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, $rootScope, OrderCloud, ocParameters, ocOrders, CurrentUser, $state) {
-        q = $q;
-        scope = $rootScope.$new();
-        oc = OrderCloud;
-        _ocParameters = ocParameters;
+
+    var _ocOrders;
+    beforeEach(inject(function(ocOrders) {
         _ocOrders = ocOrders;
-        state = $state;
     }));
-
-
 
     describe('State: orders', function() {
-        var state;
-        var parameters;
+        var ordersState;
         var currentUser;
-        beforeEach(inject(function($state, Parameters, CurrentUser) {
-            state = $state.get('orders');
-            parameters = Parameters;
+        beforeEach(inject(function(CurrentUser) {
+            ordersState = state.get('orders');
             currentUser = CurrentUser;
-            spyOn(_ocParameters, 'Get');
+            spyOn(ocParametersService, 'Get');
             spyOn(_ocOrders, 'List');
         }));
-        it('should resolve Parameters', inject(function($injector){
-            $injector.invoke(state.resolve.Parameters);
-            expect(_ocParameters.Get).toHaveBeenCalled();
-        }));
-        it('should resolve OrderList', inject(function($injector) {
-            $injector.invoke(state.resolve.OrderList);
-            expect(_ocOrders.List).toHaveBeenCalledWith(parameters, currentUser);
-        }));
+        it('should resolve Parameters', function(){
+            injector.invoke(ordersState.resolve.Parameters);
+            expect(ocParametersService.Get).toHaveBeenCalled();
+        });
+        it('should resolve OrderList', function() {
+            injector.invoke(ordersState.resolve.OrderList);
+            expect(_ocOrders.List).toHaveBeenCalledWith(mock.Parameters, currentUser);
+        });
     });
-
-
 
     describe('Controller: OrdersCtrl', function(){
         var ordersCtrl,
-        ocMedia
-        ;
-        beforeEach(inject(function($controller, $ocMedia, Parameters){
+            ocMedia;
+        beforeEach(inject(function($controller, $ocMedia){
             ocMedia = $ocMedia;
             ordersCtrl = $controller('OrdersCtrl', {
-                $state: state,
                 $ocMedia: ocMedia,
-                OrderCloud: oc,
-                ocParameters: _ocParameters,
-                OrderList: [],
-                Parameters: Parameters
+                OrderList: {
+                    Items: ['Item1', 'Item2'],
+                    Meta: {
+                        Page: 1,
+                        PageSize: 12
+                    }
+                }
             });
-            spyOn(_ocParameters, 'Create');
-            spyOn(state, 'go');
+            spyOn(ocParametersService, 'Create').and.returnValue(dummyPromise);
             spyOn(ordersCtrl, 'filter');
-            ordersCtrl.list = {Items: 'Item1', Meta: {Page: 1, PageSize: 12}};
+            spyOn(state, 'go');
         }));
 
-
-        describe('selectTab', function(){
+        describe('vm.selectTab', function(){
             it('set tab and then call vm.filter to reload state', function(){
                 var mockTab = 'favorites';
+                mock.Parameters.tab = mockTab;
                 ordersCtrl.selectTab(mockTab);
-                expect(mockParams.tab).toBe(mockTab);
+                expect(mock.Parameters.tab).toBe(mockTab);
                 expect(ordersCtrl.filter).toHaveBeenCalledWith(true);
             });
         });
 
-
-        describe('search', function(){
+        describe('vm.search', function(){
             it('should call vm.filter to reload state', function(){
                 ordersCtrl.search();
                 expect(ordersCtrl.filter).toHaveBeenCalledWith(true);
             });
         });
-
-
-        describe('clearSearch', function(){
+        describe('vm.clearSearch', function(){
             it('should clear search parameters and then reload state', function(){
                 ordersCtrl.clearSearch();
-                expect(mockParams.search).toBeNull();
+                expect(mock.Parameters.search).toBeNull();
                 expect(ordersCtrl.filter).toHaveBeenCalledWith(true);
             });
         });
-        
-
-        describe('reverseSort', function(){
-            it('if param.sortBy is !something it should reload state with param.sortBy equal to something', function(){
-                mockParams.sortBy = '!Something';
+        describe('vm.reverseSort', function(){
+            it('should reload state with a reverse sort call', function(){
+                mock.Parameters.sortBy = '!ID';
                 ordersCtrl.reverseSort();
-
-                expect(mockParams.sortBy).toBe('Something');
-                expect(ordersCtrl.filter).toHaveBeenCalledWith(false);
-            }),
-            it('if param.sortBy is something it should reload state with param.sortBy equal to !something', function(){
-                mockParams.sortBy = 'Something';
-                ordersCtrl.reverseSort();
-
-                expect(mockParams.sortBy).toBe('!Something');
                 expect(ordersCtrl.filter).toHaveBeenCalledWith(false);
             });
         });
-
-
-        describe('pageChanged', function(){
-            it('should reload state with page from vm.list.Meta.Page', function(){
-                var mockPage = 3;
-                ordersCtrl.list.Meta.Page = 3;
-
+        describe('vm.pageChanged', function(){
+            it('should reload state with the new page', function(){
                 ordersCtrl.pageChanged();
-                expect(state.go).toHaveBeenCalledWith('.', {page: mockPage});
+                expect(state.go).toHaveBeenCalledWith('.', {page: ordersCtrl.list.Meta.Page});
             });
         });
-
-
-        describe('loadMore', function(){
+        describe('vm.loadMore', function(){
             var mockMeta;
             beforeEach(function(){
                 mockMeta = {Page: 2, PageSize: 15};
@@ -141,37 +94,80 @@ describe('Component: orders', function() {
                 ordersCtrl.loadMore();
             });
             it('should concatenate next page of results with current list items', function(){
-                expect(_ocOrders.List).toHaveBeenCalledWith(mockParams);
+                expect(_ocOrders.List).toHaveBeenCalledWith(mock.Parameters);
                 scope.$digest();
-                //use toEqual for comparing objects (does deep equality check)
+                // use toEqual for comparing objects (does deep equality check)
                 expect(ordersCtrl.list.Items).toEqual([{Name: 'FirstOrder'}, {Name:'SecondOrder'}, {Name:'ThirdOrder'}]);
                 expect(ordersCtrl.list.Meta).toEqual(mockMeta);
             });
         });
     });
 
-    describe('Service: ocOrders', function() {
-        beforeEach(inject(function(){
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(_ocOrders, 'List').and.returnValue(defer.promise);
-            spyOn(oc.Me, 'ListIncomingOrders').and.returnValue(defer.promise);
-            spyOn(oc.Me, 'ListOutgoingOrders').and.returnValue(defer.promise);
-        }));
-
+    describe('Factory: ocOrders', function() {
 
         it('should define methods', function(){
             expect(_ocOrders.List).toBeDefined();
             expect(_ocOrders.List).toEqual(jasmine.any(Function));
         });
 
-        //TODO: Finish Unit tests: unit testing services didn't work like I thought it would
-        // it('should default to excluding unsubmitted orders if no status provided', function() {
-        //     _ocOrders.List(mockParams, currentUser);
-        //     scope.$digest();
-        //     expect(oc.Me.ListOutgoingOrders).toHaveBeenCalled();
-        //     // expect(orderCloud.Me.ListIncomingOrders).toHaveBeenCalled();
-        // });
+        describe('Method: List', function() {
+            beforeEach(function() {
+                var parameters = mock.Parameters;
+                parameters.tab = 'approvals';
+                spyOn(oc.Me, 'ListApprovableOrders').and.returnValue(dummyPromise);
+
+                _ocOrders.List(parameters, mock.user);
+                
+            });
+            it('should return a list of approvalbe orders if parameters tab == approvals', function(){
+                scope.$digest();
+                var parameters = {
+                    search: null,
+                    page: 2,
+                    pageSize: 12,
+                    searchOn: null,
+                    sortBy: 'ID',
+                    filters: {
+                        status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'
+                    },
+                    catalogID: null,
+                    categoryID: null,
+                    categoryPage: null,
+                    productPage: null,
+                    tab: 'approvals'
+                };
+                expect(oc.Me.ListApprovableOrders).toHaveBeenCalledWith(parameters);
+            })
+        })
+        describe('Method: List', function() {
+            beforeEach(function() {
+                var parameters = mock.Parameters;
+                parameters.tab = null;
+                spyOn(oc.Me, 'ListOrders').and.returnValue(dummyPromise);
+
+                _ocOrders.List(parameters, mock.user);
+                
+            });
+            it('should return a list of orders if parameters tab !== approvals', function(){
+                scope.$digest();
+                var parameters = {
+                    search: null,
+                    page: 2,
+                    pageSize: 12,
+                    searchOn: null,
+                    sortBy: 'ID',
+                    filters: {
+                        status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'
+                    },
+                    catalogID: null,
+                    categoryID: null,
+                    categoryPage: null,
+                    productPage: null,
+                    tab: null
+                };
+                expect(oc.Me.ListOrders).toHaveBeenCalledWith(parameters);
+            })
+        })
     });
 });
 

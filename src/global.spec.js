@@ -8,6 +8,8 @@ var q,
     oc,
     parametersResolve,
     currentOrder,
+    currentUser,
+    orderLineItems,
     ocAppNameService,
     ocConfirmService,
     ocParametersService,
@@ -20,12 +22,13 @@ beforeEach(module('orderCloud', function($provide) {
     });
     $provide.value('CurrentUser', mock.User);
     $provide.value('CurrentOrder', mock.Order);
-    $provide.value('Parameters', mock.Parameters)
+    $provide.value('Parameters', mock.Parameters);
+    $provide.value('OrderLineItems', mock.LineItems);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, 
 OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder,
-CurrentUser) {
+CurrentUser, OrderLineItems) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -41,6 +44,7 @@ CurrentUser) {
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
     currentUser = CurrentUser;
+    orderLineItems = OrderLineItems;
     var defer = $q.defer();
     defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
@@ -96,6 +100,12 @@ function _mockData() {
             xp: {
                 FavoriteProducts: ['FavProd1', 'FavProd2']
             }
+        },
+        LineItems: {
+            Items: [
+                {ID: 'testLI1'},
+                {ID: 'testLI2'}
+            ]
         },
         Product: {
             ID: 'PRODUCT_ID',
