@@ -1,4 +1,4 @@
-fdescribe('Component: Shipments', function() {
+describe('Component: Shipments', function() {
 
     var _ocOrderShipments;
     beforeEach(inject(function(ocOrderShipments) {
