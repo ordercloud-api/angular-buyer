@@ -23,7 +23,7 @@ The Product Browse template contains the html for a Category Tree as well as the
 ## mobileCategory.modal.html
 On smaller viewports, the Category Tree left nav is hidden, and replaced with a modal.
 ## card.product.html
-Each product is represented within a Product Card. The Product Card template can be found at [common/templates/card.product.html](../common/templates/card.product.html).
+Each product is represented within a Product Card. The Product Card template can be found at [common/directives/oc-product-card/oc-product-card.html](../common/directives/oc-product-card/oc-product-card.html).
 ## Styling
 Styling for the Product Browse and Product Card components is located in the following files:
 
