@@ -7,16 +7,14 @@
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-xs-6">
-					<h4>Spending Account</h4>
 					<b>{{payment.SpendingAccount.Name}}</b><br>
-					<span>{{payment.SpendingAccount.Balance | currency}}</span>
+					<span class="text-muted">Balance: </span><span>{{payment.SpendingAccount.Balance | currency}}</span>
 				</div>
 				<div class="col-xs-3">
-					<h3 class="text-success pull-right">{{payment.Amount | currency}}</h4>
+					<p class="lead text-success pull-right">{{payment.Amount | currency}}</p>
 				</div>
 				<div class="col-xs-3">
 					<button style="margin-bottom: 10px;" type="button" class="btn btn-default pull-right" ng-click="changePaymentAccount()">Change Account</button>
-					<button type="button" class="btn btn-default pull-right" ng-click="payment.Editing = true">Edit Payment</button>
 				</div>
 			</div>
 		</div>

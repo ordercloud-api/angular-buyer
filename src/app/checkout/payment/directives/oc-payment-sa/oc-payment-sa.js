@@ -12,10 +12,10 @@ function OrderCloudPaymentSpendingAccountDirective() {
 			payment: '=?',
 			excludedSpendingAccounts: '=?excludeOptions'
 		},
-		templateUrl: 'checkout/payment/directives/templates/spendingAccount.html',
+		templateUrl: 'checkout/payment/directives/oc-payment-sa/oc-payment-sa.html',
 		controller: 'PaymentSpendingAccountCtrl',
 		controllerAs: 'paymentSA'
-	}
+	};
 }
 
 function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment) {

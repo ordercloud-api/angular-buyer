@@ -19,7 +19,11 @@ function SelectPaymentAccountModalController($uibModalInstance, ocCheckoutPaymen
         }
     };
 
+    vm.createNewCreditCard = function() {
+        $uibModalInstance.dismiss('CREATE_NEW_CC');
+    };
+
     vm.cancel = function() {
         $uibModalInstance.dismiss();
-    }
+    };
 }

@@ -14,13 +14,13 @@ function OrderCloudPaymentDirective() {
 			paymentIndex: '=?',
 			excludeOptions: '=?'
 		},
-		templateUrl: 'checkout/payment/directives/templates/payment.html',
+		templateUrl: 'checkout/payment/directives/oc-payment/oc-payment.html',
 		controller: 'PaymentCtrl',
 		controllerAs: 'ocPayment'
-	}
+	};
 }
 
-function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPayment, CheckoutConfig) {
+function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPayment, ocMyCreditCards, toastr, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
@@ -71,6 +71,28 @@ function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPayment,
 	$rootScope.$on('OCPaymentUpdated', function (event, payment) {
 		$scope.payment = payment;
 	});
+
+	$scope.paymentTypeChanged = function() {
+		if ($scope.payment.Type === 'CreditCard' || $scope.payment.Type === 'SpendingAccount') {
+			ocCheckoutPayment.SelectPaymentAccount($scope.payment, $scope.order)
+				.then(function(payment) {
+					$scope.payment = payment;
+				})				
+				.catch(function(ex) {
+					if (ex === 'CREATE_NEW_CC') {
+						ocMyCreditCards.Create()
+							.then(function(card) {
+								$rootScope.$broadcast('OCPayment:CreditCardCreated', card);
+								toastr.success('Credit card ending in ' + card.PartialAccountNumber + ' was saved.');
+								$scope.payment.CreditCardID = card.ID;
+								ocCheckoutPayment.Save($scope.payment, $scope.order, card);
+							});
+					}
+				});
+		} else {
+			$scope.payment.Editing = true;
+		}
+	};
 
 	$scope.paymentValid = function (payment) {
 		if (!payment || payment.Editing || payment.Amount != $scope.order.Total) return false; //TODO: refactor for multiple payments

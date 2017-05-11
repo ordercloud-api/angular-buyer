@@ -35,7 +35,7 @@ function OrderCloudCheckoutPaymentService($rootScope, $q, $uibModal, OrderCloudS
 
     function _selectPaymentAccount(payment, order) {
         return $uibModal.open({
-            templateUrl: 'checkout/payment/directives/templates/selectPaymentAccount.modal.html',
+            templateUrl: 'checkout/payment/templates/selectPaymentAccount.modal.html',
             controller: 'SelectPaymentAccountModalCtrl',
             controllerAs: 'selectPaymentAccount',
             size: 'md',

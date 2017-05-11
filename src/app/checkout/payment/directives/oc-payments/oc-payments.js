@@ -11,9 +11,9 @@ function OrderCloudPaymentsDirective() {
 			order: '=',
 			methods: '=?'
 		},
-		templateUrl: 'checkout/payment/directives/templates/payments.html',
+		templateUrl: 'checkout/payment/directives/oc-payments/oc-payments.html',
 		controller: 'PaymentsCtrl'
-	}
+	};
 }
 
 function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment, CheckoutConfig) {

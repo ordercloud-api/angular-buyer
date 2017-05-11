@@ -12,10 +12,10 @@ function OrderCloudPaymentCreditCardDirective() {
 			payment: '=?',
 			excludedCreditCards: '=?excludeOptions'
 		},
-		templateUrl: 'checkout/payment/directives/templates/creditCard.html',
+		templateUrl: 'checkout/payment/directives/oc-payment-cc/oc-payment-cc.html',
 		controller: 'PaymentCreditCardCtrl',
 		controllerAs: 'paymentCC'
-	}
+	};
 }
 
 function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPayment) {
@@ -75,11 +75,26 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
+			})
+			.catch(function(ex) {
+				if (ex === 'CREATE_NEW_CC') {
+					ocMyCreditCards.Create()
+						.then(function(card) {
+							toastr.success('Credit card ending in ' + card.PartialAccountNumber + ' was saved.');
+							$scope.creditCards.push(card);
+							$scope.payment.CreditCardID = card.ID;
+							ocCheckoutPayment.Save($scope.payment, $scope.order, card);
+						});
+				}
 			});
 	};
 
+	$rootScope.$on('OCPayment:CreditCardCreated', function(event, card) {
+		$scope.creditCards.push(card);
+	});
+
 	$scope.$watch('payment', function(n) {
-		if (n && !n.CreditCardID || n.Editing) {
+		if (n && !n.CreditCardID) {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', false);
 		} else {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
@@ -90,13 +105,4 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 		if (n.SpendingAccountID) delete n.SpendingAccountID;
 		if (n.xp && n.xp.PONumber) delete n.xp.PONumber;
 	}, true);
-
-	$scope.createCreditCard = function() {
-		ocMyCreditCards.Create()
-			.then(function(card) {
-				toastr.success('Credit card ending in ' + card.PartialAccountNumber + ' was saved.');
-				$scope.creditCards.push(card);
-				$scope.updatePayment({creditCard:card});
-			});
-	};
 }

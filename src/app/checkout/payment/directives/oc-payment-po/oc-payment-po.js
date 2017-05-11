@@ -11,9 +11,9 @@ function OrderCloudPaymentPurchaseOrderDirective() {
 			order: '=',
 			payment: '=?'
 		},
-		templateUrl: 'checkout/payment/directives/templates/purchaseOrder.html',
+		templateUrl: 'checkout/payment/directives/oc-payment-po/oc-payment-po.html',
 		controller: 'PaymentPurchaseOrderCtrl'
-	}
+	};
 }
 
 function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment) {
