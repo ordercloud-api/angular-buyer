@@ -18,7 +18,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 				if (data.Items.length) {
 					$scope.payment = data.Items[0];
 					$scope.showPaymentOptions = false;
-					getCreditCards();
 				} else {
 					var payment = {
 						Type: CheckoutConfig.AvailablePaymentMethods[0],
@@ -30,8 +29,8 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 						xp: {}
 					};
 					$scope.payment = payment;
-					getCreditCards();
 				}
+				getCreditCards();
 			});
 	} else {
 		delete $scope.payment.SpendingAccountID;
@@ -60,7 +59,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
-				$rootScope.$broadcast('OCPaymentUpdated', payment);
 			});
 	};
 
@@ -69,7 +67,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', false);
 		} else {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
-
 		}
 
 		if (n.CreditCardID) n.CreditCard = _.findWhere($scope.creditCards, {ID: $scope.payment.CreditCardID});

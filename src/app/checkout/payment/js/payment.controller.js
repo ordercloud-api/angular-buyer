@@ -7,6 +7,11 @@ function CheckoutPaymentController($exceptionHandler, $rootScope, toastr, OrderC
     vm.createAddress = createAddress;
     vm.changeBillingAddress = changeBillingAddress;
 
+    vm.billingAddressRequired = false;
+    $rootScope.$on('OCPaymentUpdated', function(event, payment) {
+        vm.billingAddressRequired = payment.Type === 'CreditCard';
+    });
+
     function createAddress(order){
         return ocMyAddresses.Create()
             .then(function(address) {
