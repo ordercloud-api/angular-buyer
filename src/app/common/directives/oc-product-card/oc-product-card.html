@@ -11,7 +11,7 @@
     <!--Product Info-->
     <div class="text-right c-product-card__icons hidden-xs" oc-prevent-click>
         <ordercloud-product-quick-view product="productCard.product" current-order="productCard.currentOrder"></ordercloud-product-quick-view>
-        <ordercloud-favorite-product product="productCard.product" current-user="productCard.currentUser"></ordercloud-favorite-product>
+        <i class="fa" oc-favorite-product current-user="productCard.currentUser" product="productCard.product" favorite-class="fa-heart" non-favorite-class="fa-heart-o"></i>
     </div>
     <h5 class="c-product-card__name">{{productCard.product.Name || productCard.product.ID}}<br><small class="text-muted c-product-card__id" ng-if="productCard.product.Name">{{productCard.product.ID}}</small>
     </h5>
