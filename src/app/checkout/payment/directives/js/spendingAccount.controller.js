@@ -52,7 +52,6 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', true);
-				$rootScope.$broadcast('OCPaymentUpdated', payment);
 			});
 	};
 

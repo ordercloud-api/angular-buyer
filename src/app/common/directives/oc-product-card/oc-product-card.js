@@ -1,6 +1,6 @@
 angular.module('orderCloud')
     .component('ocProductCard', {
-        templateUrl: 'common/templates/card.product.html',
+        templateUrl: 'common/directives/oc-product-card/oc-product-card.html',
         controller: ocProductCard,
         controllerAs: 'productCard',
         bindings: {
@@ -11,7 +11,7 @@ angular.module('orderCloud')
         }
     });
 
-function ocProductCard($rootScope, $scope, $exceptionHandler, toastr, OrderCloudSDK){
+function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, OrderCloudSDK){
     var vm = this;
 
     $scope.$watch(function(){
@@ -19,6 +19,8 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, toastr, OrderCloud
     }, function(newVal){
         vm.findPrice(newVal);
     });
+
+    $timeout(setDefaultQuantity, 100);
 
     vm.addToCart = function(OCProductForm) {
         var li = {
@@ -29,13 +31,12 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, toastr, OrderCloud
         return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
             .then(function(lineItem) {
                 $rootScope.$broadcast('OC:UpdateOrder', vm.currentOrder.ID, 'Updating Order');
-                vm.product.Quantity = 1;
-                toastr.success('Product added to cart', 'Success');
+                setDefaultQuantity();
+                toastr.success(vm.product.Name + ' was added to cart');
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);
-            })
-
+            });
     };
 
     vm.findPrice = function(qty){
@@ -48,4 +49,10 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, toastr, OrderCloud
             vm.calculatedPrice = finalPriceBreak.Price * qty;
         }
     };
+
+    function setDefaultQuantity() {
+        vm.product.Quantity = (vm.product.PriceSchedule && vm.product.PriceSchedule.MinQuantity)
+                     ? vm.product.PriceSchedule.MinQuantity
+                     : 1;
+    }
 }

@@ -24,6 +24,9 @@
     </div>
     <!--Add to Cart-->
     <form ng-if="!(productCard.product.SpecCount > 0)" name="OCProductForm" class="c-product-card__add-to-cart-btn" prevent-click>
-        <oc-add-to-cart product="productCard.product" order="productCard.currentOrder"></oc-add-to-cart>
+        <oc-quantity-input product="productCard.product"></oc-quantity-input>
+        <div class="form-group">
+            <button ng-click="productCard.addToCart()" class="btn btn-sm btn-block btn-primary" ng-disabled="!productCard.product.Quantity">Add to Cart</button>
+        </div>
     </form>
 </div>
