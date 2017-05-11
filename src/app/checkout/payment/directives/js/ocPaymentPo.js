@@ -16,7 +16,7 @@ function OrderCloudPaymentPurchaseOrderDirective() {
 	}
 }
 
-function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService) {
+function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment) {
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
@@ -54,7 +54,7 @@ function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, t
 	}, true);
 
 	$scope.savePayment = function () {
-		ocCheckoutPaymentService.Save($scope.payment, $scope.order)
+		ocCheckoutPayment.Save($scope.payment, $scope.order)
 			.then(function(payment) {
 				payment.Editing = false;
 				$scope.payment = payment;

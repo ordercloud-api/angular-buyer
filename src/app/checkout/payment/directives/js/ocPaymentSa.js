@@ -18,7 +18,7 @@ function OrderCloudPaymentSpendingAccountDirective() {
 	}
 }
 
-function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService) {
+function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment) {
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
@@ -64,7 +64,7 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 	}
 
 	$scope.changePaymentAccount = function() {
-		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+		ocCheckoutPayment.SelectPaymentAccount($scope.payment, $scope.order)
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', true);

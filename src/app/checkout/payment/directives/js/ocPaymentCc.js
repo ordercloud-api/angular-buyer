@@ -18,7 +18,7 @@ function OrderCloudPaymentCreditCardDirective() {
 	}
 }
 
-function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPaymentService) {
+function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPayment) {
 	var creditCardListOptions = {
 		page: 1,
 		pageSize: 100
@@ -71,7 +71,7 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 	}
 
 	$scope.changePaymentAccount = function() {
-		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+		ocCheckoutPayment.SelectPaymentAccount($scope.payment, $scope.order)
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);

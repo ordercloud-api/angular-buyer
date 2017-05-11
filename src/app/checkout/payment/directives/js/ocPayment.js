@@ -20,13 +20,13 @@ function OrderCloudPaymentDirective() {
 	}
 }
 
-function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPaymentService, CheckoutConfig) {
+function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPayment, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function (data) {
-				if (ocCheckoutPaymentService.PaymentsExceedTotal(data, $scope.order.Total)) {
-					ocCheckoutPaymentService.RemoveAllPayments(data, $scope.order)
+				if (ocCheckoutPayment.PaymentsExceedTotal(data, $scope.order.Total)) {
+					ocCheckoutPayment.RemoveAllPayments(data, $scope.order)
 						.then(function (data) {
 							var payment = {
 								Type: CheckoutConfig.AvailablePaymentMethods[0],
