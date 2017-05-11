@@ -20,7 +20,7 @@
 <div>
     <!--Choose Specs-->
     <div class="form-group" ng-if="productCard.product.SpecCount > 0">
-        <button type="button" class="btn btn-block btn-primary" ui-sref="productDetail({productid: productCard.product.ID})">Choose Specs</button>
+        <button type="button" class="btn btn-sm btn-block btn-primary" ui-sref="productDetail({productid: productCard.product.ID})">Choose Specs</button>
     </div>
     <!--Add to Cart-->
     <form ng-if="!(productCard.product.SpecCount > 0)" name="OCProductForm" class="c-product-card__add-to-cart-btn" prevent-click>
