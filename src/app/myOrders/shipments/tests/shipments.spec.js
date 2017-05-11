@@ -1,4 +1,4 @@
-describe('Component: Shipments', function() {
+fdescribe('Component: Shipments', function() {
 
     var _ocOrderShipments;
     beforeEach(inject(function(ocOrderShipments) {
@@ -29,25 +29,27 @@ describe('Component: Shipments', function() {
                 orderID: mock.Order.ID
             });
             mockLineItems = mock.LineItems;
-            spyOn(_ocOrderShipments, 'List');
+            spyOn(_ocOrderShipments, 'List').and.returnValue(dummyPromise);
         }));
         describe('vm.pageChanged', function() {
             it('should update the page on Meta', function() {
-                var page = orderShipmentsCtrl.shipments.Meta.Page;
-                var pageSize = orderShipmentsCtrl.shipments.Meta.PageSize;
+                var page = 1;
+                var pageSize = 100;
+                orderShipmentsCtrl.pageChanged();
                 expect(_ocOrderShipments.List).toHaveBeenCalledWith(mock.Order.ID, page, pageSize, mockLineItems);
             })
         });
         describe('vm.loadMore', function() {
             it('should increase the pageSize on Meta', function() {
-                var page = orderShipmentsCtrl.shipments.Meta.Page;
-                var pageSize = orderShipmentsCtrl.shipments.Meta.PageSize + 1;
+                var page = 2;
+                var pageSize = 100;
+                orderShipmentsCtrl.loadMore();
                 expect(_ocOrderShipments.List).toHaveBeenCalledWith(mock.Order.ID, page, pageSize, mockLineItems);
             })
         });
     });
 
-    fdescribe('Factory: ocOrderShipments', function() {
+    describe('Factory: ocOrderShipments', function() {
         var page,
             pageSize,
             orderID;
