@@ -1,6 +1,22 @@
 angular.module('orderCloud')
-	.controller('PaymentCreditCardCtrl', PaymentCreditCardController)
+	//Single Credit Card Payment
+	.directive('ocPaymentCc', OrderCloudPaymentCreditCardDirective)
+    .controller('PaymentCreditCardCtrl', PaymentCreditCardController)
 ;
+
+function OrderCloudPaymentCreditCardDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			payment: '=?',
+			excludedCreditCards: '=?excludeOptions'
+		},
+		templateUrl: 'checkout/payment/directives/templates/creditCard.html',
+		controller: 'PaymentCreditCardCtrl',
+		controllerAs: 'paymentCC'
+	}
+}
 
 function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPaymentService) {
 	var creditCardListOptions = {

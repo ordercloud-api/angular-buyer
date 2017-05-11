@@ -1,5 +1,24 @@
 angular.module('orderCloud')
-	.controller('PaymentCtrl', PaymentController);
+	//Single Payment, Multiple Types
+	.directive('ocPayment', OrderCloudPaymentDirective)
+    .controller('PaymentCtrl', PaymentController)
+;
+
+function OrderCloudPaymentDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			methods: '=?',
+			payment: '=?',
+			paymentIndex: '=?',
+			excludeOptions: '=?'
+		},
+		templateUrl: 'checkout/payment/directives/templates/payment.html',
+		controller: 'PaymentCtrl',
+		controllerAs: 'ocPayment'
+	}
+}
 
 function PaymentController($scope, $rootScope, OrderCloudSDK, ocCheckoutPaymentService, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
