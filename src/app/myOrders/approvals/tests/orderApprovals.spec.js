@@ -88,12 +88,10 @@ describe('Component: orderApprovals', function() {
         var approvalModalCtrl;
         beforeEach(inject(function($controller, $stateParams, $exceptionHandler){
             var intent = 'Approve',
-                orderID = 'testOrderID',
-                exceptionHandler = $exceptionHandler;
+                orderID = 'testOrderID';
             approvalModalCtrl = $controller('ApprovalModalCtrl', {
                 Intent: intent,
                 OrderID: orderID,
-                $exceptionHandler: exceptionHandler,
                 $uibModalInstance: uibModalInstance
             });
             spyOn(toastrService, 'success');
