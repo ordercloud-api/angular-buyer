@@ -20,34 +20,25 @@ describe('Component: Payments', function() {
     });
 
     describe('Controller: OrderPaymentsCtrl', function() {
-        var orderPaymentsCtrl,
-            orderPayments;
-        beforeEach(inject(function($controller, OrderPayments) {
-            orderPayments = OrderPayments;
+        var orderPaymentsCtrl;
+        beforeEach(inject(function($controller) {
             orderPaymentsCtrl = $controller('OrderPaymentsCtrl', {
-                List: {
-                    Items: ['mockPayment1', 'mockPayment2'],
-                    Meta: {
-                        Page: 1,
-                        PageSize: 100
-                    }
-                },
-                OrderPayments: orderPayments
+                orderPayments : mock.Payments 
             });
-            spyOn(_ocOrderPayments, 'List');
+            spyOn(_ocOrderPayments, 'List').and.returnValue(dummyPromise);
         }));
         describe('vm.pageChanged', function() {
             it('should update the page on Meta', function(){
-                var page = orderPaymentsCtrl.List.Meta.Page;
-                var pageSize = orderPaymentsCtrl.List.Meta.PageSize;
+                var page = 1;
+                var pageSize = 100;
                 orderPaymentsCtrl.pageChanged();
                 expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
             });
         });
         describe('vm.loadMore', function() {
             it('should increase the pageSize on Meta', function() {
-                var page = orderPaymentsCtrl.List.Meta.Page;
-                var pageSize = orderPaymentsCtrl.List.Meta.PageSize + 1;
+                var page = 2;
+                var pageSize = 100;
                 orderPaymentsCtrl.loadMore();
                 expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
             });

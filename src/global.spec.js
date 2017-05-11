@@ -11,6 +11,7 @@ var q,
     currentUser,
     orderLineItems,
     orderShipments,
+    orderPayments,
     ocAppNameService,
     ocConfirmService,
     ocParametersService,
@@ -26,11 +27,12 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('Parameters', mock.Parameters);
     $provide.value('OrderLineItems', mock.LineItems);
     $provide.value('OrderShipments', mock.Shipments);
+    $provide.value('OrderPayments', mock.Payments);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, 
 OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder,
-CurrentUser, OrderLineItems, OrderShipments) {
+CurrentUser, OrderLineItems, OrderShipments, OrderPayments) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -48,6 +50,7 @@ CurrentUser, OrderLineItems, OrderShipments) {
     currentUser = CurrentUser;
     orderLineItems = OrderLineItems;
     orderShipments = OrderShipments;
+    orderPayments = OrderPayments;
     var defer = $q.defer();
     defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
@@ -115,6 +118,13 @@ function _mockData() {
                 {ID: 'testID1'},
                 {ID: 'testID2'}
             ],
+            Meta: {
+                Page: 1,
+                PageSize: 100
+            }
+        },
+        Payments: {
+            Items: ['mockPayment1', 'mockPayment2'],
             Meta: {
                 Page: 1,
                 PageSize: 100
