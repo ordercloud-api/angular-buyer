@@ -39,7 +39,7 @@ describe('Component: orders', function() {
                     }
                 }
             });
-            spyOn(ocParametersService, 'Create');
+            spyOn(ocParametersService, 'Create').and.returnValue(dummyPromise);
             spyOn(ordersCtrl, 'filter');
             spyOn(state, 'go');
         }));
@@ -71,22 +71,20 @@ describe('Component: orders', function() {
             it('should reload state with a reverse sort call', function(){
                 mock.Parameters.sortBy = '!ID';
                 ordersCtrl.reverseSort();
-                expect(ocParametersService.Create).toHaveBeenCalledWith(mock.Parameters, false);
+                expect(ordersCtrl.filter).toHaveBeenCalledWith(false);
             });
         });
         describe('vm.pageChanged', function(){
             it('should reload state with the new page', function(){
-                mock.Parameters.page = 'newPage';
                 ordersCtrl.pageChanged();
-                expect(state.go).toHaveBeenCalled();
-                expect(ocParametersService.Create).toHaveBeenCalledWith(mock.Parameters, false);
+                expect(state.go).toHaveBeenCalledWith('.', {page: ordersCtrl.list.Meta.Page});
             });
         });
         describe('vm.loadMore', function(){
             var mockMeta;
             beforeEach(function(){
                 mockMeta = {Page: 2, PageSize: 15};
-                ordersCtrl.OrderList.Items = [{Name: 'FirstOrder'}, {Name:'SecondOrder'}];
+                ordersCtrl.list.Items = [{Name: 'FirstOrder'}, {Name:'SecondOrder'}];
                 var mockResponse = {Items: [{Name:'ThirdOrder'}], Meta: mockMeta};
 
                 var defer = q.defer();
@@ -98,35 +96,78 @@ describe('Component: orders', function() {
             it('should concatenate next page of results with current list items', function(){
                 expect(_ocOrders.List).toHaveBeenCalledWith(mock.Parameters);
                 scope.$digest();
-                //use toEqual for comparing objects (does deep equality check)
-                expect(ordersCtrl.OrderList.Items).toEqual([{Name: 'FirstOrder'}, {Name:'SecondOrder'}, {Name:'ThirdOrder'}]);
-                expect(ordersCtrl.OrderList.Meta).toEqual(mockMeta);
+                // use toEqual for comparing objects (does deep equality check)
+                expect(ordersCtrl.list.Items).toEqual([{Name: 'FirstOrder'}, {Name:'SecondOrder'}, {Name:'ThirdOrder'}]);
+                expect(ordersCtrl.list.Meta).toEqual(mockMeta);
             });
         });
     });
 
-    describe('Service: ocOrders', function() {
-        beforeEach(inject(function(){
-            var defer = q.defer();
-            defer.resolve();
-            spyOn(_ocOrders, 'List').and.returnValue(defer.promise);
-            spyOn(oc.Me, 'ListIncomingOrders').and.returnValue(defer.promise);
-            spyOn(oc.Me, 'ListOutgoingOrders').and.returnValue(defer.promise);
-        }));
-
+    describe('Factory: ocOrders', function() {
 
         it('should define methods', function(){
             expect(_ocOrders.List).toBeDefined();
             expect(_ocOrders.List).toEqual(jasmine.any(Function));
         });
 
-        //TODO: Finish Unit tests: unit testing services didn't work like I thought it would
-        // it('should default to excluding unsubmitted orders if no status provided', function() {
-        //     _ocOrders.List(mockParams, currentUser);
-        //     scope.$digest();
-        //     expect(oc.Me.ListOutgoingOrders).toHaveBeenCalled();
-        //     // expect(orderCloud.Me.ListIncomingOrders).toHaveBeenCalled();
-        // });
+        describe('Method: List', function() {
+            beforeEach(function() {
+                var parameters = mock.Parameters;
+                parameters.tab = 'approvals';
+                spyOn(oc.Me, 'ListApprovableOrders').and.returnValue(dummyPromise);
+
+                _ocOrders.List(parameters, mock.user);
+                
+            });
+            it('should return a list of approvalbe orders if parameters tab == approvals', function(){
+                scope.$digest();
+                var parameters = {
+                    search: null,
+                    page: 2,
+                    pageSize: 12,
+                    searchOn: null,
+                    sortBy: 'ID',
+                    filters: {
+                        status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'
+                    },
+                    catalogID: null,
+                    categoryID: null,
+                    categoryPage: null,
+                    productPage: null,
+                    tab: 'approvals'
+                };
+                expect(oc.Me.ListApprovableOrders).toHaveBeenCalledWith(parameters);
+            })
+        })
+        describe('Method: List', function() {
+            beforeEach(function() {
+                var parameters = mock.Parameters;
+                parameters.tab = null;
+                spyOn(oc.Me, 'ListOrders').and.returnValue(dummyPromise);
+
+                _ocOrders.List(parameters, mock.user);
+                
+            });
+            it('should return a list of orders if parameters tab !== approvals', function(){
+                scope.$digest();
+                var parameters = {
+                    search: null,
+                    page: 2,
+                    pageSize: 12,
+                    searchOn: null,
+                    sortBy: 'ID',
+                    filters: {
+                        status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'
+                    },
+                    catalogID: null,
+                    categoryID: null,
+                    categoryPage: null,
+                    productPage: null,
+                    tab: null
+                };
+                expect(oc.Me.ListOrders).toHaveBeenCalledWith(parameters);
+            })
+        })
     });
 });
 
