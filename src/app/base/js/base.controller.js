@@ -2,10 +2,11 @@ angular.module('orderCloud')
     .controller('BaseCtrl', BaseController)
 ;
 
-function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, CurrentUser, CurrentOrder) {
+function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLineItems, CurrentUser, CurrentOrder, TotalQuantity) {
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
+    vm.totalQuantity = TotalQuantity;
 
     vm.mobileSearch = mobileSearch;
 
@@ -25,8 +26,16 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, Curr
             message: message
         };
         vm.orderLoading.promise = OrderCloudSDK.Orders.Get('outgoing', OrderID)
-            .then(function(data) {
-                vm.currentOrder = data;
+            .then(function(order) {
+                vm.currentOrder = order;
             });
     });
+
+    $rootScope.$on('OC:UpdateTotalQuantity', function(event, lineItem) {
+        if (vm.totalQuantity) {
+            return vm.totalQuantity = lineItem.Quantity + vm.totalQuantity;
+        } else {
+            return vm.totalQuantity = lineItem.Quantity;
+        }
+    })
 }

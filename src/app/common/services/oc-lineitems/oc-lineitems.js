@@ -46,6 +46,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
         OrderCloudSDK.LineItems.Create('outgoing', order.ID, li)
             .then(function(lineItem) {
                 $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                $rootScope.$broadcast('OC:UpdateTotalQuantity', lineItem);
                 deferred.resolve();
             })
             .catch(function(error) {
