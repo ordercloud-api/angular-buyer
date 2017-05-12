@@ -20,6 +20,7 @@
                     <p ng-bind-html="checkout.billingAddress | address:'full'"></p>
                 </div>
             </div>
+            <input type="text" class="hidden" ng-model="base.currentOrder.BillingAddressID" ng-required="checkoutPayment.billingAddressRequired">
         </div>
         <div class="col-md-4">
             <div class="panel panel-default" hl-sticky anchor="top" offset-top="70" media-query="min-width: 992px">

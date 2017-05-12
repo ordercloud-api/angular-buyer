@@ -21,13 +21,16 @@ angular.module('orderCloud')
  *
  * 4) RoleGroup alias can be configured ahead of time using the ocRolesProvider -- RoleGroups can be configured to compare for ANY or ALL provided roles
  * <div oc-if-roles="MyGroupOfRoles"></div>
+ * 
+ * 5)If only one of numerous role group are required, provide a || delimited list of roles as directive attribute's value
+ * <div oc-if-roles="MyFirstGroupRoles || MySecondGroupRoles"></div>
+ * 
+ * 6) Object notation similar to that used in ocNavItems can also be used. This can include multiple Roles and/or RoleGroups
+ * <div oc-if-roles="{Items:['BuyerRoles', 'CatalogRoles'], Any:false}"></div>
  */
 
 function OrderCloudIfRoles(ocRoles, $ocRoles) {
     var directive = {
-        scope: {
-            ocIfRoles: '@'
-        },
         multiElement: true,
         restrict: 'A',
         priority: 599, //ngIf has priority 600 and terminal: true -- therefore, this directive is ignored if ngIf removes element
@@ -35,22 +38,34 @@ function OrderCloudIfRoles(ocRoles, $ocRoles) {
     };
 
     function link(scope, element, attr) {
+        //Use attr.ocIfRoles to avoid need for isolated scope
+        var attrValue = attr.ocIfRoles;
+        var splitAttrs = attrValue.split(' || ');
         var roleGroups = $ocRoles.GetRoleGroups();
-        var ocIfRolesObj = scope.$eval(scope.ocIfRoles);
+        var splitRoleGroups = _.filter(splitAttrs, function(val) { return roleGroups[val]; })
+        var ocIfRolesObj = scope.$eval(attrValue);
         if (typeof ocIfRolesObj == 'object') {
             analyzeRoles(ocIfRolesObj.Items, ocIfRolesObj.Any);
-        } else if (scope.ocIfRoles && !/[^a-z]/i.test(scope.ocIfRoles)) {
-            if (roleGroups[scope.ocIfRoles]) {
+        } else if (attrValue && !/[^a-z]/i.test(attrValue)) {
+            if (roleGroups[attrValue]) {
                 //single string role group
-                var roleGroup = roleGroups[scope.ocIfRoles];
+                var roleGroup = roleGroups[attrValue];
                 analyzeRoles(roleGroup.Roles, roleGroup.Type === 'Any');
             } else {
                 //single string role
-                analyzeRoles([scope.ocIfRoles]);
+                analyzeRoles([attrValue]);
             }
-        } else if (scope.ocIfRoles.split(' || ').length > 1) {
-            //pipe delimited string values
-            analyzeRoles(scope.ocIfRoles.split(' || '), true);
+        } else if (splitAttrs.length) {
+            if(splitRoleGroups.length){
+                var analyzeGroupRoles = splitRoleGroups.reduce(function(prev, curr){
+                    var group = roleGroups[curr];
+                    return prev && analyzeRoles(group.Roles, group.Type === 'Any');
+                }, true);
+                return analyzeGroupRoles && analyzeRoles(_.difference(splitAttrs, splitRoleGroups), true)
+            } else {
+                //pipe delimited string values
+                analyzeRoles(splitAttrs, true);
+            }
         } else {
             scope.$watch('ocIfRoles', function ocIfWatchAction(value) {
                 if (angular.isArray(value) && value.length && (typeof value[0] == 'string')) {

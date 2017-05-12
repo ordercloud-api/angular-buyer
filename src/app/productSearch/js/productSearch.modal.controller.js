@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductSearchModalCtrl', ProductSearchModalController)
 ;
 
-function ProductSearchModalController($uibModalInstance, $scope, OrderCloudSDK, catalogid) {
+function ProductSearchModalController($uibModalInstance, OrderCloudSDK, catalogid) {
     var vm = this;
 
     vm.getSearchResults = function() {
@@ -29,6 +29,6 @@ function ProductSearchModalController($uibModalInstance, $scope, OrderCloudSDK, 
     };
 
     vm.onHardEnter = function(searchTerm) {
-        $uibModalInstance.close({searchTerm: searchTerm});
+        $uibModalInstance.close({search: searchTerm});
     };
 }

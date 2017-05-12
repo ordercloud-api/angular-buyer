@@ -1,10 +1,10 @@
-<form name="selectPaymentAccountModalForm">
+<form name="selectPaymentAccountModalForm" oc-pretty-submit>
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" ng-click="selectPaymentAccount.cancel()"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title">New Address</h3>
+        <h3 class="modal-title">Select {{selectPaymentAccount.payment.Type == 'CreditCard' ? 'Credit Card' : 'Spending Account'}}</h3>
     </div>
     <div class="modal-body" ng-if="selectPaymentAccount.payment.Type == 'SpendingAccount'">
-        <div class="panel panel-default" ng-class="{'panel-primary': selectPaymentAccount.payment.SpendingAccountID == spendingAccount.ID}" ng-repeat="spendingAccount in selectPaymentAccount.accounts.Items"">
+        <div class="panel panel-default" ng-class="{'panel-primary': selectPaymentAccount.payment.SpendingAccountID == spendingAccount.ID}" ng-repeat="spendingAccount in selectPaymentAccount.accounts.Items">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-6">
@@ -45,7 +45,7 @@
 					<small class="text-muted">Expires On: {{creditCard.ExpirationDate | date:'MM/yy'}}</small>
 				</div>
 				<div class="col-xs-4 col-sm-3 text-right">
-					<a ng-click="selectPaymentAccount.submit(creditCard)"">Select</a>
+					<a ng-click="selectPaymentAccount.submit(creditCard)">Select</a>
 				</div>
 			</div>
 		</div>

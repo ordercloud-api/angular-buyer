@@ -16,7 +16,7 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLi
                 if (data.productID) {
                     $state.go('productDetail', {productid: data.productID});
                 } else {
-                    $state.go('productSearchResults', {searchTerm: data.searchTerm});
+                    $state.go('productSearchResults', {search: data.search});
                 }
             });
     }

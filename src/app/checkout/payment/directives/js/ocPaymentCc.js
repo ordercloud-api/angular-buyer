@@ -1,8 +1,24 @@
 angular.module('orderCloud')
-	.controller('PaymentCreditCardCtrl', PaymentCreditCardController)
+	//Single Credit Card Payment
+	.directive('ocPaymentCc', OrderCloudPaymentCreditCardDirective)
+    .controller('PaymentCreditCardCtrl', PaymentCreditCardController)
 ;
 
-function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPaymentService) {
+function OrderCloudPaymentCreditCardDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			payment: '=?',
+			excludedCreditCards: '=?excludeOptions'
+		},
+		templateUrl: 'checkout/payment/directives/templates/creditCard.html',
+		controller: 'PaymentCreditCardCtrl',
+		controllerAs: 'paymentCC'
+	}
+}
+
+function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHandler, toastr, CheckoutConfig, OrderCloudSDK, ocMyCreditCards, ocCheckoutPayment) {
 	var creditCardListOptions = {
 		page: 1,
 		pageSize: 100
@@ -18,7 +34,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 				if (data.Items.length) {
 					$scope.payment = data.Items[0];
 					$scope.showPaymentOptions = false;
-					getCreditCards();
 				} else {
 					var payment = {
 						Type: CheckoutConfig.AvailablePaymentMethods[0],
@@ -30,8 +45,8 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 						xp: {}
 					};
 					$scope.payment = payment;
-					getCreditCards();
 				}
+				getCreditCards();
 			});
 	} else {
 		delete $scope.payment.SpendingAccountID;
@@ -56,11 +71,10 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 	}
 
 	$scope.changePaymentAccount = function() {
-		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+		ocCheckoutPayment.SelectPaymentAccount($scope.payment, $scope.order)
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
-				$rootScope.$broadcast('OCPaymentUpdated', payment);
 			});
 	};
 
@@ -69,7 +83,6 @@ function PaymentCreditCardController($scope, $rootScope, $filter, $exceptionHand
 			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', false);
 		} else {
 			$scope.OCPaymentCreditCard.$setValidity('CreditCardNotSet', true);
-
 		}
 
 		if (n.CreditCardID) n.CreditCard = _.findWhere($scope.creditCards, {ID: $scope.payment.CreditCardID});

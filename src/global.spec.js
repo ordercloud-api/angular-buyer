@@ -8,6 +8,8 @@ var q,
     oc,
     parametersResolve,
     currentOrder,
+    currentUser,
+    orderLineItems,
     ocAppNameService,
     ocConfirmService,
     ocParametersService,
@@ -18,11 +20,15 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('ocStateLoading', {
         'Init': jasmine.createSpy()
     });
+    $provide.value('CurrentUser', mock.User);
     $provide.value('CurrentOrder', mock.Order);
-    $provide.value('Parameters', mock.Parameters)
+    $provide.value('Parameters', mock.Parameters);
+    $provide.value('OrderLineItems', mock.LineItems);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
-beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder) {
+beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, 
+OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder,
+CurrentUser, OrderLineItems) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -37,6 +43,8 @@ beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler,
     ocRolesService = ocRoles;
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
+    currentUser = CurrentUser;
+    orderLineItems = OrderLineItems;
     var defer = $q.defer();
     defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
@@ -57,7 +65,7 @@ function _mockData() {
             pageSize: null,
             searchOn: null,
             sortBy: null,
-            filters: null,
+            filters: {},
             catalogID: null,
             categoryID: null,
             categoryPage: null,
@@ -88,10 +96,20 @@ function _mockData() {
             Email: "USER_EMAIL",
             Phone: "USER_PHONE",
             TermsAccepted: true,
-            Active: true
+            Active: true,
+            xp: {
+                FavoriteProducts: ['FavProd1', 'FavProd2']
+            }
+        },
+        LineItems: {
+            Items: [
+                {ID: 'testLI1'},
+                {ID: 'testLI2'}
+            ]
         },
         Product: {
-            ID: 'PRODUCT_ID'
+            ID: 'PRODUCT_ID',
+            Name: 'PRODUCT_NAME'
         },
         Category: {
             ID: 'CATEGORY_ID'
@@ -114,6 +132,37 @@ function _mockData() {
         },
         Promotion: {
             Code:'Discount10'
+        },
+        CreditCard: {
+            "ID": "testCompanyACard",
+            "Editable": true,
+            "Token": null,
+            "DateCreated": "2016-12-07T17:49:28.73+00:00",
+            "CardType": "visa",
+            "PartialAccountNumber": "123",
+            "CardholderName": "CompanyA",
+            "ExpirationDate": "2016-02-20T00:00:00+00:00",
+            "xp": null
+        },
+        SpendingAcct: {
+            "ID": "1bXwQHDke0SF4LRPzCpDcQ",
+            "Name": "Gift Card Expires Next Month",
+            "Balance": 20,
+            "AllowAsPaymentMethod": true,
+            "RedemptionCode": null,
+            "StartDate": "2016-12-01T00:00:00+00:00",
+            "EndDate": "2017-02-02T00:00:00+00:00",
+            "xp": null
+        },
+        GiftCard: {
+            "ID": "1bXwQHDke0SF4LRPzCpDcQ",
+            "Name": "Gift Card Expires Next Month",
+            "Balance": 20,
+            "AllowAsPaymentMethod": true,
+            "RedemptionCode": "Hello",
+            "StartDate": "2016-12-01T00:00:00+00:00",
+            "EndDate": "2017-02-02T00:00:00+00:00",
+            "xp": null
         }
     }
 }

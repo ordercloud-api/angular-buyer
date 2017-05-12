@@ -1,8 +1,24 @@
 angular.module('orderCloud')
-	.controller('PaymentSpendingAccountCtrl', PaymentSpendingAccountController)
+	//Single Spending Account Payment
+	.directive('ocPaymentSa', OrderCloudPaymentSpendingAccountDirective)
+    .controller('PaymentSpendingAccountCtrl', PaymentSpendingAccountController)
 ;
 
-function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService) {
+function OrderCloudPaymentSpendingAccountDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			payment: '=?',
+			excludedSpendingAccounts: '=?excludeOptions'
+		},
+		templateUrl: 'checkout/payment/directives/templates/spendingAccount.html',
+		controller: 'PaymentSpendingAccountCtrl',
+		controllerAs: 'paymentSA'
+	}
+}
+
+function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment) {
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
@@ -48,11 +64,10 @@ function PaymentSpendingAccountController($scope, $rootScope, $exceptionHandler,
 	}
 
 	$scope.changePaymentAccount = function() {
-		ocCheckoutPaymentService.SelectPaymentAccount($scope.payment, $scope.order)
+		ocCheckoutPayment.SelectPaymentAccount($scope.payment, $scope.order)
 			.then(function(payment) {
 				$scope.payment = payment;
 				$scope.OCPaymentSpendingAccount.$setValidity('SpendingAccountNotSet', true);
-				$rootScope.$broadcast('OCPaymentUpdated', payment);
 			});
 	};
 

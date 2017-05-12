@@ -1,8 +1,22 @@
 angular.module('orderCloud')
-	.controller('PaymentPurchaseOrderCtrl', PaymentPurchaseOrderController)
+	//Single Purchase Order Payment
+	.directive('ocPaymentPo', OrderCloudPaymentPurchaseOrderDirective)
+    .controller('PaymentPurchaseOrderCtrl', PaymentPurchaseOrderController)
 ;
 
-function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK) {
+function OrderCloudPaymentPurchaseOrderDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			payment: '=?'
+		},
+		templateUrl: 'checkout/payment/directives/templates/purchaseOrder.html',
+		controller: 'PaymentPurchaseOrderCtrl'
+	}
+}
+
+function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment) {
 	if (!$scope.payment) {
 		OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
 			.then(function(data) {
@@ -38,4 +52,13 @@ function PaymentPurchaseOrderController($scope, $rootScope, $exceptionHandler, t
 			$scope.OCPaymentPurchaseOrder.$setValidity('PurchaseOrderNotSaved', true);
 		}
 	}, true);
+
+	$scope.savePayment = function () {
+		ocCheckoutPayment.Save($scope.payment, $scope.order)
+			.then(function(payment) {
+				payment.Editing = false;
+				$scope.payment = payment;
+				$scope.OCPaymentPurchaseOrder.$setValidity('PurchaseOrderNotSaved', true);
+			});
+	};
 }

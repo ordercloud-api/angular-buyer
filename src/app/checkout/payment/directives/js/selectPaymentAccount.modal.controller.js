@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('SelectPaymentAccountModalCtrl', SelectPaymentAccountModalController)
 ;
 
-function SelectPaymentAccountModalController($uibModalInstance, ocCheckoutPaymentService, Accounts, Payment, Order) {
+function SelectPaymentAccountModalController($uibModalInstance, ocCheckoutPayment, Accounts, Payment, Order) {
     var vm = this;
     vm.accounts = Accounts;
     vm.payment = angular.copy(Payment);
@@ -12,7 +12,7 @@ function SelectPaymentAccountModalController($uibModalInstance, ocCheckoutPaymen
             $uibModalInstance.dismiss();
         } else {
             vm.payment[vm.payment.Type == 'SpendingAccount' ? 'SpendingAccountID' : 'CreditCardID'] = account.ID;
-            ocCheckoutPaymentService.Save(vm.payment, Order, account)
+            ocCheckoutPayment.Save(vm.payment, Order, account)
                 .then(function(payment) {
                     $uibModalInstance.close(payment);
                 });
