@@ -82,6 +82,8 @@ function OrderCloudFavoriteProductDirective($exceptionHandler, toastr, OrderClou
                         toastr.success(scope.product.Name + ' was removed from your favorite products.');
                     });
             }
+
+            element.css('cursor', 'pointer');
         }
     };
 }
