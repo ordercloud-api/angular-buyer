@@ -27,6 +27,7 @@ function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList
             .then(function () {
                 $rootScope.$broadcast('OC:UpdateOrder', order.ID);
                 vm.lineItems.Items.splice(scope.$index, 1);
+                $rootScope.$broadcast('OC:UpdateTotalQuantity', vm.lineItems.Items, false);
                 toastr.success(scope.lineItem.Product.Name + ' was removed from your shopping cart.');
             });
     }
