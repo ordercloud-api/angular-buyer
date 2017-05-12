@@ -1,4 +1,4 @@
-fdescribe('Component: FavoriteOrders', function(){
+describe('Component: FavoriteOrders', function(){
     describe('Controller: FavoriteOrderCtrl', function(){
         var favoriteOrderCtrl;
         beforeEach(inject(function($componentController){
