@@ -1,58 +1,34 @@
-describe('Component: FavoriteOrders', function(){
-    var q,
-        oc,
-        scope,
-        toaster
-        ;
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($q, OrderCloud, $rootScope, toastr){
-        q = $q;
-        oc = OrderCloud;
-        scope = $rootScope.$new();
-        toaster = toastr;
-    }));
+fdescribe('Component: FavoriteOrders', function(){
     describe('Controller: FavoriteOrderCtrl', function(){
         var favoriteOrderCtrl;
         beforeEach(inject(function($componentController){
-            favoriteOrderCtrl = $componentController('ordercloudFavoriteOrder', {
-                $scope: scope,
-                OrderCloud: oc,
-                toastr: toaster
-            });
+            favoriteOrderCtrl = $componentController('ordercloudFavoriteOrder', {});
 
         }));
         describe('toggleFavoriteOrder', function(){
-            var mockOrderID,
-                mockFavoriteOrder
-                ;
             beforeEach(function(){
-                mockOrderID = 'OrderID123';
-                favoriteOrderCtrl.order = {ID: mockOrderID};
+                mock.Order.ID = 'OrderID123';
+                favoriteOrderCtrl.order = {ID: mock.Order.ID};
                 mockFavoriteOrder = 'FavoriteOrder1';
                 favoriteOrderCtrl.currentUser = {xp: {FavoriteOrders: [mockFavoriteOrder]}};
-
-                var defer = q.defer();
-                defer.resolve();
-                spyOn(oc.Me, 'Patch').and.returnValue(defer.promise);
-                spyOn(toaster, 'success');
+                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
+                spyOn(toastrService, 'success');
             });
             it('should add to favorites if user doesnt have any favorite orders', function(){
                 favoriteOrderCtrl.hasFavorites = false;
+                favoriteOrderCtrl.isFavorited = false;
                 favoriteOrderCtrl.toggleFavoriteOrder();
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteOrders: [mockOrderID]}});
+                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteOrders: [mock.Order.ID]}});
                 scope.$digest();
                 expect(favoriteOrderCtrl.isFavorited).toBe(true);
-                expect(toaster.success).toHaveBeenCalledWith('Order added to your favorites', 'Success');
             });
             it('should add to favorites if user has favorites list, but the order isnt included in the list', function(){
                 favoriteOrderCtrl.hasFavorites = true;
                 favoriteOrderCtrl.isFavorited = false;
                 favoriteOrderCtrl.toggleFavoriteOrder();
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteOrders: [mockFavoriteOrder, mockOrderID]}});
+                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteOrders: [mockFavoriteOrder, mock.Order.ID]}});
                 scope.$digest();
                 expect(favoriteOrderCtrl.isFavorited).toBe(true);
-                expect(toaster.success).toHaveBeenCalledWith('Order added to your favorites', 'Success');
             });
             it('should remove order from favorite list, if order is already on list', function(){
                 favoriteOrderCtrl.hasFavorites = true;
@@ -62,7 +38,7 @@ describe('Component: FavoriteOrders', function(){
                 expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteOrders: [ ]}});
                 scope.$digest();
                 expect(favoriteOrderCtrl.isFavorited).toBe(false);
-                expect(toaster.success).toHaveBeenCalledWith('Order removed from your favorites', 'Success');
+                expect(toastrService.success).toHaveBeenCalledWith('Removed from your favorite orders', 'Success');
             });
         });
     });
