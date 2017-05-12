@@ -2,6 +2,8 @@
 	<div ng-repeat="payment in ocPayment.payments" cg-busy="payment.loading">
 		<div class="row">
 			<div ng-class="{'col-xs-10 col-sm-11': ocPayment.payments.length > 1, 'col-xs-12': ocPayment.payments.length == 1}">
+
+                <!--PAYMENT AMOUNT: ONLY ON MULTIPLE PAYMENTS-->
 				<fieldset class="form-group" ng-if="ocPayment.allowMultiple">
 					<label for="paymentAmount">Amount</label>
                     <div class="input-group">
@@ -12,6 +14,8 @@
                     </div>
 				</fieldset>
 				<div ng-form="ocPayment.form['Payment' + $index]" class="clearfix">
+
+                    <!--PAYMENT METHOD-->
                     <fieldset class="form-group" ng-if="ocPayment.methods.length > 1">
                         <div class="input-group">
                             <div class="input-group-addon">
@@ -22,7 +26,7 @@
                     </fieldset>
                     <input type="text" name="PaymentID" ng-model="payment.ID" required class="hidden">
 
-
+                    <!--PURCHASE ORDER PAYMENT-->
                     <div class="panel panel-default" ng-if="payment.Type == 'PurchaseOrder'">
                         <div class="panel-body">
                             <div class="row">
@@ -40,7 +44,7 @@
                         </div>
                     </div>
 
-
+                    <!--SPENDING ACCOUNT PAYMENT-->
                     <div ng-if="payment.Type == 'SpendingAccount'">
                         <input type="text" name="SpendingAccount" ng-model="payment.SpendingAccountID" required class="hidden">
                         <div class="alert alert-warning text-center" ng-if="!payment.SpendingAccountID && !ocPayment.selectingAccount">
@@ -64,7 +68,7 @@
                         </div>
                     </div>
 
-
+                    <!--CREDIT CARD PAYMENT-->
                     <div ng-if="payment.Type == 'CreditCard'">
                         <input type="text" name="CreditCard" ng-model="payment.CreditCardID" required class="hidden">
                         <div class="alert alert-warning text-center" ng-if="!payment.CreditCardID && !ocPayment.selectingAccount">
@@ -95,10 +99,10 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
 			</div>
+
+            <!--MULTIPLE PAYMENT REMOVE BUTTON-->
 			<div class="col-xs-2 col-sm-1 text-right" ng-if="ocPayment.payments.length > 1">
 				<button type="button" class="btn btn-danger" ng-click="ocPayment.removePayment(this)" uib-tooltip="Remove Payment" tooltip-placement="left">
 					<i class="fa fa-trash-o"></i>
@@ -108,5 +112,7 @@
 		</div>
 		<hr ng-if="!$last">
 	</div>
+
+    <!--ADD NEW PAYMENT BUTTON-->
 	<button type="button" class="btn btn-block btn-default" ng-click="ocPayment.addPayment()" ng-if="ocPayment.canAddPayment">Add New Payment</button>
 </div>
