@@ -32,7 +32,7 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLi
     });
 
     $rootScope.$on('OC:UpdateTotalQuantity', function(event, lineItems, add, difference) {
-        if (lineItems.length > 1) {
+        if (lineItems.length >= 1) {
             var quantities = _.pluck(lineItems, 'Quantity');
             return vm.totalQuantity = quantities.reduce(function(a, b) {return a + b}, 0);
         } else {
@@ -40,13 +40,13 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLi
             if (vm.totalQuantity) {
                 if (add) {
                     var newQuantity = difference ? difference : li.Quantity;
-                    return vm.totalQuantity = newQuantity + vm.totalQuantity;
+                    return vm.totalQuantity = newQuantity + vm.totalQuantity || 0;
                 } else {
                     var newQuantity = difference ? difference : li.Quantity;
-                    return vm.totalQuantity = vm.totalQuantity - newQuantity;
+                    return vm.totalQuantity = vm.totalQuantity - newQuantity || 0;
                 }
             } else {
-                return vm.totalQuantity = li.Quantity;
+                return vm.totalQuantity = li.Quantity || 0;
             }
         }  
     })
