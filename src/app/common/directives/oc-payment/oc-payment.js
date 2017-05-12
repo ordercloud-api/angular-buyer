@@ -42,8 +42,9 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
     }
     
     function _onChanges() {
-        if (vm.payments) vm.canAddPayment = ocPayment.CalculateMaxTotal(vm.order, vm.payments);
-        if (vm.form) vm.form.$setValidity('PaidInFull', !vm.canAddPayment);
+        var maxTotalNotMet = ocPayment.CalculateMaxTotal(vm.order, vm.payments);
+        if (vm.payments) vm.canAddPayment = maxTotalNotMet && vm.allowMultiple;
+        if (vm.form) vm.form.$setValidity('PaidInFull', !maxTotalNotMet);
     }
 
     function _paymentTypeChanged(scope) {

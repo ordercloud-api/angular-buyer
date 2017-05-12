@@ -16,8 +16,8 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
         var df = $q.defer();
         OrderCloudSDK.Payments.List('outgoing', order.ID)
 			.then(function(data) {
-                if (_paymentsExceedTotal(data.Items, order.Total)) {
-                    _removeAllPayments(data.Items, order)
+                if (_paymentsExceedTotal(data.Items, order.Total) || (data.Items.length === 1 && _calculateMaxTotal(order, data.Items))) {
+                    _removeAllPayments(data, order)
                         .then(function() {
                             df.resolve(_addPayment(order, paymentType));
                         });
