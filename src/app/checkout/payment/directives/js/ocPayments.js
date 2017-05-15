@@ -1,10 +1,22 @@
 angular.module('orderCloud')
-	.controller('PaymentsCtrl', PaymentsController)
+	//Multiple Payment, Multiple Types
+	.directive('ocPayments', OrderCloudPaymentsDirective)
+    .controller('PaymentsCtrl', PaymentsController)
 ;
 
-//TODO: Refactor for multiple payments without Payments.Patch
+function OrderCloudPaymentsDirective() {
+	return {
+		restrict:'E',
+		scope: {
+			order: '=',
+			methods: '=?'
+		},
+		templateUrl: 'checkout/payment/directives/templates/payments.html',
+		controller: 'PaymentsCtrl'
+	}
+}
 
-function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPaymentService, CheckoutConfig) {
+function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toastr, OrderCloudSDK, ocCheckoutPayment, CheckoutConfig) {
 	if (!$scope.methods) $scope.methods = CheckoutConfig.AvailablePaymentMethods;
 
 	OrderCloudSDK.Payments.List('outgoing', $scope.order.ID)
@@ -13,8 +25,8 @@ function PaymentsController($rootScope, $scope, $filter, $exceptionHandler, toas
 				$scope.payments = {Items: []};
 				$scope.addNewPayment(false);
 			}
-			else if (ocCheckoutPaymentService.PaymentsExceedTotal(data, $scope.order.Total)) {
-				ocCheckoutPaymentService.RemoveAllPayments(data, $scope.order)
+			else if (ocCheckoutPayment.PaymentsExceedTotal(data, $scope.order.Total)) {
+				ocCheckoutPayment.RemoveAllPayments(data, $scope.order)
 					.then(function(data) {
 						$scope.payments = {Items: []};
 						$scope.addNewPayment(false);
