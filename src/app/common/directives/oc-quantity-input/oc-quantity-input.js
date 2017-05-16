@@ -1,8 +1,7 @@
 angular.module('orderCloud')
-    .directive('ocQuantityInput', OCQuantityInput)
-;
+    .directive('ocQuantityInput', OCQuantityInput);
 
-function OCQuantityInput($log, $rootScope, toastr, OrderCloudSDK) {
+function OCQuantityInput($log, $rootScope, $state, toastr, OrderCloudSDK) {
     return {
         scope: {
             product: '=',
@@ -18,6 +17,9 @@ function OCQuantityInput($log, $rootScope, toastr, OrderCloudSDK) {
                 scope.item = scope.product;
                 scope.content = 'product';
             } else if (scope.lineitem) {
+                var difference;
+                var add;
+                var lineItem = angular.copy(scope.lineitem);
                 scope.item = scope.lineitem;
                 scope.content = 'lineitem';
                 scope.updateQuantity = function () {
@@ -32,6 +34,15 @@ function OCQuantityInput($log, $rootScope, toastr, OrderCloudSDK) {
                                 if (typeof scope.onUpdate === 'function') scope.onUpdate(scope.lineitem);
                                 toastr.success(data.Product.Name + ' quantity updated to ' + data.Quantity);
                                 $rootScope.$broadcast('OC:UpdateOrder', scope.order.ID, 'Calculating Order Total');
+                                if (lineItem.Quantity > data.Quantity) {
+                                    difference = lineItem.Quantity - data.Quantity;
+                                    add = false
+                                } else {
+                                    difference = data.Quantity - lineItem.Quantity;
+                                    add = true;
+                                }
+                                $rootScope.$broadcast('OC:UpdateTotalQuantity', data, add, difference);
+                                $state.go('cart', {}, {reload: true});
                             });
                     }
                 };
