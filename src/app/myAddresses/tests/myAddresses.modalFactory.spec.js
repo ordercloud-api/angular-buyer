@@ -1,33 +1,27 @@
 describe('Component: myAddresses', function() {
-    var scope,
-        q,
-        oc,
-        uibModalInstance
-    beforeEach(module('orderCloud'));
-    beforeEach(module('orderCloud.sdk'));
-    beforeEach(inject(function($rootScope, $q, OrderCloud) {
-        scope = $rootScope.$new();
-        q = $q;
-        oc = OrderCloud;
-    }));
+    var _ocMyAddresses,
+        uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
+
+    beforeEach(inject(function(ocMyAddresses){
+        _ocMyAddresses = ocMyAddresses;
+    })); 
     describe('Factory: MyAddressesModal', function() {
         var uibModal,
             addressModal,
             createModalOptions,
             editModalOptions,
             actualOptions;
-        beforeEach(inject(function($uibModal, MyAddressesModal) {
+        beforeEach(inject(function($uibModal) {
             uibModal = $uibModal;
-            addressModal = MyAddressesModal;
             uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
             createModalOptions = {
-                templateUrl: 'myAddresses/templates/myAddresses.create.modal.tpl.html',
+                templateUrl: 'myAddresses/templates/myAddresses.create.modal.html',
                 controller: 'CreateAddressModalCtrl',
                 controllerAs: 'createAddress',
                 size: 'md'
             };
             editModalOptions = {
-                templateUrl: 'myAddresses/templates/myAddresses.edit.modal.tpl.html',
+                templateUrl: 'myAddresses/templates/myAddresses.edit.modal.html',
                 controller: 'EditAddressModalCtrl',
                 controllerAs: 'editAddress',
                 size: 'md',
@@ -42,7 +36,7 @@ describe('Component: myAddresses', function() {
         describe('Create', function() {
             it('should call $uibModal open with create modal template/controller', function() {
                 spyOn(uibModal, 'open').and.returnValue(uibModalInstance);
-                addressModal.Create();
+                _ocMyAddresses.Create();
                 expect(uibModal.open).toHaveBeenCalledWith(createModalOptions);
             });
         });
@@ -52,15 +46,14 @@ describe('Component: myAddresses', function() {
                     actualOptions = options;
                     return uibModalInstance;
                 });
-                addressModal.Edit('addressToEdit');
+                _ocMyAddresses.Edit('addressToEdit');
                 expect(uibModal.open).toHaveBeenCalledWith(editModalOptions);
                 expect(actualOptions.resolve.SelectedAddress()).toEqual('addressToEdit');
             });
         });
     });
     describe('Controller: CreateAddressModalController', function(){
-        var createAddressModalCtrl
-        ;
+        var createAddressModalCtrl;
         beforeEach(inject(function($controller, $exceptionHandler, ocGeography){
             createAddressModalCtrl = $controller('CreateAddressModalCtrl', {
                 $exceptionHandler: $exceptionHandler,
@@ -88,8 +81,7 @@ describe('Component: myAddresses', function() {
     });
     describe('Controller: EditAddressModalCtrl', function(){
         var editAddressModalCtrl,
-        mockAddressResolve
-        ;
+            mockAddressResolve;
         beforeEach(inject(function($controller, $exceptionHandler, ocGeography){
             mockAddressResolve = {name:'mockAddress', ID:'1'}
             editAddressModalCtrl = $controller('EditAddressModalCtrl', {
