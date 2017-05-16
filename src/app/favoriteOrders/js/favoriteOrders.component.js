@@ -39,7 +39,7 @@ function FavoriteOrderController(toastr, OrderCloudSDK){
             .then(function(user){
                 vm.isFavorited = true;
                 vm.currentUser.xp.FavoriteOrders = user.xp.FavoriteOrders;
-                toastr.success('Saved to your favorite orders.');
+                toastr.success('Saved to your favorite orders', 'Success');
             });
     }
 
@@ -49,7 +49,7 @@ function FavoriteOrderController(toastr, OrderCloudSDK){
             .then(function(){
                 vm.isFavorited = false;
                 vm.currentUser.xp.FavoriteOrders = updatedList;
-                toastr.success('Removed from your favorite orders');
+                toastr.success('Removed from your favorite orders', 'Success');
             });
     }
 }

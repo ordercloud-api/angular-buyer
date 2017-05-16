@@ -1,7 +1,7 @@
 <form name="selectPaymentAccountModalForm" oc-pretty-submit>
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" ng-click="selectPaymentAccount.cancel()"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title">Select {{selectPaymentAccount.payment.Type == 'CreditCard' ? 'Credit Card' : 'Spending Account'}}</h3>
+        <h4 class="modal-title">Select {{selectPaymentAccount.payment.Type == 'CreditCard' ? 'Credit Card' : 'Spending Account'}}</h4>
     </div>
     <div class="modal-body" ng-if="selectPaymentAccount.payment.Type == 'SpendingAccount'">
         <div class="panel panel-default" ng-class="{'panel-primary': selectPaymentAccount.payment.SpendingAccountID == spendingAccount.ID}" ng-repeat="spendingAccount in selectPaymentAccount.accounts.Items">
@@ -33,6 +33,8 @@
         </div>
     </div>
     <div class="modal-body" ng-if="selectPaymentAccount.payment.Type == 'CreditCard'">
+        <button class="btn btn-primary btn-block" type="button" ng-click="selectPaymentAccount.createNewCreditCard()"><i class="fa fa-plus-circle"></i> New Credit Card</button>
+        <br>
         <div class="panel panel-default" ng-class="{'panel-primary': creditCard.ID == selectPaymentAccount.payment.CreditCardID}" ng-repeat="creditCard in selectPaymentAccount.accounts.Items">
 		<div class="panel-body">
 			<div class="row">
