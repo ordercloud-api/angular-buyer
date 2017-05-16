@@ -26,7 +26,9 @@ function OrderCloudRefreshTokenService($exceptionHandler, $rootScope, $state, $l
             OrderCloudSDK.Auth.Anonymous(clientid, scope)
                 .then(function(data) {
                     OrderCloudSDK.SetToken(data.access_token);
-                    if (data.refresh_token) OrderCloudSDK.SetRefreshToken(data.refresh_token);
+                    // Intentionally not storing the potential refresh_token because OrderCloud identifies this grant-type as not anonymous.
+                    // Basically, if we use the refresh token grant type to keep the anon user logged in, we lose the orderid property
+                    // on the users token that identifies them as anonymous in base.config.js
                     _redirect();
                 })
                 .catch(function(ex) {
