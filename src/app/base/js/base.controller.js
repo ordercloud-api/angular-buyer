@@ -34,19 +34,19 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLi
     $rootScope.$on('OC:UpdateTotalQuantity', function(event, lineItems, add, difference) {
         if (lineItems.length >= 1) {
             var quantities = _.pluck(lineItems, 'Quantity');
-            return vm.totalQuantity = quantities.reduce(function(a, b) {return a + b}, 0);
+            vm.totalQuantity = quantities.reduce(function(a, b) {return a + b}, 0);
         } else {
             var li = lineItems[0] || lineItems;
             if (vm.totalQuantity) {
                 if (add) {
                     var newQuantity = difference ? difference : li.Quantity;
-                    return vm.totalQuantity = newQuantity + vm.totalQuantity || 0;
+                    vm.totalQuantity = newQuantity + vm.totalQuantity || 0;
                 } else {
                     var newQuantity = difference ? difference : li.Quantity;
-                    return vm.totalQuantity = vm.totalQuantity - newQuantity || 0;
+                    vm.totalQuantity = vm.totalQuantity - newQuantity || 0;
                 }
             } else {
-                return vm.totalQuantity = li.Quantity || 0;
+                vm.totalQuantity = li.Quantity || 0;
             }
         }  
     })
