@@ -1,0 +1,21 @@
+<!-- template is used for ocFeaturedProducts directives -->
+<div class="c-product-card c-related-products__card" ui-sref="productDetail({productid: product.ID})">
+    <div class="c-product-card__img-wrap">
+        <img class="img-responsive c-product-card__img" ng-src="{{product.xp.image.URL}}"/>
+        <div class="c-ribbon"  ng-if="product.xp.Featured" >
+            <div class="c-ribbon__content"><strong>Popular!</strong></div>
+        </div>
+    </div>
+    <div class="c-product-card__body">
+        <h4 class="c-product-card__name">{{product.Name || product.ID}}</h4>
+        <div class="clearfix">
+            <h4 class="c-product-card__price text-primary">{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</h4>
+            <div class="c-product-card__icons pull-right" prevent-click>
+                <ordercloud-favorite-product product="product" current-user="currentUser"></ordercloud-favorite-product>
+            </div>
+        </div>
+        <div ng-if="product.xp.Unit">
+            <p class="text-muted">{{product.xp.Unit}}</p>
+        </div>
+    </div>
+</div>

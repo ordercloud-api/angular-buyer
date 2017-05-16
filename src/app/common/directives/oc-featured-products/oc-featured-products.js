@@ -4,12 +4,11 @@ angular.module('orderCloud')
 
 function FeaturedProductsDirective(ocFeaturedProductsService, $compile) {
     return {
-        scope: {},
         restrict: 'E',
         link: function(scope, element) {
-                ocFeaturedProductsService.List()
+            ocFeaturedProductsService.List()
                 .then(function(products) {
-                    scope.featuredProducts = products;
+                    scope.featuredProducts = products.Items;
                     scope.responsive = [
                         {
                             breakpoint: 1500,
@@ -30,23 +29,14 @@ function FeaturedProductsDirective(ocFeaturedProductsService, $compile) {
                             }
                         }           
                     ];
-                    var template = 
-                        "<slick arrows='!application.isTouchDevice' responsive='responsive' infinite='true' slides-to-show='6' slides-to-scroll='1' class='slider multiple-items' ng-class='{\"has-arrows\": !application.isTouchDevice}'>" +
-                            "<div ng-repeat='product in featuredProducts.Items'>" +
-                                "<div class='c-product-card c-related-products__card' ui-sref='productDetail({productid: product.ID})'>" +
-                                    "<div class='c-product-card__img-wrap'>" +
-                                        "<img class='img-responsive c-product-card__img' ng-src='{{product.xp.image.URL}}' />" +
-                                    "</div>" +
-                                    "<div class='c-product-card__body'>" +
-                                    "<h4 class='c-product-card__name'>{{product.Name}}</h4>" +
-                                        "<div class='clearfix'>" +
-                                        "<h4 class='c-product-card__price text-primary'>{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</h4>" +
-                                        "</div>" +
-                                    "</div>" +
-                                "</div>" +
-                            "</div>" +
-                        "</slick>";
-                    $compile(element.append(template))(scope);
+                    element.html(
+                        "<slick arrows='!application.isTouchDevice' responsive='responsive' infinite='false' slides-to-show='6' slides-to-scroll='1' class='slider multiple-items' ng-class='{\"has-arrows\": !application.isTouchDevice}'>" +
+                        "<div ng-repeat='product in relatedProducts'>" +
+                        "<div class='c-related-products__card-wrap' ng-include='\"common/templates/directives-product-card.html\"'></div>" +
+                        "</div>" +
+                        "</slick>"
+                    );
+                    $compile(element.contents())(scope);
                 });
         }
     }
