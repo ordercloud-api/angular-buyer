@@ -7,7 +7,7 @@
   "defaultstate": "home",
     "html5mode": false,
   "anonymous": false,
-  "bootswatchtheme": "yeti",
+  "bootswatchtheme": "default",
     "scope": [
       "FullAccess",
       "BuyerReader", 
