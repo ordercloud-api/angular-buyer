@@ -10,8 +10,8 @@
 <div class="c-product-card__body">
     <!--Product Info-->
     <div class="text-right c-product-card__icons hidden-xs" oc-prevent-click>
-        <i class="fa fa-eye text-primary" oc-product-quick-view product="productCard.product" current-order="productCard.currentOrder"></i>
-        <i class="fa" oc-favorite-product current-user="productCard.currentUser" product="productCard.product" favorite-class="fa-heart" non-favorite-class="fa-heart-o"></i>
+        <ordercloud-product-quick-view product="productCard.product" current-order="productCard.currentOrder"></ordercloud-product-quick-view>
+        <ordercloud-favorite-product product="productCard.product" current-user="productCard.currentUser"></ordercloud-favorite-product>
     </div>
     <h5 class="c-product-card__name">{{productCard.product.Name || productCard.product.ID}}<br><small class="text-muted c-product-card__id" ng-if="productCard.product.Name">{{productCard.product.ID}}</small>
     </h5>
@@ -20,7 +20,7 @@
 <div>
     <!--Choose Specs-->
     <div class="form-group" ng-if="productCard.product.SpecCount > 0">
-        <button type="button" class="btn btn-sm btn-block btn-primary" ui-sref="productDetail({productid: productCard.product.ID})">Choose Specs</button>
+        <button type="button" class="btn btn-block btn-sm btn-primary" ui-sref="productDetail({productid: productCard.product.ID})">Choose Specs</button>
     </div>
     <!--Add to Cart-->
     <form ng-if="!(productCard.product.SpecCount > 0)" name="OCProductForm" class="c-product-card__add-to-cart-btn" prevent-click>
