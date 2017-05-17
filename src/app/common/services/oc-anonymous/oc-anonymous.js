@@ -15,7 +15,14 @@ function OrderCloudAnonymousService($q, $state, $cookies, $uibModal, OrderCloudS
     function _redirect() {
         var returnstate = $cookies.get(returnStateCookieName);
         if (returnstate) {
-            $state.go(returnstate);
+            $state.go(returnstate)
+                .then(function() {
+                    _removeRedirect();
+                })
+                .catch(function() {
+                    _removeRedirect();
+                    $state.go(defaultstate);
+                });
         } else {
             $state.go(defaultstate);
         }

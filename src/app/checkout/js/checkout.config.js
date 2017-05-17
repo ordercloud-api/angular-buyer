@@ -15,7 +15,7 @@ function CheckoutConfig($urlRouterProvider, $stateProvider) {
 			resolve: {
                 IdentifyUser: function($state, ocAnonymous, CurrentUser) {
                     if (CurrentUser.Anonymous) {
-                        ocAnonymous.Identify('checkout.shipping')
+                        ocAnonymous.Identify('cart')
                             .then(function(data) {
                                 //TODO: placeholder for guest checkout functionality
                             })
@@ -25,11 +25,11 @@ function CheckoutConfig($urlRouterProvider, $stateProvider) {
                                 } else if (ex === 'REGISTER') {
                                     $state.go('register');
                                 } else {
+                                    //User closed the modal
                                     $state.go('cart');
                                 }
                             });
                     } else {
-                        ocAnonymous.RemoveRedirect();
                         return;
                     }
                 },

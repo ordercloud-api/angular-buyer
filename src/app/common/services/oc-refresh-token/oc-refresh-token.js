@@ -7,7 +7,7 @@ function OrderCloudRefreshTokenService($exceptionHandler, $rootScope, $state, $l
         refreshToken();
     });
 
-    function refreshToken() {
+    function refreshToken(redirectState) {
         var token = OrderCloudSDK.GetRefreshToken() || null;
         if (token) {
             OrderCloudSDK.Auth.RefreshToken(token, clientid, scope)
@@ -41,7 +41,9 @@ function OrderCloudRefreshTokenService($exceptionHandler, $rootScope, $state, $l
         }
 
         function _redirect() {
-            if ($state.current.name === '') {
+            if (redirectState) {
+                $state.go(redirectState);
+            } else if ($state.current.name === '') {
                 $state.go(defaultstate);
             } else {
                 $state.go($state.current.name, {}, {reload:true});

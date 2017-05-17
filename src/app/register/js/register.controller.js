@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('RegisterCtrl', RegisterController)
 ;
 
-function RegisterController(OrderCloudSDK, ocAnonymous, clientid, scope) {
+function RegisterController($exceptionHandler, OrderCloudSDK, ocAnonymous, clientid, scope) {
     var vm = this;
     vm.info = {
         FirstName: null,
@@ -13,6 +13,10 @@ function RegisterController(OrderCloudSDK, ocAnonymous, clientid, scope) {
         Phone: null,
         Email: null,
         Active: true
+    };
+
+    vm.onUsernameChange = function() {
+        if (vm.form.Username.$error['User.UsernameMustBeUnique']) vm.form.Username.$setValidity('User.UsernameMustBeUnique', true);
     };
     
     vm.submit = function() {
@@ -29,8 +33,11 @@ function RegisterController(OrderCloudSDK, ocAnonymous, clientid, scope) {
                     });
             })
             .catch(function(ex) {
-                console.log(ex);
-                var orderid = 'FJk60Hhho0ac2yawaooKSQ';
+                if (ex.response && ex.response.body && ex.response.body.Errors.length && ex.response.body.Errors[0].ErrorCode === 'User.UsernameMustBeUnique') {
+                    vm.form.Username.$setValidity('User.UsernameMustBeUnique', false);
+                } else {
+                    $exceptionHandler(ex);
+                }
             });
 
     };
