@@ -1,7 +1,38 @@
 <article>
-    <header class="jumbotron text-center">
-        <h1 ng-bind="application.name()"></h1>
-        <p>Welcome to the OrderCloud Marketplace App!</p>
-        <p><a class="btn btn-primary btn-large">Learn more »</a></p>
+    <header class="container">
+        <div class="carousel-wrapper hidden-xs">
+            <div uib-carousel template-url="home/templates/carousel.html" active="0" interval="3000">
+                <div class="carousel-caption">
+                    <h1 class="carousel-header">{{home.appname}}</h1>
+                    <p class="lead">Welcome to the Marketplace App</p>
+                    <button class="btn btn-primary btn-lg" href="#" role="button">Explore Now <i class="fa fa-rocket" aria-hidden="true"></i></button>
+                </div>
+                <div uib-slide ng-repeat="slide in home.slides track by slide.id" index="slide.id">
+                    <img ng-src="{{slide.image}}">
+                </div>
+            </div>
+        </div>
     </header>
 </article>
+
+<article>
+<div class="container homepage-cards">
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="text-center">
+                <h1>GOLDWELL</h1>
+                <p>Welcome to the OrderCloud Marketplace App!</p>
+                <p><a class="btn btn-primary btn-large">Learn more »</a></p>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="text-center">
+                <h1>KMS</h1>
+                <p>Welcome to the OrderCloud Marketplace App!</p>
+                <p><a class="btn btn-primary btn-large">Learn more »</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+</article>
+
