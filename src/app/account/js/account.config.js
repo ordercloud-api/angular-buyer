@@ -11,7 +11,7 @@ function AccountConfig($stateProvider) {
 			controller: 'AccountCtrl',
 			controllerAs: 'account',
 			data: {
-				pageTitle: "Account"
+				pageTitle: 'Account'
 			}
 		})
 	;

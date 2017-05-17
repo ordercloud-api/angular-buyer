@@ -1,23 +1,51 @@
-@media (min-width: @screen-sm-min) {
-    .c-product-card {
-        // add flex display to product card wrapper
-        // flex the product card to fill the grid item element
-        .oc-flex-layout.vertical;
-        .oc-flex-layout.flex-auto;
-        .c-product-card__body {
-            .oc-flex-layout.vertical;
-            .oc-flex-layout.flex-auto;
-        }
-        .c-product-card__name {
-            .oc-flex-layout.flex-auto;
-        }
+.l-product-grid {
+    // add flex display to the product list
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .l-product-grid__item {
+        // flex each item in the list so that we do not get float layout issues
+        display: flex;
+        flex-direction: column;
+    }        
+}
+
+.l-category-grid {
+    // add flex display to the category list
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .l-category-grid__item {
+        // flex each item in the list so that we do not get float layout issues
+        display: flex;
+        flex-direction: column;
+    } 
+}
+
+.c-product-card {
+    // add flex display to product card wrapper
+    // flex the product card to fill the grid item element
+    margin-bottom: @grid-gutter-width/2;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    .c-product-card__body {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
+    .c-product-card__name {
+        // flex: 1 1 auto;
+        word-wrap: break-word;
+        margin-bottom: 0;
     }
 }
 
 .c-category-card {
     // add flex display to category card wrapper
     @media (min-width: @screen-sm-min) {
-        .oc-flex-layout.vertical;
-        .oc-flex-layout.flex-auto;   
-    }         
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
 }

@@ -1,7 +1,7 @@
-<form name="updateApprovalStatusForm" ng-submit="approvalModal.submit()" cg-busy="approvalModal.loading">
+<form name="updateApprovalStatusForm" ng-submit="approvalModal.submit()" cg-busy="approvalModal.loading" oc-pretty-submit>
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" ng-click="approvalModal.cancel()"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title">{{approvalModal.intent}} Order</h3>
+        <h4 class="modal-title">{{approvalModal.intent}} Order</h4>
     </div>
     <div class="modal-body">
         <fieldset class="form-group">
@@ -12,6 +12,6 @@
         </fieldset>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary btn-block" ng-disabled="updateApprovalStatusForm.$invalid">Save</button>
+        <button type="submit" class="btn btn-primary btn-block">Save</button>
     </div>
 </form>

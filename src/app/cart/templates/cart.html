@@ -32,12 +32,12 @@
                         <span class="pull-right">- {{promotion.Amount | currency}}</span></h5>
                 </div>
                 <div class="panel-footer">
-                    <button ng-if="cart.lineItems.Items.length > 0" type="button" ui-sref="checkout.shipping" class="btn btn-block btn-primary" ng-disabled="OrderLineItemForm.$invalid">Proceed to Checkout</button>
+                    <button ng-if="cart.lineItems.Items.length > 0" type="button" ng-click="cart.proceedToCheckout()" class="btn btn-block btn-primary" ng-disabled="OrderLineItemForm.$invalid">Proceed to Checkout</button>
                 </div>
             </div>
         </aside>
         <div class="col-md-8 col-md-pull-4">
-            <form name="OrderLineItemForm">
+            <form name="OrderLineItemForm" oc-pretty-submit>
                 <div class="row  hidden-xs c-line-item__header">
                     <div class="col-xs-3 col-sm-2"></div>
                     <div class="col-xs-9 col-sm-10">
@@ -108,8 +108,7 @@
             </div>
         </div>
         <div class="form-group">
-            <button ng-if="cart.lineItems.Items.length > 0" type="button" ui-sref="checkout.shipping"
-                    class="btn btn-block btn-primary hidden-lg hidden-md"
-                ng-disabled="OrderLineItemForm.$invalid">Proceed to Checkout</button>
+            <button ng-if="cart.lineItems.Items.length > 0" type="button" ng-click="cart.proceedToCheckout()"
+                    class="btn btn-block btn-primary hidden-lg hidden-md">Proceed to Checkout</button>
         </div>
 </article>

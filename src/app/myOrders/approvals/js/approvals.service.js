@@ -2,88 +2,51 @@ angular.module('orderCloud')
     .factory('ocApprovals', ocApprovals)
 ;
 
-function ocApprovals($q, $uibModal, $state, OrderCloudSDK){
+function ocApprovals(OrderCloudSDK, $exceptionHandler, $uibModal, $state){
     var service = {
         List: _list,
         UpdateApprovalStatus: _updateApprovalStatus
     };
 
-    function _list(orderID, buyerID, page, pageSize) {
-        var deferred = $q.defer();
+    function _list(orderID, buyerID) {
 
-        var options = {
-            page: page,
-            pageSize: pageSize,
-            sortBy: 'Status'
-        };
-        OrderCloudSDK.Orders.ListApprovals('outgoing', orderID, options)
+        return OrderCloudSDK.Orders.ListApprovals('outgoing', orderID)
             .then(function(data) {
-                getApprovingUserGroups(data);
+                return getApprovingUserGroups(data);
             });
 
         function getApprovingUserGroups(data) {
             var userGroupIDs = _.uniq(_.pluck(data.Items, 'ApprovingGroupID'));
-            var options = {
-                page: 1,
-                pageSize: 100,
-                filters: {ID: userGroupIDs.join('|')}
-            };
-            OrderCloudSDK.UserGroups.List(buyerID, options)
+            return OrderCloudSDK.UserGroups.List(buyerID, {pageSize:100, filters: {ID: userGroupIDs.join('|')}})
                 .then(function(userGroupList) {
                     _.each(data.Items, function(approval) {
                         approval.ApprovingUserGroup = _.findWhere(userGroupList.Items, {ID: approval.ApprovingGroupID});
                     });
-                    getApprovingUsers(data);
+                    return getApprovalRules(data);
                 })
-                .catch(function() {
-                    getApprovingUsers(data);
-                });
-        }
-
-        function getApprovingUsers(data){
-            var userIDs = _.compact(_.uniq(_.pluck(data.Items, 'ApproverID')));
-            var options = {
-                page: 1,
-                pageSize: 100,
-                filters: {ID: userIDs.join('|')}
-            };
-            OrderCloudSDK.Users.List(buyerID, options)
-                .then(function(userList){
-                    _.each(data.Items, function(approval){
-                        if(approval.Status !== 'Pending') approval.ApprovingUser = _.findWhere(userList.Items, {ID: approval.ApproverID});
-                    });
-                    getApprovalRules(data);
-                })
-                .catch(function(){
-                    getApprovalRules(data);
+                .catch(function(ex) {
+                    return $exceptionHandler(ex);
                 });
         }
 
         function getApprovalRules(data) {
             var approvalRuleIDs = _.pluck(data.Items, 'ApprovalRuleID');
-            var options = {
-                page: 1,
-                pageSize: 100,
-                filters: {ID: approvalRuleIDs.join('|')}
-            };
-            OrderCloudSDK.ApprovalRules.List(buyerID, options)
+            return OrderCloudSDK.ApprovalRules.List(buyerID, {pageSize: 100, filters: {ID: approvalRuleIDs.join('|')}})
                 .then(function(approvalRuleData) {
                     angular.forEach(data.Items, function(approval) {
                         approval.ApprovalRule = _.findWhere(approvalRuleData.Items, {ID: approval.ApprovalRuleID});
                     });
-                    deferred.resolve(data);
+                    return data;
                 })
-                .catch(function() {
-                    deferred.resolve(data);
+                .catch(function(err) {
+                    return $exceptionHandler(err);
                 });
         }
-
-        return deferred.promise;
     }
 
     function _updateApprovalStatus(orderID, intent){
         return $uibModal.open({
-            templateUrl: 'orders/orderApprovals/templates/approve.modal.html',
+            templateUrl: 'myOrders/approvals/templates/approve.modal.html',
             controller: 'ApprovalModalCtrl',
             controllerAs: 'approvalModal',
             size: 'md',

@@ -6,11 +6,13 @@ function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLin
     var vm = this;
     vm.item = Product;
     vm.finalPriceBreak = null;
-
+    
+    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toats from opening.
     vm.addToCart = function() {
         ocLineItems.AddItem(CurrentOrder, vm.item)
-            .then(function(){
-                toastr.success('Product successfully added to your cart.');
+            .then(function() {
+                toastr.success(vm.item.Name + ' was added to your cart. <span class="hidden">' + vm.item.ID + toastID + '</span>', null, {allowHtml:true});
+                toastID++;
             })
             .catch(function(error){
                $exceptionHandler(error);

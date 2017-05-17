@@ -6,7 +6,7 @@
         <nav>
             <ul class="nav nav-tabs aveda-nav-tabs">
                 <li role="presentation" ng-class="{active: orders.parameters.tab == 'history'}"><a ng-click="orders.selectTab('history')">Order History</a></li>
-                <li role="presentation" ng-class="{active: orders.parameters.tab == 'approvals'}"><a ng-click="orders.selectTab('approvals')">Awaiting Approval</a></li>
+                <li role="presentation" oc-if-roles="ApprovalRuleRoles || UserGroupRoles" ng-class="{active: orders.parameters.tab == 'approvals'}"><a ng-click="orders.selectTab('approvals')">Awaiting Approval</a></li>
                 <li role="presentation" ng-class="{active: orders.parameters.tab == 'favorites'}"><a ng-click="orders.selectTab('favorites')">Favorite Orders</a></li>
             </ul>
         </nav>
@@ -14,7 +14,7 @@
     <br>
 
     <!--====== SEARCH ======-->
-    <form name="OrdersSearchForm" pretty-submit>
+    <form name="OrdersSearchForm" oc-pretty-submit>
         <fieldset class="form-group">
             <div class="input-group">
                 <span class="input-group-addon">
@@ -102,6 +102,7 @@
                                 <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'Subtotal'"></i>
                                 <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!Subtotal'"></i>
                             </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,6 +112,7 @@
                             <td>{{(order.DateSubmitted || order.DateCreated) | date:'short'}}</td>
                             <td>{{order.FromUser.FirstName + ' ' + order.FromUser.LastName}}</td>
                             <td>{{order.Subtotal | currency}}</td>
+                            <td class="text-center"><ordercloud-favorite-order current-user="base.currentUser" order="order"></ordercloud-favorite-order></td>
                         </tr>
                     </tbody>
                 </table>

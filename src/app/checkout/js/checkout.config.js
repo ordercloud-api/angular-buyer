@@ -13,6 +13,26 @@ function CheckoutConfig($urlRouterProvider, $stateProvider) {
 			controller: 'CheckoutCtrl',
 			controllerAs: 'checkout',
 			resolve: {
+                IdentifyUser: function($state, ocAnonymous, CurrentUser) {
+                    if (CurrentUser.Anonymous) {
+                        ocAnonymous.Identify('cart')
+                            .then(function(data) {
+                                //TODO: placeholder for guest checkout functionality
+                            })
+                            .catch(function(ex) {
+                                if (ex === 'LOGIN') {
+                                    $state.go('login');
+                                } else if (ex === 'REGISTER') {
+                                    $state.go('register');
+                                } else {
+                                    //User closed the modal
+                                    $state.go('cart');
+                                }
+                            });
+                    } else {
+                        return;
+                    }
+                },
                 OrderShipAddress: function($q, OrderCloudSDK, CurrentOrder){
                     var deferred = $q.defer();
                     if (CurrentOrder.ShippingAddressID) {

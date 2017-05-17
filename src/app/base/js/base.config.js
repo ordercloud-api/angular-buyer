@@ -17,10 +17,10 @@ function BaseConfig($stateProvider) {
             }
         },
         resolve: {
-            CurrentUser: function($state, OrderCloudSDK) {
+            CurrentUser: function(OrderCloudSDK) {
                 return OrderCloudSDK.Me.Get();
             },
-            ExistingOrder: function($q, OrderCloudSDK, CurrentUser) {
+            ExistingOrder: function(OrderCloudSDK, CurrentUser) {
                 var options = {
                     page: 1,
                     pageSize: 1,
@@ -28,8 +28,8 @@ function BaseConfig($stateProvider) {
                     filters: {Status: 'Unsubmitted'}
                 };
                 return OrderCloudSDK.Me.ListOrders(options)
-                    .then(function(data) {
-                        return data.Items[0];
+                    .then(function(orders) {
+                        return orders.Items[0];
                     });
             },
             CurrentOrder: function(ExistingOrder, ocNewOrder, CurrentUser) {
@@ -39,7 +39,14 @@ function BaseConfig($stateProvider) {
                     return ExistingOrder;
                 }
             },
-            AnonymousUser: function($q, OrderCloudSDK, CurrentUser) {
+            TotalQuantity: function(OrderCloudSDK, CurrentOrder) {
+                return OrderCloudSDK.LineItems.List('outgoing', CurrentOrder.ID)
+                    .then(function(lineItems) {
+                        var quantities = _.pluck(lineItems.Items, 'Quantity');
+                        return quantities.reduce(function(a, b) {return a + b}, 0);
+                    });
+            },
+            AnonymousUser: function(OrderCloudSDK, CurrentUser) {
                 CurrentUser.Anonymous = angular.isDefined(JSON.parse(atob(OrderCloudSDK.GetToken().split('.')[1])).orderid);
             }
         }

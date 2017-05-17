@@ -51,7 +51,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Approved'}">
-                        <td>{{approval.ApprovingUser.FirstName + ' ' + approval.ApprovingUser.LastName}}</td>
+                        <td>{{approval.Approver.FirstName + ' ' + approval.Approver.LastName}}</td>
                         <td>{{approval.DateCompleted | date:'short'}}</td>
                         <td>{{approval.Comments}}</td>
                         <td>{{approval.ApprovalRule.Name}}</td>
@@ -80,7 +80,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="approval in orderApprovals.list.Items| filter:{Status:'Declined'}">
-                        <td>{{approval.ApprovingUser.FirstName + ' ' + approval.ApprovingUser.LastName}}</td>
+                        <td>{{approval.Approver.FirstName + ' ' + approval.Approver.LastName}}</td>
                         <td>{{approval.DateCompleted | date:'short'}}</td>
                         <td>{{approval.Comments}}</td>
                         <td>{{approval.ApprovalRule.Name}}</td>

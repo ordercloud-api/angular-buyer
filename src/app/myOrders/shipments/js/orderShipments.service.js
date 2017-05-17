@@ -10,8 +10,6 @@ function OrderCloudOrderShipmentsService($q, OrderCloudSDK) {
     function _list(orderID, page, pageSize, OrderLineItems) {
         var df = $q.defer();
 
-        console.log(OrderLineItems);
-
         var options = {
             orderID: orderID,
             page: page,

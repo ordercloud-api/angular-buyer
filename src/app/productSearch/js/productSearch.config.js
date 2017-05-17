@@ -6,7 +6,7 @@ function ProductSearchConfig($stateProvider) {
     $stateProvider
         .state('productSearchResults', {
             parent: 'base',
-            url: '/productSearchResults/:searchTerm?page&pageSize&sortBy',
+            url: '/productSearchResults/:search?page&pageSize&sortBy',
             templateUrl: 'productSearch/templates/productSearch.results.html',
             controller: 'ProductSearchCtrl',
             controllerAs: 'productSearch',
