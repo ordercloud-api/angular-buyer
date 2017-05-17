@@ -1,11 +1,10 @@
-<article>
-    <header class="container">
+    <header>
         <div class="carousel-wrapper hidden-xs">
             <div uib-carousel template-url="home/templates/carousel.html" active="0" interval="3000">
                 <div class="carousel-caption">
                     <h1 class="carousel-header">{{home.appname}}</h1>
-                    <p class="lead">Welcome to the Marketplace App</p>
-                    <button class="btn btn-primary btn-lg" href="#" role="button">Explore Now <i class="fa fa-rocket" aria-hidden="true"></i></button>
+                    <p class="lead">Welcome to the {{home.appname}} Marketplace App</p>
+                    <button class="btn btn-knockout btn-lg" href="#" role="button">Explore Now <i class="fa fa-rocket" aria-hidden="true"></i></button>
                 </div>
                 <div uib-slide ng-repeat="slide in home.slides track by slide.id" index="slide.id">
                     <img ng-src="{{slide.image}}">
@@ -13,26 +12,51 @@
             </div>
         </div>
     </header>
-</article>
-
 <article>
-<div class="container homepage-cards">
-    <div class="row">
-        <div class="col-xs-6">
-            <div class="text-center">
-                <h1>GOLDWELL</h1>
-                <p>Welcome to the OrderCloud Marketplace App!</p>
-                <p><a class="btn btn-primary btn-large">Learn more »</a></p>
+    <div class="homepage-cards">
+        <div class="row">
+            <div class="col-xs-4">
+                <div class="c-homepage-card text-center">
+                    <h3>SHOP GOLDWELL</h3>
+                    <p>Welcome to the OrderCloud Marketplace App!</p>
+                    <p><a class="btn btn-knockout-primary btn-large">View Products</a></p>
+                </div>
             </div>
-        </div>
-        <div class="col-xs-6">
-            <div class="text-center">
-                <h1>KMS</h1>
-                <p>Welcome to the OrderCloud Marketplace App!</p>
-                <p><a class="btn btn-primary btn-large">Learn more »</a></p>
+            <div class="col-xs-4">
+                <div class="c-homepage-card text-center">
+                    <h3>SHOP KMS</h3>
+                    <p>Welcome to the OrderCloud Marketplace App!</p>
+                    <p><a class="btn btn-knockout-primary btn-large">View Products</a></p>
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <div class="c-homepage-card text-center">
+                    <h3>SHOP ALL</h3>
+                    <p>Welcome to the OrderCloud Marketplace App!</p>
+                    <p><a class="btn btn-knockout-primary btn-large">View Products</a></p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </article>
 
+<article>
+    <header>
+        <h2 class="text-center">Explore Our Newest Products</h2>
+    </header>
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="c-homepage-card">
+                <img class="img-responsive c-product-card__img" src="https://cups.imgix.net/store/products/SUP00001/16HGB.jpg?auto=compress,format&amp;q=60">
+                <div class="c-product-card__body">
+                    <h4 class="c-product-card__name">10/12/16/20oz Black Dome Plastic Lid with drink hole/opening</h4>
+                    <div class="clearfix">
+                        <h4 class="c-product-card__price">$26.16</h4>
+                        <button class="btn btn-knockout-goldwell btn-sm">View Product Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+</article>
