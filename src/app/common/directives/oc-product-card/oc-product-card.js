@@ -31,6 +31,7 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, 
         return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
             .then(function(lineItem) {
                 $rootScope.$broadcast('OC:UpdateOrder', vm.currentOrder.ID, 'Updating Order');
+                $rootScope.$broadcast('OC:UpdateTotalQuantity', lineItem, true);
                 setDefaultQuantity();
                 toastr.success(vm.product.Name + ' was added to cart');
             })
