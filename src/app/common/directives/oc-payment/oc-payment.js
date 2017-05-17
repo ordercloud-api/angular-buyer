@@ -19,6 +19,8 @@ function OrderCloudPaymentDirective() {
 
 function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutConfig, ocPayment, ocMyCreditCards) {
     var vm = this;
+    vm.payments;
+
     vm.$onInit = _initialize;
     vm.$doCheck = _onChanges;
 

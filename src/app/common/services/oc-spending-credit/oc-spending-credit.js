@@ -10,8 +10,9 @@ function ocSpendingCreditService(OrderCloudSDK, buyerid) {
     function _updateAccountBalance(order) {
         return OrderCloudSDK.Me.ListSpendingAccounts()
             .then(function(account) {
-                var newBalance = account.Balance + (order.Total * .05);
-                return OrderCloud.SpendingAccounts.Patch(buyerid, account.ID, {Balance: newBalance});
+                var accountData =  account.Items[0];
+                var newBalance = accountData.Balance + (order.Total * .05);
+                return OrderCloudSDK.SpendingAccounts.Patch(buyerid, accountData.ID, {Balance: newBalance});
             })
     }
     return service;

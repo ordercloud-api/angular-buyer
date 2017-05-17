@@ -166,12 +166,13 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
 
     function _save(payment, order, account) {
         var df = $q.defer();
+        var newPayment = angular.copy(payment);
 
         if (payment.ID) {
-            OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID)
+            return OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID)
                 .then(function () {
-                    delete payment.ID;
-                    createPayment(payment);
+                    // delete payment.ID;
+                    createPayment(newPayment);
                 });
         } else {
             createPayment(payment);
@@ -192,7 +193,7 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
                     break;
                 }
             }
-            OrderCloudSDK.Payments.Create('outgoing', order.ID, paymentRequestBody)
+            return OrderCloudSDK.Payments.Create('outgoing', order.ID, paymentRequestBody)
                 .then(function (data) {
                     if (data.SpendingAccountID) data.SpendingAccount = account;
                     if (data.CreditCardID) data.CreditCard = account;
