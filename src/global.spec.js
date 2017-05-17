@@ -12,6 +12,7 @@ var q,
     orderLineItems,
     ocAppNameService,
     ocConfirmService,
+    ocMyAddressesService,
     ocParametersService,
     ocRolesService,
     dummyPromise,
@@ -27,7 +28,7 @@ beforeEach(module('orderCloud', function($provide) {
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, 
-OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder,
+OrderCloudSDK, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, Parameters, CurrentOrder,
 CurrentUser, OrderLineItems) {
     q = $q;
     scope = $rootScope.$new();
@@ -39,6 +40,7 @@ CurrentUser, OrderLineItems) {
     exceptionHandler = $exceptionHandler;
     ocAppNameService = ocAppName;
     ocConfirmService = ocConfirm;
+    ocMyAddressesService = ocMyAddresses;
     ocParametersService = ocParameters;
     ocRolesService = ocRoles;
     parametersResolve = Parameters;
