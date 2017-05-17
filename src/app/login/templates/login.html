@@ -2,12 +2,13 @@
 
     <!--LOGIN FORM-->
     <div ng-switch-when="login">
+        <a ui-sref="home" ng-if="login.anonymousEnabled" class="text-center"><h3>{{application.name()}}</h3></a>
         <div class="panel panel-default">
-            <form class="panel-body" name="LoginForm" ng-submit="login.submit()" oc-pretty-submit>
-                <h3 class="text-center">Buyer Login</h3>
+            <form class="panel-body" name="LoginForm" ng-submit="login.submit()" autocomplete="off" novalidate oc-pretty-submit>
+                <h3 class="text-center">{{login.anonymousEnabled ? 'Login' : application.name() + ' Login'}}</h3>
                 <div class="form-group">
                     <label for="Username" class="sr-only">Username</label>
-                    <input id="Username" type="text" class="form-control" placeholder="Username" autocapitalize="off" autocorrect="off" autocomplete="off" ng-model="login.credentials.Username" ng-required="true" />
+                    <input id="Username" type="text" class="form-control" placeholder="Username" autocapitalize="off" autofocus ng-model="login.credentials.Username" ng-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="Password" class="sr-only">Password</label>
@@ -27,7 +28,8 @@
             </form>
         </div>
         <div class="text-center">
-            <a id="forgot_password" ng-click="login.setForm('forgot')">Forgot Password?</a>
+            <a id="forgot_password" ng-click="login.setForm('forgot')">Forgot Password?</a> <br><br>
+            <span ng-if="login.anonymousEnabled">New to {{application.name()}}? <a ui-sref="register">Register now</a></span>
         </div>
     </div>
 
@@ -63,9 +65,9 @@
                 </div>
                 <div class="form-group">
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
-                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
+                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" oc-match-field="login.credentials.NewPassword" ng-required="true" />
                 </div>
-                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+                <button type="submit" id="reset_submit" class="btn btn-primary btn-block">Submit</button>
             </form>
         </div>
     </div>
@@ -84,9 +86,9 @@
                 </div>
                 <div class="form-group">
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
-                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" ng-required="true" />
+                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" oc-match-field="login.credentials.NewPassword" ng-required="true" />
                 </div>
-                <button type="submit" id="reset_submit" class="btn btn-primary btn-block" ng-disabled="login.credentials.NewPassword != login.credentials.ConfirmPassword">Submit</button>
+                <button type="submit" id="reset_submit" class="btn btn-primary btn-block">Submit</button>
             </form>
         </div>
     </div>

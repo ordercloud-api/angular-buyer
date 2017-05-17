@@ -3,6 +3,7 @@ angular.module('orderCloud')
         //Error Handling
         $provide.value('ocErrorMessages', {
             customPassword: 'Password must be at least eight characters long and include at least one letter and one number',
+            ocMatch: 'Passwords do not match.',
             positiveInteger: 'Please enter a positive integer',
             ID_Name: 'Only Alphanumeric characters, hyphens and underscores are allowed',
             confirmpassword: 'Your passwords do not match',

@@ -2,13 +2,14 @@ angular.module('orderCloud')
     .controller('CartCtrl', CartController)
 ;
 
-function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList, CurrentPromotions, ocConfirm) {
+function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList, CurrentPromotions, CurrentUser, ocConfirm, ocAnonymous) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
     vm.removeItem = removeItem;
     vm.removePromotion = removePromotion;
     vm.cancelOrder = cancelOrder;
+    vm.proceedToCheckout = proceedToCheckout;
 
     $rootScope.$on('OC:UpdatePromotions', function(event, orderid) {
         return OrderCloudSDK.Orders.ListPromotions('outgoing', orderid)
@@ -50,5 +51,9 @@ function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList
                         $state.go('home', {}, {reload:'base'});
                     });
             });
+    }
+
+    function proceedToCheckout() {
+        $state.go('checkout.shipping');
     }
 }
