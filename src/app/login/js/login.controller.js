@@ -1,8 +1,9 @@
 angular.module('orderCloud')
     .controller('LoginCtrl', LoginController);
 
-function LoginController($window, $state, $stateParams, $exceptionHandler, ocRoles, OrderCloudSDK, scope, clientid, defaultstate) {
+function LoginController($window, $state, $stateParams, $exceptionHandler, ocRoles, ocAnonymous, OrderCloudSDK, scope, clientid, defaultstate, anonymous) {
     var vm = this;
+    vm.anonymousEnabled = anonymous;
     vm.credentials = {
         Username: null,
         Password: null
@@ -17,12 +18,19 @@ function LoginController($window, $state, $stateParams, $exceptionHandler, ocRol
     vm.submit = function () {
         vm.loading = OrderCloudSDK.Auth.Login(vm.credentials.Username, vm.credentials.Password, clientid, scope)
             .then(function (data) {
+                var anonymousToken = OrderCloudSDK.GetToken();
                 OrderCloudSDK.SetToken(data.access_token);
                 if (vm.rememberStatus && data['refresh_token']) OrderCloudSDK.SetRefreshToken(data['refresh_token']);
+
                 var roles = ocRoles.Set(data.access_token);
                 if (roles.length === 1 && roles[0] === 'PasswordReset') {
                     vm.token = data.access_token;
                     vm.form = 'resetByToken';
+                } else if (anonymous) {
+                    return ocAnonymous.MergeOrders(anonymousToken)
+                        .then(function() {
+                            ocAnonymous.Redirect();
+                        });
                 } else {
                     $state.go(defaultstate);
                 }
