@@ -7,7 +7,8 @@ function LoginController($window, $state, $stateParams, $exceptionHandler, ocRol
         Username: null,
         Password: null
     };
-    vm.form = $stateParams.validationCode ? 'reset' : 'login';
+    vm.validationCode = $stateParams.validationCode;
+    vm.form = vm.validationCode ? 'reset' : 'login';
     vm.setForm = function (form) {
         vm.form = form;
     };
@@ -63,7 +64,7 @@ function LoginController($window, $state, $stateParams, $exceptionHandler, ocRol
     };
 
     vm.resetPassword = function () {
-        vm.loading = OrderCloudSDK.PasswordResets.ResetPassword($stateParams.validationCode, {
+        vm.loading = OrderCloudSDK.PasswordResets.ResetPasswordByVerificationCode(vm.validationCode, {
                 ClientID: clientid,
                 Username: vm.credentials.ResetUsername,
                 Password: vm.credentials.NewPassword
