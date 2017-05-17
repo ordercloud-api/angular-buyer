@@ -1,22 +1,110 @@
 // color
-@brand-primary: #07B28C;
-@brand-secondary: #04624D;
-@goldwell-primary: #cc2d30;
+@brand-primary:      #07B28C;
+@brand-secondary:    #04624D;
+@goldwell-primary:   #cc2d30;
 @goldwell-secondary: #5D1516;
-@kms-primary: #FE5000;
-@kms-secondary: #A23300;
+@kms-primary:        #FE5000;
+@kms-secondary:      #A23300;
+@light-grey:         #D6D6D6;
+@dark-grey:          #6b696a;
 
-.row > div {
-    &:first-child {
-        .btn {
-            background-color: @goldwell-primary;
-            border-color: @goldwell-primary;
-        }
-    }
-    &:last-child {
-        .btn {
-            background-color: @kms-primary;
-            border-color: @kms-primary;
-        }
-    }
+.goldwell-primary {
+    color: @goldwell-primary;
+}
+
+.kms-primary {
+    color: @goldwell-primary;
+}
+
+// homepage button color
+// .row > div {
+//     &:first-child {
+//         .btn {
+//             background-color: @goldwell-primary;
+//             border-color: @goldwell-primary;
+//         }
+//     }
+//     &:last-child {
+//         .btn {
+//             background-color: @kms-primary;
+//             border-color: @kms-primary;
+//         }
+//     }
+// }
+
+// buttons
+.button-knockout(@color; @background; @border; @color-hover; @background-hover; @border-hover) {
+  color: @color;
+  background-color: @background;
+  border-color: @border;
+  &:hover,
+  &:focus {
+    color: @color-hover;
+    background-color: @background-hover;
+    border-color: @border-hover;
+  }
+}
+
+.btn-knockout {
+    .button-knockout(#fff; transparent; #fff; @dark-grey; #fff; #fff);
+}
+
+.btn-knockout-primary {
+    .button-knockout(@brand-primary; transparent; @brand-primary; #fff; @brand-primary; @brand-primary);
+}
+
+.btn-knockout-goldwell {
+    .button-knockout(@goldwell-primary; transparent; @goldwell-primary; #fff; @goldwell-primary; @goldwell-primary);
+}
+
+.btn-knockout-kms {
+    .button-knockout(@kms-primary; transparent; @kms-primary; #fff; @kms-primary; @kms-primary);
+}
+
+// .btn-knockout {
+//     .button-variant(white;rgba(255, 255, 255, 0);white);
+//     border-width: 1px;
+//     &:hover,
+//     &:focus {
+//         color: @dark-grey;
+//         border-color: white;
+//         background-color: white;
+//     }
+// }
+
+// .btn-knockout-primary {
+//     .button-variant(@brand-primary;rgba(255, 255, 255, 0);@brand-primary);
+//     border-width: 1px;
+//     &:hover,
+//     &:focus {
+//         color: white;
+//         border-color: @brand-primary;
+//         background-color: @brand-primary;
+//     }
+// }
+
+// .btn-knockout-goldwell {
+//     .button-variant(@goldwell-primary;rgba(255, 255, 255, 0);@goldwell-primary);
+//     border-width: 1px;
+//     &:hover,
+//     &:focus {
+//         color: white;
+//         border-color: @goldwell-primary;
+//         background-color: @goldwell-primary;
+//     }
+// }
+
+// homepage
+
+.c-homepage-card {
+    background-color: #fff;
+    border: 1px solid @light-grey;
+    border-radius: @border-radius-large;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    padding: 60px;
+    margin-bottom: 30px;
+}
+
+.homepage-cards {
+    margin-top: @grid-gutter-width;
 }
