@@ -1,0 +1,22 @@
+// color
+@brand-primary: #07B28C;
+@brand-secondary: #04624D;
+@goldwell-primary: #cc2d30;
+@goldwell-secondary: #5D1516;
+@kms-primary: #FE5000;
+@kms-secondary: #A23300;
+
+.row > div {
+    &:first-child {
+        .btn {
+            background-color: @goldwell-primary;
+            border-color: @goldwell-primary;
+        }
+    }
+    &:last-child {
+        .btn {
+            background-color: @kms-primary;
+            border-color: @kms-primary;
+        }
+    }
+}
