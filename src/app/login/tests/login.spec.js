@@ -1,4 +1,4 @@
-fdescribe('Component: Login', function() {
+describe('Component: Login', function() {
     describe('Controller: LoginCtrl', function() {
         var loginCtrl;
         beforeEach(inject(function($controller) {
@@ -21,12 +21,12 @@ fdescribe('Component: Login', function() {
         }));
 
         describe('form', function() {
-            it ('should initialize to login if there is not a validationCode $stateParam', function() {
+            it ('should initialize to login if there is not a verificationCode $stateParam', function() {
                 expect(loginCtrl.form).toBe('login');
             });
-            it ('should initialize to reset if validationCode $stateParam exists', inject(function($controller) {
+            it ('should initialize to reset if verificationCode $stateParam exists', inject(function($controller) {
                 var altLoginCtrl = $controller('LoginCtrl', {
-                    $stateParams: {validationCode: 'mockValidationCode'}
+                    $stateParams: {verificationCode: 'mockverificationCode'}
                 })
                 expect(altLoginCtrl.form).toBe('reset');
             }));
@@ -92,16 +92,16 @@ fdescribe('Component: Login', function() {
                 Username: mock.User.Username,
                 Password: mock.User.Password
             };
-            var mockValidationCode = 'mockValidation';
+            var mockverificationCode = 'mockValidation';
             beforeEach(function() {
                 loginCtrl.credentials = {ResetUsername: mock.User.Username, NewPassword: mock.User.Password};
-                loginCtrl.validationCode = mockValidationCode;
+                loginCtrl.verificationCode = mockverificationCode;
                 spyOn(oc.PasswordResets, 'ResetPasswordByVerificationCode').and.returnValue(dummyPromise);
                 loginCtrl.resetPassword();
                 scope.$digest();
             });
             it ('should call the ResetPassword method of the LoginService with credentials and token', function() {
-                expect(oc.PasswordResets.ResetPasswordByVerificationCode).toHaveBeenCalledWith(mockValidationCode, mockCreds);
+                expect(oc.PasswordResets.ResetPasswordByVerificationCode).toHaveBeenCalledWith(mockverificationCode, mockCreds);
             });
             it ('should set the form to resetSuccess', function() {
                 expect(loginCtrl.form).toBe('resetSuccess');
