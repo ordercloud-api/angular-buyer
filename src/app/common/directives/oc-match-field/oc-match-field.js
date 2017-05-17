@@ -10,7 +10,7 @@ function OrderCloudMatchFieldDirective() {
         restrict: 'A',
         require: 'ngModel',
         link: function(scope, element, attr, ngModelCtrl) {
-            ngModelCtrl.$validators.ocMatch = function(val) {
+            ngModelCtrl.$validators['oc-match-field'] = function(val) {
                 return val === scope.ocMatchField;
             };
         }

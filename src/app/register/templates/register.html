@@ -28,7 +28,10 @@
                 </div>
                 <div class="form-group">
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
-                    <input type="password" class="form-control" placeholder="Confirm Password" name="ConfirmPassword" id="ConfirmPassword" oc-match-field="register.info.Password" ng-model="register.info.ConfirmPassword" ng-required="true" />
+                    <input type="password" class="form-control" placeholder="Confirm Password" name="ConfirmPassword" id="ConfirmPassword" ng-model="register.info.ConfirmPassword"
+                    oc-match-field="register.info.Password" 
+                    oc-match-field-err-type="ocMatchPassword" 
+                    ng-required="true" />
                 </div>
                 <div class="form-group">
                     <label for="Phone" class="sr-only">Phone Number</label>

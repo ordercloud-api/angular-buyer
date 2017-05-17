@@ -65,7 +65,10 @@
                 </div>
                 <div class="form-group">
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
-                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" oc-match-field="login.credentials.NewPassword" ng-required="true" />
+                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" 
+                    oc-match-field="login.credentials.NewPassword" 
+                    oc-match-field-err-type="ocMatchPassword"
+                    ng-required="true" />
                 </div>
                 <button type="submit" id="reset_submit" class="btn btn-primary btn-block">Submit</button>
             </form>
@@ -86,7 +89,10 @@
                 </div>
                 <div class="form-group">
                     <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
-                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" oc-match-field="login.credentials.NewPassword" ng-required="true" />
+                    <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm New Password" ng-model="login.credentials.ConfirmPassword" 
+                    oc-match-field="login.credentials.NewPassword"
+                    oc-match-field-err-type="ocMatchPassword"
+                     ng-required="true" />
                 </div>
                 <button type="submit" id="reset_submit" class="btn btn-primary btn-block">Submit</button>
             </form>
