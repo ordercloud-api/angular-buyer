@@ -15,10 +15,10 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
     function _init(order, paymentType) {
         var df = $q.defer();
         OrderCloudSDK.Payments.List('outgoing', order.ID)
-			.then(function(data) {
+            .then(function (data) {
                 if (_paymentsExceedTotal(data.Items, order.Total) || (data.Items.length === 1 && _calculateMaxTotal(order, data.Items))) {
                     _removeAllPayments(data, order)
-                        .then(function() {
+                        .then(function () {
                             df.resolve(_addPayment(order, paymentType));
                         });
                 } else if (data.Items.length) {
@@ -26,13 +26,13 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
                 } else {
                     df.resolve(_addPayment(order, paymentType));
                 }
-			});
+            });
 
         function _getPaymentDetails(payments) {
             var defer = $q.defer();
             var queue = [];
 
-            angular.forEach(payments, function(payment) {
+            angular.forEach(payments, function (payment) {
                 if (payment.CreditCardID) {
                     queue.push(_getCreditCardDetails(payment));
                 } else if (payment.SpendingAccountID) {
@@ -47,7 +47,7 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
             function _getCreditCardDetails(p) {
                 var deferred = $q.defer();
                 OrderCloudSDK.Me.GetCreditCard(p.CreditCardID)
-                    .then(function(data) {
+                    .then(function (data) {
                         p.CreditCard = data;
                         deferred.resolve(p);
                     });
@@ -57,7 +57,7 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
             function _getSpendingAccountDetails(p) {
                 var deferred = $q.defer();
                 OrderCloudSDK.Me.GetSpendingAccount(p.SpendingAccountID)
-                    .then(function(data) {
+                    .then(function (data) {
                         p.SpendingAccount = data;
                         deferred.resolve(p);
                     });
@@ -78,15 +78,17 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
 
     function _addPayment(order, paymentType, currentPayments) {
         var df = $q.defer();
-        var paymentTotal = currentPayments ? order.Total - _.reduce(currentPayments, function(sum, payment) { return payment.Amount + sum; }, 0) : order.Total;
-		var payment = {
-			Type: paymentType,
-			DateCreated: new Date().toISOString(),
-			Amount: paymentTotal
-		};
+        var paymentTotal = currentPayments ? order.Total - _.reduce(currentPayments, function (sum, payment) {
+            return payment.Amount + sum;
+        }, 0) : order.Total;
+        var payment = {
+            Type: paymentType,
+            DateCreated: new Date().toISOString(),
+            Amount: paymentTotal
+        };
         if (paymentType === 'PurchaseOrder') {
             OrderCloudSDK.Payments.Create('outgoing', order.ID, payment)
-                .then(function(newPayment) {
+                .then(function (newPayment) {
                     var payments = currentPayments ? currentPayments.concat([newPayment]) : [newPayment];
                     df.resolve(payments);
                 });
@@ -100,11 +102,13 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
 
     function _calculateMaxTotal(order, payments) {
         var paymentTotal = 0;
-		angular.forEach(payments, function(payment) {
-			paymentTotal += payment.Amount;
-			var maxAmount = order.Total - _.reduce(_.pluck(payments, 'Amount'), function(a, b) {return a + b; });
-			payment.MaxAmount = (payment.Amount + maxAmount).toFixed(2);
-		});
+        angular.forEach(payments, function (payment) {
+            paymentTotal += payment.Amount;
+            var maxAmount = order.Total - _.reduce(_.pluck(payments, 'Amount'), function (a, b) {
+                return a + b;
+            });
+            payment.MaxAmount = (payment.Amount + maxAmount).toFixed(2);
+        });
         return paymentTotal < order.Total;
     }
 
@@ -165,17 +169,15 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
     }
 
     function _save(payment, order, account) {
-        var df = $q.defer();
-        var newPayment = angular.copy(payment);
+        var newPaymentData = angular.copy(payment);
 
         if (payment.ID) {
             return OrderCloudSDK.Payments.Delete('outgoing', order.ID, payment.ID)
                 .then(function () {
-                    // delete payment.ID;
-                    createPayment(newPayment);
+                    return createPayment(newPaymentData);
                 });
         } else {
-            createPayment(payment);
+            return createPayment(payment);
         }
 
         function createPayment(newPayment) {
@@ -184,25 +186,25 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
                 case 'PurchaseOrder':
                     paymentRequestBody = _.pick(newPayment, 'Type', 'Amount', 'DateCreated');
                     break;
-                case 'CreditCard': {
-                    paymentRequestBody = _.pick(newPayment, 'Type', 'Amount', 'DateCreated', 'CreditCardID');
-                    break;
-                }
-                case 'SpendingAccount': {
-                    paymentRequestBody = _.pick(newPayment, 'Type', 'Amount', 'DateCreated', 'SpendingAccountID');
-                    break;
-                }
+                case 'CreditCard':
+                    {
+                        paymentRequestBody = _.pick(newPayment, 'Type', 'Amount', 'DateCreated', 'CreditCardID');
+                        break;
+                    }
+                case 'SpendingAccount':
+                    {
+                        paymentRequestBody = _.pick(newPayment, 'Type', 'Amount', 'DateCreated', 'SpendingAccountID');
+                        break;
+                    }
             }
             return OrderCloudSDK.Payments.Create('outgoing', order.ID, paymentRequestBody)
                 .then(function (data) {
                     if (data.SpendingAccountID) data.SpendingAccount = account;
                     if (data.CreditCardID) data.CreditCard = account;
                     $rootScope.$broadcast('OCPaymentUpdated', data);
-                    df.resolve(data);
+                    return data;
                 });
         }
-
-        return df.promise;
     }
 
     return service;
