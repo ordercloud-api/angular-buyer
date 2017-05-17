@@ -121,6 +121,7 @@ function getConstants() {
         result.apiurl = 'https://api.ordercloud.io';
     }
     if (process.env.clientid) result.clientid = process.env.clientid;
+    if (process.env.anonymous) result.anonymous = process.env.anonymous;
     if (process.env.appname) result.appname = process.env.appname;
     if (process.env.scope) result.scope = process.env.scope;
     if (process.env.ocscope) result.ocscope = process.env.ocscope;

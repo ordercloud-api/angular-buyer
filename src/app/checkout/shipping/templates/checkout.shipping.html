@@ -58,7 +58,7 @@
                     <h4>Estimated Total: <b class="pull-right text-primary">{{base.currentOrder.Total | currency}}</b></h4>
                 </div>
                 <div class="panel-footer">
-                    <button type="button" class="btn btn-primary form-control" ng-disabled="!checkout.shippingAddress || checkoutShipping.shippersAreLoading || OC_Checkout_Shipping.$invalid" ui-sref="checkout.payment">Next</button>
+                    <button type="button" class="btn btn-primary btn-block" ng-disabled="!checkout.shippingAddress || checkoutShipping.shippersAreLoading || OC_Checkout_Shipping.$invalid" ui-sref="checkout.payment">Next</button>
                 </div>
             </div>
         </div>
