@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('CheckoutCtrl', CheckoutController)
 ;
 
-function CheckoutController($exceptionHandler, $state, $rootScope, toastr, OrderCloudSDK, OrderShipAddress, CurrentPromotions, OrderBillingAddress, CheckoutConfig) {
+function CheckoutController($exceptionHandler, $state, $rootScope, toastr, OrderCloudSDK, ocSpendingCredit, OrderShipAddress, CurrentPromotions, OrderBillingAddress, CheckoutConfig) {
     var vm = this;
     vm.shippingAddress = OrderShipAddress;
     vm.billingAddress = OrderBillingAddress;
@@ -12,8 +12,13 @@ function CheckoutController($exceptionHandler, $state, $rootScope, toastr, Order
     vm.submitOrder = function(order) {
         OrderCloudSDK.Orders.Submit('outgoing', order.ID)
             .then(function(order) {
-                $state.go('confirmation', {orderid:order.ID}, {reload:'base'});
-                toastr.success('Your order was successfully submitted.');
+                OrderCloudSDK.Payments.List('outgoing', order.ID)
+                    .then(function(payment) {
+                        var paymentUsed = payment.Items[0];
+                        if (paymentUsed.Type !== 'SpendingAccount') ocSpendingCredit.Update(order);
+                        $state.go('confirmation', {orderid:order.ID}, {reload:'base'});
+                        toastr.success('Your order was successfully submitted.');
+                    })
             })
             .catch(function(ex) {
                 toastr.error('Something went wrong with your order submission.', 'Error');

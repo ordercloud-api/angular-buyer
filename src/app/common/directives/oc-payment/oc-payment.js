@@ -1,7 +1,6 @@
 angular.module('orderCloud')
     .directive('ocPayment', OrderCloudPaymentDirective)
-    .controller('ocPaymentCtrl', OrderCloudPaymentController)
-;
+    .controller('ocPaymentCtrl', OrderCloudPaymentController);
 
 function OrderCloudPaymentDirective() {
     return {
@@ -19,6 +18,8 @@ function OrderCloudPaymentDirective() {
 
 function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutConfig, ocPayment, ocMyCreditCards) {
     var vm = this;
+    vm.payments;
+
     vm.$onInit = _initialize;
     vm.$doCheck = _onChanges;
 
@@ -36,11 +37,11 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
         if (!vm.allowMultiple) vm.allowMultiple = CheckoutConfig.AllowMultiplePayments;
         if (!vm.methods) vm.methods = CheckoutConfig.AvailablePaymentMethods;
         vm.loading = ocPayment.Init(vm.order, vm.methods[0])
-            .then(function(payments) {
+            .then(function (payments) {
                 vm.payments = payments;
             });
     }
-    
+
     function _onChanges() {
         var maxTotalNotMet = ocPayment.CalculateMaxTotal(vm.order, vm.payments);
         if (vm.payments) vm.canAddPayment = maxTotalNotMet && vm.allowMultiple;
@@ -48,46 +49,47 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
     }
 
     function _paymentTypeChanged(scope) {
-		if (scope.payment.Type === 'CreditCard' || scope.payment.Type === 'SpendingAccount') {
+        if (scope.payment.Type === 'CreditCard' || scope.payment.Type === 'SpendingAccount') {
             vm.selectingAccount = true;
-			scope.payment.loading = ocPayment.SelectPaymentAccount(scope.payment, vm.order)
-				.then(function(payment) {
-					vm.payments[scope.$index] = payment;
+            scope.payment.loading = ocPayment.SelectPaymentAccount(scope.payment, vm.order)
+                .then(function (payment) {
+                    console.log(angular.copy(payment));
+                    vm.payments[scope.$index] = payment;
                     vm.selectingAccount = false;
-				})
-                .catch(function(ex) {
+                })
+                .catch(function (ex) {
                     if (ex === 'CREATE_NEW_CC') {
                         vm.createNewCreditCard(scope.$index);
                     } else {
                         vm.selectingAccount = false;
                     }
                 });
-		} else {
+        } else {
             vm.loading = ocPayment.Save(scope.payment, vm.order)
-                .then(function(newPayment) {
+                .then(function (newPayment) {
                     vm.payments[scope.$index] = newPayment;
                 });
         }
-	}
-    
+    }
+
     function _changePaymentAccount(scope) {
         scope.payment.loading = ocPayment.SelectPaymentAccount(scope.payment, vm.order)
-			.then(function(payment) {
+            .then(function (payment) {
                 vm.payments[scope.$index] = payment;
-			})
-			.catch(function(ex) {
-				if (ex === 'CREATE_NEW_CC') {
-					vm.createNewCreditCard(scope.$index);
-				}
-			});
+            })
+            .catch(function (ex) {
+                if (ex === 'CREATE_NEW_CC') {
+                    vm.createNewCreditCard(scope.$index);
+                }
+            });
     }
-    
+
     function _createNewCreditCard(paymentIndex) {
         ocMyCreditCards.Create()
-            .then(function(card) {
+            .then(function (card) {
                 vm.payments[paymentIndex].CreditCardID = card.ID;
                 vm.payments[paymentIndex].loading = ocPayment.Save(vm.payments[paymentIndex], vm.order, card)
-                    .then(function(newPayment) {
+                    .then(function (newPayment) {
                         toastr.success('Credit card ending in ' + card.PartialAccountNumber + ' was saved.');
                         newPayment.CreditCard = card;
                         vm.payments[paymentIndex] = newPayment;
@@ -95,18 +97,18 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
                     });
             });
     }
-    
+
     function _updatePONumber(scope) {
         if (scope.payment.xp.PONumber === '') scope.payment.xp.PONumber = null;
         scope.payment.loading = OrderCloudSDK.Payments.Patch('outgoing', vm.order.ID, scope.payment.ID, _.pick(scope.payment, 'xp'))
-            .then(function() {
+            .then(function () {
                 toastr.success('PO Number was updated.');
             });
     }
-    
+
     function _addPayment() {
         vm.loading = ocPayment.AddPayment(vm.order, vm.methods[0], vm.payments)
-            .then(function(updatedPayments) {
+            .then(function (updatedPayments) {
                 vm.payments = updatedPayments;
             });
     }
@@ -116,10 +118,11 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
             _splicePayment();
         } else {
             scope.payment.loading = OrderCloudSDK.Payments.Delete('outgoing', vm.order.ID, scope.payment.ID)
-                .then(function(){
+                .then(function () {
                     _splicePayment();
                 });
         }
+
         function _splicePayment() {
             vm.payments.splice(scope.$index, 1);
             toastr.success('Payment removed.');
@@ -127,10 +130,10 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
     }
 
     function _updatePaymentAmount(scope) {
-		if (scope.payment.Amount > scope.payment.MaxAmount || !scope.payment.Amount) return;
-		scope.payment.loading = OrderCloudSDK.Payments.Patch('outgoing', vm.order.ID, scope.payment.ID, _.pick(scope.payment, 'Amount'))
-			.then(function() {
-				toastr.success('Payment amount updated to ' + $filter('currency')(scope.payment.Amount));
-			});
-	}
+        if (scope.payment.Amount > scope.payment.MaxAmount || !scope.payment.Amount) return;
+        scope.payment.loading = OrderCloudSDK.Payments.Patch('outgoing', vm.order.ID, scope.payment.ID, _.pick(scope.payment, 'Amount'))
+            .then(function () {
+                toastr.success('Payment amount updated to ' + $filter('currency')(scope.payment.Amount));
+            });
+    }
 }
