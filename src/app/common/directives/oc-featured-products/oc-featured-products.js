@@ -31,8 +31,8 @@ function FeaturedProductsDirective(ocFeaturedProductsService, $compile) {
                     ];
                     element.html(
                         "<slick arrows='!application.isTouchDevice' responsive='responsive' infinite='false' slides-to-show='6' slides-to-scroll='1' class='slider multiple-items' ng-class='{\"has-arrows\": !application.isTouchDevice}'>" +
-                        "<div ng-repeat='product in relatedProducts'>" +
-                        "<div class='c-related-products__card-wrap' ng-include='\"common/templates/directives-product-card.html\"'></div>" +
+                        "<div ng-repeat='product in featuredProducts'>" +
+                        "<div class='c-related-products__card-wrap' ng-include='\"common/directives/oc-featured-products/directives-product-card.html\"'></div>" +
                         "</div>" +
                         "</slick>"
                     );
