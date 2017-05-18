@@ -1,0 +1,21 @@
+<!-- template is used for ocRelatedProducts and ocFeaturedProducts directives -->
+<div>
+    <!--Product Image-->
+    <div class="c-product-card__img-wrap">
+        <a ui-sref="productDetail({productid: product.ID})">
+            <img class="img-responsive c-product-card__img" ng-src="{{product.xp.image.URL || 'http://placehold.it/300x300'}}"/>
+        </a>
+    </div>
+</div>
+<div class="c-product-card__body">
+    <!--Product Info-->
+    <div class="text-right c-product-card__icons hidden-xs" oc-prevent-click>
+        <!--<ordercloud-product-quick-view product="product" current-order="base.currentOrder"></ordercloud-product-quick-view>-->
+        <ordercloud-favorite-product product="product" current-user="currentuser"></ordercloud-favorite-product>
+    </div>
+    <h5 class="c-product-card__name">{{product.Name || product.ID}}<br><small class="text-muted c-product-card__id" ng-if="product.Name">{{product.ID}}</small>
+    </h5>
+    <h4 class="text-primary c-product-card__price">{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</b> <small class="text-muted">x {{product.PriceSchedule.PriceBreaks[0].Quantity}}</small></h4>
+</div>
+<div>
+</div>
