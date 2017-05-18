@@ -1,4 +1,4 @@
-<form name="OCProductForm" ng-submit="productQuickView.addToCart()" autocomplete="off" novalidate>
+<form name="OCProductForm" ng-submit="productQuickView.addToCart()" autocomplete="off" novalidate oc-pretty-submit>
 	<div class="modal-header">
 		<button type="button" class="close" ng-click="productQuickView.cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 		<h1>{{productQuickView.item.Name || productQuickView.item.ID}} <small ng-if="productQuickView.item.Name">{{productQuickView.item.ID}}</small></h1>

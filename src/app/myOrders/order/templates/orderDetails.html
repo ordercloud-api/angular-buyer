@@ -1,14 +1,20 @@
 <ul class="breadcrumb">
-    <li><a href="" ui-sref="orders">All Orders</a></li>
+    <li><a href="" ui-sref="orders({tab:'history'})">All Orders</a></li>
     <li class="active">{{orderDetails.order.ID}}</li>
 </ul>
 <article>
     <header class="l-page-header">
         <h3 class="l-page-header__title">
-            <small class="pull-right">Submitted on {{orderDetails.order.DateSubmitted | date}}</small>
             <span class="text-muted">Order:</span> {{orderDetails.order.ID}} <br>
-            <span class="pull-right"><ordercloud-favorite-order current-user="base.currentUser" order="orderDetails.order"></ordercloud-favorite-order></span>
+            <small class="text-muted">Submitted on {{orderDetails.order.DateSubmitted | date}}</small>
         </h3>
+        <div class="l-page-header__btns">
+            <ordercloud-favorite-order class="lead" ng-if="orderDetails.order.FromUser.ID === base.currentUser.ID" current-user="base.currentUser" order="orderDetails.order"></ordercloud-favorite-order>
+            <div ng-if="orderDetails.order.FromUser.ID !== base.currentUser.ID && orderDetails.canApprove">
+                <button type="button" class="btn btn-success" ng-click="orderDetails.updateApprovalStatus('Approve')">Approve</button>
+                <button type="button" class="btn btn-danger" ng-click="orderDetails.updateApprovalStatus('Decline')">Decline</button>
+            </div>
+        </div>
     </header>
     <ul class="nav nav-tabs">
         <li ng-class="{active: application.$state.is('orderDetail')}">
@@ -20,10 +26,6 @@
         <li ui-sref-active="active">
             <a href="" ui-sref=".shipments"><i class="fa fa-truck"></i> Shipments</a>
         </li>
-        <!-- TODO: these roles seem incorrect in the api - fix when this is adjusted there -->
-        <!--<li ui-sref-active="active" oc-if-roles="['ApprovalRuleAdmin', 'AddressReader']">
-            <a href="" ui-sref=".approvals"><i class="fa fa-check-square-o"></i> Approvals</a>
-        </li>-->
     </ul>
     <br>
     <div ui-view cg-busy="application.stateLoading('orderDetail')">
@@ -33,10 +35,29 @@
             <div class="panel-body">
                 <div class="row">
                     <div class="col-sm-8">
-                        <b>Date {{orderDetails.order.DateSubmitted ? 'Submitted' : 'Created'}}: </b> {{(orderDetails.order.DateSubmitted || orderDetails.order.DateCreated) | date:'medium'}} <br>
-                        <b>Status: </b> {{orderDetails.order.Status | humanize}} <br>
-                        <b>Buyer Company: </b> {{orderDetails.order.FromCompany.Name}} <br>
-                        <b>Created By: </b> {{orderDetails.order.FromUser.FirstName + ' ' + orderDetails.order.FromUser.LastName}} <br>
+                        <b>Date {{orderDetails.order.DateSubmitted ? 'Submitted' : 'Created'}}: </b> {{(orderDetails.order.DateSubmitted || orderDetails.order.DateCreated) | date:'medium'}} 
+                        <br>
+                        <b>Created By: </b> {{orderDetails.order.FromUser.FirstName + ' ' + orderDetails.order.FromUser.LastName}} 
+                        <br>
+                        <b>Status: </b> 
+                        <i class="fa" ng-class="{
+                            'fa-circle success': orderDetails.order.Status == 'Completed', 
+                            'fa-clock-o warning': orderDetails.order.Status == 'AwaitingApproval',
+                            'fa-circle info': orderDetails.order.Status == 'Open',
+                            'fa-ban danger': orderDetails.order.Status == 'Declined'}">
+                        </i>
+                        {{orderDetails.order.Status | humanize}}                  
+                        <br>
+                        <ul>
+                            <li ng-repeat="approval in orderDetails.approvals.Items | filter:{'Status':'!Pending'}">
+                                <a ng-href="{{'mailto:' + approval.Approver.Email}}">{{approval.Approver.FirstName + ' ' + approval.Approver.LastName}}</a> 
+                                {{approval.Status.toLowerCase() + ' on ' + (approval.DateCompleted | date)}}
+                                <small class="text-muted" ng-if="approval.Comments">
+                                    <br>
+                                    <i class="fa fa-quote-left"></i> {{approval.Comments}} <i class="fa fa-quote-right"></i>
+                                </small>
+                            </li>
+                        </ul>
                         <div ng-if="orderDetails.order.Comments">
                             <b>Comments: </b> {{orderDetails.order.Comments}}
                         </div>

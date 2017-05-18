@@ -27,6 +27,7 @@ function OrdersController($state, $filter, $ocMedia, OrderCloudSDK, ocParameters
     vm.filter = filter; //Reload the state with new parameters
     vm.today = Date.now();
     vm.search = search; //Reload the state with new search parameter & reset the 
+    vm.clearDate = clearDate; //Clear the from or to date parameters (arguments 'fromDate' || 'toDate'), reload the state & reset the page
     vm.clearSearch = clearSearch; //Clear the search parameter, reload the state & reset the page
     vm.updateSort = updateSort;  //Conditionally set, reverse, remove the sortBy parameter & reload the state
     vm.reverseSort = reverseSort; //Used on mobile devices
@@ -37,16 +38,16 @@ function OrdersController($state, $filter, $ocMedia, OrderCloudSDK, ocParameters
     vm.goToOrder = goToOrder;
 
     function selectTab(tab){
+        vm.parameters.search = '';
+        vm.parameters.status = '';
+        vm.parameters.fromDate = '';
+        vm.parameters.toDate = '';
         vm.parameters.tab = tab;
         vm.filter(true);
     }
 
     function goToOrder(order){
-        if(vm.parameters.tab === 'approvals') {
-            $state.go('orderDetail.approvals', {orderid: order.ID});
-        } else {
-            $state.go('orderDetail', {orderid: order.ID});
-        }
+        $state.go('orderDetail', {orderid: order.ID});
     }
 
     function filter(resetPage) {
@@ -54,6 +55,11 @@ function OrdersController($state, $filter, $ocMedia, OrderCloudSDK, ocParameters
     }
     
     function search() {
+        vm.filter(true);
+    }
+
+    function clearDate(dateType) {
+        vm.parameters[dateType] = null;
         vm.filter(true);
     }
     

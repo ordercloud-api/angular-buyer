@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductBrowseCtrl', ProductBrowseController)
 ;
 
-function ProductBrowseController($state, ocProductBrowse, CategoryList, CategoryTree, Parameters) {
+function ProductBrowseController($state, ocProductBrowse, CategoryList, CategoryTree, Parameters, ocParameters) {
     var vm = this;
     vm.parameters = Parameters;
     vm.categoryList = CategoryList;
@@ -54,7 +54,7 @@ function ProductBrowseController($state, ocProductBrowse, CategoryList, Category
             vm.parameters.favorites = true;
             vm.parameters.page = '';
         }
-        $state.go('productBrowse.products', vm.parameters);
+        $state.go('productBrowse.products', ocParameters.Create(vm.parameters));
     };
 
     vm.openCategoryModal = function(){

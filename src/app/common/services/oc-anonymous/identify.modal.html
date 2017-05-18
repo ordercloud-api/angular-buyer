@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <button type="button" class="close" aria-label="Close" ng-click="identifyModal.cancel()"><span aria-hidden="true">&times;</span></button>
+        An account is needed to continue
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default" style="margin-bottom:0;">
+                <div class="panel-body text-center">
+                    <span>Already have an account?</span>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-default btn-block" ng-click="identifyModal.login()">
+                        Login now
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <hr class="visible-xs">
+            <div class="panel panel-default" style="margin-bottom:0;">
+                <div class="panel-body text-center">
+                    <span>New to {{identifyModal.appName()}}?</span>
+                </div>
+                <div class="panel-footer">
+                    <button class="btn btn-primary btn-block" ng-click="identifyModal.register()">
+                        Create an account
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

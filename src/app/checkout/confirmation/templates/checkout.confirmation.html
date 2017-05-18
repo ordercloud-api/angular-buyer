@@ -2,6 +2,7 @@
 	<h2 class="page-header">
 		Order Submitted <br>
 		<small>Thank you for your order. Check your <a href="" ui-sref="orderDetail({orderid:checkoutConfirmation.order.ID})">order history</a> to track your delivery!</small>
+		<span class="pull-right"><ordercloud-favorite-order current-user="base.currentUser" order="checkoutConfirmation.order"></ordercloud-favorite-order></span>
 	</h2>
 	<div class="row">
 		<div class="col-md-5">
@@ -92,7 +93,7 @@
 	<div class="row c-line-item" ng-repeat="lineItem in checkoutConfirmation.lineItems.Items track by $index">
 		<div class="col-xs-3 col-sm-2">
 			<div class="thumbnail c-line-item__img">
-				<img class="img-responsive" ng-src="{{lineItem.xp.image.URL || 'http://placehold.it/100x100?text=' + lineItem.Product.Name}}"
+				<img class="img-responsive" ng-src="{{lineItem.Product.xp.image.URL || 'http://placehold.it/100x100?text=' + lineItem.Product.Name}}"
 					 alt="{{lineItem.Product.xp.image.Name || 'Product Image'}}">
 			</div>
 		</div>

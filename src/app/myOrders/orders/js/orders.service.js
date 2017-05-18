@@ -2,9 +2,10 @@ angular.module('orderCloud')
     .factory('ocOrders', ocOrdersService)
 ;
 
-function ocOrdersService($filter, OrderCloudSDK){
+function ocOrdersService($uibModal, $filter, OrderCloudSDK){
     var service = {
-        List: _list
+        List: _list,
+        UpdateApprovalStatus: _updateApprovalStatus
     };
     
     function _list(Parameters, CurrentUser){
@@ -18,6 +19,8 @@ function ocOrdersService($filter, OrderCloudSDK){
             result = result.setDate(result.getDate() + 1);
             return $filter('date')(result, 'MM-dd-yyyy');
         }
+
+        parameters.pageSize = parameters.pageSize ? parameters.pageSize : 12;
 
         if (parameters.fromDate && parameters.toDate) {
             parameters.filters.DateSubmitted = [('>' + parameters.fromDate), ('<' + convertToDate(parameters.toDate))];
@@ -36,17 +39,34 @@ function ocOrdersService($filter, OrderCloudSDK){
             }
         }
 
-        if(parameters.status){
-            angular.extend(parameters.filters, {Status: parameters.status});
-        }
-
-        parameters.pageSize = parameters.pageSize ? parameters.pageSize : 12;
-
-        if (parameters.tab == 'approvals') {
+        if (parameters.tab === 'approvals') {
             return OrderCloudSDK.Me.ListApprovableOrders(parameters);
         } else {
+            if(parameters.status){
+                angular.extend(parameters.filters, {status: parameters.status});
+            } else {
+                //TODO: replace with "!Unsubmitted" when ! operator is fixed in API EX-1166
+                angular.extend(parameters.filters, {status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'});
+            }
             return OrderCloudSDK.Me.ListOrders(parameters);
         }
+    }
+
+    function _updateApprovalStatus(orderID, intent){
+        return $uibModal.open({
+            templateUrl: 'myOrders/orders/templates/approval.modal.html',
+            controller: 'ApprovalModalCtrl',
+            controllerAs: 'approvalModal',
+            size: 'md',
+            resolve: {
+                OrderID: function() {
+                    return orderID;
+                },
+                Intent: function(){
+                    return intent;
+                }
+            }
+        }).result;
     }
 
     return service;

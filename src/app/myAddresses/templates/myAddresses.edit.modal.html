@@ -1,7 +1,7 @@
-<form name="myAddressesEditModalForm" ng-submit="editAddress.submit()" cg-busy="editAddress.loading">
+<form name="myAddressesEditModalForm" ng-submit="editAddress.submit()" cg-busy="editAddress.loading" oc-pretty-submit>
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" ng-click="editAddress.cancel()"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title">Edit Address</h3>
+        <h4 class="modal-title">Edit Address</h4>
     </div>
     <div class="modal-body">
         <fieldset>
@@ -63,7 +63,7 @@
     </div>
     <div class="modal-footer">
         <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block" ng-disabled="myAddressesEditModalForm.$invalid || (!editAddress.address.Billing && !editAddress.address.Shipping)">Save</button>
+            <button type="submit" class="btn btn-primary btn-block">Save</button>
         </div>
     </div>
 </form>

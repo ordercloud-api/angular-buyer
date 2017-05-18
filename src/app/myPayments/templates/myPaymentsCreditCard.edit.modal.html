@@ -1,9 +1,9 @@
-<form name="myPaymentsCreditCardCreateModalForm" ng-submit="editCreditCard.submit()" cg-busy="editCreditCard.loading">
+<form name="myPaymentsCreditCardCreateModalForm" ng-submit="editCreditCard.submit()" cg-busy="editCreditCard.loading" oc-pretty-submit>
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" ng-click="editCreditCard.cancel()"><span
                 aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title">Edit your
-            {{editCreditCard.creditCard.CardType}}...{{editCreditCard.creditCard.PartialAccountNumber}}</h3>
+        <h4 class="modal-title">Edit your
+            {{editCreditCard.creditCard.CardType}}...{{editCreditCard.creditCard.PartialAccountNumber}}</h4>
     </div>
     <div class="modal-body">
         <fieldset>
@@ -67,7 +67,7 @@
         </fieldset>
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary btn-block" ng-disabled="myPaymentsCreditCardCreateModalForm.$invalid">Save</button>
+        <button type="submit" class="btn btn-primary btn-block">Save</button>
     </div>
 </form>
 
