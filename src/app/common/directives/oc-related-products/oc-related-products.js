@@ -8,12 +8,12 @@ function RelatedProductsDirective(ocRelatedProducts, $compile) {
             product: "=",
             currentuser: "="
         },
+        //currentuser is required here because the favorite products directive within the related products template requires it (won't grab from base)
         restrict: 'E',
         link: function(scope, element) {
             if(scope.product && scope.product.xp && scope.product.xp.RelatedProducts){
                 ocRelatedProducts.List(scope.product.xp.RelatedProducts)
                     .then(function(data){
-                        console.log(scope.product);
                         scope.relatedProducts = data.Items;
                         scope.responsive = [
                             {
