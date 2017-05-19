@@ -144,7 +144,7 @@
                             <td>{{(order.DateSubmitted || order.DateCreated) | date:'short'}}</td>
                             <td>{{order.FromUser.FirstName + ' ' + order.FromUser.LastName}}</td>
                             <td>{{order.Subtotal | currency}}</td>
-                            <td class="text-center"  ng-if="orders.parameters.tab !== 'approvals'"><ordercloud-favorite-order current-user="base.currentUser" order="order"></ordercloud-favorite-order></td>
+                            <td class="text-center"  ng-if="orders.parameters.tab !== 'approvals'"> <i class="fa" oc-favorite-order="order" current-user="base.currentUser" favorite-class="fa-heart text-danger" non-favorite-class="fa-heart-o" aria-hidden="true"></i> </td>
                         </tr>
                     </tbody>
                 </table>
