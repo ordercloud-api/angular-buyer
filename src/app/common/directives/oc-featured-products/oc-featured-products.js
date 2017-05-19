@@ -4,6 +4,9 @@ angular.module('orderCloud')
 
 function FeaturedProductsDirective(ocFeaturedProductsService, $compile) {
     return {
+        scope: {
+            currentuser: "="
+        },
         restrict: 'E',
         link: function(scope, element) {
             ocFeaturedProductsService.List()
