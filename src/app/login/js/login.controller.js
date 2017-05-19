@@ -16,7 +16,7 @@ function LoginController($window, $state, $stateParams, $exceptionHandler, ocRol
     vm.rememberStatus = false;
 
     vm.submit = function () {
-        vm.loading = OrderCloudSDK.Auth.Login(vm.credentials.Username, vm.credentials.Password, clientid, scope)
+        vm.loading = OrderCloudSDK.Auth.Login(vm.credentials.Username, $window.encodeURIComponent(vm.credentials.Password), clientid, scope)
             .then(function (data) {
                 var anonymousToken = OrderCloudSDK.GetToken();
                 OrderCloudSDK.SetToken(data.access_token);
