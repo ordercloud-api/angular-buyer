@@ -1,19 +1,18 @@
 angular.module('orderCloud')
     .controller('LoginCtrl', LoginController);
 
-function LoginController($window, $state, $stateParams, $exceptionHandler, ocRoles, ocAnonymous, OrderCloudSDK, scope, clientid, defaultstate, anonymous) {
+function LoginController($state, $exceptionHandler, ocRoles, ocAnonymous, OrderCloudSDK, scope, clientid, defaultstate, anonymous) {
     var vm = this;
     vm.anonymousEnabled = anonymous;
     vm.credentials = {
         Username: null,
         Password: null
     };
-    vm.verificationCode = $stateParams.verificationCode;
-    vm.form = vm.verificationCode ? 'reset' : 'login';
+    vm.rememberStatus = false;
+    vm.form = 'login';
     vm.setForm = function (form) {
         vm.form = form;
     };
-    vm.rememberStatus = false;
 
     vm.submit = function () {
         vm.loading = OrderCloudSDK.Auth.Login(vm.credentials.Username, vm.credentials.Password, clientid, scope)
@@ -43,11 +42,10 @@ function LoginController($window, $state, $stateParams, $exceptionHandler, ocRol
     vm.forgotPassword = function () {
         vm.loading = OrderCloudSDK.PasswordResets.SendVerificationCode({
                 Email: vm.credentials.Email,
-                ClientID: clientid,
-                URL: encodeURIComponent($window.location.href) + '{0}'
+                ClientID: clientid
             })
             .then(function () {
-                vm.setForm('verificationCodeSuccess');
+                vm.setForm('reset');
                 vm.credentials.Email = null;
             })
             .catch(function (ex) {
