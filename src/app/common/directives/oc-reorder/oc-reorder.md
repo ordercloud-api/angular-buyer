@@ -29,3 +29,9 @@ prefer the directive handle getting the current order (most recent, unsubmitted 
 ```html
 <button oc-reorder="myPreviousOrderID">Reorder Me Too!</button>
 ```
+
+### Where is this directive currently used?
+
+This directive can be seen on:
+*  order list - (src/app/myOrders/orders/templates/orders.html)
+*  order detail - (src/app/myOrders/order/templates/orderDetails.html)
