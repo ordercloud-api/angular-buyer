@@ -1,8 +1,8 @@
 angular.module('orderCloud')
-    .factory('ocReorderModal', ocReorderModalService)
+    .factory('ocReorder', ocReorderService)
 ;
 
-function ocReorderModalService($q, toastr, $exceptionHandler, OrderCloudSDK, ocLineItems, $uibModal) {
+function ocReorderService($q, toastr, $exceptionHandler, OrderCloudSDK, ocLineItems, $uibModal) {
     return {
         Open: _open,
         AddLineItemsToCart: _addLineItemsToCart,

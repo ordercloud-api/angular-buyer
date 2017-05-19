@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ReorderModalCtrl', ReorderModalController)
 ;
 
-function ReorderModalController($state, $uibModalInstance, ocReorderModal, LineItems, OrderID){
+function ReorderModalController($state, $uibModalInstance, ocReorder, LineItems, OrderID){
     var vm = this;
     vm.orderid = OrderID;
     vm.invalidLI = LineItems.invalid;
@@ -19,7 +19,7 @@ function ReorderModalController($state, $uibModalInstance, ocReorderModal, LineI
         vm.loading = {
             message:'Adding Products to Cart'
         };
-        vm.loading.promise = ocReorderModal.AddLineItemsToCart(vm.validLI, vm.orderid)
+        vm.loading.promise = ocReorder.AddLineItemsToCart(vm.validLI, vm.orderid)
             .then(function(){
                 $uibModalInstance.close();
                 $state.go('cart', {}, {reload: true});

@@ -18,7 +18,7 @@ var q,
     ocMyAddressesService,
     ocParametersService,
     ocRolesService,
-    ocReorderModalService,
+    ocReorderService,
     dummyPromise,
     mock = _mockData();
 beforeEach(module('orderCloud', function($provide) {
@@ -32,7 +32,7 @@ beforeEach(module('orderCloud', function($provide) {
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $compile, $state, $injector, $exceptionHandler, toastr, $uibModal,
-OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorderModal, Parameters, CurrentOrder,
+OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, CurrentOrder,
 CurrentUser, OrderLineItems) {
     q = $q;
     scope = $rootScope.$new();
@@ -50,7 +50,7 @@ CurrentUser, OrderLineItems) {
     ocMyAddressesService = ocMyAddresses;
     ocParametersService = ocParameters;
     ocRolesService = ocRoles;
-    ocReorderModalService = ocReorderModal;
+    ocReorderService = ocReorder;
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
     currentUser = CurrentUser;
