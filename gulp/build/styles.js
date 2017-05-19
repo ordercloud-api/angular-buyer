@@ -27,6 +27,13 @@ function StylesFunction() {
                             "./less/jasny-bootstrap.less"
                         ]
                     },
+                    'slick-carousel': {
+                        main: [
+                            "slick/slick.js",
+                            "slick/slick.less",
+                            "slick/slick-theme.less"
+                        ]
+                    },
                     'bootswatch': config.checkBootswatchTheme()
                 }}),
             './src/app/styles/main.less'

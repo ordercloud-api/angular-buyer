@@ -14,6 +14,7 @@ function RelatedProductsDirective(ocRelatedProducts, $compile) {
             if(scope.product && scope.product.xp && scope.product.xp.RelatedProducts){
                 ocRelatedProducts.List(scope.product.xp.RelatedProducts)
                     .then(function(data){
+                        console.log(scope.currentuser);
                         scope.relatedProducts = data.Items;
                         scope.responsive = [
                             {
