@@ -5,8 +5,8 @@ describe('Component: ocRepeatOrder', function(){
         beforeEach(function(){
             var dfd = q.defer();
             dfd.resolve(mock.LineItems);
-            spyOn(ocReorderModalService, 'GetValidLineItems').and.returnValue(dfd.promise);
-            spyOn(ocReorderModalService, 'Open').and.returnValue(dummyPromise);
+            spyOn(ocReorderService, 'GetValidLineItems').and.returnValue(dfd.promise);
+            spyOn(ocReorderService, 'Open').and.returnValue(dummyPromise);
 
             previousOrder = 'MockPreviousOrderID';
             scope.previousOrder = previousOrder;
@@ -19,12 +19,12 @@ describe('Component: ocRepeatOrder', function(){
         });
         it('should call ocReorderModal.GetValidLineItems when clicked', function(){
             element.triggerHandler('click');
-            expect(ocReorderModalService.GetValidLineItems).toHaveBeenCalledWith(previousOrder);
+            expect(ocReorderService.GetValidLineItems).toHaveBeenCalledWith(previousOrder);
         })
         it('should call ocReorderModal.Open when clicked', function(){
             element.triggerHandler('click');
             scope.$digest();
-            expect(ocReorderModalService.Open).toHaveBeenCalledWith(mock.Order.ID, mock.LineItems);
+            expect(ocReorderService.Open).toHaveBeenCalledWith(mock.Order.ID, mock.LineItems);
         })
     })
 
@@ -50,12 +50,12 @@ describe('Component: ocRepeatOrder', function(){
                 reorderModalCtrl.validLI = mock.LineItems;
                 reorderModalCtrl.orderid = mock.Order.ID;
 
-                spyOn(ocReorderModalService, 'AddLineItemsToCart').and.returnValue(dummyPromise);
+                spyOn(ocReorderService, 'AddLineItemsToCart').and.returnValue(dummyPromise);
                 spyOn(state, 'go');
                 reorderModalCtrl.submit();
             })
             it('should call ocReorderdal.AddLineItemsToCart', function(){
-                expect(ocReorderModalService.AddLineItemsToCart).toHaveBeenCalledWith(mock.LineItems, mock.Order.ID);
+                expect(ocReorderService.AddLineItemsToCart).toHaveBeenCalledWith(mock.LineItems, mock.Order.ID);
             })
             it('should close the modal instance', function(){
                 scope.$digest();
@@ -94,7 +94,7 @@ describe('Component: ocRepeatOrder', function(){
                 });
                 var lineItems = q.defer();
                 lineItems.resolve(mock.LineItems);
-                spyOn(ocReorderModalService, 'GetValidLineItems').and.returnValue(lineItems.promise);
+                spyOn(ocReorderService, 'GetValidLineItems').and.returnValue(lineItems.promise);
 
                 var order = q.defer();
                 order.resolve({Items: mock.Order});
@@ -102,7 +102,7 @@ describe('Component: ocRepeatOrder', function(){
 
             });
             it('should call $uibModal.open', function() {
-                ocReorderModalService.Open(mock.Order.ID, mock.LineItems);
+                ocReorderService.Open(mock.Order.ID, mock.LineItems);
                 expect(uibModalService.open).toHaveBeenCalled();
                 expect(actualOptions.resolve.LineItems()).toEqual(mock.LineItems);
             });
@@ -121,7 +121,7 @@ describe('Component: ocRepeatOrder', function(){
                 meProducts.resolve(mock.Products);
                 spyOn(oc.Me, 'ListProducts').and.returnValue(meProducts.promise);
 
-                ocReorderModalService.GetValidLineItems(previousOrderID);
+                ocReorderService.GetValidLineItems(previousOrderID);
             });
             it('should call lineItemHelpers ListAll method', function(){
                 expect(ocLineItemsService.ListAll).toHaveBeenCalledWith(previousOrderID);
@@ -151,7 +151,7 @@ describe('Component: ocRepeatOrder', function(){
                 defer.resolve();
                 spyOn(oc.LineItems, 'Create').and.returnValue(defer.promise);
                 spyOn(toastrService, 'success');
-                ocReorderModalService.AddLineItemsToCart(validLI, mock.Order.ID);
+                ocReorderService.AddLineItemsToCart(validLI, mock.Order.ID);
             });
             it('should call the OrderCloud LineItems Create method', function(){
                 expect(oc.LineItems.Create).toHaveBeenCalledTimes(2);

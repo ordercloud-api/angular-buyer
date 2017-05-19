@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocReorder', ocReorderDirective)
 ;
 
-function ocReorderDirective(ocReorderModal, $exceptionHandler, $compile) {
+function ocReorderDirective(ocReorder, $exceptionHandler, $compile) {
     return {
         scope: {
             ocReorder: '<',     //required - order id to reorder
@@ -22,9 +22,9 @@ function ocReorderDirective(ocReorderModal, $exceptionHandler, $compile) {
             element.removeAttr('oc-reorder'); //remove attr to avoid infinite loop when compiling cg-busy
             $compile(element)(scope); //compile other directives (including cg-busy) 
             element.on('click', function(){
-                scope.loading = ocReorderModal.GetValidLineItems(scope.ocReorder)
+                scope.loading = ocReorder.GetValidLineItems(scope.ocReorder)
                     .then(function(lineItems){
-                        return ocReorderModal.Open(scope.currentOrderId, lineItems);
+                        return ocReorder.Open(scope.currentOrderId, lineItems);
                     });
             });
         }
