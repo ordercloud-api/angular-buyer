@@ -1,9 +1,9 @@
-<main class="login" ng-switch="login.form" cg-busy="login.loading">
+<main class="login" ng-switch="login.form">
 
     <!--LOGIN FORM-->
     <div ng-switch-when="login">
         <a ui-sref="home" ng-if="login.anonymousEnabled" class="text-center"><h3>{{application.name()}}</h3></a>
-        <div class="panel panel-default">
+        <div class="panel panel-default" cg-busy="login.loading">
             <form class="panel-body" name="LoginForm" ng-submit="login.submit()" autocomplete="off" novalidate oc-pretty-submit>
                 <h3 class="text-center">{{login.anonymousEnabled ? 'Login' : application.name() + ' Login'}}</h3>
                 <div class="form-group">
@@ -24,7 +24,6 @@
                     </div>
                 </div>
                 <button id="submit_login" type="submit" class="btn btn-primary btn-block">Submit</button>
-
             </form>
         </div>
         <div class="text-center">
@@ -35,7 +34,7 @@
 
     <!--FORGOT PASSWORD-->
     <div ng-switch-when="forgot">
-        <div class="panel panel-default">
+        <div class="panel panel-default" cg-busy="login.loading">
             <form class="panel-body" name="ForgotPasswordForm" ng-submit="login.forgotPassword()" oc-pretty-submit>
                 <h3 class="text-center">Forgot Password</h3>
                 <div class="form-group">
@@ -52,9 +51,14 @@
 
     <!--RESET PASSWORD-->
     <div ng-switch-when="reset">
-        <div class="panel panel-default">
+        <div class="panel panel-default" cg-busy="login.loading">
             <form class="panel-body" name="ResetPasswordForm" ng-submit="login.resetPassword()"  oc-pretty-submit>
                 <h3 class="text-center">Reset Password</h3>
+                <div class="alert alert-info">Please check your inbox for an email containing your username and temporary verification code.</div>
+                <div class="form-group">
+                    <label for="ResetVerificationCode" class="sr-only">Verification Code</label>
+                    <input type="text" class="form-control" id="ResetVerificationCode" placeholder="Verification Code" ng-model="login.verificationCode" ng-required="true" />
+                </div>
                 <div class="form-group">
                     <label for="ResetUsername" class="sr-only">Username</label>
                     <input type="text" class="form-control" id="ResetUsername" placeholder="Username" ng-model="login.credentials.ResetUsername" ng-required="true" />
@@ -76,7 +80,7 @@
     </div>
 
     <!--RESET PASSWORD BY TOKEN-->
-    <div ng-switch-when="resetByToken">
+    <div ng-switch-when="resetByToken" cg-busy="login.loading">
         <div class="panel panel-default">
             <form class="panel-body" name="ResetPasswordByTokenForm" ng-submit="login.resetPasswordByToken()" oc-pretty-submit>
                 <h3 class="text-center">Reset Password</h3>
@@ -97,10 +101,6 @@
                 <button type="submit" id="reset_submit" class="btn btn-primary btn-block">Submit</button>
             </form>
         </div>
-    </div>
-
-    <div ng-switch-when="verificationCodeSuccess">
-        <div class="alert alert-success text-center" id="forgot_message">Forgot password email has been sent. <br> Please check your email in order to reset your password.</div>
     </div>
 
     <div ng-switch-when="resetSuccess">
