@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .controller('LoginCtrl', LoginController);
 
-function LoginController($state, $exceptionHandler, ocRoles, ocAnonymous, OrderCloudSDK, scope, clientid, defaultstate, anonymous) {
+function LoginController($state, $exceptionHandler, $window, ocRoles, ocAnonymous, OrderCloudSDK, scope, clientid, defaultstate, anonymous) {
     var vm = this;
     vm.anonymousEnabled = anonymous;
     vm.credentials = {
