@@ -11,6 +11,7 @@ angular.module('orderCloud', [
         'LocalForageModule',
         'toastr',
         'angular-busy',
+        'slick',
         'jcs-autoValidate',
         'treeControl',
         'hl.sticky',
