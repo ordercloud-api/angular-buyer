@@ -7,7 +7,7 @@
         // flex each item in the list so that we do not get float layout issues
         display: flex;
         flex-direction: column;
-    }        
+    }
 }
 
 .l-category-grid {
@@ -19,25 +19,47 @@
         // flex each item in the list so that we do not get float layout issues
         display: flex;
         flex-direction: column;
-    } 
+    }
 }
 
 .c-product-card {
     // add flex display to product card wrapper
     // flex the product card to fill the grid item element
-    margin-bottom: @grid-gutter-width/2;
+    margin-bottom: @grid-gutter-width;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    .c-product-card__img-wrap {
+        // position the quickview button in the center of the image and set opacity to 0
+        .c-product-card__quickview-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+        }
+        // set the quickview button opacity to 1 on hover
+        &:hover {
+            .c-product-card__quickview-btn {
+                opacity: 1;
+            }
+        }
+    }
     .c-product-card__body {
         display: flex;
         flex-direction: column;
         flex: 1 1 auto;
+        cursor: pointer;
     }
     .c-product-card__name {
-        // flex: 1 1 auto;
         word-wrap: break-word;
         margin-bottom: 0;
+    }
+    .c-product-card__add-to-cart-btn-group {
+        table-layout: auto;
+        .c-product-card__add-to-cart-btn {
+            width: 100%;
+        }
     }
 }
 
