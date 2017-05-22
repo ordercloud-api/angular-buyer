@@ -8,7 +8,10 @@ function LoginConfig($stateProvider) {
             url: '/login',
             templateUrl: 'login/templates/login.html',
             controller: 'LoginCtrl',
-            controllerAs: 'login'
+            controllerAs: 'login',
+            data: {
+                ignoreToken: true
+            }
         })
     ;
 }
