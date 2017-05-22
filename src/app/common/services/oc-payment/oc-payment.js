@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .factory('ocPayment', OrderCloudPaymentService);
 
-function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
+function OrderCloudPaymentService($rootScope, $q, $uibModal, $exceptionHandler, OrderCloudSDK) {
     var service = {
         Init: _init,
         AddPayment: _addPayment,
@@ -198,7 +198,10 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
                     if (data.CreditCardID) data.CreditCard = account;
                     $rootScope.$broadcast('OCPaymentUpdated', data);
                     df.resolve(data);
-                });
+                })
+                .catch(function(ex) {
+                    $exceptionHandler(ex);
+                })
         }
 
         return df.promise;
