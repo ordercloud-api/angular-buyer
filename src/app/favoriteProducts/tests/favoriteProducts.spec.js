@@ -37,7 +37,7 @@ describe('Component: FavoriteProducts', function(){
             it('should call Me.Patch to empty array when no favoriteProducts xp', function(){
                 delete scope.currentUser.xp.FavoriteProducts;
                 favoriteProductCtrl.checkHasFavorites();
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: []}});
+                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: mock.User.xp});
             });
         });
 
