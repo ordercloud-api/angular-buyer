@@ -1,4 +1,4 @@
-fdescribe('Directive: ocFavoriteOrder', function(){
+describe('Directive: ocFavoriteOrder', function(){
     var element,
         previousOrder,
         directiveScope
