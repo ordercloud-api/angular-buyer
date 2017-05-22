@@ -123,7 +123,7 @@ describe('Component: Product Search', function(){
         describe('onHardEnter', function(){
             it('should route user to search results page for the provided search term', function(){
                 productSearchComponentCtrl.onHardEnter('bikes');
-                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: 'bikes'});
+                expect(state.go).toHaveBeenCalledWith('productSearchResults', {search: 'bikes'});
             });
         });
     });
@@ -192,7 +192,7 @@ describe('Component: Product Search', function(){
             it('should close the modal on hard enter with the search term', function() {
                 var searchTerm;
                 productSearchModalCtrl.onHardEnter();
-                expect(uibModalInstance.close).toHaveBeenCalledWith({searchTerm: searchTerm});
+                expect(uibModalInstance.close).toHaveBeenCalledWith({search: searchTerm});
             })
         })
     })
