@@ -20,9 +20,26 @@ textarea {
   margin-left:0;
 }
 
-.label[ng-repeat] {
-  margin-right:3px;
-  display:inline-block;
+.label {
+  &[ng-repeat] {
+    margin-right:3px;
+    display:inline-block;
+  }
+}
+
+.fa {
+  &.success {
+    color:@brand-success;
+  }
+  &.warning {
+    color:@brand-warning;
+  }
+  &.info {
+    color:@brand-info;
+  }
+  &.danger {
+    color:@brand-danger;
+  }
 }
 
 li,

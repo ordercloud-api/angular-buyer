@@ -22,6 +22,7 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, 
 
     $timeout(setDefaultQuantity, 100);
 
+    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toats from opening.
     vm.addToCart = function(OCProductForm) {
         var li = {
             ProductID: vm.product.ID,
@@ -31,8 +32,10 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, 
         return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
             .then(function(lineItem) {
                 $rootScope.$broadcast('OC:UpdateOrder', vm.currentOrder.ID, 'Updating Order');
+                $rootScope.$broadcast('OC:UpdateTotalQuantity', li, true);
                 setDefaultQuantity();
-                toastr.success(vm.product.Name + ' was added to cart');
+                toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
+                toastID++;
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);

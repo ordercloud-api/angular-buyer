@@ -1,3 +1,5 @@
+//TODO: add missing unit tests on methods: getNumberOfResults and loadMoreCategories F51-300
+
 describe('Component: Category Browse', function(){
     describe('State: categoryBrowse', function(){
         var browseState;

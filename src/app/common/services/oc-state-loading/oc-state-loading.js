@@ -17,9 +17,9 @@ angular.module('orderCloud')
                 var fromParent = fromState.parent || fromState.name.split('.')[0];
                 stateLoading[fromParent === toParent ? toParent : 'base'] = $q.defer();
 
-                if(toState.name !== 'login' && !OrderCloudSDK.GetToken()) {
+                if((!toState.data || (toState.data && !toState.data.ignoreToken)) && !OrderCloudSDK.GetToken()) {
                     e.preventDefault();
-                    ocRefreshToken();
+                    ocRefreshToken(toState.name);
                 }
             });
 
@@ -29,8 +29,14 @@ angular.module('orderCloud')
             });
 
             $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-                if (toState.name == _defaultState()) event.preventDefault(); //prevent infinite loop when error occurs on default state (otherwise in Routing config)
-                error.data ? $exceptionHandler(error) : $exceptionHandler({message:error});
+                if (toState.name === _defaultState()) event.preventDefault(); //prevent infinite loop when error occurs on default state (otherwise in Routing config)
+                if (error && error.data) {
+                    $exceptionHandler(error);
+                } else if (error) {
+                    $exceptionHandler({message:error});
+                } else {
+                    $exceptionHandler({message:'This view is unavailable.'});
+                }
                 _end();
             });
         }
@@ -44,7 +50,7 @@ angular.module('orderCloud')
                 if (stateLoading[key].promise && !stateLoading[key].promise.$cgBusyFulfilled) {
                     stateLoading[key].resolve();  //resolve leftover loading promises
                 }
-            })
+            });
         }
 
         return service;

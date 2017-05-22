@@ -1,0 +1,12 @@
+<div class="c-product-card c-related-products__card" ui-sref="productDetail({productid: product.ID})">
+    <div class="c-product-card__img-wrap">
+        <img class="img-responsive c-product-card__img" ng-src="{{product.xp.image.URL || 'http://placehold.it/300x300'}}"/>
+    </div>
+    <div class="c-product-card__body">
+        <h4 class="c-product-card__name c-product-card">{{product.Name || product.ID}}</h4>
+        <div class="clearfix">
+            <h4 class="c-product-card__price text-primary">{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</h4>
+            <button ui-sref="productDetail({productid: product.ID})" class="btn btn-default btn-block btn-sm">View Product</button>
+        </div>
+    </div>
+</div>

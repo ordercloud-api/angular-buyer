@@ -27,6 +27,11 @@ function CategoryBrowseController($state, OrderCloudSDK, ocParameters, CategoryL
         vm.filter(false);
     };
 
+    vm.changeProductPage = function(newPage){
+        vm.parameters.productPage = newPage;
+        vm.filter(false);
+    };
+
     vm.loadMoreCategories = function() {
         var parameters = angular.extend(Parameters, {page:vm.categoryList.Meta.Page + 1});
         return OrderCloudSDK.Me.ListCategories(parameters)
@@ -34,11 +39,6 @@ function CategoryBrowseController($state, OrderCloudSDK, ocParameters, CategoryL
                 vm.categoryList.Items = vm.categoryList.Items.concat(data.Items);
                 vm.categoryList.Meta = data.Meta;
             });
-    };
-    
-    vm.changeProductPage = function(newPage){
-        vm.parameters.productPage = newPage;
-        vm.filter(false);
     };
 
     vm.loadMoreProducts = function() {
