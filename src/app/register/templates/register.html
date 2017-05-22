@@ -1,0 +1,51 @@
+<main class="register">
+    <div>
+        <a ui-sref="home" class="text-center"><h3>{{application.name()}}</h3></a>
+        <div class="panel panel-default">
+            <form class="panel-body" name="register.form" ng-submit="register.submit()" autocomplete="off" novalidate>
+                <h3 class="text-center">Create your account</h3>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="FirstName" class="sr-only">First Name</label>
+                            <input id="FirstName" name="FirstName" placeholder="First Name" type="text" autofocus class="form-control" ng-model="register.info.FirstName" required/>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="LastName" class="sr-only">Last Name</label>
+                            <input id="LastName" name="LastName" placeholder="Last Name" type="text" class="form-control" ng-model="register.info.LastName" required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="Username" class="sr-only">Username</label>
+                    <input id="Username" type="text" class="form-control" placeholder="Username" name="Username" autocapitalize="off" autocorrect="off" autocomplete="off" ng-model="register.info.Username" ng-change="register.onUsernameChange()" ng-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="Password" class="sr-only">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" name="Password" id="Password" ng-model="register.info.Password" ng-required="true"  pattern='^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!$%@#£€*?&]{8,}$' pattern-err-type="customPassword" />
+                </div>
+                <div class="form-group">
+                    <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
+                    <input type="password" class="form-control" placeholder="Confirm Password" name="ConfirmPassword" id="ConfirmPassword" ng-model="register.info.ConfirmPassword"
+                    oc-match-field="register.info.Password" 
+                    oc-match-field-err-type="ocMatchPassword" 
+                    ng-required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="Phone" class="sr-only">Phone Number</label>
+                    <input id="Phone" name="Phone" placeholder="Phone Number (Optional)" type="tel" class="form-control" ng-model="register.info.Phone" />
+                </div>
+                <div class="form-group">
+                    <label for="Email" class="sr-only">Email Address</label>
+                    <input id="Email" name="Email" type="email" placeholder="Email Address" class="form-control" ng-model="register.info.Email" required/>
+                </div>
+                <button id="submit_register" type="submit" class="btn btn-primary btn-block" cg-busy="register.loading">Submit</button>
+            </form>
+        </div>
+        <div class="text-center">
+            Already have an account? <a ui-sref="login">Login</a>
+        </div>
+    </div>
+</main>

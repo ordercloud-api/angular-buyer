@@ -5,7 +5,7 @@ angular.module('orderCloud')
 function LoginConfig($stateProvider) {
     $stateProvider
         .state('login', {
-            url: '/login/:token',
+            url: '/login',
             templateUrl: 'login/templates/login.html',
             controller: 'LoginCtrl',
             controllerAs: 'login'

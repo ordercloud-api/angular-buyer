@@ -43,9 +43,12 @@
                         <span class="pull-right">- {{promotion.Amount | currency}}</span></h5>
                     <hr>
                     <h4>Estimated Total: <b class="pull-right text-primary">{{base.currentOrder.Total | currency}}</b></h4>
+                    <div ng-if="OC_Checkout_Payment.$error.PaidInFull" class="alert alert-danger" style="margin-bottom:0;">
+                        Payment amount does not cover the order total.
+                    </div>
                 </div>
                 <div class="panel-footer">
-                    <button type="button" class="btn btn-primary form-control" ng-disabled="OC_Checkout_Payment.$invalid" ui-sref="checkout.review">Review Order</button>
+                    <button type="button" class="btn btn-primary btn-block" ng-disabled="OC_Checkout_Payment.$invalid" ui-sref="checkout.review">Review Order</button>
                 </div>
             </div>
         </div>
