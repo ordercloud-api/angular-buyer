@@ -108,7 +108,8 @@ function _mockData() {
             TermsAccepted: true,
             Active: true,
             xp: {
-                FavoriteProducts: ['FavProd1', 'FavProd2']
+                FavoriteProducts: ['FavProd1', 'FavProd2'],
+                FavoriteOrders: ['FavOrder1', 'FavOrder2']
             }
         },
         Product: {

@@ -80,6 +80,10 @@ function ocReorderService($q, toastr, $exceptionHandler, OrderCloudSDK, ocLineIt
 
 
     function _addLineItemsToCart(validLI, orderID) {
+        //TODO: handle case where specs are no longer valid and
+        //move functionality along with getting correct quantity to 
+        //getValidLineItems. Devs can then use GetValidLineItems to
+        //build out a custom reorder flow
         var queue = [];
         _.each(validLI, function(li){
             var lineItemToAdd = {
