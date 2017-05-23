@@ -37,10 +37,11 @@ function OrderCloudFilesService($q, awsaccesskeyid, awssecretaccesskey, awsregio
         return deferred.promise;
     }
 
-    function _upload(file) {
+    function _upload(file, folder) {
         var deferred = $q.defer();
         var s3 = new AWS.S3();
-        var params = {Bucket: awsbucket, Key: randomString(), ContentType: file.type, Body: file};
+        var key = (folder ? folder + '/' : '') + randomString();
+        var params = {Bucket: awsbucket, Key: key, ContentType: file.type, Body: file};
         s3.upload(params, function (err, data) {
             err ? console.log(err) : console.log(data);
             deferred.resolve(data);
