@@ -33,7 +33,8 @@ module.exports = {
     index: source + index,
     styles: [
         source + '**/*.css',
-        source + '**/*.less'
+        source + '**/*.less',
+        '!' + source + '**/saas/theme/*.less'
     ],
     templates: [
         '!' + source + index,
@@ -140,9 +141,9 @@ function _checkBootswatchTheme() {
 
     if (theme) {
         bootswatchBower.main = [
-            "./" + theme + "/bootswatch.less",
-            "./" + theme + "/variables.less"
-        ]
+            './' + theme + '/bootswatch.less',
+            './' + theme + '/variables.less'
+        ];
     }
 
     return bootswatchBower;
