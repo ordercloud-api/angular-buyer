@@ -45,7 +45,7 @@
                     <oc-quantity-input product="productDetail.item" label="Quantity"></oc-quantity-input>
                 </fieldset>
                 <fieldset class="form-group">
-                    <button type="submit" class="btn btn-block btn-success">Add to Cart  <span ng-if="productDetail.item.Quantity"  class="badge badge-success">{{productDetail.findPrice(productDetail.item.Quantity) | currency}}</span></button>
+                    <button type="submit" class="btn btn-block btn-primary">Add to Cart  <span ng-if="productDetail.item.Quantity"  class="badge badge-success">{{productDetail.findPrice(productDetail.item.Quantity) | currency}}</span></button>
                 </fieldset>
             </div>
             <div class="alert alert-danger" ng-if="!productDetail.item.PriceSchedule">

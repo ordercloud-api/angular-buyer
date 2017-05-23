@@ -130,6 +130,10 @@ function getConstants() {
     if (process.env.bootswatchtheme) result.bootswatchtheme = process.env.bootswatchtheme;
     if (process.env.buyerid) result.buyerid = process.env.buyerid;
     if (process.env.catalogid) result.catalogid = process.env.catalogid;
+    if (process.env.awsaccesskeyid) result.awsaccesskeyid = process.env.awsaccesskeyid;
+    if (process.env.awssecretaccesskey) result.awssecretaccesskey = process.env.awssecretaccesskey;
+    if (process.env.awsregion) result.awsregion = process.env.awsregion;
+    if (process.env.awsbucket) result.awsbucket = process.env.awsbucket;
     return result;
 }
 

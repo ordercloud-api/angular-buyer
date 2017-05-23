@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('BaseCtrl', BaseController)
 ;
 
-function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLineItems, CurrentUser, CurrentOrder, TotalQuantity) {
+function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, CurrentUser, CurrentOrder, TotalQuantity) {
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
@@ -34,7 +34,7 @@ function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLi
     $rootScope.$on('OC:UpdateTotalQuantity', function(event, lineItems, add, difference) {
         if (lineItems.length >= 1) {
             var quantities = _.pluck(lineItems, 'Quantity');
-            vm.totalQuantity = quantities.reduce(function(a, b) {return a + b}, 0);
+            vm.totalQuantity = quantities.reduce(function(a, b) {return a + b;}, 0);
         } else {
             var li = lineItems[0] || lineItems;
             if (vm.totalQuantity) {
