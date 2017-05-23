@@ -125,6 +125,12 @@ function _mockData() {
         Category: {
             ID: 'CATEGORY_ID'
         },
+        Categories: {
+            Items: [
+                {ID: 'mockCat1'},
+                {ID: 'mockCat2'}
+            ]
+        },
         Order: {
             ID: 'ORDER_ID',
             Type: "ORDER_TYPE",
