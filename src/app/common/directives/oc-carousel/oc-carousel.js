@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocCarousel', ocCarouselDirective)
 ;
 
-function ocCarouselDirective($compile) {
+function ocCarouselDirective($compile, $templateRequest) {
     return {
         scope: {
             buyer: '=',
@@ -21,18 +21,11 @@ function ocCarouselDirective($compile) {
                 scope.noWrapSlides = false;
             }
             scope.active = 0;
-            element.html(
-                "<uib-carousel active='active' interval='interval' no-wrap='noWrapSlides'>" +
-                    "<uib-slide ng-repeat='slide in buyer.xp.Slides.Items || slides track by slide.ID' index='$index'>" +
-                        "<img class='img-responsive' ng-src='{{slide.Src}}' style='display: inline;'>" +
-                        "<div class='carousel-caption'>" +
-                            "<h4>{{slide.Title}}</h4>" +
-                            "<p>{{slide.SubText}}</p>" +
-                        "</div>" +
-                    "</uib-slide>" +
-                "</uib-carousel>"
-            );
-            $compile(element.contents())(scope);
+            $templateRequest("common/directives/oc-carousel/oc-carousel.html").then(function(html) {
+                var template = angular.element(html);
+                element.append(template);
+                $compile(template)(scope);
+            })
         }
     }
 }
