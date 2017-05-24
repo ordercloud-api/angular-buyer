@@ -1,0 +1,24 @@
+.navbar-brand {
+    .c-brand__image {
+        height:@navbar-height;
+        top: -@navbar-padding-vertical;
+    }
+}
+
+.c-brand {
+    .c-brand__image {
+        margin:0 auto;
+        position:relative;
+        max-width:100%;
+        > div {
+            background-repeat:no-repeat;
+            background-size: contain;
+            background-position: center;
+            position:absolute;
+            left:0;
+            right:0;
+            top:0;
+            bottom:0;
+        }
+    }
+}
