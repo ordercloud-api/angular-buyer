@@ -9,4 +9,4 @@ errorShots/
 plato/
 .publish/
 .vscode/
-/src/app/saas/themes/lib.less
+/src/app/saas/theme/*
