@@ -24,24 +24,6 @@ function HomeController(Buyer) {
 			Title: 'Carousel Image Three',
 			SubText: 'This is the third image',
 			ID: 2
-		},
-		{
-			Src: 'assets/images/carousel4.jpg',
-			Title: 'Carousel Image Four',
-			SubText: 'This is the fourth image',
-			ID: 3
-		},
-		{
-			Src: 'assets/images/carousel5.jpg',
-			Title: 'Carousel Image Five',
-			SubText: 'This is the fifth image',
-			ID: 4
-		},
-		{
-			Src: 'assets/images/carousel6.jpg',
-			Title: 'Carousel Image Six',
-			SubText: 'This is the sixth image',
-			ID: 5
-		},
+		}
 	]
 }
