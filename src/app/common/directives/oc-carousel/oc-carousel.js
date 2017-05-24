@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocCarousel', ocCarouselDirective)
 ;
 
-function ocCarouselDirective($compile, $templateRequest) {
+function ocCarouselDirective($compile, $templateRequest, $exceptionHandler) {
     return {
         scope: {
             buyer: '=',
@@ -10,10 +10,14 @@ function ocCarouselDirective($compile, $templateRequest) {
         },
         restrict: 'E',
         link: function(scope, element) {
+            if(typeof scope.buyer === 'undefined'){
+                $exceptionHandler({message: 'ocCarousel directive is not configured correctly, missing buyer object data'});
+            }
+            if((!scope.buyer) && typeof scope.slides === 'undefined'){
+                $exceptionHandler({message: 'ocCarousel directive is not configured correctly, missing slides data'});
+            }
             var buyer = scope.buyer;
-            var slides = scope.slides;
             if (buyer.xp && buyer.xp.Slides && buyer.xp.Slides.Items && buyer.xp.Slides.Items.length) {
-                console.log(buyer.xp.Slides.Items);
                 scope.interval = buyer.xp.Slides.Interval;
                 scope.noWrapSlides = buyer.xp.Slides.NoWrap;
             } else {
