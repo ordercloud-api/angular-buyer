@@ -1,7 +1,13 @@
-.img-responsive,
-.thumbnail > img,
-.thumbnail a > img,
-.carousel-inner > .item > img,
-.carousel-inner > .item > a > img {
-  display: inline;
+// Center images that do not fill the carousel element
+.carousel-inner {
+  > .item {
+    img {
+      margin: 0 auto;
+    }
+    > a {
+      img {
+        margin: 0 auto;
+      }
+    }
+  }
 }
