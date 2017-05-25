@@ -48,7 +48,7 @@
                     <button type="submit" class="btn btn-block btn-primary">Add to Cart  <span ng-if="productDetail.item.Quantity"  class="badge badge-success">{{productDetail.findPrice(productDetail.item.Quantity) | currency}}</span></button>
                 </fieldset>
             </div>
-            <div class="alert alert-danger" ng-if="!productDetail.item.PriceSchedule">
+            <div class="alert alert-info" ng-if="!productDetail.item.PriceSchedule">
                 You are not able to order this product.
             </div>
         </div>

@@ -44,9 +44,9 @@
 				<fieldset class="form-group" ng-if="productQuickView.item.PriceSchedule">
 					<oc-quantity-input product="productQuickView.item" label="Quantity"></oc-quantity-input>
 				</fieldset>
-				<div class="alert alert-danger" ng-if="!productQuickView.item.PriceSchedule">
-                You are not able to order this product.
-            </div>
+				<div class="alert alert-info" ng-if="!productQuickView.item.PriceSchedule">
+					You are not able to order this product.
+				</div>
 			</div>
 		</div>
 	</div>

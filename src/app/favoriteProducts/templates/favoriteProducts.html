@@ -34,8 +34,12 @@
     </div>
     <div ng-if="favoriteProducts.list.Items.length">
         <div class="row l-product-grid">
-            <div class="col-sm-6 col-md-4 col-lg-3 l-product-grid__item" ng-repeat="product in favoriteProducts.list.Items">
-                <oc-product-card product="product" current-user="base.currentUser" current-order="base.currentOrder"></oc-product-card>
+            <div class="col-xs-6 col-md-4 col-lg-3 l-product-grid__item" ng-repeat="product in favoriteProducts.list.Items">
+                <oc-product-card 
+                    class="c-product-card" 
+                    product="product" 
+                    current-order="base.currentOrder">
+                </oc-product-card>
             </div>
         </div>
     </div>
