@@ -12,11 +12,6 @@ function HomeConfig($stateProvider) {
 			controllerAs: 'home',
 			data: {
 				pageTitle: 'Home'
-			},
-			resolve: {
-				Buyer: function(OrderCloudSDK, buyerid) {
-					return OrderCloudSDK.Buyers.Get(buyerid);
-				}
 			}
 		})
 	;
