@@ -7,6 +7,10 @@ function ProductBrowseController($state, ocProductBrowse, CategoryList, Category
     vm.parameters = Parameters;
     vm.categoryList = CategoryList;
 
+    vm.initFilters = function(parameters) {
+        vm.parameters.favorites = parameters.favorites;
+    };
+
     //Category Tree Setup
     vm.treeConfig = {};
 

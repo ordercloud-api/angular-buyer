@@ -1,5 +1,5 @@
 <!--START FILTERS-->
-<div class="form-group">
+<div class="form-group" ng-init="productBrowse.initFilters(productView.parameters)">
     <form class="form-inline pull-right">
         <fieldset class="form-group">
             <label for="SortSelect">Sort By:</label>
@@ -40,8 +40,7 @@
                 <oc-product-card 
                     class="c-product-card" 
                     product="product" 
-                    current-order="base.currentOrder" 
-                    current-user="base.currentUser">
+                    current-order="base.currentOrder">
                 </oc-product-card>
             </div>
         </div>

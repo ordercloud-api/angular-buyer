@@ -6,7 +6,6 @@ angular.module('orderCloud')
         bindings: {
             product: '<',
             currentOrder: '=',
-            currentUser: '<',
             lineitemlist: '='
         }
     });

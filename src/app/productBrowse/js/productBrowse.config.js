@@ -50,7 +50,7 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
             }
         })
         .state('productBrowse.products', {
-            url: '/products?categoryid?favorites?search?page?pageSize?searchOn?sortBy?filters?depth',
+            url: '/products?categoryid&favorites&search&page&pageSize&searchOn&sortBy&filters&depth',
             templateUrl: 'productBrowse/templates/productView.html',
             controller: 'ProductViewCtrl',
             controllerAs: 'productView',
@@ -58,14 +58,22 @@ function ProductBrowseConfig($urlRouterProvider, $stateProvider) {
                 Parameters: function ($stateParams, ocParameters) {
                     return ocParameters.Get($stateParams);
                 },
-                ProductList: function(OrderCloudSDK, CurrentUser, Parameters, catalogid) {
-                    if (Parameters.favorites && CurrentUser.xp.FavoriteProducts) {
-                        Parameters.filters ? angular.extend(Parameters.filters, Parameters.filters, {ID:CurrentUser.xp.FavoriteProducts.join('|')}) : Parameters.filters = {ID:CurrentUser.xp.FavoriteProducts.join('|')};
+                ProductList: function(OrderCloudSDK, ocFavoriteProducts, Parameters, catalogid) {
+                    if (Parameters.favorites) {
+                        return ocFavoriteProducts.Get()
+                            .then(function(favoriteProductIDs) {
+                                Parameters.filters ? angular.extend(Parameters.filters, Parameters.filters, {ID:favoriteProductIDs.join('|')}) : Parameters.filters = {ID:favoriteProductIDs.join('|')};
+                                return _mergeParameters();
+                            });
                     } else if (Parameters.filters) {
                         delete Parameters.filters.ID;
+                        return _mergeParameters();
                     }
-                    var parameters = angular.extend(Parameters, {catalogID: catalogid, categoryID: Parameters.categoryid, depth: 'all'});
-                    return OrderCloudSDK.Me.ListProducts(parameters);
+
+                    function _mergeParameters() {
+                        var parameters = angular.extend(Parameters, {catalogID: catalogid, categoryID: Parameters.categoryid, depth: 'all'});
+                        return OrderCloudSDK.Me.ListProducts(parameters);
+                    }
                 }
             }
         });

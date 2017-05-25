@@ -16,23 +16,33 @@
     </h4>
 </div>
 <div>
-    <!--View only product-->
-    <div ng-if="!productCard.product.PriceSchedule">
-        <button type="button" class="btn btn-block btn-sm btn-default" ui-sref="productDetail({productid: productCard.product.ID})">View Product</button>
-    </div>
-    <!--Choose Specs-->
-    <div ng-if="productCard.product.SpecCount > 0 && productCard.product.PriceSchedule">
-        <button type="button" class="btn btn-block btn-sm btn-default" ui-sref="productDetail({productid: productCard.product.ID})">Choose Specs</button>
-    </div>
-    <!--Add to Cart-->
-    <form ng-if="!(productCard.product.SpecCount > 0) && productCard.product.PriceSchedule" name="OCProductForm" class="c-product-card__add-to-cart-btn" prevent-click>
-        <oc-quantity-input product="productCard.product"></oc-quantity-input>
-        <div class="btn-group btn-group-justified c-product-card__add-to-cart-btn-group" role="group" aria-label="...">
-            <div class="btn-group c-product-card__add-to-cart-btn" role="group">
-                <button ng-click="productCard.addToCart()" class="btn btn-sm btn-block btn-primary" ng-disabled="!productCard.product.Quantity">Add to Cart</button>
+    <form name="OCProductForm" prevent-click>
+        <oc-quantity-input product="productCard.product" ng-if="!(productCard.product.SpecCount > 0) && productCard.product.PriceSchedule"></oc-quantity-input>
+        <div class="btn-group btn-group-justified c-product-card__btn-group" role="group">
+            <div class="btn-group c-product-card__btn" role="group">
+
+                <!--Add to Cart-->
+                <button type="button" ng-click="productCard.addToCart()" 
+                        ng-if="productCard.product.SpecCount === 0 && productCard.product.PriceSchedule"
+                        class="btn btn-sm btn-primary" 
+                        ng-disabled="!productCard.product.Quantity">Add to Cart</button>
+
+                <!--Choose Specs-->
+                <button type="button" ui-sref="productDetail({productid: productCard.product.ID})"
+                        ng-if="productCard.product.SpecCount > 0 && productCard.product.PriceSchedule"
+                        class="btn btn-sm btn-default">Choose Specs</button>
+                
+                <!--View only product-->
+                <button type="button" ui-sref="productDetail({productid: productCard.product.ID})"
+                        ng-if="!productCard.product.PriceSchedule"
+                        class="btn btn-sm btn-default">View Product</button>
             </div>
-            <div class="btn-group c-product-card__favorite-btn-group" role="group">
-                <button class="btn btn-sm btn-block btn-favorite" oc-favorite-product current-user="productCard.currentUser" product="productCard.product" favorite-class="faved" non-favorite-class="unfaved">
+            <div class="btn-group c-product-card__favorite-btn" role="group">
+                <button class="btn btn-sm btn-favorite" 
+                        oc-favorite-product
+                        product="productCard.product" 
+                        favorite-class="faved" 
+                        non-favorite-class="unfaved">
                 </button>
             </div>
         </div>
