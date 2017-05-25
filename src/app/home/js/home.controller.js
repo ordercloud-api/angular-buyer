@@ -2,15 +2,13 @@ angular.module('orderCloud')
 	.controller('HomeCtrl', HomeController)
 ;
 
-function HomeController(Buyer) {
+function HomeController(ocAppName) {
 	var vm = this;
-	vm.buyer = Buyer;
-
 	vm.slides = [
 		{
 			Src: 'assets/images/carousel1.jpg', 
-			Title: 'Carousel Image One',
-			SubText: 'This is the first image',
+			Title: ocAppName.Watch(),
+			SubText: 'Welcome to the ' + ocAppName.Watch() + ' application!',
 			ID: 0
 		},
 		{
@@ -25,5 +23,5 @@ function HomeController(Buyer) {
 			SubText: 'This is the third image',
 			ID: 2
 		}
-	]
+	];
 }

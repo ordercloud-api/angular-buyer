@@ -1,7 +1,3 @@
 <article>
-    <header class="jumbotron text-center">
-        <h1 ng-bind="application.name()"></h1>
-        <p>Welcome to the OrderCloud Marketplace App!</p>
-        <oc-carousel buyer="home.buyer" slides="home.slides"></oc-carousel>
-    </header>
+    <oc-carousel buyer="base.currentUser.Buyer" slides="home.slides" height="510px"></oc-carousel>
 </article>

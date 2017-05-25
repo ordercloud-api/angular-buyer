@@ -1,8 +1,7 @@
 <uib-carousel active="active" interval="interval" no-wrap="noWrapSlides">
-    <uib-slide ng-repeat="slide in buyer.xp.Slides.Items || slides track by slide.ID" index="$index">
-        <img class="img-responsive" ng-src="{{slide.Src}}">
+    <uib-slide ng-repeat="slide in buyer.xp.Slides.Items || slides track by slide.ID" index="$index" ng-style="{backgroundImage: 'url(' + slide.Src + ')', height: height}">
         <div class="carousel-caption">
-            <h4>{{slide.Title}}</h4>
+            <h1>{{slide.Title}}</h1>
             <p>{{slide.SubText}}</p>
         </div>
     </uib-slide>
