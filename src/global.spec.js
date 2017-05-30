@@ -144,10 +144,15 @@ function _mockData() {
             PaymentMethod: null,
             CreditCardID: null,
             ShippingCost: null,
-            TaxCost: null
+            TaxCost: null,
+            Total: 100
         },
         LineItem: {
             ID: 'LINEITEM_ID'
+        },
+        Payment: {
+            ID: 'PAYMENT_ID',
+            Amount: 150
         },
         Promotion: {
             Code:'Discount10'
