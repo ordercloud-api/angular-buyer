@@ -6,9 +6,6 @@
         <h4 class="c-product-card__name">{{product.Name || product.ID}}</h4>
         <div class="clearfix">
             <h4 class="c-product-card__price text-primary">{{product.PriceSchedule.PriceBreaks[0].Price | currency}}</h4>
-            <div class="c-product-card__icons pull-right" oc-prevent-click>
-                <ordercloud-favorite-product product="product" current-user="currentuser"></ordercloud-favorite-product>
-            </div>
         </div>
         <div ng-if="product.xp.Unit">
             <p class="text-muted">{{product.xp.Unit}}</p>

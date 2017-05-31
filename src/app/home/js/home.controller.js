@@ -2,12 +2,8 @@ angular.module('orderCloud')
 	.controller('HomeCtrl', HomeController)
 ;
 
-function HomeController(ocFeaturedProductsService) {
+function HomeController(ocAppName) {
 	var vm = this;
-
-	vm.featured = function() {
-		ocFeaturedProductsService.List();
-	}
 
 	vm.slides = [
 		{
