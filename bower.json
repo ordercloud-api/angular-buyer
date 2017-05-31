@@ -47,7 +47,8 @@
     "slick-carousel": "^1.6.0",
     "angular-payments": "*",
     "bootswatch": "^3.3.7",
-    "ordercloud-angular-sdk": "1.0.50"
+    "ordercloud-angular-sdk": "1.0.50",
+    "angular-ez-plus": "^1.2.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.6.0"
