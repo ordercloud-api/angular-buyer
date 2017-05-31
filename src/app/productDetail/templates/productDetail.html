@@ -6,10 +6,14 @@
     <div class="row">
         <div class="col-md-6">
             <!--PRODUCT IMAGE-->
-            <div class="thumbnail">
+            <oc-product-images product="productDetail.item"></oc-product-images>
+            <!--<div class="thumbnail" ng-if="!productDetail.item.xp.image.Additional || !productDetail.item.xp.image.Additional.length">
                 <img class="img-responsive" alt="{{productDetail.item.xp.image.Name || 'Product Image'}}"
                      ng-src="{{productDetail.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productDetail.item.Name}}">
             </div>
+            <div ng-if="productDetail.item.xp.image.Additional && productDetail.item.xp.image.Additional.length">
+
+            </div>-->
         </div>
         <div class="col-md-6">
             <div class="panel panel-default" ng-if="productDetail.item.Description">
