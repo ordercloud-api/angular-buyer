@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocFeaturedProducts', FeaturedProductsDirective)
 ;
 
-function FeaturedProductsDirective(ocFeaturedProductsService, $compile) {
+function FeaturedProductsDirective(ocFeaturedProductsService, $templateRequest, $compile) {
     return {
         scope: {
             currentuser: "="
@@ -32,15 +32,11 @@ function FeaturedProductsDirective(ocFeaturedProductsService, $compile) {
                             }
                         }           
                     ];
-                    element.html(
-                        "<br><h3 class='c-related-products__heading'>Featured Products</h3><hr>" +
-                        "<slick arrows='!application.isTouchDevice' responsive='responsive' infinite='false' slides-to-show='6' slides-to-scroll='1' class='slider multiple-items' ng-class='{\"has-arrows\": !application.isTouchDevice}'>" +
-                        "<div ng-repeat='product in featuredProducts'>" +
-                        "<div class='c-related-products__card-wrap' ng-include='\"common/directives/directives-product-card.html\"'></div>" +
-                        "</div>" +
-                        "</slick>"
-                    );
-                    $compile(element.contents())(scope);
+                    $templateRequest('common/directives/oc-featured-products/oc-featured-products.html').then(function(html) {
+                        var template = angular.element(html);
+                        element.append(template);
+                        $compile(template)(scope);
+                    });
                 });
         }
     }
