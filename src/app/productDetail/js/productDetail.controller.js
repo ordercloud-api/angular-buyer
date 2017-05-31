@@ -6,6 +6,8 @@ function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLin
     var vm = this;
     vm.item = Product;
     vm.finalPriceBreak = null;
+
+    $("#zoom").ezPlus();
     
     var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toats from opening.
     vm.addToCart = function() {

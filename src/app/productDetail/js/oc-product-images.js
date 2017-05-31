@@ -1,6 +1,5 @@
 angular.module('orderCloud')
-    .directive('ocProductImages', ocProductImagesDirective)
-;
+    .directive('ocProductImages', ocProductImagesDirective);
 
 function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler) {
     return {
@@ -8,41 +7,26 @@ function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler)
             product: '='
         },
         restrict: 'E',
-        link: function(scope, element) {
+        link: function (scope, element) {
             scope.responsive = [
                 {
-                    breakpoint: 1500,
+                    breakpoint: 992,
                     settings: {
                         slidesToShow: 2
                     }
                 },
-                // {
-                //     breakpoint: 992,
-                //     settings: {
-                //         slidesToShow: 3
-                //     }
-                // },
                 {
                     breakpoint: 768,
                     settings: {
                         slidesToShow: 1
                     }
-                }                            
+                }
             ];
-            element.html(
-                "<slick class='slider-main' infinite='false' slides-to-show='1' slides-to-scroll='1' arrows='false' fade='true' as-nav-for='.slider-nav'>" +
-                    "<div ng-repeat='image in product.xp.Images'>" +
-                        "<img ng-src='{{image.URL}}' style='width: 400px; height: 100%;' />" +
-                    "</div>" +
-                "</slick>" +
-                "<br>" +
-                "<slick class='slider-nav' infinite='false' responsive='responsive' slides-to-show='3' slides-to-scroll='1' arrows='!application.isTouchDevice' focus-on-select='true' as-nav-for='.slider-main'>" +
-                    "<div ng-repeat='image in product.xp.Images'>" +
-                        "<img ng-src='{{image.URL}}' style='width: 100px; height: auto;' />" +
-                    "</div>" + 
-                "</slick>"
-            );
-            $compile(element.contents())(scope);
+            $templateRequest('productDetail/templates/oc-product-images.html').then(function(html) {
+                var template = angular.element(html);
+                element.append(template);
+                $compile(template)(scope);
+            });
         }
     }
 }
