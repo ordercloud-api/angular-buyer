@@ -1,19 +1,25 @@
 var q,
     rootScope,
+    compile,
     scope,
     state,
     injector,
     exceptionHandler,
     toastrService,
+    uibModalService,
     oc,
     parametersResolve,
     currentOrder,
     currentUser,
     orderLineItems,
+    ocLineItemsService,
     ocAppNameService,
     ocConfirmService,
+    ocMyAddressesService,
     ocParametersService,
+    ocProductQuickViewService,
     ocRolesService,
+    ocReorderService,
     dummyPromise,
     mock = _mockData();
 beforeEach(module('orderCloud', function($provide) {
@@ -26,21 +32,27 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('OrderLineItems', mock.LineItems);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
-beforeEach(inject(function($q, $rootScope, $state, $injector, $exceptionHandler, toastr, 
-OrderCloudSDK, ocAppName, ocConfirm, ocParameters, ocRoles, Parameters, CurrentOrder,
-CurrentUser, OrderLineItems) {
+beforeEach(inject(function($q, $rootScope, $compile, $state, $injector, $exceptionHandler, toastr, $uibModal,
+OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, 
+ocProductQuickView, CurrentOrder, CurrentUser, OrderLineItems) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
+    compile = $compile;
     state = $state;
     injector = $injector;
     toastrService = toastr;
+    uibModalService = $uibModal;
     oc = OrderCloudSDK;
     exceptionHandler = $exceptionHandler;
+    ocLineItemsService = ocLineItems;
     ocAppNameService = ocAppName;
     ocConfirmService = ocConfirm;
+    ocMyAddressesService = ocMyAddresses;
     ocParametersService = ocParameters;
+    ocProductQuickViewService = ocProductQuickView;
     ocRolesService = ocRoles;
+    ocReorderService = ocReorder;
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
     currentUser = CurrentUser;
@@ -98,21 +110,28 @@ function _mockData() {
             TermsAccepted: true,
             Active: true,
             xp: {
-                FavoriteProducts: ['FavProd1', 'FavProd2']
+                FavoriteProducts: ['FavProd1', 'FavProd2'],
+                FavoriteOrders: ['FavOrder1', 'FavOrder2']
             }
-        },
-        LineItems: {
-            Items: [
-                {ID: 'testLI1'},
-                {ID: 'testLI2'}
-            ]
         },
         Product: {
             ID: 'PRODUCT_ID',
             Name: 'PRODUCT_NAME'
         },
+        Products: {
+            Items: [
+                {ID: 'testProd1'},
+                {ID: 'testProd2'}
+            ]
+        },
         Category: {
             ID: 'CATEGORY_ID'
+        },
+        Categories: {
+            Items: [
+                {ID: 'mockCat1'},
+                {ID: 'mockCat2'}
+            ]
         },
         Order: {
             ID: 'ORDER_ID',
@@ -125,10 +144,15 @@ function _mockData() {
             PaymentMethod: null,
             CreditCardID: null,
             ShippingCost: null,
-            TaxCost: null
+            TaxCost: null,
+            Total: 100
         },
         LineItem: {
             ID: 'LINEITEM_ID'
+        },
+        Payment: {
+            ID: 'PAYMENT_ID',
+            Amount: 150
         },
         Promotion: {
             Code:'Discount10'

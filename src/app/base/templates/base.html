@@ -4,13 +4,18 @@
 </header>-->
 <!--Navmenu is used on smaller viewports-->
 <nav class="navmenu navmenu-default navmenu-fixed-left offcanvas c-mobile-nav">
-    <a class="navmenu-brand" ui-sref="home">{{application.name()}}</a>
     <ul class="nav navmenu-nav">
         <li>
             <a ui-sref="productBrowse.products({page:'', favorites:'', sortBy:'', categoryid:''})">Product Browse</a>
         </li>
         <li>
             <a ui-sref="categoryBrowse({page:'', sortBy:'', categoryID:''})">Category Browse</a>
+        </li>
+        <li ng-if="base.currentUser.Anonymous">
+            <a ui-sref="login">Login</a>
+        </li>
+        <li ng-if="base.currentUser.Anonymous">
+            <a ui-sref="register">Register</a>
         </li>
         <li uib-dropdown ng-if="!base.currentUser.Anonymous">
             <a uib-dropdown-toggle role="button">Account <span class="caret"></a>
@@ -41,16 +46,15 @@
 </nav>
 <header>
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
+        <div class="container container-smooth">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" ui-sref="home" ng-if="!application.logoUrl">{{application.name()}}</a>
-                <a class="c-logo-display c-logo-display__nav" ng-if="application.logoUrl" ui-sref="home">
-                    <img ng-src="{{application.logoUrl}}" alt="{{application.name()}}">
+                <a class="navbar-brand" ui-sref="home">
+                    <oc-brand></oc-brand>
                 </a>
             </div>
             <ul class="nav navbar-nav c-desktop-nav">
@@ -67,11 +71,18 @@
                     <a href="" ng-click="base.mobileSearch()"><i class="fa fa-search"></i></a>
                 </li>
                 <li>
-                    <a ui-sref="cart"><i class="fa fa-shopping-cart"></i> <span class="sr-only">Shopping Cart</span> <span class="badge" ng-bind="base.currentOrder.LineItemCount"></span></a>
+                    <a ui-sref="cart"><i class="fa fa-shopping-cart"></i> <span class="sr-only">Shopping Cart</span> <span class="badge" ng-bind="base.totalQuantity"></span></a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right c-desktop-nav" ng-if="!base.currentUser.Anonymous">
-                <li class="c-desktop-nav" uib-dropdown>
+            
+            <ul class="nav navbar-nav navbar-right c-desktop-nav">
+                <li ng-if="base.currentUser.Anonymous">
+                    <a ui-sref="login">Login</a>
+                </li>
+                <li ng-if="base.currentUser.Anonymous">
+                    <a ui-sref="register">Register</a>
+                </li>
+                <li class="c-desktop-nav" uib-dropdown  ng-if="!base.currentUser.Anonymous">
                     <a uib-dropdown-toggle role="button">Account <span class="caret"></span></a>
                     <ul class="dropdown-menu-right" uib-dropdown-menu>
                         <li>
@@ -100,4 +111,4 @@
         </div>
     </nav>
 </header>
-<main ui-view class="container" cg-busy="application.stateLoading('base')"></main>
+<main ui-view class="container container-smooth" cg-busy="application.stateLoading('base')"></main>

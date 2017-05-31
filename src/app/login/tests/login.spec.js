@@ -21,15 +21,9 @@ describe('Component: Login', function() {
         }));
 
         describe('form', function() {
-            it ('should initialize to login if there is not a token $stateParam', function() {
+            it ('should initialize to login if there is not a verificationCode $stateParam', function() {
                 expect(loginCtrl.form).toBe('login');
             });
-            it ('should initialize to reset if token $stateParam exists', inject(function($controller) {
-                var altLoginCtrl = $controller('LoginCtrl', {
-                    $stateParams: {token:mock.OauthResponse.access_token}
-                })
-                expect(altLoginCtrl.form).toBe('reset');
-            }));
         });
 
         describe('setForm', function() {
@@ -71,15 +65,15 @@ describe('Component: Login', function() {
                 };
                 var deferred = q.defer();
                 deferred.resolve(true);
-                spyOn(loginFactory, 'SendVerificationCode').and.returnValue(deferred.promise);
+                spyOn(oc.PasswordResets, 'SendVerificationCode').and.returnValue(deferred.promise);
                 loginCtrl.forgotPassword();
                 scope.$digest();
             });
-            it ('should call the LoginService SendVerificationCode with the email', function() {
-                expect(loginFactory.SendVerificationCode).toHaveBeenCalledWith(email);
-            });
-            it ('should set the form to verificationCodeSuccess', function() {
-                expect(loginCtrl.form).toBe('verificationCodeSuccess');
+            it ('should call the LoginService SendVerificationCode with the email', inject(function($window) {
+                expect(oc.PasswordResets.SendVerificationCode).toHaveBeenCalledWith({Email: email, ClientID: mock.ClientID});
+            }));
+            it ('should set the form to reset', function() {
+                expect(loginCtrl.form).toBe('reset');
             });
             it ('should set credentials.Email back to null', function() {
                 expect(loginCtrl.credentials.Email).toBe(null);
@@ -87,29 +81,24 @@ describe('Component: Login', function() {
         });
 
         describe('resetPassword', function() {
-            var creds = {
-                ResetUsername: credentials.Username,
-                NewPassword: credentials.Password,
-                ConfirmPassword: credentials.Password
+            var mockCreds = {
+                ClientID: mock.ClientID,
+                Username: mock.User.Username,
+                Password: mock.User.Password
             };
-            var token = 'reset';
+            var mockverificationCode = 'mockValidation';
             beforeEach(function() {
-                loginCtrl.credentials = creds;
-                loginCtrl.token = token;
-                var deferred = q.defer();
-                deferred.resolve(true);
-                spyOn(loginFactory, 'ResetPassword').and.returnValue(deferred.promise);
+                loginCtrl.credentials = {ResetUsername: mock.User.Username, NewPassword: mock.User.Password};
+                loginCtrl.verificationCode = mockverificationCode;
+                spyOn(oc.PasswordResets, 'ResetPasswordByVerificationCode').and.returnValue(dummyPromise);
                 loginCtrl.resetPassword();
                 scope.$digest();
             });
             it ('should call the ResetPassword method of the LoginService with credentials and token', function() {
-                expect(loginFactory.ResetPassword).toHaveBeenCalledWith(creds, token);
+                expect(oc.PasswordResets.ResetPasswordByVerificationCode).toHaveBeenCalledWith(mockverificationCode, mockCreds);
             });
             it ('should set the form to resetSuccess', function() {
                 expect(loginCtrl.form).toBe('resetSuccess');
-            });
-            it ('should set the token to null', function() {
-                expect(loginCtrl.token).toBe(null);
             });
             it ('should set the credentials values to null', function() {
                 for (key in loginCtrl.credentials) {

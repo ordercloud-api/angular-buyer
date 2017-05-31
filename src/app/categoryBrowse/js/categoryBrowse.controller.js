@@ -7,6 +7,7 @@ function CategoryBrowseController($state, OrderCloudSDK, ocParameters, CategoryL
     vm.categoryList = CategoryList;
     vm.productList = ProductList;
     vm.parameters = Parameters;
+    if(!vm.parameters.filters) vm.parameters.filters = {};
     vm.selectedCategory = SelectedCategory;
 
     vm.getNumberOfResults = function(list){
@@ -27,23 +28,32 @@ function CategoryBrowseController($state, OrderCloudSDK, ocParameters, CategoryL
         vm.filter(false);
     };
 
-    vm.loadMoreCategories = function() {
-        var parameters = angular.extend(Parameters, {page:vm.categoryList.Meta.Page + 1});
-        return OrderCloudSDK.Me.ListCategories(parameters)
-            .then(function(data) {
-                vm.categoryList.Items = vm.categoryList.Items.concat(data.Items);
-                vm.categoryList.Meta = data.Meta;
-            });
-    };
-    
     vm.changeProductPage = function(newPage){
         vm.parameters.productPage = newPage;
         vm.filter(false);
     };
 
+    vm.loadMoreCategories = function() {
+        //If you change behavior here, make sure you change behavior in resolve to match
+        if(vm.parameters.categoryID) { 
+            vm.parameters.filters.ParentID = vm.parameters.categoryID;
+        } 
+        vm.parameters.page = vm.categoryList.Meta.Page + 1;
+        return OrderCloudSDK.Me.ListCategories(vm.parameters)
+            .then(function(data){
+                vm.categoryList.Items = vm.categoryList.Items.concat(data.Items);
+                vm.categoryList.Meta = data.Meta;
+            });
+    };
+
     vm.loadMoreProducts = function() {
-        var parameters = angular.extend(Parameters, {page:vm.productList.Meta.Page + 1});
-        return OrderCloudSDK.Me.ListProducts(parameters)
+        //If you change behavior here, make sure you change behavior in resolve to match
+        if(vm.parameters.filters.ParentID){
+            delete vm.parameters.filters.ParentID;
+        }
+        vm.parameters.page = vm.productList.Meta.Page + 1;
+        vm.parameters.depth = 'all';
+        return OrderCloudSDK.Me.ListProducts(vm.parameters)
             .then(function(data) {
                 vm.productList.Items = vm.productList.Items.concat(data.Items);
                 vm.productList.Meta = data.Meta;

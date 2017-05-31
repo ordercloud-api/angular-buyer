@@ -6,7 +6,6 @@ angular.module('orderCloud')
         bindings: {
             product: '<',
             currentOrder: '=',
-            currentUser: '<',
             lineitemlist: '='
         }
     });
@@ -14,14 +13,9 @@ angular.module('orderCloud')
 function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, OrderCloudSDK){
     var vm = this;
 
-    $scope.$watch(function(){
-        return vm.product.Quantity;
-    }, function(newVal){
-        vm.findPrice(newVal);
-    });
+    $timeout(_initialize, 100);
 
-    $timeout(setDefaultQuantity, 100);
-
+    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toasts from opening.
     vm.addToCart = function(OCProductForm) {
         var li = {
             ProductID: vm.product.ID,
@@ -31,15 +25,29 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, 
         return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
             .then(function(lineItem) {
                 $rootScope.$broadcast('OC:UpdateOrder', vm.currentOrder.ID, 'Updating Order');
+                $rootScope.$broadcast('OC:UpdateTotalQuantity', li, true);
                 setDefaultQuantity();
-                toastr.success(vm.product.Name + ' was added to cart');
+                toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
+                toastID++;
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);
             });
     };
 
-    vm.findPrice = function(qty){
+    function _initialize() {
+        if (vm.product.PriceSchedule && vm.product.PriceSchedule.PriceBreaks) {
+            $scope.$watch(function(){
+                return vm.product.Quantity;
+            }, function(newVal){
+                _findPrice(newVal);
+            });
+        }
+
+        setDefaultQuantity();
+    }
+
+    function _findPrice(qty){
         if(qty){
             var finalPriceBreak = {};
             angular.forEach(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
@@ -48,7 +56,7 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, 
             });
             vm.calculatedPrice = finalPriceBreak.Price * qty;
         }
-    };
+    }
 
     function setDefaultQuantity() {
         vm.product.Quantity = (vm.product.PriceSchedule && vm.product.PriceSchedule.MinQuantity)

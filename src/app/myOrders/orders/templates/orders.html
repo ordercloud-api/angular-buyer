@@ -1,12 +1,14 @@
 <article ui-view>
-    <header class="l-page-header">
-        <h3 class="l-page-header__title">
-            Orders
-        </h3>
+    <header>
+        <div class="l-page-header">
+            <h3 class="l-page-header__title">
+                Orders
+            </h3>
+        </div>
         <nav>
             <ul class="nav nav-tabs aveda-nav-tabs">
                 <li role="presentation" ng-class="{active: orders.parameters.tab == 'history'}"><a ng-click="orders.selectTab('history')">Order History</a></li>
-                <li role="presentation" oc-if-roles="ApprovalRuleRoles || UserGroupRoles" ng-class="{active: orders.parameters.tab == 'approvals'}"><a ng-click="orders.selectTab('approvals')">Awaiting Approval</a></li>
+                <li role="presentation" ng-class="{active: orders.parameters.tab == 'approvals'}"><a ng-click="orders.selectTab('approvals')">Awaiting My Approval</a></li>
                 <li role="presentation" ng-class="{active: orders.parameters.tab == 'favorites'}"><a ng-click="orders.selectTab('favorites')">Favorite Orders</a></li>
             </ul>
         </nav>
@@ -30,21 +32,43 @@
     <!--====== FILTERS ======-->
     <form name="OrdersFiltersForm">
         <div class="row">
-            <div class="col-sm-4 form-group">
+            <div class="col-sm-4 form-group" ng-if="orders.parameters.tab !== 'approvals'">
                 <label for="Status">Status</label>
                 <select id="Status" class="form-control" ng-model="orders.parameters.status" ng-options="status.Value as status.Name for status in orders.orderStatuses" ng-change="orders.filter(true)">
                     <option value="">All</option>
                 </select>
             </div>
-            <div class="col-sm-4 form-group">
-                <label for="FromDate">From Date</label>
-                <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.parameters.fromDate" ng-blur="orders.filter(true)">
-                <input id="FromDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.parameters.fromDate" uib-datepicker-popup datepicker-options="{maxDate:orders.parameters.toDate}" is-open="fromDate.open" ng-change="orders.filter(true)" ng-click="fromDate.open = !fromDate.open">
+            <div class="col-sm-4 form-group" ng-if="orders.parameters.tab === 'approvals'">
+                <label for="Status">Status</label>
+                <input id="Status" type="text" class="form-control" readonly value="Awaiting My Approval">
             </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="FromDate">From Date</label>
+                    <div ng-class="{'input-group': orders.parameters.fromDate}">
+                        <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.parameters.fromDate" ng-blur="orders.filter(true)">
+                        <input id="FromDate" ng-if="!application.isTouchDevice" type="text" class="form-control" ng-model="orders.parameters.fromDate" uib-datepicker-popup datepicker-options="{maxDate:orders.parameters.toDate}" is-open="fromDate.open" ng-change="orders.filter(true)" ng-click="fromDate.open = !fromDate.open">
+                        <div class="input-group-btn" ng-if="orders.parameters.fromDate">
+                            <button class="btn btn-default" ng-click="orders.clearDate('fromDate')">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                </div>
             <div class="col-sm-4 form-group">
-                <label for="ToDate">To Date</label>
-                <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.parameters.toDate" ng-blur="orders.filter(true)">
-                <input id="ToDate" type="text" class="form-control" ng-model="orders.parameters.toDate" uib-datepicker-popup datepicker-options="{minDate:orders.parameters.fromDate, maxDate: orders.today}" is-open="toDate.open" ng-change="orders.filter(true)" ng-click="toDate.open = !toDate.open">
+                <div class="form-group">
+                    <label for="ToDate">To Date</label>
+                    <div ng-class="{'input-group': orders.parameters.toDate}">
+                        <input ng-if="application.isTouchDevice" type="date" class="form-control" ng-model="orders.parameters.toDate" ng-blur="orders.filter(true)">
+                        <input id="ToDate" type="text" class="form-control" ng-model="orders.parameters.toDate" uib-datepicker-popup datepicker-options="{minDate:orders.parameters.fromDate, maxDate: orders.today}" is-open="toDate.open" ng-change="orders.filter(true)" ng-click="toDate.open = !toDate.open">
+                        <div class="input-group-btn" ng-if="orders.parameters.toDate">
+                            <button class="btn btn-default" ng-click="orders.clearDate('toDate')">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </form>
@@ -102,17 +126,25 @@
                                 <i class="fa fa-caret-down" ng-show="orders.parameters.sortBy == 'Subtotal'"></i>
                                 <i class="fa fa-caret-up" ng-show="orders.parameters.sortBy == '!Subtotal'"></i>
                             </th>
-                            <th></th>
+                            <th ng-if="orders.parameters.tab !== 'approvals'"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="order in orders.list.Items">
                             <td><a ng-click="orders.goToOrder(order)">{{order.ID}}</a></td>
-                            <td>{{order.Status | humanize}}</td>
+                            <td>
+                                <i class="fa" ng-class="{
+                                    'fa-circle success': order.Status == 'Completed', 
+                                    'fa-clock-o warning': order.Status == 'AwaitingApproval',
+                                    'fa-circle info': order.Status == 'Open',
+                                    'fa-ban danger': order.Status == 'Declined'}">
+                                </i>
+                                {{order.Status | humanize}}
+                            </td>
                             <td>{{(order.DateSubmitted || order.DateCreated) | date:'short'}}</td>
                             <td>{{order.FromUser.FirstName + ' ' + order.FromUser.LastName}}</td>
                             <td>{{order.Subtotal | currency}}</td>
-                            <td class="text-center"><ordercloud-favorite-order current-user="base.currentUser" order="order"></ordercloud-favorite-order></td>
+                            <td class="text-center"  ng-if="orders.parameters.tab !== 'approvals'"> <i class="fa" oc-favorite-order="order" current-user="base.currentUser" favorite-class="fa-heart text-danger" non-favorite-class="fa-heart-o" aria-hidden="true"></i> </td>
                         </tr>
                     </tbody>
                 </table>

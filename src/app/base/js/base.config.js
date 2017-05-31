@@ -28,8 +28,8 @@ function BaseConfig($stateProvider) {
                     filters: {Status: 'Unsubmitted'}
                 };
                 return OrderCloudSDK.Me.ListOrders(options)
-                    .then(function(data) {
-                        return data.Items[0];
+                    .then(function(orders) {
+                        return orders.Items[0];
                     });
             },
             CurrentOrder: function(ExistingOrder, ocNewOrder, CurrentUser) {
@@ -38,6 +38,13 @@ function BaseConfig($stateProvider) {
                 } else {
                     return ExistingOrder;
                 }
+            },
+            TotalQuantity: function(OrderCloudSDK, CurrentOrder) {
+                return OrderCloudSDK.LineItems.List('outgoing', CurrentOrder.ID)
+                    .then(function(lineItems) {
+                        var quantities = _.pluck(lineItems.Items, 'Quantity');
+                        return quantities.reduce(function(a, b) {return a + b;}, 0);
+                    });
             },
             AnonymousUser: function(OrderCloudSDK, CurrentUser) {
                 CurrentUser.Anonymous = angular.isDefined(JSON.parse(atob(OrderCloudSDK.GetToken().split('.')[1])).orderid);

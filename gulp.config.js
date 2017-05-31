@@ -33,7 +33,8 @@ module.exports = {
     index: source + index,
     styles: [
         source + '**/*.css',
-        source + '**/*.less'
+        source + '**/*.less',
+        '!' + source + '**/saas/theme/*.less'
     ],
     templates: [
         '!' + source + index,
@@ -121,6 +122,7 @@ function getConstants() {
         result.apiurl = 'https://api.ordercloud.io';
     }
     if (process.env.clientid) result.clientid = process.env.clientid;
+    if (process.env.anonymous) result.anonymous = process.env.anonymous;
     if (process.env.appname) result.appname = process.env.appname;
     if (process.env.scope) result.scope = process.env.scope;
     if (process.env.ocscope) result.ocscope = process.env.ocscope;
@@ -128,6 +130,10 @@ function getConstants() {
     if (process.env.bootswatchtheme) result.bootswatchtheme = process.env.bootswatchtheme;
     if (process.env.buyerid) result.buyerid = process.env.buyerid;
     if (process.env.catalogid) result.catalogid = process.env.catalogid;
+    if (process.env.awsaccesskeyid) result.awsaccesskeyid = process.env.awsaccesskeyid;
+    if (process.env.awssecretaccesskey) result.awssecretaccesskey = process.env.awssecretaccesskey;
+    if (process.env.awsregion) result.awsregion = process.env.awsregion;
+    if (process.env.awsbucket) result.awsbucket = process.env.awsbucket;
     return result;
 }
 
@@ -139,9 +145,9 @@ function _checkBootswatchTheme() {
 
     if (theme) {
         bootswatchBower.main = [
-            "./" + theme + "/bootswatch.less",
-            "./" + theme + "/variables.less"
-        ]
+            './' + theme + '/bootswatch.less',
+            './' + theme + '/variables.less'
+        ];
     }
 
     return bootswatchBower;

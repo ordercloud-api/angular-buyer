@@ -2,13 +2,14 @@ angular.module('orderCloud')
     .controller('CartCtrl', CartController)
 ;
 
-function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList, CurrentPromotions, ocConfirm) {
+function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList, CurrentPromotions, CurrentUser, ocConfirm, ocAnonymous) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
     vm.removeItem = removeItem;
     vm.removePromotion = removePromotion;
     vm.cancelOrder = cancelOrder;
+    vm.proceedToCheckout = proceedToCheckout;
 
     $rootScope.$on('OC:UpdatePromotions', function(event, orderid) {
         return OrderCloudSDK.Orders.ListPromotions('outgoing', orderid)
@@ -27,6 +28,7 @@ function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList
             .then(function () {
                 $rootScope.$broadcast('OC:UpdateOrder', order.ID);
                 vm.lineItems.Items.splice(scope.$index, 1);
+                $rootScope.$broadcast('OC:UpdateTotalQuantity', vm.lineItems.Items, true);
                 toastr.success(scope.lineItem.Product.Name + ' was removed from your shopping cart.');
             });
     }
@@ -50,5 +52,9 @@ function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList
                         $state.go('home', {}, {reload:'base'});
                     });
             });
+    }
+
+    function proceedToCheckout() {
+        $state.go('checkout.shipping');
     }
 }
