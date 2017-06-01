@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .directive('ocRelatedProducts', RelatedProductsDirective)
 ;
 
-function RelatedProductsDirective(ocRelatedProducts, $compile) {
+function RelatedProductsDirective(ocRelatedProducts, $compile, $templateRequest) {
     return {
         scope: {
             product: "=",
@@ -13,8 +13,8 @@ function RelatedProductsDirective(ocRelatedProducts, $compile) {
         link: function(scope, element) {
             if(scope.product && scope.product.xp && scope.product.xp.RelatedProducts){
                 ocRelatedProducts.List(scope.product.xp.RelatedProducts)
-                    .then(function(data){
-                        scope.relatedProducts = data.Items;
+                    .then(function(products){
+                        scope.relatedProducts = products.Items;
                         scope.responsive = [
                             {
                                 breakpoint: 1500,
@@ -35,14 +35,11 @@ function RelatedProductsDirective(ocRelatedProducts, $compile) {
                                 }
                             }                            
                         ];
-                        element.html(
-                            "<slick arrows='!application.isTouchDevice' responsive='responsive' infinite='false' slides-to-show='6' slides-to-scroll='1' class='slider multiple-items' ng-class='{\"has-arrows\": !application.isTouchDevice}'>" +
-                            "<div ng-repeat='product in relatedProducts'>" +
-                            "<div class='c-related-products__card-wrap' ng-include='\"common/directives/oc-related-products/oc-related-products.html\"'></div>" +
-                            "</div>" +
-                            "</slick>"
-                        );
-                        $compile(element.contents())(scope);
+                        $templateRequest('common/directives/directives-product-card.html').then(function(html) {
+                            var template = angular.element(html);
+                            element.append(template);
+                            $compile(template)(scope);
+                        });
                     });
             }
         }
