@@ -148,7 +148,11 @@ function _mockData() {
             Total: 100
         },
         LineItem: {
-            ID: 'LINEITEM_ID'
+            ID: 'LINEITEM_ID',
+            Product: {
+                ID: 'MOCK_PRODUCT_ID'
+            },
+            Quantity: 3
         },
         Payment: {
             ID: 'PAYMENT_ID',
