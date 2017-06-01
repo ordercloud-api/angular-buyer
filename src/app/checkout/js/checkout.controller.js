@@ -2,7 +2,7 @@ angular.module('orderCloud')
 	.controller('CheckoutCtrl', CheckoutController)
 ;
 
-function CheckoutController($exceptionHandler, $state, $rootScope, toastr, OrderCloudSDK, OrderShipAddress, CurrentPromotions, OrderBillingAddress, CheckoutConfig) {
+function CheckoutController($exceptionHandler, $state, $rootScope, $scope, toastr, OrderCloudSDK, OrderShipAddress, CurrentPromotions, OrderBillingAddress, CheckoutConfig) {
     var vm = this;
     vm.shippingAddress = OrderShipAddress;
     vm.billingAddress = OrderBillingAddress;
@@ -50,7 +50,7 @@ function CheckoutController($exceptionHandler, $state, $rootScope, toastr, Order
                 } else {
                     vm.promotions = data;
                 }
-                $rootScope.$broadcast('OC:UpdateOrder', orderid);
+                $scope.$emit('OC:UpdateOrder', orderid);
             });
     });
 }
