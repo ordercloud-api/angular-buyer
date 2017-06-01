@@ -32,7 +32,7 @@ function FeaturedProductsDirective(ocFeaturedProductsService, $templateRequest, 
                             }
                         }           
                     ];
-                    $templateRequest('common/directives/oc-featured-products/oc-featured-products.html').then(function(html) {
+                    $templateRequest('common/directives/directives-product-card.html').then(function(html) {
                         var template = angular.element(html);
                         element.append(template);
                         $compile(template)(scope);
