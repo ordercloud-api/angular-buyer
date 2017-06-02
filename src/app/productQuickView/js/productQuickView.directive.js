@@ -10,11 +10,13 @@ function OrderCloudProductQuickViewDirective(ocProductQuickView) {
 			currentOrder: '<'
         },
         link: function(scope, element, attrs) {
-            element.bind('click', function() {
-                ocProductQuickView.Open(scope.currentOrder, scope.product);
+            element.on('click', function() {
+                return ocProductQuickView.Open(scope.currentOrder, scope.product);
             });
-
+            scope.$on('destroy', function(){
+                element.off('click');
+            });
             element.css('cursor', 'pointer');
         }
-    }
+    };
 }

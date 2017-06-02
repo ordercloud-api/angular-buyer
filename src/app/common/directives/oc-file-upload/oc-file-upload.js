@@ -133,7 +133,11 @@ function ordercloudFileUpload($parse, ocFileReader, ocFilesService) {
             }
         }
 
-        element.bind('change', updateModel);
+        element.on('change', updateModel);
+        scope.$on('$destroy', function(){
+            //prevent memory leak
+            element.off('change');
+        });
     }
 
     return directive;
