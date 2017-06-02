@@ -1,4 +1,4 @@
-describe('Component: addPromotion', function(){
+fdescribe('Component: addPromotion', function(){
     var ctrl,
     componentScope
     ;
@@ -13,18 +13,30 @@ describe('Component: addPromotion', function(){
         ctrl = $componentController('ocProductCard', {$scope: componentScope});
     }));
     describe('$onInit', function(){
+        var newQty = 2;
+        var oldQty = 10;
         beforeEach(function(){
             spyOn(ctrl, 'setDefaultQuantity');
             spyOn(ctrl, 'findPrice');
             ctrl.product = {};
+            ctrl.currentOrder = mock.Order;
             componentScope.vm = ctrl;
         });
         it('should call setDefaultQuantity', function(){
             ctrl.$onInit();
+            ctrl.product.Quantity = newQty;
+            componentScope.$apply();
+            expect(ctrl.findPrice).not.toHaveBeenCalled();
             expect(ctrl.setDefaultQuantity).toHaveBeenCalled();
+            
+        });
+        it('should only init default quantities when there is a current order', function(){
+            delete ctrl.currentOrder;
+            ctrl.$onInit();
+            expect(ctrl.setDefaultQuantity).not.toHaveBeenCalled();
+            expect(ctrl)
         });
         it('should create a watch if price breaks are defined', function(){
-            var newQty = 2; var oldQty = 10;
             ctrl.product = {PriceSchedule: {PriceBreaks: {Quantity: oldQty, Price: 3}}};
             ctrl.$onInit();
             ctrl.product.Quantity = newQty;
@@ -32,7 +44,6 @@ describe('Component: addPromotion', function(){
             expect(ctrl.findPrice).toHaveBeenCalledWith(newQty);
         })
         it('should not create a watch if price breaks are not defined', function(){
-            var newQty = 2; var oldQty = 10;
             ctrl.$onInit();
             ctrl.product.Quantity = newQty;
             componentScope.$apply();
