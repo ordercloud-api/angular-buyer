@@ -3,7 +3,7 @@
     <div>
         <!--Product Image-->
         <div class="c-product-card__img-wrap">
-            <button class="btn btn-default btn-sm c-product-card__quickview-btn" oc-product-quick-view product="productCard.product" current-order="productCard.currentOrder" oc-prevent-click>Quick View</button>
+            <button class="btn btn-default btn-sm c-product-card__quickview-btn" ng-if="productCard.currentOrder" oc-product-quick-view product="productCard.product" current-order="productCard.currentOrder" oc-prevent-click>Quick View</button>
             <img class="img-responsive c-product-card__img" ng-src="{{productCard.product.xp.image.URL || 'http://placehold.it/300x300'}}"/>
         </div>
     </div>
@@ -12,10 +12,10 @@
     </h5>
     <h4 class="text-primary c-product-card__price" ng-if="productCard.product.PriceSchedule">
         {{productCard.product.PriceSchedule.PriceBreaks[0].Price | currency}}</b> 
-        <small class="text-muted">x {{productCard.product.PriceSchedule.PriceBreaks[0].Quantity}}</small>
+        <small class="text-muted" ng-if="productCard.product.PriceSchedule.PriceBreaks[0].Quantity > 1 || productCard.product.PriceSchedule.PriceBreaks.length > 1">x {{productCard.product.PriceSchedule.PriceBreaks[0].Quantity}}</small>
     </h4>
 </div>
-<div>
+<div ng-if="productCard.currentOrder">
     <form name="OCProductForm" prevent-click>
         <oc-quantity-input product="productCard.product" ng-if="!(productCard.product.SpecCount > 0) && productCard.product.PriceSchedule"></oc-quantity-input>
         <div class="btn-group btn-group-justified c-product-card__btn-group" role="group">
