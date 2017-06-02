@@ -29,6 +29,7 @@ describe('Component: Cart', function() {
             }
         beforeEach(inject(function($controller) {
             cartController = $controller('CartCtrl', {
+                $scope: scope,
                 CurrentPromotions: promoList,
                 LineItemsList: lineItemsList
             });
@@ -53,7 +54,7 @@ describe('Component: Cart', function() {
         describe('vm.removeItem', function() {
             beforeEach(function() {
                 spyOn(oc.LineItems, 'Delete').and.returnValue(dummyPromise);
-                spyOn(rootScope, '$broadcast');
+                spyOn(scope, '$emit');
             });
             it('should delete the line item', function() {
                 var lineItem = angular.copy(lineItemsList.Items[0]); //list gets mutated after deletion so save copy
@@ -61,7 +62,7 @@ describe('Component: Cart', function() {
                 scope.$digest();
                 expect(oc.LineItems.Delete).toHaveBeenCalledWith('outgoing', mock.Order.ID, lineItem.ID);
                 scope.$digest();
-                expect(rootScope.$broadcast).toHaveBeenCalledWith('OC:UpdateOrder', mock.Order.ID);
+                expect(scope.$emit).toHaveBeenCalledWith('OC:UpdateOrder', mock.Order.ID, {lineItems: lineItem, subtract: true});
                 scope.$digest();
                 expect(cartController.lineItems.Items).toEqual([mock.LineItem]);
             });
@@ -70,7 +71,7 @@ describe('Component: Cart', function() {
         describe('vm.removePromotion', function(){
             beforeEach(function(){
                 spyOn(oc.Orders, 'RemovePromotion').and.returnValue(dummyPromise);
-                spyOn(rootScope, '$broadcast');
+                spyOn(scope, '$emit');
             });
             it('should call oc.Orders.RemovePromotion', function(){
                 var mockRequest = {$index: 0, promotion: mock.Promotion};
@@ -78,7 +79,7 @@ describe('Component: Cart', function() {
                 scope.$digest();
                 expect(oc.Orders.RemovePromotion).toHaveBeenCalledWith('outgoing', mock.Order.ID, mock.Promotion.Code);
                 scope.$digest();
-                expect(rootScope.$broadcast).toHaveBeenCalledWith('OC:UpdateOrder', mock.Order.ID);
+                expect(scope.$emit).toHaveBeenCalledWith('OC:UpdateOrder', mock.Order.ID);
             });
         });
 

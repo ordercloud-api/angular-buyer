@@ -1,4 +1,4 @@
-fdescribe('Component: addPromotion', function(){
+describe('Component: addPromotion', function(){
     var ctrl,
     componentScope
     ;
