@@ -1,6 +1,6 @@
 <div class="c-related-products" ng-if="relatedProducts.length || featuredProducts.length">
     <h4 class="c-related-products__heading">{{relatedProducts ? "Related Products" : "Featured Products"}}</h4>
-    <slick arrows="!application.isTouchDevice" responsive="responsive" infinite="false" slides-to-show="6" slides-to-scroll="1" class="slider multiple-items" ng-class="{'has-arrows': !application.isTouchDevice}">
+    <slick arrows="!application.isTouchDevice" responsive="responsive" infinite="false" slides-to-show="2" slides-to-scroll="1" class="slider multiple-items" ng-class="{'has-arrows': !application.isTouchDevice}">
         <div ng-repeat="product in featuredProducts || relatedProducts">
             <div class="c-related-products__card-wrap">
                 <div class="c-product-card c-related-products__card" ui-sref="productDetail({productid: product.ID})">

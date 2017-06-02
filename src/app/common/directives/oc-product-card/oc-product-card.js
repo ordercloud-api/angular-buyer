@@ -36,6 +36,7 @@ function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, 
     };
 
     function _initialize() {
+        if (!vm.currentOrder) return;
         if (vm.product.PriceSchedule && vm.product.PriceSchedule.PriceBreaks) {
             $scope.$watch(function(){
                 return vm.product.Quantity;
