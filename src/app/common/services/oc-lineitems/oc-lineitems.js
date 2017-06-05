@@ -45,8 +45,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
         li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
         OrderCloudSDK.LineItems.Create('outgoing', order.ID, li)
             .then(function(lineItem) {
-                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
-                $rootScope.$broadcast('OC:UpdateTotalQuantity', lineItem, true);
+                $rootScope.$emit('OC:UpdateOrder', order.ID, {lineItems: lineItem, add: true});
                 deferred.resolve();
             })
             .catch(function(error) {

@@ -44,16 +44,18 @@ describe('Component: Base', function() {
         })
     });
 
-    describe('Controller: BaseCtrl', function(){
+   describe('Controller: BaseCtrl', function(){
         var baseCtrl;
         beforeEach(inject(function($controller) {
             baseCtrl = $controller('BaseCtrl', {
+                $scope: scope,
                 CurrentUser: mock.User,
                 CurrentOrder: mock.Order,
                 TotalQuantity: 3
             });
         }));
         it('should initialize the current user and order into its scope', function() {
+
             expect(baseCtrl.currentUser).toBe(mock.User);
             expect(baseCtrl.currentOrder).toBe(mock.Order);
         });
