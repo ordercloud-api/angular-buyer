@@ -29,6 +29,11 @@ function ocFavoriteOrderDirective($exceptionHandler, OrderCloudSDK, toastr) {
                 }
             });
 
+            scope.$on('$destroy', function(){
+                //prevent memory leak
+                element.off('click');
+            });
+
             function addOrder(existingList) {
                 existingList.push(scope.ocFavoriteOrder.ID);
                 return OrderCloudSDK.Me.Patch({xp: {FavoriteOrders: existingList}})

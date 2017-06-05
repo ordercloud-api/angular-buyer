@@ -5,52 +5,55 @@ angular.module('orderCloud')
         controllerAs: 'productCard',
         bindings: {
             product: '<',
-            currentOrder: '=',
-            lineitemlist: '='
+            currentOrder: '<',
+            lineitemlist: '<'
         }
     });
 
-function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, OrderCloudSDK){
+function ocProductCard($scope, $exceptionHandler, toastr, OrderCloudSDK){
     var vm = this;
-
-    $timeout(_initialize, 100);
-
     var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toasts from opening.
-    vm.addToCart = function(OCProductForm) {
+    
+    vm.$onInit = onInit;
+    vm.addToCart = addToCart;
+    vm.findPrice = findPrice;
+    vm.setDefaultQuantity = setDefaultQuantity;
+
+    function onInit() {
+        if (!vm.currentOrder) return;
+        if (vm.product.PriceSchedule && vm.product.PriceSchedule.PriceBreaks) {
+            $scope.$watch(function(){
+                return vm.product.Quantity;
+            }, function(newVal){
+                vm.findPrice(newVal);
+            });
+        }
+
+        vm.setDefaultQuantity();
+    }
+
+    function addToCart() {
         var li = {
             ProductID: vm.product.ID,
             Quantity: vm.product.Quantity
         };
 
         return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
-            .then(function(lineItem) {
-                $rootScope.$broadcast('OC:UpdateOrder', vm.currentOrder.ID, 'Updating Order');
-                $rootScope.$broadcast('OC:UpdateTotalQuantity', li, true);
-                setDefaultQuantity();
+            .then(function() {
+                $scope.$emit('OC:UpdateOrder', vm.currentOrder.ID, {lineItems: li, add: true});
+                vm.setDefaultQuantity();
                 toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
                 toastID++;
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);
             });
-    };
-
-    function _initialize() {
-        if (vm.product.PriceSchedule && vm.product.PriceSchedule.PriceBreaks) {
-            $scope.$watch(function(){
-                return vm.product.Quantity;
-            }, function(newVal){
-                _findPrice(newVal);
-            });
-        }
-
-        setDefaultQuantity();
     }
 
-    function _findPrice(qty){
+    function findPrice(qty){
         if(qty){
             var finalPriceBreak = {};
-            angular.forEach(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
+            _.each(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
                 if (priceBreak.Quantity <= qty)
                 finalPriceBreak = angular.copy(priceBreak);
             });

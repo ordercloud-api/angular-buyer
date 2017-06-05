@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('CartCtrl', CartController)
 ;
 
-function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList, CurrentPromotions, CurrentUser, ocConfirm, ocAnonymous) {
+function CartController($rootScope, $scope, $state, toastr, OrderCloudSDK, LineItemsList, CurrentPromotions, ocConfirm) {
     var vm = this;
     vm.lineItems = LineItemsList;
     vm.promotions = CurrentPromotions.Meta ? CurrentPromotions.Items : CurrentPromotions;
@@ -26,9 +26,8 @@ function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList
         vm.lineLoading = [];
         vm.lineLoading[scope.$index] = OrderCloudSDK.LineItems.Delete('outgoing', order.ID, scope.lineItem.ID)
             .then(function () {
-                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                $scope.$emit('OC:UpdateOrder', order.ID, {lineItems: scope.lineItem, subtract: true});
                 vm.lineItems.Items.splice(scope.$index, 1);
-                $rootScope.$broadcast('OC:UpdateTotalQuantity', vm.lineItems.Items, true);
                 toastr.success(scope.lineItem.Product.Name + ' was removed from your shopping cart.');
             });
     }
@@ -36,7 +35,7 @@ function CartController($rootScope, $state, toastr, OrderCloudSDK, LineItemsList
     function removePromotion(order, scope) {
         return OrderCloudSDK.Orders.RemovePromotion('outgoing', order.ID, scope.promotion.Code)
             .then(function() {
-                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                $scope.$emit('OC:UpdateOrder', order.ID);
                 vm.promotions.splice(scope.$index, 1);
             });
     }
