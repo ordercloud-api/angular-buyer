@@ -2,11 +2,10 @@ angular.module('orderCloud')
     .factory('ocLineItems', LineItemFactory)
 ;
 
-function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
+function LineItemFactory($rootScope, $q, OrderCloudSDK) {
     return {
         SpecConvert: _specConvert,
         AddItem: _addItem,
-        CustomShipping: _customShipping,
         UpdateShipping: _updateShipping,
         ListAll: _listAll
     };
@@ -45,8 +44,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
         li.ShippingAddressID = isSingleShipping(order) ? getSingleShippingAddressID(order) : null;
         OrderCloudSDK.LineItems.Create('outgoing', order.ID, li)
             .then(function(lineItem) {
-                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
-                $rootScope.$broadcast('OC:UpdateTotalQuantity', lineItem, true);
+                $rootScope.$emit('OC:UpdateOrder', order.ID, {lineItems: lineItem, add: true});
                 deferred.resolve();
             })
             .catch(function(error) {
@@ -54,7 +52,7 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
             });
 
         function isSingleShipping(order) {
-            return _.pluck(order.LineItems, 'ShippingAddressID').length == 1;
+            return _.pluck(order.LineItems, 'ShippingAddressID').length === 1;
         }
 
         function getSingleShippingAddressID(order) {
@@ -64,30 +62,10 @@ function LineItemFactory($rootScope, $q, $uibModal, OrderCloudSDK) {
         return deferred.promise;
     }
 
-    function _customShipping(Order, LineItem) {
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'common/lineitems/templates/shipping.html',
-            controller: 'LineItemModalCtrl',
-            controllerAs: 'liModal',
-            size: 'lg'
-        });
-
-        modalInstance.result
-            .then(function (address) {
-                address.ID = Math.floor(Math.random() * 1000000).toString();
-                OrderCloudSDK.LineItems.SetShippingAddress('outgoing', Order.ID, LineItem.ID, address)
-                    .then(function () {
-                        $rootScope.$broadcast('LineItemAddressUpdated', LineItem.ID, address);
-                    });
-            });
-    }
-
     function _updateShipping(Order, LineItem, AddressID) {
         OrderCloudSDK.Me.GetAddress(AddressID)
             .then(function (address) {
                 OrderCloudSDK.LineItems.SetShippingAddress('outgoing', Order.ID, LineItem.ID, address);
-                $rootScope.$broadcast('LineItemAddressUpdated', LineItem.ID, address);
             });
     }
 

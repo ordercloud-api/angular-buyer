@@ -5,53 +5,61 @@ angular.module('orderCloud')
         controllerAs: 'productCard',
         bindings: {
             product: '<',
-            currentOrder: '=',
-            currentUser: '<',
-            lineitemlist: '='
+            currentOrder: '<',
+            lineitemlist: '<'
         }
     });
 
-function ocProductCard($rootScope, $scope, $exceptionHandler, $timeout, toastr, OrderCloudSDK){
+function ocProductCard($scope, $exceptionHandler, toastr, OrderCloudSDK){
     var vm = this;
+    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toasts from opening.
+    
+    vm.$onInit = onInit;
+    vm.addToCart = addToCart;
+    vm.findPrice = findPrice;
+    vm.setDefaultQuantity = setDefaultQuantity;
 
-    $scope.$watch(function(){
-        return vm.product.Quantity;
-    }, function(newVal){
-        vm.findPrice(newVal);
-    });
+    function onInit() {
+        if (!vm.currentOrder) return;
+        if (vm.product.PriceSchedule && vm.product.PriceSchedule.PriceBreaks) {
+            $scope.$watch(function(){
+                return vm.product.Quantity;
+            }, function(newVal){
+                vm.findPrice(newVal);
+            });
+        }
 
-    $timeout(setDefaultQuantity, 100);
+        vm.setDefaultQuantity();
+    }
 
-    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toats from opening.
-    vm.addToCart = function(OCProductForm) {
+    function addToCart() {
         var li = {
             ProductID: vm.product.ID,
             Quantity: vm.product.Quantity
         };
 
         return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
-            .then(function(lineItem) {
-                $rootScope.$broadcast('OC:UpdateOrder', vm.currentOrder.ID, 'Updating Order');
-                $rootScope.$broadcast('OC:UpdateTotalQuantity', li, true);
-                setDefaultQuantity();
+            .then(function() {
+                $scope.$emit('OC:UpdateOrder', vm.currentOrder.ID, {lineItems: li, add: true});
+                vm.setDefaultQuantity();
                 toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
                 toastID++;
             })
             .catch(function(ex) {
                 $exceptionHandler(ex);
             });
-    };
+    }
 
-    vm.findPrice = function(qty){
+    function findPrice(qty){
         if(qty){
             var finalPriceBreak = {};
-            angular.forEach(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
+            _.each(vm.product.PriceSchedule.PriceBreaks, function(priceBreak) {
                 if (priceBreak.Quantity <= qty)
                 finalPriceBreak = angular.copy(priceBreak);
             });
             vm.calculatedPrice = finalPriceBreak.Price * qty;
         }
-    };
+    }
 
     function setDefaultQuantity() {
         vm.product.Quantity = (vm.product.PriceSchedule && vm.product.PriceSchedule.MinQuantity)

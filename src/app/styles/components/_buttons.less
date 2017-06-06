@@ -1,5 +1,5 @@
 .btn-favorite {
-    .button-variant(@btn-favorite-color; @btn-favorite-bg; @btn-favorite-border);
+    .button-variant(@btn-favorite-color-default; @btn-favorite-bg; @btn-favorite-border);
     &.unfaved {
         &:before {
             font-family: FontAwesome;
@@ -7,7 +7,7 @@
         }
     }
     &.faved {
-        color: @btn-favorite-color;
+        color: @btn-favorite-color-favorited;
         &:before {
             font-family: FontAwesome;
             content: "\f004";

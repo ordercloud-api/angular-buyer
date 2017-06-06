@@ -2,47 +2,29 @@ angular.module('orderCloud')
     .directive('ocFavoriteProduct', OrderCloudFavoriteProductDirective)
 ;
 
-function OrderCloudFavoriteProductDirective($exceptionHandler, toastr, OrderCloudSDK){
+function OrderCloudFavoriteProductDirective($exceptionHandler, toastr, ocFavoriteProducts){
     return {
         scope: {
-            currentUser: '=',
             product: '=',
             favoriteClass: '@',
             nonFavoriteClass: '@'
         },
         restrict: 'A',
         link: function(scope, element, attrs) {
-            var hasFavorites = false;
-
-            checkHasFavorites();
-
-            (hasFavorites && scope.currentUser.xp.FavoriteProducts.indexOf(scope.product.ID) > -1)
-                ? addFavoriteClass()
-                : removeFavoriteClass();
-
-            function checkHasFavorites(){
-                if(scope.currentUser && scope.currentUser.xp && scope.currentUser.xp.FavoriteProducts){
-                    hasFavorites = true;
-                }
-                else{
-                    if(scope.currentUser && scope.currentUser.xp){
-                        scope.currentUser.xp.FavoriteProducts = [];
-                    }else{
-                        scope.currentUser.xp = {};
-                        scope.currentUser.xp.FavoriteProducts = [];
+            removeFavoriteClass();
+            ocFavoriteProducts.Init(scope.product.ID)
+                .then(function(isFavorite) {
+                    if (isFavorite) {
+                        addFavoriteClass();
+                    } else {
+                        removeFavoriteClass();
                     }
-                    return OrderCloudSDK.Me.Patch({xp: scope.currentUser.xp})
-                        .then(function(){
-                            hasFavorites = true;
-                        })
-                        .catch(function(ex){
-                            $exceptionHandler(ex);
-                        });
-                }
-            }
+                });
+
+            element.css('cursor', 'pointer');
 
             function addFavoriteClass() {
-                element.removeClass(scope.nonFavoriteClass)
+                element.removeClass(scope.nonFavoriteClass);
                 element.addClass(scope.favoriteClass);
             }
 
@@ -51,39 +33,26 @@ function OrderCloudFavoriteProductDirective($exceptionHandler, toastr, OrderClou
                 element.addClass(scope.nonFavoriteClass);
             }
 
-            element.bind('click', function() {
-                if (hasFavorites){
-                    if (element.hasClass(scope.favoriteClass)){
-                        removeProduct();
-                    } else {
-                        addProduct(scope.currentUser.xp.FavoriteProducts);
-                    }
-                } else {
-                    vm.addProduct([]);
-                }
+            element.on('click', function() {
+                ocFavoriteProducts.Toggle(scope.product.ID)
+                    .then(function(wasAdded) {
+                        if (wasAdded) {
+                            addFavoriteClass();
+                            toastr.success(scope.product.Name + ' was added to your favorite products.');
+                        } else {
+                            removeFavoriteClass();
+                            toastr.success(scope.product.Name + ' was removed from your favorite products.');
+                        }
+                    })
+                    .catch(function(ex) {
+                        $exceptionHandler(ex);
+                    });
             });
 
-            function addProduct(existingList){
-                existingList.push(scope.product.ID);
-                return OrderCloudSDK.Me.Patch({xp: {FavoriteProducts: existingList}})
-                    .then(function(data){
-                        addFavoriteClass();
-                        hasFavorites = data.xp && data.xp.FavoriteProducts;
-                        toastr.success(scope.product.Name + ' was added to your favorite products.');
-                    });
-            }
-
-            function removeProduct(){
-                var updatedList = _.without(scope.currentUser.xp.FavoriteProducts, scope.product.ID);
-                return OrderCloudSDK.Me.Patch({xp: {FavoriteProducts: updatedList}})
-                    .then(function() {
-                        removeFavoriteClass();
-                        scope.currentUser.xp.FavoriteProducts = updatedList;
-                        toastr.success(scope.product.Name + ' was removed from your favorite products.');
-                    });
-            }
-
-            element.css('cursor', 'pointer');
+            scope.$on('$destroy', function(){
+                //prevent memory leak
+                element.off('click');
+            });
         }
     };
 }

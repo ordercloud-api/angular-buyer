@@ -27,6 +27,10 @@ function ocReorderDirective(ocReorder, $exceptionHandler, $compile) {
                         return ocReorder.Open(scope.currentOrderId, lineItems);
                     });
             });
+            scope.$on('$destroy', function(){
+                //prevent memory leak
+                element.off('click');
+            });
         }
     };
 }
