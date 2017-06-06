@@ -17,7 +17,6 @@ function ocProductCard($scope, $exceptionHandler, toastr, ocLineItems){
     vm.$onInit = onInit;
     vm.addToCart = addToCart;
     vm.findPrice = findPrice;
-    vm.setDefaultQuantity = setDefaultQuantity;
 
     function onInit() {
         if (!vm.currentOrder) return;
@@ -28,14 +27,11 @@ function ocProductCard($scope, $exceptionHandler, toastr, ocLineItems){
                 vm.findPrice(newVal);
             });
         }
-
-        vm.setDefaultQuantity();
     }
 
     function addToCart() {
         return ocLineItems.AddItem(vm.currentOrder, vm.product)
             .then(function() {
-                vm.setDefaultQuantity();
                 toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
                 toastID++;
             })
@@ -53,11 +49,5 @@ function ocProductCard($scope, $exceptionHandler, toastr, ocLineItems){
             });
             vm.calculatedPrice = finalPriceBreak.Price * qty;
         }
-    }
-
-    function setDefaultQuantity() {
-        vm.product.Quantity = (vm.product.PriceSchedule && vm.product.PriceSchedule.MinQuantity)
-                     ? vm.product.PriceSchedule.MinQuantity
-                     : 1;
     }
 }
