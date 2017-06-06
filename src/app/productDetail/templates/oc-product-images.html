@@ -1,11 +1,11 @@
 <slick class="slider-main" infinite="false" slides-to-show="1" slides-to-scroll="1" arrows="false" fade="true" as-nav-for=".slider-nav">
-    <div ng-repeat="image in product.xp.Images">
-        <img id="zoom" ng-src="{{image.URL}}" data-zoom-image="{{image.URL}}" style="width: 400px; height: 100%;" />
+    <div ng-repeat="image in product.xp.Images track by $index">
+        <img ez-plus ezp-model="{large: image.Large}" ezp-options="{scrollZoom: true, easing: true}" id="zoom_{{$index}}" ng-src="{{image.Small}}">
     </div>
 </slick>
 <br>
 <slick class="slider-nav" infinite="false" responsive="responsive" slides-to-show="3" slides-to-scroll="1" arrows="!application.isTouchDevice" focus-on-select="true" as-nav-for=".slider-main">
     <div ng-repeat="image in product.xp.Images">
-        <img ng-src="{{image.URL}}" style="width: 100px; height: auto;" />
+        <img id="zoom_{{$index}}" ng-src="{{image.Thumb}}"/>
     </div>
 </slick>

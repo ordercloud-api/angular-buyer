@@ -2,12 +2,10 @@ angular.module('orderCloud')
     .controller('ProductDetailCtrl', ProductDetailController)
 ;
 
-function ProductDetailController($exceptionHandler, Product, RelatedProducts, CurrentOrder, ocLineItems, toastr) {
+function ProductDetailController($exceptionHandler, $scope, Product, RelatedProducts, CurrentOrder, ocLineItems, toastr) {
     var vm = this;
     vm.item = Product;
     vm.finalPriceBreak = null;
-
-    $("#zoom").ezPlus();
 
     vm.relatedProducts = RelatedProducts;
     

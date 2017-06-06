@@ -29,6 +29,14 @@ function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler,
                 });
             }
             $timeout(getTemplate(), 100);
+            $("#img_01").ezPlus({gallery:'gal1', cursor: 'pointer', galleryActiveClass: 'active', imageCrossfade: true}); 
+
+            //pass the images to Fancybox
+            $("#img_01").bind("click", function(e) {  
+            var ez =   $('"#img_01"').data('elevateZoom');	
+                $.fancybox(ez.getGalleryList());
+            return false;
+            });
         }
     }
 }
