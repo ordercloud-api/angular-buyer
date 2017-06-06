@@ -112,6 +112,10 @@ function _mockData() {
             xp: {
                 FavoriteProducts: ['FavProd1', 'FavProd2'],
                 FavoriteOrders: ['FavOrder1', 'FavOrder2']
+            },
+            Buyer: {
+                ID: 'BUYER_ID',
+                DefaultCatalogID: 'BUYER_DEFAULT_CATALOG_ID'
             }
         },
         Product: {

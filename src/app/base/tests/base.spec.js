@@ -1,7 +1,7 @@
 describe('Component: Base', function() {
     var productSearch;
-    beforeEach(inject(function(ocProductSearch) {
-        productSearch = ocProductSearch;
+    beforeEach(inject(function(ocProducts) {
+        productSearch = ocProducts;
     }));
     describe('State: Base', function() {
         var base;
@@ -64,23 +64,23 @@ describe('Component: Base', function() {
             beforeEach(function(){
                 spyOn(state, 'go');
             });
-            it('should go to productDetail if ocProductSearch returns a productID', function(){
+            it('should go to productDetail if ocProducts.Search() returns a productID', function(){
                 var d = q.defer();
                 d.resolve({productID: mock.Product.ID});
-                spyOn(productSearch, 'Open').and.returnValue(d.promise);
+                spyOn(productSearch, 'Search').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
-                expect(productSearch.Open).toHaveBeenCalled();
+                expect(productSearch.Search).toHaveBeenCalled();
                 expect(state.go).toHaveBeenCalledWith('productDetail', {productid: mock.Product.ID});
             });
-            it('should go to productSearchResults if ocProductSearch doesnt return a productID', function(){
+            it('should go to productBrowse.products if ocProducts.Search() doesnt return a productID', function(){
                 var d = q.defer();
                 d.resolve({search: 'SEARCHTERM'});
-                spyOn(productSearch, 'Open').and.returnValue(d.promise);
+                spyOn(productSearch, 'Search').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
-                expect(productSearch.Open).toHaveBeenCalled();
-                expect(state.go).toHaveBeenCalledWith('productSearchResults', {search: 'SEARCHTERM'});
+                expect(productSearch.Search).toHaveBeenCalled();
+                expect(state.go).toHaveBeenCalledWith('productBrowse.products', {catalogid: mock.Buyer.DefaultCatalogID, search: 'SEARCHTERM', categoryid:''});
             });
         });
     });
