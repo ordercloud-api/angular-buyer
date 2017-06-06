@@ -2,11 +2,11 @@ angular.module('orderCloud')
     .config(CategoryBrowseConfig)
 ;
 
-function CategoryBrowseConfig($stateProvider, catalogid){
+function CategoryBrowseConfig($stateProvider){
     $stateProvider
         .state('categoryBrowse', {
             parent:'base',
-            url:'/browse/categories?categoryID?productPage?categoryPage?pageSize?sortBy?filters',
+            url:'/browse/categories?categoryID&productPage&categoryPage&pageSize&sortBy&filters',
             templateUrl:'categoryBrowse/templates/categoryBrowse.html',
             controller:'CategoryBrowseCtrl',
             controllerAs:'categoryBrowse',

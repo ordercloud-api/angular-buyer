@@ -7,24 +7,31 @@ function HomeController(ocAppName, FeaturedProducts) {
 
 	vm.featuredProducts = FeaturedProducts;
 
-	vm.slides = [
-		{
-			Src: 'assets/images/carousel1.jpg', 
-			Title: ocAppName.Watch(),
-			SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
-			ID: 0
+	vm.carousel = {
+		Settings: {
+			Interval: 5000,
+			Active: 0,
+			NoWrap: false
 		},
-		{
-			Src: 'assets/images/carousel2.jpg',
-			Title: 'Carousel Image Two',
-			SubText: 'This is the second image',
-			ID: 1
-		},
-		{
-			Src: 'assets/images/carousel3.jpg',
-			Title: 'Carousel Image Three',
-			SubText: 'This is the third image',
-			ID: 2
-		}
-	];
+		Slides: [
+			{
+				Src: 'assets/images/carousel1.jpg', 
+				Title: ocAppName.Watch(),
+				SubText: 'Welcome to the ' + ocAppName.Watch() + ' application',
+				ID: 0
+			},
+			{
+				Src: 'assets/images/carousel2.jpg',
+				Title: 'Carousel Image Two',
+				SubText: 'This is the second image',
+				ID: 1
+			},
+			{
+				Src: 'assets/images/carousel3.jpg',
+				Title: 'Carousel Image Three',
+				SubText: 'This is the third image',
+				ID: 2
+			}
+		]
+	};
 }

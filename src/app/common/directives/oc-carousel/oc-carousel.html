@@ -1,9 +1,0 @@
-<uib-carousel active="active" interval="interval" no-wrap="noWrapSlides">
-    <uib-slide ng-repeat="slide in buyer.xp.Slides.Items || slides track by slide.ID" index="$index">
-        <img class="img-responsive" ng-src="{{slide.Src}}">
-        <div class="carousel-caption">
-            <h1>{{slide.Title}}</h1>
-            <p class="lead">{{slide.SubText}}</p>
-        </div>
-    </uib-slide>
-</uib-carousel>
