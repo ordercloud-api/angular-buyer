@@ -1,27 +1,3 @@
-.l-product-grid {
-    // add flex display to the product list
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .l-product-grid__item {
-        // flex each item in the list so that we do not get float layout issues
-        display: flex;
-        flex-direction: column;
-    }
-}
-
-.l-category-grid {
-    // add flex display to the category list
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .l-category-grid__item {
-        // flex each item in the list so that we do not get float layout issues
-        display: flex;
-        flex-direction: column;
-    }
-}
-
 .c-product-card {
     // add flex display to product card wrapper
     // flex the product card to fill the grid item element
@@ -29,7 +5,20 @@
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
+    .c-product-card__body {
+        // display: flex;
+        // flex-direction: column;
+        flex: 1 1 auto;
+        cursor: pointer;
+        padding-bottom:(@line-height-computed / 2);
+    }
     .c-product-card__img-wrap {
+        position:relative;
+        .thumbnail;
+        margin-bottom: (@line-height-computed / 2);
+        img {
+            margin:0 auto;
+        }
         // position the quickview button in the center of the image and set opacity to 0
         .c-product-card__quickview-btn {
             position: absolute;
@@ -45,19 +34,12 @@
             }
         }
     }
-    .c-product-card__body {
-        display: flex;
-        flex-direction: column;
-        flex: 1 1 auto;
-        cursor: pointer;
-        padding-bottom:(@line-height-computed / 2);
-        h4 {
-            margin-bottom:0;
-        }
-    }
     .c-product-card__name {
         word-wrap: break-word;
+    }
+    .c-product-card__price {
         margin-bottom: 0;
+        font-size:@font-size-h4;
     }
     .c-product-card__btn-group {
         table-layout: auto;
@@ -71,6 +53,7 @@
 }
 
 .c-category-card {
+    .thumbnail;
     // add flex display to category card wrapper
     @media (min-width: @screen-sm-min) {
         display: flex;

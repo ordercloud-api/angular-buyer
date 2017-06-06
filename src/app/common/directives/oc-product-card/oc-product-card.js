@@ -1,16 +1,21 @@
 angular.module('orderCloud')
-    .component('ocProductCard', {
-        templateUrl: 'common/directives/oc-product-card/oc-product-card.html',
-        controller: ocProductCard,
-        controllerAs: 'productCard',
-        bindings: {
-            product: '<',
-            currentOrder: '<',
-            lineitemlist: '<'
-        }
+    .controller('ProductCardCtrl', OrderCloudProductCardController)
+    .directive('ocProductCard', function() {
+        return {
+            templateUrl: 'common/directives/oc-product-card/oc-product-card.html',
+            controller: 'ProductCardCtrl',
+            controllerAs: 'productCard',
+            replace: true,
+            bindToController: true,
+            scope: {
+                product: '<',
+                currentOrder: '<',
+                lineitemlist: '<'
+            }
+        };
     });
 
-function ocProductCard($scope, $exceptionHandler, toastr, ocLineItems){
+function OrderCloudProductCardController($scope, $exceptionHandler, toastr, ocLineItems){
     var vm = this;
     var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toasts from opening.
     
