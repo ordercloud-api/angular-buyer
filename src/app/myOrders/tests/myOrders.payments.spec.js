@@ -1,9 +1,8 @@
 describe('Component: Payments', function() {
 
     var _ocOrderPayments;
-    beforeEach(inject(function(ocOrderPayments, buyerid) {
+    beforeEach(inject(function(ocOrderPayments) {
         _ocOrderPayments = ocOrderPayments;
-        mock.Buyer.ID = buyerid;
     }));
 
     describe('State: orderDetail.payments', function() {
@@ -15,7 +14,7 @@ describe('Component: Payments', function() {
         }));
         it('should resolve OrderPayments', function() {
             injector.invoke(orderPaymentsState.resolve.OrderPayments);
-            expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, 1, null);
+            expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, 1, null);
         })
     });
 
@@ -38,7 +37,7 @@ describe('Component: Payments', function() {
                 var page = 1;
                 var pageSize = 100;
                 orderPaymentsCtrl.pageChanged();
-                expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
+                expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, page, pageSize);
             });
         });
         describe('vm.loadMore', function() {
@@ -46,7 +45,7 @@ describe('Component: Payments', function() {
                 var page = 2;
                 var pageSize = 100;
                 orderPaymentsCtrl.loadMore();
-                expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, mock.Buyer.ID, page, pageSize);
+                expect(_ocOrderPayments.List).toHaveBeenCalledWith(mock.Order.ID, page, pageSize);
             });
         });
     });

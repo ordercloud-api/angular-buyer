@@ -10,7 +10,7 @@ angular.module('orderCloud')
         }
     });
 
-function ocProductCard($scope, $exceptionHandler, toastr, OrderCloudSDK){
+function ocProductCard($scope, $exceptionHandler, toastr, ocLineItems){
     var vm = this;
     var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toasts from opening.
     
@@ -33,20 +33,14 @@ function ocProductCard($scope, $exceptionHandler, toastr, OrderCloudSDK){
     }
 
     function addToCart() {
-        var li = {
-            ProductID: vm.product.ID,
-            Quantity: vm.product.Quantity
-        };
-
-        return OrderCloudSDK.LineItems.Create('outgoing', vm.currentOrder.ID, li)
+        return ocLineItems.AddItem(vm.currentOrder, vm.product)
             .then(function() {
-                $scope.$emit('OC:UpdateOrder', vm.currentOrder.ID, {lineItems: li, add: true});
                 vm.setDefaultQuantity();
                 toastr.success(vm.product.Name + ' was added to your cart. <span class="hidden">' + vm.product.ID + toastID + '</span>', null, {allowHtml:true});
                 toastID++;
             })
-            .catch(function(ex) {
-                $exceptionHandler(ex);
+            .catch(function(error){
+               $exceptionHandler(error);
             });
     }
 

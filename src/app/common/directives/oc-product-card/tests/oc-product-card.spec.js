@@ -52,22 +52,15 @@ describe('Component: addPromotion', function(){
     });
 
     describe('addToCart', function(){
-        var mockLI = {ProductID: mock.LineItem.ID, Quantity: mock.LineItem.Quantity};
         beforeEach(function(){
-            spyOn(oc.LineItems, 'Create').and.returnValue(dummyPromise);
+            spyOn(ocLineItemsService, 'AddItem').and.returnValue(dummyPromise);
             spyOn(ctrl, 'setDefaultQuantity');
-            spyOn(componentScope, '$emit').and.callThrough();
             ctrl.currentOrder = mock.Order;
-            ctrl.product = mock.LineItem;
+            ctrl.product = mock.Product;
         });
-        it('should call LineItems.Create', function(){
+        it('should call ocLineItems.AddItem()', function(){
             ctrl.addToCart();
-            expect(oc.LineItems.Create).toHaveBeenCalledWith('outgoing', mock.Order.ID, mockLI);
-        });
-        it('should emit OC:UpdateOrder event', function(){
-            ctrl.addToCart();
-            componentScope.$digest();
-            expect(componentScope.$emit).toHaveBeenCalledWith('OC:UpdateOrder', mock.Order.ID, {lineItems: mockLI, add: true})
+            expect(ocLineItemsService.AddItem).toHaveBeenCalledWith(mock.Order, mock.Product);
         });
         it('should call setDefaultQuantity', function(){
             ctrl.addToCart();
