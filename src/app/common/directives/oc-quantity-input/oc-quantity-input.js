@@ -8,13 +8,20 @@ function OCQuantityInput($log, $state, toastr, OrderCloudSDK) {
             lineitem: '=',
             label: '@',
             order: '=',
-            onUpdate: '&'
+            onUpdate: '&',
+            size: '@'
         },
+        require: '^?ocPrettySubmit',
         templateUrl: 'common/directives/oc-quantity-input/oc-quantity-input.html',
         replace: true,
-        link: function (scope) {
+        link: function (scope, element, attrs, formCtrl) {
+            if (scope.size && ['sm', 'lg'].indexOf(scope.size) > -1) scope.sizeClass = 'input-' + scope.size; 
             if (scope.product) {
                 scope.item = scope.product;
+                scope.item.Quantity = (scope.item.PriceSchedule && scope.item.PriceSchedule.MinQuantity)
+                     ? scope.item.PriceSchedule.MinQuantity
+                     : 1;
+                if (formCtrl && formCtrl.setDirty) formCtrl.setDirty();
                 scope.content = 'product';
             } else if (scope.lineitem) {
                 var add, subtract;
