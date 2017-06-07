@@ -6,7 +6,7 @@
                type="number"
                ng-required="true"
                ng-if="!item.PriceSchedule.RestrictedQuantity"
-               class="form-control text-center"
+               class="form-control {{sizeClass}} text-center"
                ng-min="{{item.PriceSchedule.MinQuantity}}"
                ng-max="{{item.PriceSchedule.MaxQuantity}}"
                ng-model="item.Quantity"
@@ -15,7 +15,7 @@
                 name="itemQuantity"
                 ng-required="true"
                 ng-if="item.PriceSchedule.RestrictedQuantity"
-                class="form-control text-center"
+                class="form-control {{sizeClass}} text-center"
                 ng-model="item.Quantity"
                 ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.PriceSchedule.PriceBreaks"></select>
         <small class="help-block" ng-if="item.QuantityMultiplier > 1">
@@ -29,7 +29,7 @@
                type="number"
                ng-required="true"
                ng-if="!item.Product.PriceSchedule.RestrictedQuantity"
-               class="form-control text-center"
+               class="form-control {{sizeClass}} text-center"
                ng-min="{{item.Product.PriceSchedule.MinQuantity}}"
                ng-max="{{item.Product.PriceSchedule.MaxQuantity}}"
                ng-model="item.Quantity"
@@ -40,7 +40,7 @@
                 name="itemQuantity"
                 ng-required="true"
                 ng-if="item.Product.PriceSchedule.RestrictedQuantity"
-                class="form-control"
+                class="form-control {{sizeClass}}"
                 ng-model="item.Quantity"
                 ng-change="updateQuantity()"
                 ng-options="priceBreak.Quantity as priceBreak.Quantity for priceBreak in item.Product.PriceSchedule.PriceBreaks"></select>

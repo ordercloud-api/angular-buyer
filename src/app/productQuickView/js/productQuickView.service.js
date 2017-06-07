@@ -23,7 +23,7 @@ function OrderCloudProductQuickViewService($uibModal) {
 					return currentOrder;
 				}
 			}
-		}).result
+		}).result;
 	}
 
 	return service;

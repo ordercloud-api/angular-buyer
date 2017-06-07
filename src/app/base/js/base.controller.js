@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('BaseCtrl', BaseController)
 ;
 
-function BaseController($scope, $state, OrderCloudSDK, ocProductSearch, CurrentUser, CurrentOrder, TotalQuantity, $log) {
+function BaseController($scope, $state, OrderCloudSDK, ocProducts, CurrentUser, CurrentOrder, TotalQuantity, $log) {
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
@@ -12,12 +12,16 @@ function BaseController($scope, $state, OrderCloudSDK, ocProductSearch, CurrentU
     vm.updateLineItemQuantities = updateLineItemQuantities;
 
     function mobileSearch() {
-        return ocProductSearch.Open()
+        return ocProducts.Search(CurrentUser.Buyer.DefaultCatalogID)
             .then(function(data) {
                 if (data.productID) {
                     $state.go('productDetail', {productid: data.productID});
                 } else {
-                    $state.go('productSearchResults', {search: data.search});
+                    $state.go('productBrowse.products', {
+                        catalogid: CurrentUser.Buyer.DefaultCatalogID,
+                        search: data.search,
+                        categoryid: ''
+                    });
                 }
             });
     }

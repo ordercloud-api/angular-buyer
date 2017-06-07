@@ -28,7 +28,6 @@ function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler,
                 $compile(template)(scope);
                 });
             }
-            $timeout(getTemplate(), 100);
         }
     }
 }

@@ -11,10 +11,9 @@ function OrderCloudProductCarouselDirective() {
         },
         restrict: 'E',
         templateUrl: 'common/directives/oc-product-carousel/oc-product-carousel.html',
-        controller: function($scope, $element, $timeout) {
+        controller: function($scope, $timeout) {
             this.$onInit = function() {
                 var defaultSlidesToShow = 6;
-                var initializing = true;
                 var defaultResponsiveOptions = [
                     {
                         breakpoint: 1500,
@@ -52,12 +51,9 @@ function OrderCloudProductCarouselDirective() {
                 var slickOptions = angular.extend(defaultOptions, $scope.options || {});
                 $scope.carouselLoading = $timeout(function() {
                     var slickElement = $('#ProductCarousel');
-                    slickElement.on('init', function() {
-                        initializing = false;
-                    })
                     slickElement.slick(slickOptions);
                 }, 300);
-            }
+            };
         }
-    }
+    };
 }
