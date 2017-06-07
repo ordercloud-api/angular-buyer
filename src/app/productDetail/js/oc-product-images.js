@@ -22,12 +22,13 @@ function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler,
                     }
                 }
             ];
-            function getTemplate() {$templateRequest('productDetail/templates/oc-product-images.html').then(function(html) {
+            $timeout(function getTemplate() {
+                $templateRequest('productDetail/templates/oc-product-images.html').then(function(html) {
                 var template = angular.element(html);
                 element.append(template);
                 $compile(template)(scope);
                 });
-            }
+            }, 100);
         }
     }
 }
