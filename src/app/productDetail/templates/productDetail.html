@@ -5,9 +5,20 @@
     <hr>
     <div class="row">
         <div class="col-md-6">
-            <!--PRODUCT IMAGES-->
-            <oc-product-images product="productDetail.item"></oc-product-images>
+            <!-- PRODUCT IMAGES -->
+            <slick class="slider-main" infinite="false" slides-to-show="1" slides-to-scroll="1" arrows="false" fade="true" as-nav-for=".slider-nav">
+                <div align="center" ng-repeat="image in productDetail.item.xp.Images track by $index">
+                    <img ng-src="{{image.Small}}" ng-click="productDetail.openImageModal($index);">
+                </div>
+            </slick>
+            <br>
+            <slick class="slider-nav" infinite="false" responsive="responsive" slides-to-show="3" slides-to-scroll="1" center-mode="true" arrows="!application.isTouchDevice" focus-on-select="true" as-nav-for=".slider-main">
+                <div ng-repeat="image in productDetail.item.xp.Images">
+                    <img ng-src="{{image.Thumb}}"/>
+                </div>
+            </slick>
         </div>
+        <!-- PRODUCT INFORMATION -->
         <div class="col-md-6">
             <div class="panel panel-default" ng-if="productDetail.item.Description">
                 <div class="panel-heading">
