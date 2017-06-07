@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('CheckoutShippingCtrl', CheckoutShippingController)
 ;
 
-function CheckoutShippingController($exceptionHandler, $rootScope, toastr, OrderCloudSDK, ocMyAddresses, ocAddressSelect, ocShippingRates, CheckoutConfig) {
+function CheckoutShippingController($exceptionHandler, $rootScope, $scope, toastr, OrderCloudSDK, ocMyAddresses, ocAddressSelect, ocShippingRates, CheckoutConfig) {
     var vm = this;
     vm.createAddress = createAddress;
     vm.changeShippingAddress = changeShippingAddress;
@@ -67,7 +67,7 @@ function CheckoutShippingController($exceptionHandler, $rootScope, toastr, Order
     function shipperSelected(order) {
         ocShippingRates.ManageShipments(order, vm.shippingRates)
             .then(function() {
-                $rootScope.$broadcast('OC:UpdateOrder', order.ID);
+                $scope.$emit('OC:UpdateOrder', order.ID);
             });
     }
 }

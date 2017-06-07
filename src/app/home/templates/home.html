@@ -1,7 +1,14 @@
 <article>
-    <header class="jumbotron text-center">
-        <h1 ng-bind="application.name()"></h1>
-        <p>Welcome to the OrderCloud Marketplace App!</p>
-        <p><a class="btn btn-primary btn-large">Learn more »</a></p>
-    </header>
+    <!--ui-bootstrap carousel example see http://angular-ui.github.io/bootstrap/#!#carousel for documentation--> 
+    <div uib-carousel active="home.carousel.Settings.Active" interval="home.carousel.Settings.Interval" no-wrap="home.carousel.Settings.NoWrap">
+        <div uib-slide ng-repeat="slide in home.carousel.Slides track by slide.ID" index="slide.ID">
+            <img class="img-responsive" ng-src="{{slide.Src}}">
+            <div class="carousel-caption">
+                <h1>{{slide.Title}}</h1>
+                <p class="lead">{{slide.SubText}}</p>
+            </div>
+        </div>
+    </div>
+    <br>
+    <oc-product-carousel title="Featured Products" products="home.featuredProducts"></oc-product-carousel>
 </article>

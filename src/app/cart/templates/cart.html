@@ -57,7 +57,7 @@
                         <hr>
                     </div>
                 </div>
-                <div class="row c-line-item" ng-repeat="lineItem in cart.lineItems.Items track by $index" cg-busy="cart.lineLoading[$index]">
+                <div class="row c-line-item" ng-repeat="lineItem in cart.lineItems.Items track by lineItem.ID" cg-busy="cart.lineLoading[$index]">
                     <div class="col-xs-3 col-sm-2">
                         <div class="thumbnail c-line-item__img">
                             <img class="img-responsive" ng-src="{{lineItem.Product.xp.image.URL || 'http://placehold.it/100x100?text=' + lineItem.Product.Name}}"

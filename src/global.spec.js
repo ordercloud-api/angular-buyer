@@ -17,6 +17,7 @@ var q,
     ocConfirmService,
     ocMyAddressesService,
     ocParametersService,
+    ocProductQuickViewService,
     ocRolesService,
     ocReorderService,
     dummyPromise,
@@ -32,8 +33,8 @@ beforeEach(module('orderCloud', function($provide) {
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $compile, $state, $injector, $exceptionHandler, toastr, $uibModal,
-OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, CurrentOrder,
-CurrentUser, OrderLineItems) {
+OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, 
+ocProductQuickView, CurrentOrder, CurrentUser, OrderLineItems) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -49,6 +50,7 @@ CurrentUser, OrderLineItems) {
     ocConfirmService = ocConfirm;
     ocMyAddressesService = ocMyAddresses;
     ocParametersService = ocParameters;
+    ocProductQuickViewService = ocProductQuickView;
     ocRolesService = ocRoles;
     ocReorderService = ocReorder;
     parametersResolve = Parameters;
@@ -108,7 +110,12 @@ function _mockData() {
             TermsAccepted: true,
             Active: true,
             xp: {
-                FavoriteProducts: ['FavProd1', 'FavProd2']
+                FavoriteProducts: ['FavProd1', 'FavProd2'],
+                FavoriteOrders: ['FavOrder1', 'FavOrder2']
+            },
+            Buyer: {
+                ID: 'BUYER_ID',
+                DefaultCatalogID: 'BUYER_DEFAULT_CATALOG_ID'
             }
         },
         Product: {
@@ -136,6 +143,12 @@ function _mockData() {
         Category: {
             ID: 'CATEGORY_ID'
         },
+        Categories: {
+            Items: [
+                {ID: 'mockCat1'},
+                {ID: 'mockCat2'}
+            ]
+        },
         Order: {
             ID: 'ORDER_ID',
             Type: "ORDER_TYPE",
@@ -147,10 +160,19 @@ function _mockData() {
             PaymentMethod: null,
             CreditCardID: null,
             ShippingCost: null,
-            TaxCost: null
+            TaxCost: null,
+            Total: 100
         },
         LineItem: {
-            ID: 'LINEITEM_ID'
+            ID: 'LINEITEM_ID',
+            Product: {
+                ID: 'MOCK_PRODUCT_ID'
+            },
+            Quantity: 3
+        },
+        Payment: {
+            ID: 'PAYMENT_ID',
+            Amount: 150
         },
         Promotion: {
             Code:'Discount10'

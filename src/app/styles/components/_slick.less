@@ -1,0 +1,48 @@
+@slick-font-path: "nothing";
+@slick-font-family: "FontAwesome";
+@slick-loader-path: "./";
+@slick-arrow-color: @brand-primary;
+@slick-dot-color: black;
+@slick-dot-color-active: @slick-dot-color;
+@slick-prev-character: @fa-var-chevron-left;
+@slick-next-character: @fa-var-chevron-right;
+@slick-dot-character: @fa-var-circle;
+@slick-opacity-default: 0.75;
+@slick-opacity-on-hover: 1;
+@slick-opacity-not-active: 0.25;
+
+.c-product-slider {
+    .slick-next,
+    .slick-prev {
+        height:100%;
+        z-index:10;
+        width:50px;
+        transition: opacity 200ms;
+        &.slick-disabled {
+            opacity:0;
+            height:auto;
+        }
+    }
+    .c-product-card {
+        margin-bottom:0;
+    }
+    .slick-prev {
+        left:0;
+        padding-left:@grid-gutter-width/2;
+    }
+    .slick-next {
+        right:0;
+    }
+    .slick-track {
+        display:flex;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        align-items:stretch;
+        .slick-slide {
+            display:flex;
+            flex-flow:column nowrap;
+            flex:1 0 auto;
+            height:auto;
+        }
+    }
+}

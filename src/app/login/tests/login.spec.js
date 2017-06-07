@@ -24,12 +24,6 @@ describe('Component: Login', function() {
             it ('should initialize to login if there is not a verificationCode $stateParam', function() {
                 expect(loginCtrl.form).toBe('login');
             });
-            it ('should initialize to reset if verificationCode $stateParam exists', inject(function($controller) {
-                var altLoginCtrl = $controller('LoginCtrl', {
-                    $stateParams: {verificationCode: 'mockverificationCode'}
-                })
-                expect(altLoginCtrl.form).toBe('reset');
-            }));
         });
 
         describe('setForm', function() {
@@ -76,10 +70,10 @@ describe('Component: Login', function() {
                 scope.$digest();
             });
             it ('should call the LoginService SendVerificationCode with the email', inject(function($window) {
-                expect(oc.PasswordResets.SendVerificationCode).toHaveBeenCalledWith({Email: email, ClientID: mock.ClientID, URL: encodeURIComponent($window.location.href) + '{0}'});
+                expect(oc.PasswordResets.SendVerificationCode).toHaveBeenCalledWith({Email: email, ClientID: mock.ClientID});
             }));
-            it ('should set the form to verificationCodeSuccess', function() {
-                expect(loginCtrl.form).toBe('verificationCodeSuccess');
+            it ('should set the form to reset', function() {
+                expect(loginCtrl.form).toBe('reset');
             });
             it ('should set credentials.Email back to null', function() {
                 expect(loginCtrl.credentials.Email).toBe(null);

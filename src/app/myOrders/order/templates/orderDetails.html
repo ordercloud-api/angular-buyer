@@ -9,7 +9,20 @@
             <small class="text-muted">Submitted on {{orderDetails.order.DateSubmitted | date}}</small>
         </h3>
         <div class="l-page-header__btns">
-            <ordercloud-favorite-order class="lead" ng-if="orderDetails.order.FromUser.ID === base.currentUser.ID" current-user="base.currentUser" order="orderDetails.order"></ordercloud-favorite-order>
+            <div ng-if="orderDetails.order.FromUser.ID === base.currentUser.ID">
+                <button class="lead btn btn-default"
+                        oc-reorder="orderDetails.order.ID"
+                        current-order-id="base.currentOrder.ID">
+                        Reorder
+                </button>
+                <button class="lead btn btn-default" 
+                    oc-favorite-order="orderDetails.order"
+                    current-user="base.currentUser"
+                    favorite-class="btn--text-favorited"
+                    non-favorite-class="btn--text-unfavorited">
+                <span> Favorite Order</span>
+                </button>
+            </div>
             <div ng-if="orderDetails.order.FromUser.ID !== base.currentUser.ID && orderDetails.canApprove">
                 <button type="button" class="btn btn-success" ng-click="orderDetails.updateApprovalStatus('Approve')">Approve</button>
                 <button type="button" class="btn btn-danger" ng-click="orderDetails.updateApprovalStatus('Decline')">Decline</button>
