@@ -12,6 +12,7 @@ var q,
     currentOrder,
     currentUser,
     orderLineItems,
+    product,
     ocLineItemsService,
     ocAppNameService,
     ocConfirmService,
@@ -30,11 +31,12 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('CurrentOrder', mock.Order);
     $provide.value('Parameters', mock.Parameters);
     $provide.value('OrderLineItems', mock.LineItems);
+    $provide.value('Product', mock.Product);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $compile, $state, $injector, $exceptionHandler, toastr, $uibModal,
 OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, 
-ocProductQuickView, CurrentOrder, CurrentUser, OrderLineItems) {
+ocProductQuickView, CurrentOrder, CurrentUser, OrderLineItems, Product) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -57,6 +59,7 @@ ocProductQuickView, CurrentOrder, CurrentUser, OrderLineItems) {
     currentOrder = CurrentOrder;
     currentUser = CurrentUser;
     orderLineItems = OrderLineItems;
+    product = Product;
     var defer = $q.defer();
     defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
@@ -132,6 +135,9 @@ function _mockData() {
                         Quantity: 1
                     }
                 ]
+            },
+            xp: {
+                RelatedProducts: ["testProd1", "testProd2"]
             }
         },
         Products: {
