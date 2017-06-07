@@ -2,14 +2,14 @@ angular.module('orderCloud')
     .controller('ProductDetailCtrl', ProductDetailController)
 ;
 
-function ProductDetailController($exceptionHandler, Product, CurrentOrder, ocLineItems, toastr) {
+function ProductDetailController($exceptionHandler, $scope, Product, RelatedProducts, CurrentOrder, ocLineItems, toastr) {
     var vm = this;
     vm.item = Product;
     vm.finalPriceBreak = null;
 
-    $("#zoom").ezPlus();
+    vm.relatedProducts = RelatedProducts;
     
-    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toats from opening.
+    var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toastrs from opening.
     vm.addToCart = function() {
         ocLineItems.AddItem(CurrentOrder, vm.item)
             .then(function() {

@@ -5,15 +5,8 @@
     <hr>
     <div class="row">
         <div class="col-md-6">
-            <!--PRODUCT IMAGE-->
+            <!--PRODUCT IMAGES-->
             <oc-product-images product="productDetail.item"></oc-product-images>
-            <!--<div class="thumbnail" ng-if="!productDetail.item.xp.image.Additional || !productDetail.item.xp.image.Additional.length">
-                <img class="img-responsive" alt="{{productDetail.item.xp.image.Name || 'Product Image'}}"
-                     ng-src="{{productDetail.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productDetail.item.Name}}">
-            </div>
-            <div ng-if="productDetail.item.xp.image.Additional && productDetail.item.xp.image.Additional.length">
-
-            </div>-->
         </div>
         <div class="col-md-6">
             <div class="panel panel-default" ng-if="productDetail.item.Description">
@@ -57,13 +50,5 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="c-related-products" ng-if="productDetail.item.xp.RelatedProducts.length">
-                <hr>
-                <h4 class="c-related-products__heading">Related Products</h4>
-                <oc-related-products product="productDetail.item" currentuser="base.currentUser"></oc-related-products>
-            </div>
-        </div>
-    </div>
+    <oc-product-carousel title="Related Products" products="productDetail.relatedProducts"></oc-product-carousel>
 </form>

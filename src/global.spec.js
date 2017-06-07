@@ -112,6 +112,10 @@ function _mockData() {
             xp: {
                 FavoriteProducts: ['FavProd1', 'FavProd2'],
                 FavoriteOrders: ['FavOrder1', 'FavOrder2']
+            },
+            Buyer: {
+                ID: 'BUYER_ID',
+                DefaultCatalogID: 'BUYER_DEFAULT_CATALOG_ID'
             }
         },
         Product: {
@@ -148,7 +152,11 @@ function _mockData() {
             Total: 100
         },
         LineItem: {
-            ID: 'LINEITEM_ID'
+            ID: 'LINEITEM_ID',
+            Product: {
+                ID: 'MOCK_PRODUCT_ID'
+            },
+            Quantity: 3
         },
         Payment: {
             ID: 'PAYMENT_ID',

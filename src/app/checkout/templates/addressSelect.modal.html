@@ -7,9 +7,9 @@
         You currently do not have any addresses available. <br />
         <a href="" ng-click="addressSelect.createAddress()">Create one now</a>
     </div>
-    <div class="row">
+    <div class="row row-flex">
         <div class="col-sm-6" ng-repeat="address in addressSelect.addresses.Items">
-            <div class="panel panel-default">
+            <div class="panel panel-default row-flex-inner">
                 <div class="panel-body">
                     <div class="pull-right">
                         <a href="" ng-click="addressSelect.select(address)">Select</a>

@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .directive('ocProductImages', ocProductImagesDirective);
 
-function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler) {
+function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler, $timeout) {
     return {
         scope: {
             product: '='
@@ -22,11 +22,12 @@ function ocProductImagesDirective($compile, $templateRequest, $exceptionHandler)
                     }
                 }
             ];
-            $templateRequest('productDetail/templates/oc-product-images.html').then(function(html) {
+            function getTemplate() {$templateRequest('productDetail/templates/oc-product-images.html').then(function(html) {
                 var template = angular.element(html);
                 element.append(template);
                 $compile(template)(scope);
-            });
+                });
+            }
         }
     }
 }

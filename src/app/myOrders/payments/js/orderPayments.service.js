@@ -7,7 +7,7 @@ function OrderCloudOrderPaymentsService($q, OrderCloudSDK) {
         List: _list
     };
 
-    function _list(orderID, buyerID, page, pageSize) {
+    function _list(orderID, page, pageSize) {
         var deferred = $q.defer();
 
         var options = {

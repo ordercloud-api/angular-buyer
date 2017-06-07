@@ -33,7 +33,7 @@ function OrderCloudFavoriteProductDirective($exceptionHandler, toastr, ocFavorit
                 element.addClass(scope.nonFavoriteClass);
             }
 
-            element.bind('click', function() {
+            element.on('click', function() {
                 ocFavoriteProducts.Toggle(scope.product.ID)
                     .then(function(wasAdded) {
                         if (wasAdded) {
@@ -49,6 +49,10 @@ function OrderCloudFavoriteProductDirective($exceptionHandler, toastr, ocFavorit
                     });
             });
 
+            scope.$on('$destroy', function(){
+                //prevent memory leak
+                element.off('click');
+            });
         }
     };
 }
