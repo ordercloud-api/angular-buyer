@@ -6,6 +6,15 @@ function OrderCloudPrettySubmit() {
     return {
         restrict: 'A',
         require: '^form',
+        controller: function($scope) { 
+            $scope.setDirty = function() {
+                if ($scope.formCtrl && $scope.formCtrl.$setDirty) {
+                    $scope.formCtrl.$setDirty(true);
+                }
+            };
+
+            return $scope;
+        },
         link: function(scope, element, attrs, formCtrl) {
             //Mobile Submit
             var el = document.createElement('div');
@@ -28,6 +37,7 @@ function OrderCloudPrettySubmit() {
 
             var submitButton = findSubmit(element[0].elements);
             
+            scope.formCtrl = formCtrl;
             scope.$watch(function() { return formCtrl.$valid; }, function(formValid) {
                 valid = formValid;
                 updateForm();
