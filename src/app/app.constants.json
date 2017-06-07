@@ -1,9 +1,7 @@
 {
   "appname": "Angular Buyer",
-  "clientid": "FE69423A-980C-4937-B7D7-9DB9CDA78B83",
-  "buyerid": "demo",
+  "clientid": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
   "anonymous": false,
-  "catalogid": "rio",
   "environment": "prod",
   "defaultstate": "home",
   "html5mode": true,
