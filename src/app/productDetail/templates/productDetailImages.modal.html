@@ -1,15 +1,13 @@
-<div class="modal-header">
+<!--<div class="modal-header">
     <button type="button" class="close" ng-click="productImagesModal.close()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title">{{productImagesModal.product.Name || productImagesModal.product.ID}} Images</h4>
 </div>
 <div class="modal-body">
-    <div uib-carousel active="productImagesModal.index" interval="productImagesModal.interval" no-wrap="productImagesModal.noWrap">
-        <div uib-slide ng-repeat="image in productImagesModal.images" index="$index">
-            <img class="img-responsive" ng-src="{{image.Large}}">
-            <!--<div class="carousel-caption">
-                <h1>{{slide.Title}}</h1>
-                <p class="lead">{{slide.SubText}}</p>
-            </div>-->
-        </div>
+    
+</div>-->
+
+<div uib-carousel active="productImagesModal.index" interval="productImagesModal.interval" no-wrap="productImagesModal.noWrap">
+    <div uib-slide ng-repeat="image in productImagesModal.images" index="$index">
+        <img class="img-responsive" ng-src="{{image.Large}}">
     </div>
 </div>

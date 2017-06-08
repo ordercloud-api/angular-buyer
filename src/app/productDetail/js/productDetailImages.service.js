@@ -9,22 +9,22 @@ function ProductImagesModal($uibModal) {
 
     function _open(product, index) {
         return $uibModal.open({
-                    animation: true,
-                    backdrop: true,
-                    templateUrl: 'productDetail/templates/productDetailImages.modal.html',
-                    controller: 'ProductImagesModalCtrl',
-                    controllerAs: 'productImagesModal',
-                    size: 'large',
-                    resolve: {
-                        Product: function() {
-                            return product; 
-                        },
-                        Index: function() {
-                            return index;
-                        }
+                animation: true,
+                backdrop: true,
+                templateUrl: 'productDetail/templates/productDetailImages.modal.html',
+                controller: 'ProductImagesModalCtrl',
+                controllerAs: 'productImagesModal',
+                size: 'carousel',
+                resolve: {
+                    Product: function() {
+                        return product; 
+                    },
+                    Index: function() {
+                        return index;
                     }
-                }).result;
-            }
+                }
+            }).result;
+        }
 
     return service;
 }

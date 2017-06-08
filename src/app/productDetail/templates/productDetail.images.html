@@ -1,0 +1,22 @@
+<!--<slick class="slider-main" infinite="false" slides-to-show="1" slides-to-scroll="1" arrows="false" fade="true" as-nav-for=".slider-nav">
+    <div class="thumbnail" align="center" ng-repeat="image in productDetail.item.xp.Images track by $index">
+        <img ng-src="{{image.Small}}" ng-click="productDetail.openImageModal($index);">
+    </div>
+</slick>
+<br>
+<slick class="slider-nav row" infinite="false" responsive="responsive" slides-to-show="5" slides-to-scroll="1" arrows="!application.isTouchDevice" focus-on-select="true" as-nav-for=".slider-main">
+    <div class="container-fluid" ng-repeat="image in productDetail.item.xp.Images">
+        <div class="thumbnail {{$index ? 'active' : ''}}" >
+            <img ng-src="{{image.Thumb}}"/>
+        </div>
+    </div>
+</slick>-->
+
+<div cg-busy="carouselLoading" ng-if="product.xp && product.xp.Images && product.xp.Images.length">
+    <h4 ng-bind-html="title"></h4>
+    <div id="ImageCarousel" class="row c-product-slider">
+        <div class="col-xs-12" ng-repeat="images in product.xp.Images">
+            <oc-product-card class="c-product-card" product="product"></oc-product-card>
+        </div>
+    </div>
+</div>
