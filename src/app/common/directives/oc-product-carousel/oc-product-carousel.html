@@ -1,8 +1,10 @@
-<div cg-busy="carouselLoading" ng-if="products && products.Items.length">
-    <h4 ng-bind-html="title"></h4>
-    <div id="ProductCarousel" class="row c-product-slider">
-        <div class="col-xs-12" ng-repeat="product in products.Items">
-            <oc-product-card class="c-product-card" product="product"></oc-product-card>
+<div cg-busy="carouselLoading">
+    <div ng-if="products && products.Items.length" ng-style="{opacity: loading ? 0 : 1, height: loading ? '200px' : 'auto'}">
+        <h4 ng-bind-html="title"></h4>
+        <div id="{{elementID}}" class="row c-product-slider">
+            <div class="col-xs-12" ng-repeat="product in products.Items">
+                <oc-product-card class="c-product-card" product="product"></oc-product-card>
+            </div>
         </div>
     </div>
 </div>
