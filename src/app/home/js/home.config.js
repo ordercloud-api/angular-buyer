@@ -21,3 +21,4 @@ function HomeConfig($stateProvider) {
 		})
 	;
 }
+
