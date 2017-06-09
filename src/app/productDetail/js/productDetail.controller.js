@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('ProductDetailCtrl', ProductDetailController)
 ;
 
-function ProductDetailController($exceptionHandler, $scope, Product, RelatedProducts, CurrentOrder, ocLineItems, toastr, productImagesModal) {
+function ProductDetailController($exceptionHandler, $scope, Product, RelatedProducts, CurrentOrder, ocLineItems, toastr) {
     var vm = this;
     vm.item = Product;
     vm.finalPriceBreak = null;
@@ -10,7 +10,6 @@ function ProductDetailController($exceptionHandler, $scope, Product, RelatedProd
 
     vm.addToCart = addToCart;
     vm.findPrice = findPrice;
-    vm.openImageModal = openImageModal;
     
     var toastID = 0; // This is used to circumvent the global toastr config that prevents duplicate toastrs from opening.
     function addToCart() {
@@ -32,8 +31,4 @@ function ProductDetailController($exceptionHandler, $scope, Product, RelatedProd
 
         return vm.finalPriceBreak.Price * qty;
     };
-
-    function openImageModal(index) {
-        productImagesModal.Open(vm.item, index);
-    }
 }
