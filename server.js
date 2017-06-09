@@ -27,6 +27,8 @@ switch(env) {
         app.use('/bower_files', express.static(config.root + config.bowerFiles.replace('.', '')));
         // Host unminfied javascript files
         app.use(express.static(config.root + config.build.replace('.', '')));
+        // Host unchanged html files (look for saas overrides first)
+        app.use(express.static(config.root + config.src.replace('.', '') + 'app/saas/'));
         // Host unchanged html files
         app.use(express.static(config.root + config.src.replace('.', '') + 'app/'));
         app.get('/*', function(req, res) {
