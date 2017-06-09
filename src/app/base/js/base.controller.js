@@ -2,52 +2,64 @@ angular.module('orderCloud')
     .controller('BaseCtrl', BaseController)
 ;
 
-function BaseController($rootScope, $state, OrderCloudSDK, ocProductSearch, ocLineItems, CurrentUser, CurrentOrder, TotalQuantity) {
+function BaseController($scope, $state, OrderCloudSDK, ocProducts, CurrentUser, CurrentOrder, TotalQuantity, $log) {
     var vm = this;
     vm.currentUser = CurrentUser;
     vm.currentOrder = CurrentOrder;
     vm.totalQuantity = TotalQuantity;
 
     vm.mobileSearch = mobileSearch;
+    vm.updateLineItemQuantities = updateLineItemQuantities;
 
     function mobileSearch() {
-        return ocProductSearch.Open()
+        return ocProducts.Search(CurrentUser.Buyer.DefaultCatalogID)
             .then(function(data) {
                 if (data.productID) {
                     $state.go('productDetail', {productid: data.productID});
                 } else {
-                    $state.go('productSearchResults', {search: data.search});
+                    $state.go('productBrowse.products', {
+                        catalogid: CurrentUser.Buyer.DefaultCatalogID,
+                        search: data.search,
+                        categoryid: ''
+                    });
                 }
             });
     }
 
-    $rootScope.$on('OC:UpdateOrder', function(event, OrderID, message) {
+    $scope.$on('OC:UpdateOrder', function(event, orderID, updateLI) {
         vm.orderLoading = {
-            message: message
+            message: 'Updating Order'
         };
-        vm.orderLoading.promise = OrderCloudSDK.Orders.Get('outgoing', OrderID)
+        if(updateLI && typeof updateLI.lineItems !== 'undefined') updateLineItemQuantities(updateLI);
+        vm.orderLoading.promise = OrderCloudSDK.Orders.Get('outgoing', orderID)
             .then(function(order) {
                 vm.currentOrder = order;
             });
     });
 
-    $rootScope.$on('OC:UpdateTotalQuantity', function(event, lineItems, add, difference) {
-        if (lineItems.length >= 1) {
-            var quantities = _.pluck(lineItems, 'Quantity');
-            vm.totalQuantity = quantities.reduce(function(a, b) {return a + b}, 0);
+    function updateLineItemQuantities(updateObj){
+                
+        /**
+         * @param updateObj.lineItems - lineItem(s) to update, provide all or one to update
+         * @param userInfo.add (boolean) determines whether to add to running total
+         * @param userInfo.subtract (boolean) determines whether to subtract from running total
+         */
+
+        if(updateObj.lineItems.length > 1) {
+            //calculates total assuming all line items are provided
+            var quantities = _.pluck(updateObj.lineItems, 'Quantity');
+            vm.totalQuantity = quantities.reduce(function(a, b) {return a + b;}, 0);
         } else {
-            var li = lineItems[0] || lineItems;
-            if (vm.totalQuantity) {
-                if (add) {
-                    var newQuantity = difference ? difference : li.Quantity;
-                    vm.totalQuantity = newQuantity + vm.totalQuantity || 0;
-                } else {
-                    var newQuantity = difference ? difference : li.Quantity;
-                    vm.totalQuantity = vm.totalQuantity - newQuantity || 0;
-                }
+            //lineItems is a single value that wil be added or subtracted from total
+            var li = updateObj.lineItems[0] || updateObj.lineItems;
+
+            if(updateObj.add){
+                vm.totalQuantity += li.Quantity;
+            } else if(updateObj.subtract) {
+                vm.totalQuantity -= li.Quantity || 0;
             } else {
-                vm.totalQuantity = li.Quantity || 0;
+                $log.error('When updating a single line item, add or remove must be included in updateObject');
             }
-        }  
-    })
+        }
+    }
 }

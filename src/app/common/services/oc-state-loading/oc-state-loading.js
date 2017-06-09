@@ -17,7 +17,7 @@ angular.module('orderCloud')
                 var fromParent = fromState.parent || fromState.name.split('.')[0];
                 stateLoading[fromParent === toParent ? toParent : 'base'] = $q.defer();
 
-                if(toState.name !== 'login' && !OrderCloudSDK.GetToken()) {
+                if((!toState.data || (toState.data && !toState.data.ignoreToken)) && !OrderCloudSDK.GetToken()) {
                     e.preventDefault();
                     ocRefreshToken(toState.name);
                 }

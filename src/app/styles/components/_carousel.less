@@ -1,64 +1,14 @@
-.carousel-wrapper {
-    min-height: 305px;
-}
-.carousel-caption {
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    width: 80%;
-    bottom: initial;
-    .carousel-header {
-        font-size: 4em;
-        font-weight: 700;
-        text-transform: uppercase;
-        text-shadow: none;
-        color: white;
-    }
-    p {
-        text-shadow: none;
-        color: white;
-    }
+// Center images that do not fill the carousel element
+.carousel-inner {
+  > .item {
     img {
-        margin: auto;
+      margin: 0 auto;
+      width:100%;
     }
-}
-
-/* For Left Alignment use both: carousel-caption carousel-caption__left */
-
-.carousel-caption__left {
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    width: 80%;
-    bottom: initial;
-    text-align: left;
-}
-
-/* For Right Alignment use both: carousel-caption carousel-caption__right */
-
-.carousel-caption__right {
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    width: 80%;
-    bottom: initial;
-    text-align: right;
-}
-
-@media (max-width: @screen-xs) {
-    .carousel-wrapper {
-        min-height: auto;
-        margin: 10% 0;
-        font-size: .5em;
+    > a {
+      img {
+        margin: 0 auto;
+      }
     }
-    .carousel-caption {
-        width: 95%;
-        .btn {
-            padding: 5px 10px
-        }
-    }
-} 
-
-.homepage-cards {
-
+  }
 }

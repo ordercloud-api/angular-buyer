@@ -1,0 +1,44 @@
+<form name="$ctrl.form" class="c-productsearch c-typeahead" ng-submit="$ctrl.onHardEnter($ctrl.searchTerm)" oc-pretty-submit>
+    <!-- Search Input -->
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+            <input type="search"
+                id="productsearch"
+                name="productsearch"
+                class="form-control"
+                placeholder="Search products..."
+                ng-model="$ctrl.searchTerm"
+                autocomplete="off"
+                uib-typeahead="product as product.Name for product in $ctrl.getSearchResults()"
+                disable-validation-message
+                typeahead-on-select="$ctrl.onSelect($item.ID)"
+                typeahead-focus-first="false"
+                typeahead-wait-ms="300"
+                typeahead-no-results="$ctrl.noResults"
+                typeahead-loading="$ctrl.loading"
+                typeahead-append-to="'.c-typeahead__results'"
+                typeahead-popup-template-url="common/directives/oc-product-search/oc-product-search.popup.html"
+                typeahead-template-url="common/directives/oc-product-search/oc-product-search.match.html"
+            />
+        </div>
+        <button class="sr-only" type="submit" value="Search">Search</button>
+    </div>
+    <!-- Typeahead Results -->
+    <div class="c-typeahead__results">
+        <div class="c-typeahead__results--empty" ng-if="$ctrl.searchTerm && $ctrl.noResults">
+            <span>No matches found</span>
+        </div>
+        <div class="c-typeahead__results--loading" ng-if="$ctrl.searchTerm && $ctrl.loading">
+            <div class="indicator-container">
+                <div class="indicator">
+                    <div class="animation">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

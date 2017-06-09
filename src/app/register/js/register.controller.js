@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .controller('RegisterCtrl', RegisterController)
 ;
 
-function RegisterController($exceptionHandler, OrderCloudSDK, ocAnonymous, clientid, scope) {
+function RegisterController($window, $exceptionHandler, OrderCloudSDK, ocAnonymous, clientid, scope) {
     var vm = this;
     vm.info = {
         FirstName: null,
@@ -23,7 +23,7 @@ function RegisterController($exceptionHandler, OrderCloudSDK, ocAnonymous, clien
         var anonymousToken = OrderCloudSDK.GetToken();
         vm.loading = OrderCloudSDK.Me.Register(anonymousToken, vm.info)
             .then(function() {
-                return OrderCloudSDK.Auth.Login(vm.info.Username, vm.info.Password, clientid, scope)
+                return OrderCloudSDK.Auth.Login(vm.info.Username, $window.encodeURIComponent(vm.info.Password), clientid, scope)
                     .then(function(data) {
                         OrderCloudSDK.SetToken(data.access_token);
                         return OrderCloudSDK.Me.TransferAnonUserOrder(anonymousToken)

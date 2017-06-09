@@ -43,7 +43,7 @@ function BaseConfig($stateProvider) {
                 return OrderCloudSDK.LineItems.List('outgoing', CurrentOrder.ID)
                     .then(function(lineItems) {
                         var quantities = _.pluck(lineItems.Items, 'Quantity');
-                        return quantities.reduce(function(a, b) {return a + b}, 0);
+                        return quantities.reduce(function(a, b) {return a + b;}, 0);
                     });
             },
             AnonymousUser: function(OrderCloudSDK, CurrentUser) {
