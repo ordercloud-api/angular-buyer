@@ -1,13 +1,13 @@
-<div cg-busy="carouselLoading" ng-if="product.xp && product.xp.Images && product.xp.Images.length">
+<div cg-busy="carouselLoading" ng-if="product.xp && product.xp.additionalImages && product.xp.additionalImages.length">
     <div id="ImageMain" class="row c-product-slider">
-        <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.Images">
-            <img ng-src="{{images.Large}}" ng-click="openImageModal(product, $index)"/>
+        <div class="col-xs-12 thumbnail" style="max-width: 400px; height: auto; margin: 0 auto;" ng-repeat="images in product.xp.additionalImages track by $index">
+            <img ng-src="{{images.URL}}" ng-click="openImageModal(product, $index)"/>
         </div>
     </div>
     
     <div id="ImageNav" class="row c-product-slider">
-        <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.Images track by $index">
-            <img ng-src="{{images.Thumb}}" />
+        <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
+            <img ng-src="{{images.URL}}" />
         </div>
     </div>
 </div>

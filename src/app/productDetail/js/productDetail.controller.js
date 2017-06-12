@@ -5,6 +5,7 @@ angular.module('orderCloud')
 function ProductDetailController($exceptionHandler, $scope, Product, RelatedProducts, CurrentOrder, ocLineItems, toastr) {
     var vm = this;
     vm.item = Product;
+    vm.item.xp.image && vm.item.xp.additionalImages ? vm.item.xp.additionalImages.unshift(vm.item.xp.image) : angular.noop();
     vm.finalPriceBreak = null;
     vm.relatedProducts = RelatedProducts;
 

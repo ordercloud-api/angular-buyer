@@ -58,7 +58,7 @@ function ocProductImages() {
                     templateUrl: 'productDetail/templates/productDetail.images.modal.html',
                     controller: 'ProductImagesModalCtrl',
                     controllerAs: 'productImagesModal',
-                    size: 'carousel',
+                    size: 'large',
                     resolve: {
                         Product: function() {
                             return product; 
@@ -77,8 +77,7 @@ function ProductImagesModalCtrl(Product, Index, $uibModalInstance) {
     var vm = this;
     vm.product = Product;
     vm.index = Index;
-    vm.images = vm.product.xp.Images;
-    vm.activeImage = vm.product.xp.Images[vm.index].Large;
+    vm.images = vm.product.xp.additionalImages;
     vm.interval = null;
     vm.noWrap = false;
 
