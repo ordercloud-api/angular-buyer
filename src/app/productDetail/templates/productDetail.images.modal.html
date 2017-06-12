@@ -1,6 +1,7 @@
 <div uib-carousel active="productImagesModal.index" interval="productImagesModal.interval" no-wrap="productImagesModal.noWrap">
     <div uib-slide ng-repeat="image in productImagesModal.images" index="$index">
         <span class="pull-right" aria-hidden="true" oc-prevent-click ng-click="productImagesModal.close()">&times;</span>
-        <img class="img-responsive" ng-src="{{image.Large}}" />
+        <!--<img class="img-responsive" ng-src="{{image.Large}}" />-->
+        <oc-zoom images="productImagesModal.product.xp.Images[$index]"></oc-zoom>
     </div>
 </div>
