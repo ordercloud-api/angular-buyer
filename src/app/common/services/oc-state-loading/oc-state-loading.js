@@ -17,7 +17,13 @@ angular.module('orderCloud')
                 var fromParent = fromState.parent || fromState.name.split('.')[0];
                 stateLoading[fromParent === toParent ? toParent : 'base'] = $q.defer();
 
-                if((!toState.data || (toState.data && !toState.data.ignoreToken)) && !OrderCloudSDK.GetToken()) {
+                var token = OrderCloudSDK.GetToken();
+                if(token){
+                    var expiresIn = JSON.parse(atob(token.split('.')[1])).exp * 1000;
+                    var tokenExpired = expiresIn < Date.now();
+                }
+
+                if((!toState.data || (toState.data && !toState.data.ignoreToken)) && (!token || tokenExpired)){
                     e.preventDefault();
                     ocRefreshToken(toState.name);
                 }
