@@ -5,8 +5,14 @@
     <hr>
     <div class="row">
         <div class="col-md-6">
-            <!-- PRODUCT IMAGES -->
-            <oc-product-images product="productDetail.item"></oc-product-images>
+            <!-- PRODUCT IMAGES -->            
+            <div class="thumbnail" style="max-width: 400px; height: auto; margin: 0 auto;" ng-if="!productDetail.item.xp.additionalImages || !productDetail.item.xp.additionalImages.length">
+                <img class="img-responsive" alt="{{productDetail.item.xp.image.Name || 'Product Image'}}"
+                     ng-src="{{productDetail.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productDetail.item.Name}}">
+            </div>
+            <div ng-if="productDetail.item.xp.additionalImages && productDetail.item.xp.additionalImages.length">
+                <oc-product-images product="productDetail.item"></oc-product-images>
+            </div>
         </div>
         <!-- PRODUCT INFORMATION -->
         <div class="col-md-6">

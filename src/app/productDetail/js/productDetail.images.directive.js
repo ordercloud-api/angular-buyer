@@ -51,8 +51,9 @@ function ocProductImages() {
                 slickNav.slick(slickNavOpts);
             }, 300);
 
-            $scope.openImageModal = function(product, index) {
-                return $uibModal.open({
+            $scope.openImageModal = function(index) {
+                if($scope.product.xp.imageZoom) {
+                    return $uibModal.open({
                     animation: true,
                     backdrop: true,
                     templateUrl: 'productDetail/templates/productDetail.images.modal.html',
@@ -61,13 +62,13 @@ function ocProductImages() {
                     size: 'large',
                     resolve: {
                         Product: function() {
-                            return product; 
+                            return $scope.product; 
                         },
                         Index: function() {
                             return index;
                         }
-                    }
-                }).result;
+                    }}).result;
+                }
             }
         }
     }
