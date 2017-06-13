@@ -1,87 +1,50 @@
-.navbar {
-  &.navmenu-on-canvas {
-    .navmenu-offset(@navmenu-width);
-  }
-  &.icon-navmenu-on-canvas {
-    .navmenu-offset(@icon-navmenu-width);
+// Hide navmenu and selected items on larger viewports
+.navmenu--mobile,
+.navbar-item--mobile {
+  @media (min-width: @grid-float-breakpoint-max) {
+    display: none!important;
+  }  
+}
+// Hide selected navbar navs and items on smaller viewports
+.navbar-nav--desktop,
+.navbar-item--desktop {
+  @media (max-width: @grid-float-breakpoint-max) {
+    display: none!important;
   }
 }
 
-.navmenu-offset(@offset) {
-  left:@offset;
-  @media(max-width:@screen-xs-max) {
-    &-xs {
-      &.navbar-fixed-top,
-      &.navbar-fixed-bottom {
-        left:@offset;
-      }
-    }
-  }
-  @media(min-width:@screen-sm-min) and (max-width:@screen-sm-max) {
-    &-sm {
-      &.navbar-fixed-top,
-      &.navbar-fixed-bottom {
-        left:@offset;
-      }
-    }
-  }
-  @media(min-width:@screen-md-min) and (max-width:@screen-md-max) {
-    &-md {
-      &.navbar-fixed-top,
-      &.navbar-fixed-bottom {
-        left:@offset;
-      }
-    }
-  }
-  @media(min-width:@screen-lg-min) {
-    &-lg {
-      &.navbar-fixed-top,
-      &.navbar-fixed-bottom {
-        left:@offset;
-      }
-    }
-  }
-}
-
-// @media (max-width: @screen-sm-max) {
-//   .c-desktop-flex-nav {
-//     position: relative;
-//   }
-//   .c-productsearch {
-//     position: initial!important;
-//   }
-// }
-
-.c-typeahead__results {
-  @media (min-width: @screen-sm) {
-    position: absolute;
-    left: @grid-gutter-width * 2;
-    right: @grid-gutter-width * 2;
-  }
-  @media (min-width: @screen-md) {
-    position: relative;
-    left: auto;
-    right: auto;
-  }
-}
-
+// Apply flex display to the navbar container elements and its children on larger viewports
 @media (min-width: @grid-float-breakpoint-max) {
-  .c-desktop-flex-nav {
-    display: flex;
-    flex-direction: row;
-    ordercloud-product-search {
-      flex: 1;
-      .c-productsearch {
-        .input-group {
-          width: 100%;
-          .input-group-btn {
-            width: 1%;
+  .navbar-flex {
+    [class^="container"] {
+      // display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      // Flex the search component to fill the available space
+      oc-product-search {
+        display: flex;
+        flex: 1;
+        .c-productsearch {
+          position: relative;
+          display: flex;
+          flex: 1;
+          .form-group {
+            display: flex;
+            flex: 1;
+            // Flex all the way down to the input to get it to fill the available space
+            .input-group {
+              display: flex;
+              flex: 1;
+            }
+          }
+        }
+        // Typeahead results will inherit the width of the element they are appended to; add a min-width for smaller viewports where the input is not as wide
+        .c-typeahead__results {
+          .dropdown-menu {
+            min-width: 20em;
           }
         }
       }
-    }
-    .c-desktop-flex-nav--right {
-      order: 1;
     }
   }
 }
