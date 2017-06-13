@@ -51,7 +51,7 @@ function ocProductImages() {
                 slickNav.slick(slickNavOpts);
             }, 300);
 
-            $scope.openImageModal = function(index) {
+            $scope.openImageModal = function(model, index) {
                 if($scope.product.xp.imageZoom) {
                     return $uibModal.open({
                     animation: true,
@@ -61,8 +61,8 @@ function ocProductImages() {
                     controllerAs: 'productImagesModal',
                     size: 'large',
                     resolve: {
-                        Product: function() {
-                            return $scope.product; 
+                        Model: function() {
+                            return model; 
                         },
                         Index: function() {
                             return index;
@@ -74,11 +74,12 @@ function ocProductImages() {
     }
 }
 
-function ProductImagesModalCtrl(Product, Index, $uibModalInstance) {
+function ProductImagesModalCtrl(Model, Index, $uibModalInstance) {
     var vm = this;
-    vm.product = Product;
+    vm.additionalImages;
+    vm.defaultImage;
+    Model.length ? vm.additionalImages = Model : vm.defaultImage = Model;
     vm.index = Index;
-    vm.images = vm.product.xp.additionalImages;
     vm.interval = null;
     vm.noWrap = false;
 

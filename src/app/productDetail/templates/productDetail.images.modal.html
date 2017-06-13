@@ -1,5 +1,8 @@
 <div uib-carousel active="productImagesModal.index" interval="productImagesModal.interval" no-wrap="productImagesModal.noWrap">
-    <div uib-slide ng-repeat="images in productImagesModal.images track by $index" index="$index">
+    <div ng-if="productImagesModal.additionalImages" uib-slide ng-repeat="images in productImagesModal.additionalImages track by $index" index="$index">
         <img class="img-responsive" ng-src="{{images.URL}}" />
+    </div>
+    <div ng-if="productImagesModal.defaultImage">
+        <img class="img-responsive" ng-src="{{productImagesModal.defaultImage.URL}}" />
     </div>
 </div>
