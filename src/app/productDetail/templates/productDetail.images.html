@@ -15,7 +15,7 @@
     </div>
     <!--SINGLE IMAGE-->
     <div ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
-        <div class="thumbnail" style="max-width: 400px; height: auto; margin: 0 auto;" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
+        <div class="thumbnail" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
             <img class="img-responsive" alt="{{product.xp.image.Name || 'Product Image'}}"
                     ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}" ng-click="openImageModal(product.xp.image, $index)">
         </div>
