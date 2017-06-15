@@ -5,12 +5,10 @@
     <hr>
     <div class="row">
         <div class="col-md-6">
-            <!--PRODUCT IMAGE-->
-            <div class="thumbnail">
-                <img class="img-responsive" alt="{{productDetail.item.xp.image.Name || 'Product Image'}}"
-                     ng-src="{{productDetail.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productDetail.item.Name}}">
-            </div>
+            <!-- PRODUCT IMAGES -->                        
+            <oc-product-images product="productDetail.item"></oc-product-images>
         </div>
+        <!-- PRODUCT INFORMATION -->
         <div class="col-md-6">
             <div class="panel panel-default" ng-if="productDetail.item.Description">
                 <div class="panel-heading">
