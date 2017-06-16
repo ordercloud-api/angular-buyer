@@ -1,23 +1,26 @@
-<div cg-busy="carouselLoading">
+<div cg-busy="carouselLoading" class="c-product-images">
     <!--IMAGE CAROUSEL-->
     <div ng-if="product.xp && product.xp.additionalImages && product.xp.additionalImages.length">
-        <div id="ImageMain" class="row c-product-slider">
-            <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
-                <img ng-src="{{images.URL}}" ng-click="openImageModal(product.xp.additionalImages, $index)"/>
+        <div class="c-product-images__main">
+            <div class="c-product-images__main-container">
+                <div id="ImageMain">
+                    <div style="display:flex; flex-flow:row nowrap; align-content:center; align-items:center;" ng-repeat="images in product.xp.additionalImages track by $index" ng-click="openImageModal(product.xp.additionalImages, $index)">
+                        <img style="flex:0 1 auto; max-width:100%; margin-left:auto; margin-right:auto;" ng-src="{{images.URL}}" />
+                    </div>
+                </div>
             </div>
         </div>
-        <br>
-        <div id="ImageNav" class="row c-product-slider">
-            <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
-                <img ng-src="{{images.URL}}" />
+        <div id="ImageNav" class="c-product-images__nav">
+            <div ng-repeat="images in product.xp.additionalImages track by $index">
+                <div class="thumbnail">
+                    <img ng-src="{{images.URL}}" />
+                </div>
             </div>
         </div>
     </div>
     <!--SINGLE IMAGE-->
-    <div ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
-        <div class="thumbnail" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
+    <div class="thumbnail" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length" ng-click="openImageModal(product.xp.image, $index)">
             <img class="img-responsive" alt="{{product.xp.image.Name || 'Product Image'}}"
-                    ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}" ng-click="openImageModal(product.xp.image, $index)">
-        </div>
+                    ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}">
     </div>
 </div>

@@ -15,16 +15,16 @@ function ocProductImages() {
                 {
                     breakpoint: 768,
                     settings: {
-                        slidesToShow: 3
+                        slidesToShow: 4
                     }
                 },
                 {
                     breakpoint: 425,
                     settings: {
-                        slidesToShow: 2
+                        slidesToShow: 3
                     }
                 }
-            ]
+            ];
             var slickMainOpts = {
                 arrows: false,
                 infinite: false,
@@ -38,7 +38,7 @@ function ocProductImages() {
                 arrows: true,
                 infinite: false,
                 responsive: responsiveOpts,
-                slidesToShow: 4,
+                slidesToShow: 5,
                 slidesToScroll: 1,
                 focusOnSelect: true,
                 asNavFor: '#ImageMain'
@@ -69,9 +69,9 @@ function ocProductImages() {
                         }
                     }}).result;
                 }
-            }
+            };
         }
-    }
+    };
 }
 
 function ProductImagesModalCtrl(Model, Index, $uibModalInstance) {

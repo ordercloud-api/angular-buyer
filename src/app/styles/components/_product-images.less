@@ -1,0 +1,29 @@
+.c-product-images {
+    .slick-track {
+        display:flex;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        align-items:stretch;
+        .slick-slide {
+            flex: 1 0 auto;
+            height: auto;
+        }
+    }
+    .c-product-images__main {
+        .thumbnail;
+        > .c-product-images__main-container {
+            margin:0 auto !important;
+        }
+
+    }
+    .c-product-images__nav {
+        .c-product-slider;
+        margin-bottom:@grid-gutter-width;
+        margin-left:-5px;
+        margin-right:-5px;
+        .thumbnail {
+            height:100%;
+            margin:0 5px;
+        }
+    }
+}
