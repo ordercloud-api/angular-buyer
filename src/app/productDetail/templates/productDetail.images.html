@@ -4,6 +4,7 @@
         <div class="c-product-images__main">
             <div class="c-product-images__main-container">
                 <div id="ImageMain">
+                    <!--TODO: clean up inline styles here-->
                     <div style="display:flex; flex-flow:row nowrap; align-content:center; align-items:center;" ng-repeat="images in product.xp.additionalImages track by $index" ng-click="openImageModal(product.xp.additionalImages, $index)">
                         <img style="flex:0 1 auto; max-width:100%; margin-left:auto; margin-right:auto;" ng-src="{{images.URL}}" />
                     </div>
