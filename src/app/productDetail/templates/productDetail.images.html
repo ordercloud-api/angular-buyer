@@ -1,23 +1,19 @@
-<div cg-busy="carouselLoading">
+<div cg-busy="carouselLoading" class="c-gallery">
     <!--IMAGE CAROUSEL-->
     <div ng-if="product.xp && product.xp.additionalImages && product.xp.additionalImages.length">
-        <div id="ImageMain" class="row c-product-slider">
-            <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
-                <img ng-src="{{images.URL}}" ng-click="openImageModal(product.xp.additionalImages, $index)"/>
+        <div id="ImageMain">
+            <div class="thumbnail" ng-repeat="images in product.xp.additionalImages track by $index" ng-click="openImageModal(product.xp.additionalImages, $index)">
+                <img ng-src="{{images.URL}}" />
             </div>
         </div>
-        <br>
-        <div id="ImageNav" class="row c-product-slider">
-            <div class="col-xs-12 thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
+        <div id="ImageNav" class="c-gallery__nav">
+            <div class="thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
                 <img ng-src="{{images.URL}}" />
             </div>
         </div>
     </div>
     <!--SINGLE IMAGE-->
-    <div ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
-        <div class="thumbnail" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length">
-            <img class="img-responsive" alt="{{product.xp.image.Name || 'Product Image'}}"
-                    ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}" ng-click="openImageModal(product.xp.image, $index)">
-        </div>
+    <div class="thumbnail" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length" ng-click="openImageModal(product.xp.image, $index)">
+        <img class="img-responsive" alt="{{product.xp.image.Name || 'Product Image'}}" ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}">
     </div>
 </div>
