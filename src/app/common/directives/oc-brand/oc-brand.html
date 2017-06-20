@@ -1,0 +1,6 @@
+<figure class="c-brand">
+    <div class="c-brand__image" ng-if="logoUrl" ng-style="{width: logoWidth, height: logoHeight}">
+        <div ng-style="{backgroundImage:'url(' + logoUrl + ')'}" alt="{{brandName}}"></div>
+    </div>
+    <div class="c-brand__name" ng-class="{'sr-only': logoUrl}">{{brandName}}</div>
+</figure>

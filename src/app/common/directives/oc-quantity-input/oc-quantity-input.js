@@ -1,24 +1,30 @@
 angular.module('orderCloud')
     .directive('ocQuantityInput', OCQuantityInput);
 
-function OCQuantityInput($log, $rootScope, $state, toastr, OrderCloudSDK) {
+function OCQuantityInput($log, $state, toastr, OrderCloudSDK) {
     return {
         scope: {
             product: '=',
             lineitem: '=',
             label: '@',
             order: '=',
-            onUpdate: '&'
+            onUpdate: '&',
+            size: '@'
         },
+        require: '^?ocPrettySubmit',
         templateUrl: 'common/directives/oc-quantity-input/oc-quantity-input.html',
         replace: true,
-        link: function (scope) {
+        link: function (scope, element, attrs, formCtrl) {
+            if (scope.size && ['sm', 'lg'].indexOf(scope.size) > -1) scope.sizeClass = 'input-' + scope.size; 
             if (scope.product) {
                 scope.item = scope.product;
+                scope.item.Quantity = (scope.item.PriceSchedule && scope.item.PriceSchedule.MinQuantity)
+                     ? scope.item.PriceSchedule.MinQuantity
+                     : 1;
+                if (formCtrl && formCtrl.setDirty) formCtrl.setDirty();
                 scope.content = 'product';
             } else if (scope.lineitem) {
-                var difference;
-                var add;
+                var add, subtract;
                 var lineItem = angular.copy(scope.lineitem);
                 scope.item = scope.lineitem;
                 scope.content = 'lineitem';
@@ -33,15 +39,9 @@ function OCQuantityInput($log, $rootScope, $state, toastr, OrderCloudSDK) {
                                 scope.lineitem = data;
                                 if (typeof scope.onUpdate === 'function') scope.onUpdate(scope.lineitem);
                                 toastr.success(data.Product.Name + ' quantity updated to ' + data.Quantity);
-                                $rootScope.$broadcast('OC:UpdateOrder', scope.order.ID, 'Calculating Order Total');
-                                if (lineItem.Quantity > data.Quantity) {
-                                    difference = lineItem.Quantity - data.Quantity;
-                                    add = false
-                                } else {
-                                    difference = data.Quantity - lineItem.Quantity;
-                                    add = true;
-                                }
-                                $rootScope.$broadcast('OC:UpdateTotalQuantity', data, add, difference);
+
+                                lineItem.Quantity > data.Quantity ? subtract = true : add = true;
+                                scope.$emit('OC:UpdateOrder', scope.order.ID, {lineItems: lineItem, add: add, subtract: subtract});
                                 $state.go('cart', {}, {reload: true});
                             });
                     }

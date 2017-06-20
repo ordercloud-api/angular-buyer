@@ -9,7 +9,7 @@ var gulp = require('gulp'),
     mainBowerFiles = require('main-bower-files');
 
 gulp.task('clean:styles', function() {
-    return del([config.build + '**/*.css', config.compile + '**/*.css', config.root + '/themes/lib.less']);
+    return del([config.build + '**/*.css', config.compile + '**/*.css']);
 });
 
 gulp.task('styles', ['clean:styles'], config.saas.styles ? config.saas.styles.libLess : StylesFunction);
@@ -23,8 +23,22 @@ function StylesFunction() {
                 overrides: {
                     'jasny-bootstrap': {
                         main: [
-                            "./dist/js/jasny-bootstrap.js",
-                            "./less/jasny-bootstrap.less"
+                            './dist/js/jasny-bootstrap.js',
+                            './less/jasny-bootstrap.less'
+                        ]
+                    },
+                    'slick-carousel': {
+                        main: [
+                            'slick/slick.js',
+                            'slick/slick.less',
+                            'slick/slick-theme.less'
+                        ]
+                    },
+                    'slick-carousel': {
+                        main: [
+                            "slick/slick.js",
+                            "slick/slick.less",
+                            "slick/slick-theme.less"
                         ]
                     },
                     'bootswatch': config.checkBootswatchTheme()

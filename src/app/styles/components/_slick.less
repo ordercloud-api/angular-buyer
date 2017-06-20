@@ -1,0 +1,35 @@
+.c-product-slider {
+    .slick-next,
+    .slick-prev {
+        height:100%;
+        z-index:10;
+        width:50px;
+        transition: opacity 200ms;
+        &.slick-disabled {
+            opacity:0;
+            height:auto;
+        }
+    }
+    .c-product-card {
+        margin-bottom:0;
+    }
+    .slick-prev {
+        left:0;
+        padding-left:@grid-gutter-width/2;
+    }
+    .slick-next {
+        right:0;
+    }
+    .slick-track {
+        display:flex;
+        flex-direction:row;
+        flex-wrap:nowrap;
+        align-items:stretch;
+        .slick-slide {
+            display:flex;
+            flex-flow:column nowrap;
+            flex:1 0 auto;
+            height:auto;
+        }
+    }
+}

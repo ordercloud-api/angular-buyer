@@ -2,11 +2,11 @@ angular.module('orderCloud')
     .config(CategoryBrowseConfig)
 ;
 
-function CategoryBrowseConfig($stateProvider, catalogid){
+function CategoryBrowseConfig($stateProvider){
     $stateProvider
         .state('categoryBrowse', {
             parent:'base',
-            url:'/browse/categories?categoryID?productPage?categoryPage?pageSize?sortBy?filters',
+            url:'/browse/categories?categoryID&productPage&categoryPage&pageSize&sortBy&filters',
             templateUrl:'categoryBrowse/templates/categoryBrowse.html',
             controller:'CategoryBrowseCtrl',
             controllerAs:'categoryBrowse',
@@ -14,15 +14,17 @@ function CategoryBrowseConfig($stateProvider, catalogid){
                 Parameters: function($stateParams, ocParameters) {
                     return ocParameters.Get($stateParams);
                 },
-                CategoryList: function(OrderCloudSDK, Parameters, catalogid) {
+                CategoryList: function(OrderCloudSDK, Parameters) {
+                    //If you change behavior here, make sure you change behavior in controller (loadMoreCategories) to match
                     if(Parameters.categoryID) { Parameters.filters ? Parameters.filters.ParentID = Parameters.categoryID : Parameters.filters = {ParentID:Parameters.categoryID}; } 
-                    var parameters = angular.extend(Parameters, {depth: 1, page: (Parameters.categoryPage || Parameters.page), pageSize: (Parameters.pageSize || 12), catalogID: catalogid});
+                    var parameters = angular.extend(Parameters, {depth: 1, page: (Parameters.categoryPage || Parameters.page), pageSize: (Parameters.pageSize || 12)});
                     return OrderCloudSDK.Me.ListCategories(parameters);
                 },
-                ProductList: function(OrderCloudSDK, Parameters, catalogid) {
+                ProductList: function(OrderCloudSDK, Parameters) {
+                    //If you change behavior here, make sure you change behavior in controller (loadMoreProducts) to match
                     if(Parameters && Parameters.filters && Parameters.filters.ParentID) {
                         delete Parameters.filters.ParentID;
-                        var parameters = angular.extend(Parameters, {depth: 'all', catalogID: catalogid, page: (Parameters.productPage || Parameters.page), pageSize: (Parameters.pageSize || 12)});
+                        var parameters = angular.extend(Parameters, {depth: 'all', page: (Parameters.productPage || Parameters.page), pageSize: (Parameters.pageSize || 12)});
                         return OrderCloudSDK.Me.ListProducts(parameters);
                     } else {
                         return null;

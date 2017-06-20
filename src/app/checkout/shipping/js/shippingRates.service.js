@@ -2,7 +2,7 @@ angular.module('orderCloud')
     .factory('ocShippingRates', OrderCloudShippingRatesService)
 ;
 
-function OrderCloudShippingRatesService($q, $resource, OrderCloudSDK, apiurl, buyerid) {
+function OrderCloudShippingRatesService($q, $resource, OrderCloudSDK, apiurl) {
     var service = {
         GetRates: _getRates,
         GetLineItemRates: _getLineItemRates,
@@ -17,7 +17,7 @@ function OrderCloudShippingRatesService($q, $resource, OrderCloudSDK, apiurl, bu
         var deferred = $q.defer();
 
         var request = {
-            BuyerID: buyerid,
+            OrderDirection: 'outgoing',
             TransactionType: 'GetRates',
             OrderID: order.ID
         };
@@ -37,7 +37,7 @@ function OrderCloudShippingRatesService($q, $resource, OrderCloudSDK, apiurl, bu
         var deferred = $q.defer();
 
         var request = {
-            BuyerID: buyerid,
+            OrderDirection: 'outgoing',
             TransactionType: 'GetLineItemRates',
             OrderID: order.ID
         };
@@ -57,7 +57,7 @@ function OrderCloudShippingRatesService($q, $resource, OrderCloudSDK, apiurl, bu
         var deferred = $q.defer();
 
         var request = {
-            BuyerID: buyerid,
+            OrderDirection: 'outgoing',
             TransactionType: 'SetShippingCost',
             OrderID: order.ID,
             ShippingCost: cost

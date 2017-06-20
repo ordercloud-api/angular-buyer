@@ -7,18 +7,22 @@
             <a href="" ui-sref="productBrowse.products({categoryid:crumb.ID})">{{crumb.Name}}</a>
         </li>
     </ol>
+
+    <p class="lead" ng-if="productBrowse.parameters.search">
+        Search results for "{{productBrowse.parameters.search}}" <a ng-click="productBrowse.clearSearch()"><i class="fa fa-times-circle"></i></a>
+    </p>
+
+    <!--TODO: Waiting for EX-980 to be complete for the catalog select directory-->
+    <!--<ordercloud-select-catalog></ordercloud-select-catalog>-->
+    <a class="btn btn-block btn-default visible-xs" ng-click="productBrowse.openCategoryModal()">
+        {{breadcrumb[0].Name || "Category Select"}}  <i class="fa fa-angle-down"></i>
+    </a>
+
+    <br>
+
     <div class="row">
-        <!--TODO: Waiting for EX-980 to be complete for the catalog select directory-->
-        <!--<ordercloud-select-catalog></ordercloud-select-catalog>-->
-
-        <div class="category-modal" ng-if="application.$ocMedia('max-width:991px')" style="padding-bottom: 10px;">
-            <a class="btn btn-block btn-default" ng-click="productBrowse.openCategoryModal()">
-                {{breadcrumb[0].Name || "Category Select"}}  <i class="fa fa-angle-down"></i>
-            </a>
-        </div>
-
         <!--START CATEGORY TREE-->
-        <aside class="col-md-3 visible-md visible-lg">
+        <aside class="col-sm-4 col-md-3 hidden-xs">
             <div class="panel panel-default">
                 <div class="panel-heading" ng-if="productBrowse.treeConfig.treeData.length">
                     <b class="panel-title">Categories</b>
@@ -47,6 +51,6 @@
         <!--END CATEGORY TREE-->
 
         <!--PRODUCT LIST VIEW-->
-        <div class="col-md-9" cg-busy="application.stateLoading('productBrowse')" ui-view></div>
+        <div class="col-sm-8 col-md-9" cg-busy="application.stateLoading('productBrowse')" ui-view></div>
     </div>
 </article>

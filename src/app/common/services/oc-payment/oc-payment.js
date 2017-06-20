@@ -1,7 +1,7 @@
 angular.module('orderCloud')
     .factory('ocPayment', OrderCloudPaymentService);
 
-function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
+function OrderCloudPaymentService($rootScope, $q, $uibModal, $exceptionHandler, OrderCloudSDK) {
     var service = {
         Init: _init,
         AddPayment: _addPayment,
@@ -16,15 +16,15 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
         var df = $q.defer();
         OrderCloudSDK.Payments.List('outgoing', order.ID)
 			.then(function(data) {
-                if (_paymentsExceedTotal(data.Items, order.Total) || (data.Items.length === 1 && _calculateMaxTotal(order, data.Items))) {
-                    _removeAllPayments(data, order)
+                if (service.PaymentsExceedTotal(data.Items, order.Total) || (data.Items.length === 1 && service.CalculateMaxTotal(order, data.Items))) {
+                    service.RemoveAllPayments(data, order)
                         .then(function() {
-                            df.resolve(_addPayment(order, paymentType));
+                            df.resolve(service.AddPayment(order, paymentType));
                         });
                 } else if (data.Items.length) {
                     df.resolve(_getPaymentDetails(data.Items));
                 } else {
-                    df.resolve(_addPayment(order, paymentType));
+                    df.resolve(service.AddPayment(order, paymentType));
                 }
 			});
 
@@ -189,6 +189,9 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
                 }
                 case 'SpendingAccount': {
                     paymentRequestBody = _.pick(newPayment, 'Type', 'Amount', 'DateCreated', 'SpendingAccountID');
+                    if (paymentRequestBody.Type === 'SpendingAccount' && account.Balance < paymentRequestBody.Amount) {
+                        paymentRequestBody.Amount = account.Balance;
+                    }
                     break;
                 }
             }
@@ -198,6 +201,9 @@ function OrderCloudPaymentService($rootScope, $q, $uibModal, OrderCloudSDK) {
                     if (data.CreditCardID) data.CreditCard = account;
                     $rootScope.$broadcast('OCPaymentUpdated', data);
                     df.resolve(data);
+                })
+                .catch(function(ex) {
+                    $exceptionHandler(ex);
                 });
         }
 

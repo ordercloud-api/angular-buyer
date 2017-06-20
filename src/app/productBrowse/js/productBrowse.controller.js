@@ -7,6 +7,16 @@ function ProductBrowseController($state, ocProductBrowse, CategoryList, Category
     vm.parameters = Parameters;
     vm.categoryList = CategoryList;
 
+    //Init Filters is triggered by the product list view (child state "productBrowse.products")
+    vm.initFilters = function(parameters) {
+        vm.parameters.favorites = parameters.favorites;
+        vm.parameters.search = parameters.search;
+    };
+
+    vm.clearSearch = function() {
+        $state.go('productBrowse.products', {search:'', catalogid: ''});
+    };
+
     //Category Tree Setup
     vm.treeConfig = {};
 

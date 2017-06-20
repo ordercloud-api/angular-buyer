@@ -1,7 +1,15 @@
 describe('Component: FavoriteProducts', function(){
+    var favoriteProductsService;
+    beforeEach(inject(function(ocFavoriteProducts) {
+        favoriteProductsService = ocFavoriteProducts;
+    }));
     describe('State: favoriteProducts', function(){
         var favoriteProductState;
         beforeEach(inject(function(){
+            var df = q.defer();
+            df.resolve(mock.User.xp.FavoriteProducts);
+            spyOn(favoriteProductsService, 'Get').and.returnValue(df.promise);
+
             favoriteProductState = state.get('favoriteProducts');
             spyOn(ocParametersService, 'Get');
             spyOn(oc.Me, 'ListProducts');
@@ -13,105 +21,82 @@ describe('Component: FavoriteProducts', function(){
         it('should resolve FavoriteProducts', inject(function(){
             injector.invoke(favoriteProductState.resolve.FavoriteProducts);
             var mockFilter = mock.User.xp.FavoriteProducts.join('|');
+            expect(favoriteProductsService.Get).toHaveBeenCalled();
+            scope.$digest();
             expect(mock.Parameters.filters.ID).toBe(mockFilter);
             expect(oc.Me.ListProducts).toHaveBeenCalledWith(mock.Parameters);
         }));
     });
-    describe('Controller: FavoriteProductCtrl', function(){
-        var favoriteProductCtrl;
-        beforeEach(inject(function($controller){
-            scope.currentUser = mock.User;
+    describe('Directive: ocFavoriteProduct', function(){
+        var element,
+            directiveScope,
+            originalFaves,
+            addedFaves,
+            favedClass,
+            unfavedClass;
+        beforeEach(function(){
+            var df = q.defer();
+            df.resolve(true);
+            spyOn(favoriteProductsService, 'Init').and.returnValue(df.promise);
+
+            originalFaves = ['FavProd1', 'FavProd2'];
+            addedFaves = ['FavProd1', 'FavProd2', 'PRODUCT_ID'];
+            favedClass = "faved";
+            unfavedClass = "unfaved"
+    
             scope.product = mock.Product;
-            favoriteProductCtrl = $controller('FavoriteProductCtrl', {$scope: scope});
-        }));
-
-        describe('checkHasFavorites', function(){
-            beforeEach(function(){
-                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
-            });
-            it('should set vm.hasFavorites to true if current user has favorite products', function(){
-                scope.currentUser.xp.FavoriteProducts = ['FavProduct1', 'FavProduct2'];
-                favoriteProductCtrl.checkHasFavorites();
-                expect(favoriteProductCtrl.hasFavorites).toBe(true);
-            });
-            it('should call Me.Patch to empty array when no favoriteProducts xp', function(){
-                delete scope.currentUser.xp.FavoriteProducts;
-                favoriteProductCtrl.checkHasFavorites();
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp: {FavoriteProducts: []}});
-            });
+            element = compile('<button oc-favorite-product '
+                            + 'product="product" '
+                            + 'favorite-class=' + favedClass + ' '
+                            + 'non-favorite-class=' + unfavedClass + '></button>')(scope);
+            directiveScope = element.isolateScope();
         });
 
-        describe('toggleFavoriteProduct', function(){
-            beforeEach(function(){
-                spyOn(favoriteProductCtrl, 'addProduct');
-                spyOn(favoriteProductCtrl, 'removeProduct');
-            });
-            it('if user has no favorites add product', function(){
-                favoriteProductCtrl.hasFavorites = false;
-                favoriteProductCtrl.toggleFavoriteProduct();
-                expect(favoriteProductCtrl.addProduct).toHaveBeenCalledWith([]);
-            });
-            it('if user has favorites and product is favorited, remove product', function(){
-                favoriteProductCtrl.hasFavorites = true;
-                favoriteProductCtrl.isFavorited = true;
-                favoriteProductCtrl.toggleFavoriteProduct();
-                expect(favoriteProductCtrl.removeProduct).toHaveBeenCalled();
-            });
-            it('if user has favorites and product is not favorited, add product', function(){
-                favoriteProductCtrl.hasFavorites = true;
-                favoriteProductCtrl.isFavorited = false;
-                favoriteProductCtrl.toggleFavoriteProduct();
-                expect(favoriteProductCtrl.addProduct).toHaveBeenCalledWith(mock.User.xp.FavoriteProducts);
-            });
-        });
-
-        describe('addProduct', function(){
-            beforeEach(function(){
-                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
-                spyOn(toastrService, 'success')                
-                favoriteProductCtrl.addProduct([]);
-            });
-            it('should add current product to users favorites', function(){
-                var mockPatch = {xp:{FavoriteProducts:[scope.product.ID]}};
-                expect(oc.Me.Patch).toHaveBeenCalledWith(mockPatch);
-            });
-            it('should call toastr to announce success', function(){
-                scope.$digest();
-                expect(toastrService.success).toHaveBeenCalledWith(scope.product.Name + ' was added to your favorite products.');
-            });
-            it('should visually display product is selected', function(){
-                scope.$digest();
-                expect(favoriteProductCtrl.isFavorited).toBe(true);
+        it('should initialize the isolate scope', function(){
+            expect(directiveScope.product).toEqual(mock.Product);
+            expect(directiveScope.favoriteClass).toEqual(favedClass);
+            expect(directiveScope.nonFavoriteClass).toEqual(unfavedClass);
+        })
+        describe ('initialize using ocFavoriteProducts.Init()', function() {
+            it ('should call ocFavoriteProducts.Init()', function() {
+                expect(favoriteProductsService.Init).toHaveBeenCalledWith(mock.Product.ID);
             })
-        });
-
-        describe('removeProduct', function(){
-            beforeEach(function(){
-                spyOn(oc.Me, 'Patch').and.returnValue(dummyPromise);
-                spyOn(toastrService, 'success');
-                scope.currentUser.xp.FavoriteProducts = ['PRODUCT_ID'];
-                favoriteProductCtrl.removeProduct();
+            it ('should already have the unfaved class', function() {
+                expect(element.hasClass(unfavedClass)).toBe(true);
             })
-            it('should remove current product from the users favorites', function(){
-                expect(oc.Me.Patch).toHaveBeenCalledWith({xp:{FavoriteProducts: []}});
-            })
-            it('should call toastr to announce success', function(){
+            it ('should update the class based on the result of ocFavoriteProducts.Init()', function() {
                 scope.$digest();
-                expect(toastrService.success).toHaveBeenCalledWith(scope.product.Name + ' was removed from your favorite products.');
-            });
-            it('should visually display product is no longer selected', function(){
-                expect(favoriteProductCtrl.isFavorited).toBe(false);
-            });
+                expect(element.hasClass(favedClass)).toBe(true);
+            })
+        })
+        describe('when clicked', function(){
+            var spyOnToggle;
+            beforeEach(function() {
+                spyOnToggle = function(returnValue) {
+                    var df = q.defer();
+                    df.resolve(returnValue);
+                    spyOn(favoriteProductsService, 'Toggle').and.returnValue(df.promise);
+                }
+            })
+            it ('should call ocFavoriteProducts.Toggle() with the product ID', function() {
+                spyOnToggle();
+                element.triggerHandler('click');
+                expect(favoriteProductsService.Toggle).toHaveBeenCalledWith(mock.Product.ID);
+            })
+            it ('should update element class to unfaved if ocFavoriteProducts.Toggle() returns false', function() {
+                spyOnToggle(false);
+                element.triggerHandler('click');
+                expect(element.hasClass(unfavedClass)).toBe(true);
+            })
         });
     });
+
     describe('Controller: FavoriteProductsCtrl', function(){
         var favoriteProductsCtrl,
         products;
         beforeEach(inject(function($controller){
-            scope.currentUser = mock.User;
             favoriteProducts = {Items: [mock.Product], Meta: mock.Meta}
             favoriteProductsCtrl = $controller('FavoriteProductsCtrl', {
-                CurrentUser: currentUser,
                 FavoriteProducts: favoriteProducts
             });
         }));

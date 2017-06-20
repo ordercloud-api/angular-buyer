@@ -49,6 +49,7 @@ describe('Component: Category Browse', function(){
             spyOn(state, 'go');
             spyOn(ocParametersService, 'Create');
         }));
+
         describe('vm.filter', function(){
             it('should reload state and call ocParameters.Create with any parameters', function(){
                 categoryBrowseCtrl.filter(true);
@@ -76,6 +77,36 @@ describe('Component: Category Browse', function(){
                 expect(state.go).toHaveBeenCalled();
                 expect(ocParametersService.Create).toHaveBeenCalledWith(angular.extend(parametersResolve, {productPage:1}), false);
                 });
+            });
+        });
+
+        describe('loadMoreCategories', function(){
+            beforeEach(function(){
+                spyOn(oc.Me, 'ListCategories').and.returnValue(dummyPromise);
+            });
+            it('should load next page of results', function(){
+                categoryBrowseCtrl.parameters.categoryID = 'MockCategoryID';
+                mock.Parameters.page++;
+                mock.Parameters.filters.ParentID = 'MockCategoryID';
+
+                categoryBrowseCtrl.loadMoreCategories()
+
+                expect(oc.Me.ListCategories).toHaveBeenCalledWith(mock.Parameters);
+            });
+        });
+
+        describe('loadMoreProducts', function(){
+            beforeEach(function(){
+                spyOn(oc.Me, 'ListProducts').and.returnValue(dummyPromise);
+            });
+            it('should load next page of results', function(){
+                categoryBrowseCtrl.parameters.filters.ParentID = 'MockCategoryID'
+                delete mock.Parameters.filters.ParentID;
+                mock.Parameters.page++;
+
+                categoryBrowseCtrl.loadMoreProducts()
+
+                expect(oc.Me.ListProducts).toHaveBeenCalledWith(mock.Parameters);
             });
         });
     });

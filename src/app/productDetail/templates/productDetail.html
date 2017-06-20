@@ -5,20 +5,16 @@
     <hr>
     <div class="row">
         <div class="col-md-6">
-            <!--PRODUCT IMAGE-->
-            <div class="thumbnail">
-                <img class="img-responsive" alt="{{productDetail.item.xp.image.Name || 'Product Image'}}"
-                     ng-src="{{productDetail.item.xp.image.URL || 'http://placehold.it/600x600?text=' + productDetail.item.Name}}">
-            </div>
+            <!-- PRODUCT IMAGES -->                        
+            <oc-product-images product="productDetail.item"></oc-product-images>
         </div>
+        <!-- PRODUCT INFORMATION -->
         <div class="col-md-6">
             <div class="panel panel-default" ng-if="productDetail.item.Description">
                 <div class="panel-heading">
                     <h3 class="panel-title">Description</h3>
                 </div>
-                <div class="panel-body">
-                    {{productDetail.item.Description}}
-                </div>
+                <div class="panel-body" ta-bind ng-model="productDetail.item.Description"></div>
             </div>
             <div class="panel panel-default" ng-if="productDetail.item.PriceSchedule.PriceBreaks">
                 <div class="panel-heading">
@@ -45,12 +41,13 @@
                     <oc-quantity-input product="productDetail.item" label="Quantity"></oc-quantity-input>
                 </fieldset>
                 <fieldset class="form-group">
-                    <button type="submit" class="btn btn-block btn-success">Add to Cart  <span ng-if="productDetail.item.Quantity"  class="badge badge-success">{{productDetail.findPrice(productDetail.item.Quantity) | currency}}</span></button>
+                    <button type="submit" class="btn btn-block btn-primary">Add to Cart  <span ng-if="productDetail.item.Quantity"  class="badge badge-success">{{productDetail.findPrice(productDetail.item.Quantity) | currency}}</span></button>
                 </fieldset>
             </div>
-            <div class="alert alert-danger" ng-if="!productDetail.item.PriceSchedule">
+            <div class="alert alert-info" ng-if="!productDetail.item.PriceSchedule">
                 You are not able to order this product.
             </div>
         </div>
     </div>
+    <oc-product-carousel title="Related Products" products="productDetail.relatedProducts"></oc-product-carousel>
 </form>
