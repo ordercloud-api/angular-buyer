@@ -59,7 +59,7 @@ function ocProductImages() {
                     templateUrl: 'productDetail/templates/productDetail.images.modal.html',
                     controller: 'ProductImagesModalCtrl',
                     controllerAs: 'productImagesModal',
-                    size: 'lg',
+                    size: '-full-screen c-gallery--lightbox',
                     resolve: {
                         Model: function() {
                             return model; 

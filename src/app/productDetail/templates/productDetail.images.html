@@ -1,27 +1,19 @@
-<div cg-busy="carouselLoading" class="c-product-images">
+<div cg-busy="carouselLoading" class="c-gallery">
     <!--IMAGE CAROUSEL-->
     <div ng-if="product.xp && product.xp.additionalImages && product.xp.additionalImages.length">
-        <div class="c-product-images__main">
-            <div class="c-product-images__main-container">
-                <div id="ImageMain">
-                    <!--TODO: clean up inline styles here-->
-                    <div style="display:flex; flex-flow:row nowrap; align-content:center; align-items:center;" ng-repeat="images in product.xp.additionalImages track by $index" ng-click="openImageModal(product.xp.additionalImages, $index)">
-                        <img style="flex:0 1 auto; max-width:100%; margin-left:auto; margin-right:auto;" ng-src="{{images.URL}}" />
-                    </div>
-                </div>
+        <div id="ImageMain">
+            <div class="thumbnail" ng-repeat="images in product.xp.additionalImages track by $index" ng-click="openImageModal(product.xp.additionalImages, $index)">
+                <img ng-src="{{images.URL}}" />
             </div>
         </div>
-        <div id="ImageNav" class="c-product-images__nav">
-            <div ng-repeat="images in product.xp.additionalImages track by $index">
-                <div class="thumbnail">
-                    <img ng-src="{{images.URL}}" />
-                </div>
+        <div id="ImageNav" class="c-gallery__nav">
+            <div class="thumbnail" ng-repeat="images in product.xp.additionalImages track by $index">
+                <img ng-src="{{images.URL}}" />
             </div>
         </div>
     </div>
     <!--SINGLE IMAGE-->
     <div class="thumbnail" ng-if="!product.xp.additionalImages || !product.xp.additionalImages.length" ng-click="openImageModal(product.xp.image, $index)">
-            <img class="img-responsive" alt="{{product.xp.image.Name || 'Product Image'}}"
-                    ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}">
+        <img class="img-responsive" alt="{{product.xp.image.Name || 'Product Image'}}" ng-src="{{product.xp.image.URL || 'http://placehold.it/600x600?text=' + product.Name}}">
     </div>
 </div>

@@ -1,9 +1,11 @@
+<button type="button" class="close" ng-click="productImagesModal.close()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 <div uib-carousel active="productImagesModal.index" interval="productImagesModal.interval" no-wrap="productImagesModal.noWrap">
     <div ng-if="productImagesModal.additionalImages" uib-slide ng-repeat="images in productImagesModal.additionalImages track by $index" index="$index">
         <img class="img-responsive" ng-src="{{images.URL}}"/>
     </div>
-    <div ng-if="productImagesModal.defaultImage">
-        <!--TODO: remove inline styles-->
-        <img class="img-responsive" ng-src="{{productImagesModal.defaultImage.URL}}" style="height:90vh; width:auto;"/>
+    <div class="item active" ng-if="productImagesModal.defaultImage">
+        <div class="text-center">
+            <img class="img-responsive" ng-src="{{productImagesModal.defaultImage.URL}}"/>
+        </div>
     </div>
 </div>
