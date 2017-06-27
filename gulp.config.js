@@ -50,6 +50,7 @@ module.exports = {
         '!' + source + '**/*.test.js'
     ],
     appFiles: [
+        build + '**/app.module.js',
         build + '**/saas.module.js',
         build + '**/saas/**/*.js',
         build + '**/saas/oc-constants/oc-constants.js',
@@ -57,7 +58,6 @@ module.exports = {
         '!' + build + '**/saas/app.constants.json',
         '!' + build + '**/saas/documentDB/config.js',
         '!' + build + '**/saas/documentDB/getConfiguration.js',
-        build + '**/app.module.js',
         build + '**/common/config/routing/routing.js',
         build + '**/common/config/**/*.js',
         build + '**/*s.config.js',
