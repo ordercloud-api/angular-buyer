@@ -33,7 +33,8 @@ module.exports = {
     index: source + index,
     styles: [
         source + '**/*.css',
-        source + '**/*.less'
+        source + '**/*.less',
+        '!' + source + '**/saas/theme/*.less'
     ],
     templates: [
         '!' + source + index,
@@ -49,6 +50,7 @@ module.exports = {
         '!' + source + '**/*.test.js'
     ],
     appFiles: [
+        build + '**/app.module.js',
         build + '**/saas.module.js',
         build + '**/saas/**/*.js',
         build + '**/saas/oc-constants/oc-constants.js',
@@ -56,7 +58,6 @@ module.exports = {
         '!' + build + '**/saas/app.constants.json',
         '!' + build + '**/saas/documentDB/config.js',
         '!' + build + '**/saas/documentDB/getConfiguration.js',
-        build + '**/app.module.js',
         build + '**/common/config/routing/routing.js',
         build + '**/common/config/**/*.js',
         build + '**/*s.config.js',
@@ -94,6 +95,7 @@ function getConstants() {
     var result = {};
     var constants = JSON.parse(fs.readFileSync(source + 'app/app.constants.json'));
     var environment = process.env.environment || constants.environment;
+    var node_env = process.env.NODE_ENV || 'development';
     switch (environment) {
         case 'local':
             result.authurl = 'http://core.four51.com:11629';
@@ -127,8 +129,12 @@ function getConstants() {
     if (process.env.ocscope) result.ocscope = process.env.ocscope;
     if (process.env.html5mode) result.html5mode = process.env.html5mode;
     if (process.env.bootswatchtheme) result.bootswatchtheme = process.env.bootswatchtheme;
-    if (process.env.buyerid) result.buyerid = process.env.buyerid;
-    if (process.env.catalogid) result.catalogid = process.env.catalogid;
+    if (process.env.awsaccesskeyid) result.awsaccesskeyid = process.env.awsaccesskeyid;
+    if (process.env.awssecretaccesskey) result.awssecretaccesskey = process.env.awssecretaccesskey;
+    if (process.env.awsregion) result.awsregion = process.env.awsregion;
+    if (process.env.awsbucket) result.awsbucket = process.env.awsbucket;
+    result.node_env = node_env;
+    result.environment = environment;
     return result;
 }
 
@@ -140,9 +146,9 @@ function _checkBootswatchTheme() {
 
     if (theme) {
         bootswatchBower.main = [
-            "./" + theme + "/bootswatch.less",
-            "./" + theme + "/variables.less"
-        ]
+            './' + theme + '/bootswatch.less',
+            './' + theme + '/variables.less'
+        ];
     }
 
     return bootswatchBower;

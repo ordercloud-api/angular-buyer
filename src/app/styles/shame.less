@@ -16,10 +16,6 @@ textarea {
   margin-top:0;
 }
 
-.container-smooth {
-  margin-left:0;
-}
-
 .label {
   &[ng-repeat] {
     margin-right:3px;
@@ -78,26 +74,7 @@ li a,
   float: left;
   margin-left: @navbar-padding-horizontal;
 }
-// Hiding/showing specific nav elements on smaller viewports
-.c-mobile-nav {
-  @media (min-width: @grid-float-breakpoint-max) {
-    display: none!important;
-  }  
-}
-.c-desktop-nav {
-  @media (max-width: @grid-float-breakpoint-max) {
-    display: none!important;
-  }
-}
-// hack for jumping layout caused by delayed image load
-.c-category-card,
-.c-product-card__img-wrap,
-.c-product__img-wrap,
-.c-line-item__img {
-    padding-bottom: 100%;
-    height: 0;
-    position: relative;
-}
+
 // IE11 image height hack
 .c-product-card {
     .c-product-card__img {

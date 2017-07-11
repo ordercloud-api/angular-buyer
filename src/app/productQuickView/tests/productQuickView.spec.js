@@ -1,21 +1,11 @@
 describe('Component: Product Quick View', function() {
-    var productQuickViewService,
         uibModalInstance = jasmine.createSpyObj('modalInstance', ['close', 'dismiss', 'result.then']);
-    beforeEach(inject(function(ocProductQuickView) {
-        productQuickViewService = ocProductQuickView;
-    }));
-
     describe('Service: ocProductQuickView', function() {
-        var uibModal;
-        beforeEach(inject(function($uibModal) {
-            uibModal = $uibModal;
-        }));
-
         describe('Method: Open', function() {
             it('should open the modal for product quick view', function() {
-                spyOn(uibModal, 'open').and.callThrough();
-                productQuickViewService.Open();
-                expect(uibModal.open).toHaveBeenCalledWith({
+                spyOn(uibModalService, 'open').and.callThrough();
+                ocProductQuickViewService.Open();
+                expect(uibModalService.open).toHaveBeenCalledWith({
                     backdrop: 'static',
                     templateUrl: 'productQuickView/templates/productQuickView.modal.html',
                     controller: 'ProductQuickViewCtrl',
@@ -30,21 +20,28 @@ describe('Component: Product Quick View', function() {
             })
         })
     });
-
-    describe('Component Directive: ordercloudProductQuickView', function() {
-        var productQuickViewComponentCtrl;
-        beforeEach(inject(function($componentController) {
-            productQuickViewComponentCtrl = $componentController('ordercloudProductQuickView', {});
-        }));
-        describe('quickView', function() {
-            it('should call the Open method on ocProductQuickView service', function() {
-                spyOn(productQuickViewService, 'Open').and.callThrough();
-                productQuickViewComponentCtrl.quickView(mock.Order, mock.Product);
-                expect(productQuickViewService.Open).toHaveBeenCalledWith(mock.Order, mock.Product);
-            })
+    describe('Directive: ocProductQuickView', function() {
+        var element,
+            directiveScope
+            ;
+        beforeEach(function() {
+            scope.product = mock.Product;
+            scope.currentOrder = mock.Order;
+            element = compile('<button oc-product-quick-view '
+                            + 'product="product" ' 
+                            + 'current-order="currentOrder"></button>')(scope);
+            directiveScope = element.isolateScope();
+            spyOn(ocProductQuickViewService, 'Open');
+        });
+        it('should initialize the isolate scope', function(){
+            expect(directiveScope.product).toEqual(mock.Product);
+            expect(directiveScope.currentOrder).toEqual(mock.Order);
+        });
+        it('should call ocProductQuickView.Open when clicked', function(){
+            element.triggerHandler('click');
+            expect(ocProductQuickViewService.Open).toHaveBeenCalledWith(mock.Order, mock.Product);
         })
     });
-
     describe('Controller: ProductQuickViewController', function() {
         var productQuickViewCtrl,
             lineItemHelpers;
@@ -56,7 +53,6 @@ describe('Component: Product Quick View', function() {
                 CurrentOrder: mock.Order
             });
         }));
-
         describe('addToCart', function() {
             beforeEach(function() {
                 spyOn(lineItemHelpers, 'AddItem').and.returnValue(dummyPromise);

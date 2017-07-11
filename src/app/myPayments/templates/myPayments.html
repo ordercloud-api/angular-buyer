@@ -15,7 +15,7 @@
                     <div class="col-xs-6 col-sm-8">
                         <b>{{creditCard.CardholderName}}</b> <br ng-if="creditCard.CardholderName">
                         <span class="text-muted">{{'XXXX-XXXX-XXXX-' + creditCard.PartialAccountNumber}}</span><br>
-                        <small class="text-muted">Expires On: {{creditCard.ExpirationDate | date:'MM/yy'}}</small>
+                        <small class="text-muted">Expires On: {{creditCard.ExpirationDate | date:'MM/yy' : 'UTC'}}</small>
                     </div>
                     <div class="col-xs-4 col-sm-3 text-right">
                         <a href="" ng-click="myPayments.delete(this)">Delete</a> |

@@ -12,6 +12,11 @@ function HomeConfig($stateProvider) {
 			controllerAs: 'home',
 			data: {
 				pageTitle: 'Home'
+			},
+			resolve: {
+				FeaturedProducts: function(ocProducts) {
+					return ocProducts.Featured();
+				}
 			}
 		})
 	;

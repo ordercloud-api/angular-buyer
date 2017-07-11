@@ -13,6 +13,9 @@ function ProductDetailConfig($stateProvider) {
             resolve: {
                 Product: function ($stateParams, OrderCloudSDK) {
                     return OrderCloudSDK.Me.GetProduct($stateParams.productid);
+                },
+                RelatedProducts: function(ocProducts, Product) {
+                    return ocProducts.Related(Product.xp.RelatedProducts);
                 }
             }
         });

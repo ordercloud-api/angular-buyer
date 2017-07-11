@@ -4,9 +4,13 @@ angular.module('orderCloud')
 
 function OrderCloudPreventClickDirective(){
     return {
-        link: function($scope, element) {
+        link: function(scope, element) {
             element.on("click", function(e){
                 e.stopPropagation();
+            });
+            scope.$on('$destroy', function(){
+                //prevent memory leak
+                element.off('click');
             });
         }
     };

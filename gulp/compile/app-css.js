@@ -22,15 +22,13 @@ function AppCssFunction() {
                 overrides: {
                     'jasny-bootstrap': {
                         main: [
-                            "./dist/js/jasny-bootstrap.js",
-                            "./less/jasny-bootstrap.less"
+                            './less/jasny-bootstrap.less'
                         ]
                     },
                     'slick-carousel': {
                         main: [
-                            "slick/slick.js",
-                            "slick/slick.less",
-                            "slick/slick-theme.less"
+                            'slick/slick.less',
+                            'slick/slick-theme.less'
                         ]
                     },
                     'bootswatch': config.checkBootswatchTheme()

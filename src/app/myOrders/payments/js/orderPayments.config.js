@@ -13,8 +13,8 @@ function OrderPaymentsConfig($stateProvider) {
                 pageTitle: 'Order Payments'
             },
             resolve: {
-                OrderPayments: function($stateParams, ocOrderPayments, buyerid) {
-                    return ocOrderPayments.List($stateParams.orderid, buyerid, 1, null);
+                OrderPayments: function($stateParams, ocOrderPayments) {
+                    return ocOrderPayments.List($stateParams.orderid, 1, null);
                 }
             }
         })

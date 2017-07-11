@@ -48,6 +48,7 @@ function OrderCloudPaymentController($filter, toastr, OrderCloudSDK, CheckoutCon
     }
 
     function _paymentTypeChanged(scope) {
+        if (!vm.allowMultiple && scope.payment.Amount < vm.order.Total) scope.payment.Amount = vm.order.Total;
 		if (scope.payment.Type === 'CreditCard' || scope.payment.Type === 'SpendingAccount') {
             vm.selectingAccount = true;
 			scope.payment.loading = ocPayment.SelectPaymentAccount(scope.payment, vm.order)

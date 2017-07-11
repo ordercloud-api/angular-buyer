@@ -2,9 +2,8 @@ angular.module('orderCloud')
     .controller('FavoriteProductsCtrl', FavoriteProductsController)
 ;
 
-function FavoriteProductsController(ocParameters, OrderCloudSDK, $state, $ocMedia, Parameters, CurrentUser, FavoriteProducts){
+function FavoriteProductsController(ocParameters, OrderCloudSDK, $state, $ocMedia, Parameters, FavoriteProducts){
     var vm = this;
-    vm.currentUser = CurrentUser;
     vm.list = FavoriteProducts;
     vm.parameters = Parameters;
     vm.sortSelection = Parameters.sortBy ? (Parameters.sortBy.indexOf('!') === 0 ? Parameters.sortBy.split('!')[1] : Parameters.sortBy) : null;

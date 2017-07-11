@@ -1,7 +1,7 @@
 describe('Component: Base', function() {
     var productSearch;
-    beforeEach(inject(function(ocProductSearch) {
-        productSearch = ocProductSearch;
+    beforeEach(inject(function(ocProducts) {
+        productSearch = ocProducts;
     }));
     describe('State: Base', function() {
         var base;
@@ -17,9 +17,7 @@ describe('Component: Base', function() {
             scope.$digest();
         });
         it('should resolve ExistingOrder', function() {
-            var orderList = q.defer();
-            orderList.resolve({Items:['TEST ORDER']});
-            spyOn(oc.Me, 'ListOrders').and.returnValue(orderList.promise);
+            spyOn(oc.Me, 'ListOrders').and.returnValue(dummyPromise);
             var currentUser = injector.invoke(base.resolve.CurrentUser);
             injector.invoke(base.resolve.ExistingOrder, scope, {$q:q, OrderCloud:oc, CurrentUser:currentUser});
             var options = {
@@ -37,17 +35,27 @@ describe('Component: Base', function() {
             injector.invoke(base.resolve.CurrentOrder, scope, {ExistingOrder: existingOrder, NewOrder: ocNewOrder, CurrentUser: currentUser});
             expect(ocNewOrder.Create).toHaveBeenCalledWith({});
         }));
+        it('should resolve TotalQuantity', function(){
+            var defer = q.defer();
+            defer.resolve(mock.LineItems);
+            spyOn(oc.LineItems, 'List').and.returnValue(defer.promise);
+            injector.invoke(base.resolve.TotalQuantity);
+            expect(oc.LineItems.List).toHaveBeenCalledWith('outgoing', mock.Order.ID);
+        })
     });
 
-    describe('Controller: BaseCtrl', function(){
+   describe('Controller: BaseCtrl', function(){
         var baseCtrl;
         beforeEach(inject(function($controller) {
             baseCtrl = $controller('BaseCtrl', {
+                $scope: scope,
                 CurrentUser: mock.User,
-                CurrentOrder: mock.Order
+                CurrentOrder: mock.Order,
+                TotalQuantity: 3
             });
         }));
         it('should initialize the current user and order into its scope', function() {
+
             expect(baseCtrl.currentUser).toBe(mock.User);
             expect(baseCtrl.currentOrder).toBe(mock.Order);
         });
@@ -56,23 +64,23 @@ describe('Component: Base', function() {
             beforeEach(function(){
                 spyOn(state, 'go');
             });
-            it('should go to productDetail if ocProductSearch returns a productID', function(){
+            it('should go to productDetail if ocProducts.Search() returns a productID', function(){
                 var d = q.defer();
                 d.resolve({productID: mock.Product.ID});
-                spyOn(productSearch, 'Open').and.returnValue(d.promise);
+                spyOn(productSearch, 'Search').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
-                expect(productSearch.Open).toHaveBeenCalled();
+                expect(productSearch.Search).toHaveBeenCalled();
                 expect(state.go).toHaveBeenCalledWith('productDetail', {productid: mock.Product.ID});
             });
-            it('should go to productSearchResults if ocProductSearch doesnt return a productID', function(){
+            it('should go to productBrowse.products if ocProducts.Search() doesnt return a productID', function(){
                 var d = q.defer();
-                d.resolve({searchTerm: 'SEARCHTERM'});
-                spyOn(productSearch, 'Open').and.returnValue(d.promise);
+                d.resolve({search: 'SEARCHTERM'});
+                spyOn(productSearch, 'Search').and.returnValue(d.promise);
                 baseCtrl.mobileSearch();
                 scope.$digest();
-                expect(productSearch.Open).toHaveBeenCalled();
-                expect(state.go).toHaveBeenCalledWith('productSearchResults', {searchTerm: 'SEARCHTERM'});
+                expect(productSearch.Search).toHaveBeenCalled();
+                expect(state.go).toHaveBeenCalledWith('productBrowse.products', {catalogid: mock.Buyer.DefaultCatalogID, search: 'SEARCHTERM', categoryid:''});
             });
         });
     });

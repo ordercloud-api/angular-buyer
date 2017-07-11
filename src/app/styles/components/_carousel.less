@@ -1,0 +1,21 @@
+// override the bootstrap carousel control backgrounds
+.carousel-control {
+  &.left,
+  &.right {
+    background-image: none;
+  }
+}
+
+// Center images that do not fill the carousel element
+.carousel-inner {
+  > .item {
+    img {
+      margin: 0 auto;
+    }
+    > a {
+      img {
+        margin: 0 auto;
+      }
+    }
+  }
+}

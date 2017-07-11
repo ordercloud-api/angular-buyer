@@ -12,11 +12,13 @@ var q,
     currentOrder,
     currentUser,
     orderLineItems,
+    product,
     ocLineItemsService,
     ocAppNameService,
     ocConfirmService,
     ocMyAddressesService,
     ocParametersService,
+    ocProductQuickViewService,
     ocRolesService,
     ocReorderService,
     dummyPromise,
@@ -29,11 +31,12 @@ beforeEach(module('orderCloud', function($provide) {
     $provide.value('CurrentOrder', mock.Order);
     $provide.value('Parameters', mock.Parameters);
     $provide.value('OrderLineItems', mock.LineItems);
+    $provide.value('Product', mock.Product);
 }));
 beforeEach(module('ordercloud-angular-sdk'));
 beforeEach(inject(function($q, $rootScope, $compile, $state, $injector, $exceptionHandler, toastr, $uibModal,
-OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, CurrentOrder,
-CurrentUser, OrderLineItems) {
+OrderCloudSDK, ocLineItems, ocAppName, ocConfirm, ocMyAddresses, ocParameters, ocRoles, ocReorder, Parameters, 
+ocProductQuickView, CurrentOrder, CurrentUser, OrderLineItems, Product) {
     q = $q;
     scope = $rootScope.$new();
     rootScope = $rootScope;
@@ -49,12 +52,14 @@ CurrentUser, OrderLineItems) {
     ocConfirmService = ocConfirm;
     ocMyAddressesService = ocMyAddresses;
     ocParametersService = ocParameters;
+    ocProductQuickViewService = ocProductQuickView;
     ocRolesService = ocRoles;
     ocReorderService = ocReorder;
     parametersResolve = Parameters;
     currentOrder = CurrentOrder;
     currentUser = CurrentUser;
     orderLineItems = OrderLineItems;
+    product = Product;
     var defer = $q.defer();
     defer.resolve('FAKE_RESPONSE');
     dummyPromise = defer.promise;
@@ -110,11 +115,30 @@ function _mockData() {
             xp: {
                 FavoriteProducts: ['FavProd1', 'FavProd2'],
                 FavoriteOrders: ['FavOrder1', 'FavOrder2']
+            },
+            Buyer: {
+                ID: 'BUYER_ID',
+                DefaultCatalogID: 'BUYER_DEFAULT_CATALOG_ID'
             }
         },
         Product: {
             ID: 'PRODUCT_ID',
-            Name: 'PRODUCT_NAME'
+            Name: 'PRODUCT_NAME',
+            PriceSchedule: {
+                PriceBreaks: [
+                    {
+                        Price: '$0.00',
+                        Quantity: 1
+                    },
+                    {
+                        Price: '$0.00',
+                        Quantity: 1
+                    }
+                ]
+            },
+            xp: {
+                RelatedProducts: ["testProd1", "testProd2"]
+            }
         },
         Products: {
             Items: [
@@ -124,6 +148,12 @@ function _mockData() {
         },
         Category: {
             ID: 'CATEGORY_ID'
+        },
+        Categories: {
+            Items: [
+                {ID: 'mockCat1'},
+                {ID: 'mockCat2'}
+            ]
         },
         Order: {
             ID: 'ORDER_ID',
@@ -136,10 +166,19 @@ function _mockData() {
             PaymentMethod: null,
             CreditCardID: null,
             ShippingCost: null,
-            TaxCost: null
+            TaxCost: null,
+            Total: 100
         },
         LineItem: {
-            ID: 'LINEITEM_ID'
+            ID: 'LINEITEM_ID',
+            Product: {
+                ID: 'MOCK_PRODUCT_ID'
+            },
+            Quantity: 3
+        },
+        Payment: {
+            ID: 'PAYMENT_ID',
+            Amount: 150
         },
         Promotion: {
             Code:'Discount10'

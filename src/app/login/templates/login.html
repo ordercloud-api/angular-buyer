@@ -2,10 +2,15 @@
 
     <!--LOGIN FORM-->
     <div ng-switch-when="login">
-        <a ui-sref="home" ng-if="login.anonymousEnabled" class="text-center"><h3>{{application.name()}}</h3></a>
+        <a ui-sref="home" ng-if="login.anonymousEnabled" class="text-center">
+            <h3><oc-brand></oc-brand></h3>
+        </a>
+        <div ng-if="!login.anonymousEnabled" class="text-center">
+            <h3><oc-brand></oc-brand></h3>
+        </div>
         <div class="panel panel-default" cg-busy="login.loading">
             <form class="panel-body" name="LoginForm" ng-submit="login.submit()" autocomplete="off" novalidate oc-pretty-submit>
-                <h3 class="text-center">{{login.anonymousEnabled ? 'Login' : application.name() + ' Login'}}</h3>
+                <h3 class="text-center">Login</h3>
                 <div class="form-group">
                     <label for="Username" class="sr-only">Username</label>
                     <input id="Username" type="text" class="form-control" placeholder="Username" autocapitalize="off" autofocus ng-model="login.credentials.Username" ng-required="true" />
