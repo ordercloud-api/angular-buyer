@@ -18,10 +18,11 @@ angular.module('orderCloud')
             return function(ex, cause) {
                 var message = '';
                 if(ex && ex.response && ex.response.body && ex.response.body.Errors && ex.response.body.Errors.length) {
-                    message = ex.response.body.Errors[0].Message;
+                    var errorObj = ex.response.body.Errors[0];
+                    message = errorObj.ErrorCode === 'NotFound' ? errorObj.Data.ObjectType + ' ' + errorObj.Data.ObjectID + ' not found.' : errorObj.Message;
                 } else if(ex && ex.response && ex.response.body && ex.response.body['error_description']) {
                     message = ex.response.body['error_description'];
-                } else if(ex.message) {
+                } else if(ex && ex.message) {
                     message = ex.message;
                 } else {
                     message = 'An error occurred';
