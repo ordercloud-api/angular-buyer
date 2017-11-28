@@ -11,9 +11,6 @@ function BaseConfig($stateProvider) {
                 templateUrl: 'base/templates/base.html',
                 controller: 'BaseCtrl',
                 controllerAs: 'base'
-            },
-            'nav@base': {
-                'templateUrl': 'base/templates/navigation.html'
             }
         },
         resolve: {
