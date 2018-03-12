@@ -85,7 +85,7 @@
                                             <div class="col-xs-6">
                                                 <b>{{payment.CreditCard.CardholderName}}</b> <br ng-if="payment.CreditCard.CardholderName">
                                                 <span class="text-muted">{{'XXXX-XXXX-XXXX-' + payment.CreditCard.PartialAccountNumber}}</span><br>
-                                                <small class="text-muted">Expires On: {{payment.CreditCard.ExpirationDate | date:'MM/yy'}}</small>
+                                                <small class="text-muted">Expires On: {{payment.CreditCard.ExpirationDate | date:'MM/yy' : 'UTC'}}</small>
                                             </div>
                                         </div>
                                     </div>

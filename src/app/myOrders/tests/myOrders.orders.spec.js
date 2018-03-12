@@ -130,7 +130,7 @@
 //                     searchOn: null,
 //                     sortBy: 'ID',
 //                     filters: {
-//                         status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'
+//                         status: 'Open|AwaitingApproval|Completed|Declined|Canceled'
 //                     },
 //                     catalogID: null,
 //                     categoryID: null,
@@ -159,7 +159,7 @@
 //                     searchOn: null,
 //                     sortBy: 'ID',
 //                     filters: {
-//                         status: 'Open|AwaitingApproval|Completed|Declined|Cancelled'
+//                         status: 'Open|AwaitingApproval|Completed|Declined|Canceled'
 //                     },
 //                     catalogID: null,
 //                     categoryID: null,

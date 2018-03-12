@@ -17,6 +17,11 @@ function LoginController($state, $exceptionHandler, $window, ocRoles, ocAnonymou
     vm.submit = function () {
         vm.loading = OrderCloudSDK.Auth.Login(vm.credentials.Username, $window.encodeURIComponent(vm.credentials.Password), clientid, scope)
             .then(function (data) {
+                // error if user is a seller user - this app is built specifically for buyer users
+                // and many things will appear broken if they sign in as a seller
+                var userType = JSON.parse(atob(data.access_token.split('.')[1])).usrtype;
+                if(userType === 'admin') return $exceptionHandler({message: 'This is a buyer application. Please sign in as a buyer user.'})
+
                 var anonymousToken = OrderCloudSDK.GetToken();
                 OrderCloudSDK.SetToken(data.access_token);
                 if (vm.rememberStatus && data['refresh_token']) OrderCloudSDK.SetRefreshToken(data['refresh_token']);
