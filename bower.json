@@ -1,5 +1,5 @@
 {
-  "name": "OrderCloud-Seed",
+  "name": "ordercloud-base-buyer",
   "authors": [
     "Four51"
   ],
@@ -47,7 +47,7 @@
     "slick-carousel": "^1.6.0",
     "angular-payments": "*",
     "bootswatch": "^3.3.7",
-    "ordercloud-angular-sdk": "1.0.51",
+    "ordercloud-angular-sdk": "2.0.0",
     "textAngular": "^1.5.16"
   },
   "devDependencies": {
