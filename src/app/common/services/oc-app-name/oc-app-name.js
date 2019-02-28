@@ -1,5 +1,5 @@
 angular.module('orderCloud')
-    .factory('ocAppName', function($cookies, appname) {
+    .factory('ocAppName', function(appname) {
         var appName = appname;
         var service = {
             Watch: _watch,
